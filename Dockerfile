@@ -14,7 +14,6 @@ COPY index.html index.html
 COPY build build
 COPY config config
 COPY static static
-COPY util util
 COPY src src
 
 RUN LANGUAGE=bn npm run build
