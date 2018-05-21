@@ -1,0 +1,1 @@
+export const defaultAuthorImage = 'https://1.ptlp.co/author/image?width=200&quality=high&type=webp'
