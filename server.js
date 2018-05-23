@@ -96,15 +96,15 @@ var Website = defineEnum({
     KANNADA:            { hostName: "kannada.pratilipi.com",    mobileHostName: "kn.pratilipi.com", displayLanguage: Language.KANNADA,      filterLanguage: Language.KANNADA },
     TELUGU:         { hostName: "telugu.pratilipi.com",     mobileHostName: "te.pratilipi.com", displayLanguage: Language.TELUGU,       filterLanguage: Language.TELUGU },
     
-    PROD_ALL_LANGUAGE:	{ hostName: "www-mum.pratilipi.com",        mobileHostName: "m-mum.pratilipi.com", displayLanguage: Language.ENGLISH,	    filterLanguage: null },
-    PROD_HINDI:			{ hostName: "hindi-delta.pratilipi.com",      mobileHostName: "hi-mum.pratilipi.com", displayLanguage: Language.HINDI,		filterLanguage: Language.HINDI },
-    PROD_GUJARATI:		{ hostName: "gujarati-delta.pratilipi.com",   mobileHostName: "gu-mum.pratilipi.com", displayLanguage: Language.GUJARATI,    filterLanguage: Language.GUJARATI },
-    PROD_TAMIL:			{ hostName: "tamil-delta.pratilipi.com",      mobileHostName: "ta-mum.pratilipi.com", displayLanguage: Language.TAMIL,		filterLanguage: Language.TAMIL },
-    PROD_MARATHI:		    { hostName: "marathi-delta.pratilipi.com",    mobileHostName: "mr-mum.pratilipi.com", displayLanguage: Language.MARATHI,	    filterLanguage: Language.MARATHI },
-    PROD_MALAYALAM:		{ hostName: "malayalam-delta.pratilipi.com",  mobileHostName: "ml-mum.pratilipi.com", displayLanguage: Language.MALAYALAM,	filterLanguage: Language.MALAYALAM },
-    PROD_BENGALI:		    { hostName: "bengali-delta.pratilipi.com",    mobileHostName: "bn-mum.pratilipi.com", displayLanguage: Language.BENGALI,	    filterLanguage: Language.BENGALI },
-    PROD_KANNADA:		    { hostName: "kannada-delta.pratilipi.com",    mobileHostName: "kn-mum.pratilipi.com", displayLanguage: Language.KANNADA,	    filterLanguage: Language.KANNADA },
-    PROD_TELUGU:			{ hostName: "telugu-delta.pratilipi.com",     mobileHostName: "te-mum.pratilipi.com", displayLanguage: Language.TELUGU,		filterLanguage: Language.TELUGU },
+    PROD_ALL_LANGUAGE:	{ hostName: "www-delta.pratilipi.com",        mobileHostName: "m-delta.pratilipi.com", displayLanguage: Language.ENGLISH,	    filterLanguage: null },
+    PROD_HINDI:			{ hostName: "hindi-delta.pratilipi.com",      mobileHostName: "hi-delta.pratilipi.com", displayLanguage: Language.HINDI,		filterLanguage: Language.HINDI },
+    PROD_GUJARATI:		{ hostName: "gujarati-delta.pratilipi.com",   mobileHostName: "gu-delta.pratilipi.com", displayLanguage: Language.GUJARATI,    filterLanguage: Language.GUJARATI },
+    PROD_TAMIL:			{ hostName: "tamil-delta.pratilipi.com",      mobileHostName: "ta-delta.pratilipi.com", displayLanguage: Language.TAMIL,		filterLanguage: Language.TAMIL },
+    PROD_MARATHI:		    { hostName: "marathi-delta.pratilipi.com",    mobileHostName: "mr-delta.pratilipi.com", displayLanguage: Language.MARATHI,	    filterLanguage: Language.MARATHI },
+    PROD_MALAYALAM:		{ hostName: "malayalam-delta.pratilipi.com",  mobileHostName: "ml-delta.pratilipi.com", displayLanguage: Language.MALAYALAM,	filterLanguage: Language.MALAYALAM },
+    PROD_BENGALI:		    { hostName: "bengali-delta.pratilipi.com",    mobileHostName: "bn-delta.pratilipi.com", displayLanguage: Language.BENGALI,	    filterLanguage: Language.BENGALI },
+    PROD_KANNADA:		    { hostName: "kannada-delta.pratilipi.com",    mobileHostName: "kn-delta.pratilipi.com", displayLanguage: Language.KANNADA,	    filterLanguage: Language.KANNADA },
+    PROD_TELUGU:			{ hostName: "telugu-delta.pratilipi.com",     mobileHostName: "te-delta.pratilipi.com", displayLanguage: Language.TELUGU,		filterLanguage: Language.TELUGU },
     
     GAMMA_ALL_LANGUAGE: { hostName: "www-gamma.pratilipi.com",          mobileHostName: "m-gamma.pratilipi.com",  displayLanguage: Language.ENGLISH,    filterLanguage: null },
     GAMMA_HINDI:            { hostName: "hindi-gamma.pratilipi.com",        mobileHostName: "hi-gamma.pratilipi.com", displayLanguage: Language.HINDI,      filterLanguage: Language.HINDI },
@@ -146,18 +146,7 @@ var Website = defineEnum({
     DEVO_TELUGU_GR:      { hostName: "telugu-devo-gr.ptlp.co",    mobileHostName: "te-devo-gr.ptlp.co", displayLanguage: Language.TELUGU,   filterLanguage: Language.TELUGU },
     DEVO_KANNADA_GR:     { hostName: "kannada-devo-gr.ptlp.co",   mobileHostName: "kn-devo-gr.ptlp.co", displayLanguage: Language.KANNADA,  filterLanguage: Language.KANNADA },
 
-    ALPHA:  { hostName: "localhost", mobileHostName: "localhost", displayLanguage: Language.HINDI, filterLanguage: Language.HINDI,  },
-    
-    DELTA_ALL_LANGUAGE: { hostName: "www-delta.pratilipi.com",          mobileHostName: "m-delta.pratilipi.com",  displayLanguage: Language.ENGLISH,    filterLanguage: null },
-    DELTA_HINDI:            { hostName: "hindi-delta.pratilipi.com",        mobileHostName: "hi-delta.pratilipi.com", displayLanguage: Language.HINDI,      filterLanguage: Language.HINDI },
-    DELTA_GUJARATI:     { hostName: "gujarati-delta.pratilipi.com",     mobileHostName: "gu-delta.pratilipi.com", displayLanguage: Language.GUJARATI,   filterLanguage: Language.GUJARATI },
-    DELTA_TAMIL:            { hostName: "tamil-delta.pratilipi.com",        mobileHostName: "ta-delta.pratilipi.com", displayLanguage: Language.TAMIL,      filterLanguage: Language.TAMIL },
-    DELTA_MARATHI:      { hostName: "marathi-delta.pratilipi.com",      mobileHostName: "mr-delta.pratilipi.com", displayLanguage: Language.MARATHI,    filterLanguage: Language.MARATHI },
-    DELTA_MALAYALAM:        { hostName: "malayalam-delta.pratilipi.com",    mobileHostName: "ml-delta.pratilipi.com", displayLanguage: Language.MALAYALAM,  filterLanguage: Language.MALAYALAM },
-    DELTA_BENGALI:      { hostName: "bengali-delta.pratilipi.com",      mobileHostName: "bn-delta.pratilipi.com", displayLanguage: Language.BENGALI,    filterLanguage: Language.BENGALI },
-    DELTA_KANNADA:      { hostName: "kannada-delta.pratilipi.com",      mobileHostName: "kn-delta.pratilipi.com", displayLanguage: Language.KANNADA,    filterLanguage: Language.KANNADA },
-    DELTA_TELUGU:       { hostName: "telugu-delta.pratilipi.com",       mobileHostName: "te-delta.pratilipi.com", displayLanguage: Language.TELUGU, filterLanguage: Language.TELUGU },
-    
+    ALPHA:  { hostName: "localhost", mobileHostName: "localhost", displayLanguage: Language.HINDI, filterLanguage: Language.HINDI,  }    
     
 });
 
