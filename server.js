@@ -188,6 +188,7 @@ app.get( '/health', (req, res, next) => {
 app.get( '/*', (req, res, next) => {
 
     var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
+    var totalGrowthBuckets = Number(req.headers["total-growth-buckets"] || 10);
 
     console.log('BUCKET ID: ', bucketId);
     const numberOfBucketsToShowProduct = Math.floor((PRODUCT_PERCENTAGE / 100) * totalGrowthBuckets);
