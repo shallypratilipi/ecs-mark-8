@@ -188,15 +188,14 @@ app.get( '/health', (req, res, next) => {
 app.get( '/*', (req, res, next) => {
 
     var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
-    var totalGrowthBuckets = Number(req.headers["total-growth-buckets"] || 10);
 
     console.log('BUCKET ID: ', bucketId);
     const numberOfBucketsToShowProduct = Math.floor((PRODUCT_PERCENTAGE / 100) * totalGrowthBuckets);
     // todo uncomment to start growth stack & <10
-    /*if (Number(bucketId) > 10) {
+    if (Number(bucketId) < 20 || Number(bucketId) > 30) {
         next();
         return
-    }*/
+    }
 
     var website = _getWebsite( req.headers.host );
     if (fs.existsSync(__dirname + `/dist/${website.displayLanguage.code}${req.path}`)) {
@@ -208,7 +207,6 @@ app.get( '/*', (req, res, next) => {
 
 app.get('/*', (req, res, next) => {
     var website = _getWebsite( req.headers.host );
-    var totalGrowthBuckets = Number(req.headers["total-growth-buckets"] || 10);
     var variation = 'old_build/prod-variation-2/';
 
     if (req.query.customVariation && fs.existsSync('old_build/' + req.query.customVariation)) {

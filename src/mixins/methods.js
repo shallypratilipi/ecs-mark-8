@@ -1,47 +1,5 @@
 import constants from '@/constants';
 import controlAnalyticsEvents from '@/static_scripts/analytics_events_control'
-import ratingV1AnalyticsEvents from '@/static_scripts/experiment_events/rating_v1'
-import ratingV2AnalyticsEvents from '@/static_scripts/experiment_events/rating_v2'
-import ratingV3AnalyticsEvents from '@/static_scripts/experiment_events/rating_v3'
-import ratingV4AnalyticsEvents from '@/static_scripts/experiment_events/rating_v4'
-import readerV1AnalyticsEvents from '@/static_scripts/experiment_events/reader_v1'
-import readerV2AnalyticsEvents from '@/static_scripts/experiment_events/reader_v2'
-import readerV3AnalyticsEvents from '@/static_scripts/experiment_events/reader_v3'
-import readerV4AnalyticsEvents from '@/static_scripts/experiment_events/reader_v4'
-import profileV1AnalyticsEvents from '@/static_scripts/experiment_events/profile_v1'
-import profileV2AnalyticsEvents from '@/static_scripts/experiment_events/profile_v2'
-import profileV3AnalyticsEvents from '@/static_scripts/experiment_events/profile_v3'
-import profileV4AnalyticsEvents from '@/static_scripts/experiment_events/profile_v4'
-import discoveryV1AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v1'
-import discoveryV2AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v2'
-import discoveryV3AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v3'
-import discoveryV4AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v4'
-import homeV1AnalyticsEvents from '@/static_scripts/experiment_events/home_v1'
-import homeV2AnalyticsEvents from '@/static_scripts/experiment_events/home_v2'
-import homeV3AnalyticsEvents from '@/static_scripts/experiment_events/home_v3'
-import homeV4AnalyticsEvents from '@/static_scripts/experiment_events/home_v4'
-
-const rating_v1 = ['WGEN001'];
-const rating_v2 = ['WGEN002'];
-const rating_v3 = ['WGEN003'];
-const rating_v4 = ['WGEN004'];
-const reader_v1 = ['WGEN005'];
-const reader_v2 = ['WGEN006'];
-const reader_v3 = ['WGEN007'];
-const reader_v4 = ['WGEN008'];
-const profile_v1 = ['WGEN009'];
-const profile_v2 = ['WGEN010'];
-const profile_v3 = ['WGEN011'];
-const profile_v4 = ['WGEN012'];
-const discovery_v1 = ['WGEN013'];
-const discovery_v2 = ['WGEN014'];
-const discovery_v3 = ['WGEN015'];
-const discovery_v4 = ['WGEN016'];
-const home_v1 = ['WGEN017'];
-const home_v2 = ['WGEN018'];
-const home_v3 = ['WGEN019'];
-const home_v4 = ['WGEN020'];
-
 
 let REFERRER_EVENT;
 let REFERRER_EXPERIMENTID;
@@ -245,16 +203,16 @@ export function validateUsername(name) {
 }
 
 export function setAnalyticsUserProperty(propertyName, propertyValue) {
-    const identify = new amplitude.Identify();
+    /*const identify = new amplitude.Identify();
     identify.set(propertyName, propertyValue);
-    amplitude.getInstance().identify(identify);
+    amplitude.getInstance().identify(identify);*/
 
     const propertyObject = {};
     propertyObject[propertyName] = String(propertyValue)
 
-    if (propertyName === 'USER_ID' && propertyValue != "0" ) {
+    /*if (propertyName === 'USER_ID' && propertyValue != "0" ) {
         amplitude.getInstance().setUserId(propertyValue);
-    }
+    }*/
 
     if (!window.FB) {
         setTimeout(() => {
@@ -319,66 +277,6 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
         case (experimentType === 'CONTROL'):
             eventProps = { ...controlAnalyticsEvents[eventName] };
             break;
-        case (rating_v1.indexOf(experimentType) > -1):
-            eventProps = { ...ratingV1AnalyticsEvents[eventName] };
-            break;
-        case (rating_v2.indexOf(experimentType) > -1):
-            eventProps = { ...ratingV2AnalyticsEvents[eventName] };
-            break;
-        case (rating_v3.indexOf(experimentType) > -1):
-            eventProps = { ...ratingV3AnalyticsEvents[eventName] };
-            break;
-        case (rating_v4.indexOf(experimentType) > -1):
-            eventProps = { ...ratingV4AnalyticsEvents[eventName] };
-            break;
-        case (reader_v1.indexOf(experimentType) > -1):
-            eventProps = { ...readerV1AnalyticsEvents[eventName] };
-            break;
-        case (reader_v2.indexOf(experimentType) > -1):
-            eventProps = { ...readerV2AnalyticsEvents[eventName] };
-            break;
-        case (reader_v3.indexOf(experimentType) > -1):
-            eventProps = { ...readerV3AnalyticsEvents[eventName] };
-            break;
-        case (reader_v4.indexOf(experimentType) > -1):
-            eventProps = { ...readerV4AnalyticsEvents[eventName] };
-            break;
-        case (profile_v1.indexOf(experimentType) > -1):
-            eventProps = { ...profileV1AnalyticsEvents[eventName] };
-            break;
-        case (profile_v2.indexOf(experimentType) > -1):
-            eventProps = { ...profileV2AnalyticsEvents[eventName] };
-            break;
-        case (profile_v3.indexOf(experimentType) > -1):
-            eventProps = { ...profileV3AnalyticsEvents[eventName] };
-            break;
-        case (profile_v4.indexOf(experimentType) > -1):
-            eventProps = { ...profileV4AnalyticsEvents[eventName] };
-            break;
-        case (discovery_v1.indexOf(experimentType) > -1):
-            eventProps = { ...discoveryV1AnalyticsEvents[eventName] };
-            break;
-        case (discovery_v2.indexOf(experimentType) > -1):
-            eventProps = { ...discoveryV2AnalyticsEvents[eventName] };
-            break;
-        case (discovery_v3.indexOf(experimentType) > -1):
-            eventProps = { ...discoveryV3AnalyticsEvents[eventName] };
-            break;
-        case (discovery_v4.indexOf(experimentType) > -1):
-            eventProps = { ...discoveryV4AnalyticsEvents[eventName] };
-            break;
-        case (home_v1.indexOf(experimentType) > -1):
-            eventProps = { ...homeV1AnalyticsEvents[eventName] };
-            break;
-        case (home_v2.indexOf(experimentType) > -1):
-            eventProps = { ...homeV2AnalyticsEvents[eventName] };
-            break;
-        case (home_v3.indexOf(experimentType) > -1):
-            eventProps = { ...homeV3AnalyticsEvents[eventName] };
-            break;
-        case (home_v4.indexOf(experimentType) > -1):
-            eventProps = { ...homeV4AnalyticsEvents[eventName] };
-            break;
     }
     
     if (!eventProps.SCREEN_NAME) {
@@ -398,16 +296,16 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             setReferrerData(eventProps.SCREEN_NAME, eventProps.LOCATION, eventProps.ACTION, experimentType);
         }
 
-        if (eventProps.ACTION === 'LOGOUT') {
+        /*if (eventProps.ACTION === 'LOGOUT') {
             amplitude.getInstance().setUserId(null);
             amplitude.getInstance().regenerateDeviceId();
-        }
+        }*/
 
         eventProps = {
             ...eventProps,
             ...eventProperty,
             'DEVICE_TYPE': isMobile() ? 'MOBILE':'DESKTOP',
-            'WEBSITE_TYPE': 'PHOENIX',
+            'WEBSITE_TYPE': 'MARK8',
             'EXPERIMENT_ID': experimentType,
             'CONTENT_LANGUAGE': getCurrentLanguage().fullName.toUpperCase(),
             'SCREEN_LOCATION': eventProps.SCREEN_NAME + '_' + eventProps.LOCATION
@@ -419,7 +317,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventName !== 'VIEWED_RATEREV_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_READER') {
-            amplitude.getInstance().logEvent(eventName, eventProps);
+            // amplitude.getInstance().logEvent(eventName, eventProps);
         } else {
             console.log('SKIPPING EVENT');
         }

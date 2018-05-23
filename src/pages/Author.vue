@@ -65,9 +65,9 @@
                             </div>
 
                             <!-- Message Button -->
-                            <div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
+                            <!--<div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
                                 <i class="material-icons">message</i> __("chat_message")
-                            </div>
+                            </div>-->
                         </div>
                         <Spinner v-if="getAuthorDataLoadingState === 'LOADING'"></Spinner>
                         <div class="col-md-12 profile-bottom" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'">
