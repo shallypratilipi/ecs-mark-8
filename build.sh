@@ -1,6 +1,6 @@
 #!/bin/bash
 declare -a process_arr_1=("LANGUAGE=te npm run build &" "LANGUAGE=bn npm run build &" "LANGUAGE=gu npm run build &" "LANGUAGE=hi npm run build &" )
-                                                                                                                                                                                                                                                                                                                                declare -a process_arr_2=("LANGUAGE=kn npm run build &" "LANGUAGE=ml npm run build &" "LANGUAGE=mr npm run build &" "LANGUAGE=ta npm run build &" )
+declare -a process_arr_2=("LANGUAGE=kn npm run build &" "LANGUAGE=ml npm run build &" "LANGUAGE=mr npm run build &" "LANGUAGE=ta npm run build &" )
 
 #declare -a process_arr_1=("echo \" sachin 1\" " "echo \" sachin 2\" " "echo \" sachin 3\" ")
 #declare -a process_arr_2=("echo \" sachin 4 \" ")
