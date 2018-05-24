@@ -1,5 +1,5 @@
-#FROM 370531249777.dkr.ecr.ap-south-1.amazonaws.com/node:8.3.0
-FROM node:carbon
+FROM 370531249777.dkr.ecr.ap-south-1.amazonaws.com/node:8.3.0
+#FROM node:carbon
 
 
 # Install app dependencies
