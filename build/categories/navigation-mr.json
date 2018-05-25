@@ -180,6 +180,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/experience",
+                    "title": "अनुभव",
+                    "analyticsCategoryName": "experiences",
+                    "imageFileName": "experiences.jpg",
+                    "pratilipiListData": {
+                        "language": "MARATHI",
+                        "state": "PUBLISHED",
+                        "listName": "experience"
+                    }
+                },
+                {
                     "categoryUrl": "/bhavishya",
                     "title": "भविष्य",
                     "analyticsCategoryName": "astrology",
@@ -188,6 +199,17 @@
                         "language": "MARATHI",
                         "state": "PUBLISHED",
                         "listName": "bhavishya"
+                    }
+                },
+                {
+                    "categoryUrl": "/historical",
+                    "title": "ऐतिहासिक",
+                    "analyticsCategoryName": "historical",
+                    "imageFileName": "history.jpg",
+                    "pratilipiListData": {
+                        "language": "MARATHI",
+                        "state": "PUBLISHED",
+                        "listName": "historical"
                     }
                 }
             ]
@@ -265,8 +287,7 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "MARATHI",
-                        "blogId": 5683739602452480
+                        "language": "MARATHI"
                     }
                 },
                 {
@@ -275,8 +296,7 @@
                     "analyticsCategoryName": "author-interviews",
                     "imageFileName": "authorinterviews.jpg",
                     "pratilipiListData": {
-                        "language": "MARATHI",
-                        "blogId": 5197509039226880
+                        "language": "MARATHI"
                     }
                 }
             ]

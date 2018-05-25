@@ -221,8 +221,7 @@
                     "analyticsCategoryName": "author-interviews",
                     "imageFileName": "authorinterviews.jpg",
                     "pratilipiListData": {
-                        "language": "BENGALI",
-                        "blogId": 5197509039226880
+                        "language": "BENGALI"
                     }
                 },
                 {
@@ -231,8 +230,7 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "BENGALI",
-                        "blogId": 5683739602452480
+                        "language": "BENGALI"
                     }
                 }
             ]

@@ -229,6 +229,46 @@
             "title": "અવનવું",
             "categories": [
                 {
+                    "categoryUrl": "/videoseries/એક-મુલાકાત-સુપ્રસિદ્ધ-લેખકોના-ઇન્ટરવ્યૂ-g8dvfgql2n",
+                    "title": "એક મુલાકાત",
+                    "analyticsCategoryName": "video-series",
+                    "imageFileName": "mike.jpg",
+                    "pratilipiListData": {
+                        "language": "GUJARATI",
+                        "slug": "g8dvfgql2n"
+                    }
+                },
+                {
+                    "categoryUrl": "/videoseries/અભ્યાસ-ભાગ-૧-i110z6wj5e",
+                    "title": "અભ્યાસ ભાગ - ૧",
+                    "analyticsCategoryName": "video-series",
+                    "imageFileName": "writing_blue.jpg",
+                    "pratilipiListData": {
+                        "language": "GUJARATI",
+                        "slug": "i110z6wj5e"
+                    }
+                },
+                {
+                    "categoryUrl": "/videoseries/સર્જકને-સથવારે-અભ્યાસ-ભાગ-૨-0y8y1r3e1v",
+                    "title": "અભ્યાસ ભાગ - ૨",
+                    "analyticsCategoryName": "video-series",
+                    "imageFileName": "famous_guj_author.jpg",
+                    "pratilipiListData": {
+                        "language": "GUJARATI",
+                        "slug": "0y8y1r3e1v"
+                    }
+                },
+                {
+                    "categoryUrl": "/videoseries/સ્વરસૃષ્ટિ-audios-by-narrators-glz5cpvhkl",
+                    "title": "સ્વરસૃષ્ટિ",
+                    "analyticsCategoryName": "video-series",
+                    "imageFileName": "audio_stories_alt.jpg",
+                    "pratilipiListData": {
+                        "language": "GUJARATI",
+                        "slug": "glz5cpvhkl"
+                    }
+                },
+                {
                     "categoryUrl": "/vachakoni-top-pasand",
                     "title": "વાચકોની ટોપ પસંદ",
                     "analyticsCategoryName": "most-read",
@@ -273,14 +313,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/event/કાવ્ય-મહોત્સવ-–-૨૦૧૮-dl37bgjqmn",
-                    "title": "કાવ્ય મહોત્સવ – ૨૦૧૮",
-                    "analyticsCategoryName": "event-poems",
+                    "categoryUrl": "/event/હ્યુમન્સ-ઓફ-ગુજરાત-4ypndds2mp",
+                    "title": "લેખન સ્પર્ધા - હ્યુમન્સ ઓફ ગુજરાત",
+                    "analyticsCategoryName": "event-humans",
                     "imageFileName": "event_experiences.jpg",
                     "pratilipiListData": {
                         "language": "GUJARATI",
                         "state": "PUBLISHED",
-                        "eventId": 6900000000000060
+                        "eventId": 6900000000000067
                     }
                 },
                 {
@@ -309,8 +349,7 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "GUJARATI",
-                        "blogId": 5683739602452480
+                        "language": "GUJARATI"
                     }
                 },
                 {
@@ -319,8 +358,7 @@
                     "analyticsCategoryName": "author-interviews",
                     "imageFileName": "authorinterviews.jpg",
                     "pratilipiListData": {
-                        "language": "GUJARATI",
-                        "blogId": 5197509039226880
+                        "language": "GUJARATI"
                     }
                 }
             ]

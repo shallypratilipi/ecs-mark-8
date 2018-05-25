@@ -92,6 +92,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/women",
+                    "title": "பெண்மை போற்றுவோம்",
+                    "analyticsCategoryName": "women",
+                    "imageFileName": "women.jpg",
+                    "pratilipiListData": {
+                        "language": "TAMIL",
+                        "state": "PUBLISHED",
+                        "listName": "women"
+                    }
+                },
+                {
                     "categoryUrl": "/poems",
                     "title": "கவிதைகள்",
                     "analyticsCategoryName": "poetry",
@@ -178,6 +189,17 @@
                         "state": "PUBLISHED",
                         "listName": "history"
                     }
+                },
+                {
+                    "categoryUrl": "/letters",
+                    "title": "கடிதங்கள்",
+                    "analyticsCategoryName": "letters",
+                    "imageFileName": "letters.jpg",
+                    "pratilipiListData": {
+                        "language": "TAMIL",
+                        "state": "PUBLISHED",
+                        "listName": "letters"
+                    }
                 }
             ]
         },
@@ -185,14 +207,24 @@
             "title": "பிரபலமானவை",
             "categories": [
                 {
-                    "categoryUrl": "/event/அன்புள்ள-உயிரே-0pdtvy7dur",
-                    "title": "அன்புள்ள உயிரே",
-                    "analyticsCategoryName": "event-letters",
-                    "imageFileName": "letters.jpg",
+                    "categoryUrl": "/videoseries/விழுதுகள்-11w05sp58n",
+                    "title": "விழுதுகள்",
+                    "analyticsCategoryName": "video-series",
+                    "imageFileName": "authorinterviews.jpg",
+                    "pratilipiListData": {
+                        "language": "TAMIL",
+                        "slug": "11w05sp58n"
+                    }
+                },
+                {
+                    "categoryUrl": "/event/பாண்டவர்-பூமி-p4309a7ow0",
+                    "title": "பாண்டவர் பூமி",
+                    "analyticsCategoryName": "event-family",
+                    "imageFileName": "family.jpg",
                     "pratilipiListData": {
                         "language": "TAMIL",
                         "state": "PUBLISHED",
-                        "eventId": 6900000000000058
+                        "eventId": 6900000000000068
                     }
                 },
                 {
@@ -254,11 +286,14 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "TAMIL",
-                        "blogId": 5683739602452480
+                        "language": "TAMIL"
                     }
                 }
             ]
+        },
+        {
+            "title": "",
+            "categories": []
         }
     ]
 }

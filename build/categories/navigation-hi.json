@@ -278,19 +278,18 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "HINDI",
-                        "blogId": 5683739602452480
+                        "language": "HINDI"
                     }
                 },
                 {
-                    "categoryUrl": "/event/लिखे-जो-ख़त-तुझे-पत्रलेखन-स्पर्द्धा-cp26c520tl",
-                    "title": "लिखे जो ख़त तुझे...",
-                    "analyticsCategoryName": "event-letter-writing",
-                    "imageFileName": "letters.jpg",
+                    "categoryUrl": "/event/अगले-जनम-मोहे-बिटिया-ही-कीजो-gmtf6ga9w3",
+                    "title": "अगले जनम मोहे बिटिया ही कीजो",
+                    "analyticsCategoryName": "event-women",
+                    "imageFileName": "event_fiction.jpg",
                     "pratilipiListData": {
                         "language": "HINDI",
                         "state": "PUBLISHED",
-                        "eventId": 6900000000000052
+                        "eventId": 6900000000000064
                     }
                 },
                 {
@@ -308,8 +307,7 @@
                     "analyticsCategoryName": "author-interviews",
                     "imageFileName": "authorinterviews.jpg",
                     "pratilipiListData": {
-                        "language": "HINDI",
-                        "blogId": 5197509039226880
+                        "language": "HINDI"
                     }
                 }
             ]

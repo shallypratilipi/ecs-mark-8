@@ -59,6 +59,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/dhaaraavaahi",
+                    "title": "ಧಾರಾವಾಹಿ",
+                    "analyticsCategoryName": "serials",
+                    "imageFileName": "novels.jpg",
+                    "pratilipiListData": {
+                        "language": "KANNADA",
+                        "state": "PUBLISHED",
+                        "listName": "dhaaraavaahi"
+                    }
+                },
+                {
                     "categoryUrl": "/nonfiction",
                     "title": "ಲೇಖನಗಳು",
                     "analyticsCategoryName": "articles",
@@ -148,7 +159,7 @@
                 },
                 {
                     "categoryUrl": "/books",
-                    "title": "ಪುಸ್ತಕಗಳು",
+                    "title": "ಸಮಗ್ರ",
                     "analyticsCategoryName": "books",
                     "imageFileName": "event_generic3.jpg",
                     "pratilipiListData": {
@@ -163,14 +174,14 @@
             "title": "ಪ್ರಖ್ಯಾತ ಬರಹಗಳು",
             "categories": [
                 {
-                    "categoryUrl": "/event/ನಗು-ನಗುತಾ-ನಲೀ-ನಲಿ-ic59tqb4yv",
-                    "title": "ನಗು ನಗುತಾ ನಲೀ ನಲಿ...",
-                    "analyticsCategoryName": "event-comedy",
-                    "imageFileName": "event_generic5.jpg",
+                    "categoryUrl": "/event/ಅಮ್ಮಾ-ಎಂದರೆ-ಏನೋ-ಹರುಷವೂ-ofywlxf0ba",
+                    "title": "ಅಮ್ಮಾ ಎಂದರೆ ಏನೋ ಹರುಷವೂ",
+                    "analyticsCategoryName": "event-family",
+                    "imageFileName": "event_family.jpg",
                     "pratilipiListData": {
                         "language": "KANNADA",
                         "state": "PUBLISHED",
-                        "eventId": 6900000000000059
+                        "eventId": 6900000000000065
                     }
                 },
                 {
@@ -223,8 +234,7 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "KANNADA",
-                        "blogId": 5683739602452480
+                        "language": "KANNADA"
                     }
                 }
             ]

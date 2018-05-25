@@ -59,6 +59,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/family",
+                    "title": "అనుబంధాలు",
+                    "analyticsCategoryName": "family",
+                    "imageFileName": "family.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "family"
+                    }
+                },
+                {
                     "categoryUrl": "/children",
                     "title": "బాల సాహిత్యం",
                     "analyticsCategoryName": "children",
@@ -71,7 +82,7 @@
                 },
                 {
                     "categoryUrl": "/horror",
-                    "title": "హర్రర్",
+                    "title": "సస్పెన్స్ - హార్రర్",
                     "analyticsCategoryName": "horror",
                     "imageFileName": "horror.jpg",
                     "pratilipiListData": {
@@ -134,8 +145,34 @@
                         "state": "PUBLISHED",
                         "listName": "poems"
                     }
+                },
+                {
+                    "categoryUrl": "/letters",
+                    "title": "లేఖా సాహిత్యం",
+                    "analyticsCategoryName": "letters",
+                    "imageFileName": "letters.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "letters"
+                    }
+                },
+                {
+                    "categoryUrl": "/cooking",
+                    "title": "వంటిల్లు",
+                    "analyticsCategoryName": "cooking",
+                    "imageFileName": "cooking.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "cooking"
+                    }
                 }
             ]
+        },
+        {
+            "title": "",
+            "categories": []
         },
         {
             "title": "విషయసూచిక",
@@ -174,14 +211,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/event/క్షణ-క్షణం-ppw6n9pvbi",
-                    "title": "ప్రస్తుత పోటీ",
-                    "analyticsCategoryName": "event-horror-crime",
+                    "categoryUrl": "/event/హుమన్స్-అఫ్-తెలుగు-dlfgwy0ucj",
+                    "title": "హుమన్స్ అఫ్ తెలుగు",
+                    "analyticsCategoryName": "event-humans",
                     "imageFileName": "event_generic7.jpg",
                     "pratilipiListData": {
                         "language": "TELUGU",
                         "state": "PUBLISHED",
-                        "eventId": 6900000000000057
+                        "eventId": 6900000000000066
                     }
                 },
                 {
@@ -199,8 +236,7 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "TELUGU",
-                        "blogId": 5683739602452480
+                        "language": "TELUGU"
                     }
                 },
                 {
@@ -209,8 +245,7 @@
                     "analyticsCategoryName": "author-interviews",
                     "imageFileName": "authorinterviews.jpg",
                     "pratilipiListData": {
-                        "language": "TELUGU",
-                        "blogId": 5197509039226880
+                        "language": "TELUGU"
                     }
                 }
             ]

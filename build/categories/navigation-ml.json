@@ -70,14 +70,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/series",
-                    "title": "തുടര്‍ക്കഥകള്‍",
-                    "analyticsCategoryName": "series",
-                    "imageFileName": "series.jpg",
+                    "categoryUrl": "/family",
+                    "title": "ബന്ധങ്ങള്‍",
+                    "analyticsCategoryName": "family",
+                    "imageFileName": "family.jpg",
                     "pratilipiListData": {
                         "language": "MALAYALAM",
                         "state": "PUBLISHED",
-                        "listName": "series"
+                        "listName": "family"
                     }
                 },
                 {
@@ -89,28 +89,6 @@
                         "language": "MALAYALAM",
                         "state": "PUBLISHED",
                         "listName": "society"
-                    }
-                },
-                {
-                    "categoryUrl": "/memory",
-                    "title": "ഓര്‍മ്മക്കുറിപ്പുകള്‍",
-                    "analyticsCategoryName": "experiences",
-                    "imageFileName": "experiences.jpg",
-                    "pratilipiListData": {
-                        "language": "MALAYALAM",
-                        "state": "PUBLISHED",
-                        "listName": "memory"
-                    }
-                },
-                {
-                    "categoryUrl": "/letters",
-                    "title": "കത്തുകള്‍",
-                    "analyticsCategoryName": "letters",
-                    "imageFileName": "letters.jpg",
-                    "pratilipiListData": {
-                        "language": "MALAYALAM",
-                        "state": "PUBLISHED",
-                        "listName": "letters"
                     }
                 },
                 {
@@ -145,23 +123,45 @@
                         "state": "PUBLISHED",
                         "listName": "non-fiction"
                     }
+                },
+                {
+                    "categoryUrl": "/series",
+                    "title": "തുടര്‍ക്കഥകള്‍",
+                    "analyticsCategoryName": "series",
+                    "imageFileName": "series.jpg",
+                    "pratilipiListData": {
+                        "language": "MALAYALAM",
+                        "state": "PUBLISHED",
+                        "listName": "series"
+                    }
+                },
+                {
+                    "categoryUrl": "/memory",
+                    "title": "ഓര്‍മ്മക്കുറിപ്പുകള്‍",
+                    "analyticsCategoryName": "experiences",
+                    "imageFileName": "experiences.jpg",
+                    "pratilipiListData": {
+                        "language": "MALAYALAM",
+                        "state": "PUBLISHED",
+                        "listName": "memory"
+                    }
+                },
+                {
+                    "categoryUrl": "/letters",
+                    "title": "കത്തുകള്‍",
+                    "analyticsCategoryName": "letters",
+                    "imageFileName": "letters.jpg",
+                    "pratilipiListData": {
+                        "language": "MALAYALAM",
+                        "state": "PUBLISHED",
+                        "listName": "letters"
+                    }
                 }
             ]
         },
         {
             "title": "പ്രസിദ്ധമായവ",
             "categories": [
-                {
-                    "categoryUrl": "/event/എഴുത്തുപെട്ടി-2-077ojsrgec",
-                    "title": "എഴുത്തുപെട്ടി - 2",
-                    "analyticsCategoryName": "event-letters",
-                    "imageFileName": "letters.jpg",
-                    "pratilipiListData": {
-                        "language": "MALAYALAM",
-                        "state": "PUBLISHED",
-                        "eventId": 6900000000000061
-                    }
-                },
                 {
                     "categoryUrl": "/most-read",
                     "title": "നിര്‍ദ്ദേശിക്കപ്പെട്ടവ",
@@ -218,6 +218,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/event/സ്നേഹ-വീട്-b1figde0f3",
+                    "title": "സ്നേഹ വീട്",
+                    "analyticsCategoryName": "event-family",
+                    "imageFileName": "family.jpg",
+                    "pratilipiListData": {
+                        "language": "MALAYALAM",
+                        "state": "PUBLISHED",
+                        "eventId": 6900000000000069
+                    }
+                },
+                {
                     "categoryUrl": "/event",
                     "title": "മത്സരങ്ങള്‍",
                     "analyticsCategoryName": "online-events",
@@ -232,8 +243,7 @@
                     "analyticsCategoryName": "blogs",
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
-                        "language": "MALAYALAM",
-                        "blogId": 5683739602452480
+                        "language": "MALAYALAM"
                     }
                 }
             ]
