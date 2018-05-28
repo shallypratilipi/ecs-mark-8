@@ -323,6 +323,8 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             console.log('SKIPPING EVENT');
         }
 
+        ga( 'send', 'event', eventProps.LOCATION, eventProps.ACTION, eventProps.SCREEN_NAME );
+
         if (!window.fbApiInit) {
             setTimeout(() => {
                 FB.AppEvents.logEvent(eventName, null, eventProperty)
