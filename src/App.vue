@@ -7,6 +7,7 @@
 <script>
     import '@/static_scripts/google_analytics.js'
     import '@/static_scripts/facebook_analytics.js'
+    import '@/static_scripts/amplitude_analytics.js'
     import mixins from '@/mixins';
     import { mapGetters, mapActions } from 'vuex'
 
@@ -98,7 +99,7 @@
                         that.setAnalyticsUserProperty('USER_ID', "0");
                         that.setAnalyticsUserProperty('IS_LOGGED_IN', "NO");
                     }
-                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD');
+                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD_BRIDGE');
                     that.setAnalyticsUserProperty('CONTENT_LANGUAGE', that.getCurrentLanguage().fullName.toUpperCase());
                 }
 
@@ -129,7 +130,7 @@
                         that.setAnalyticsUserProperty('IS_LOGGED_IN', "NO");
                     }
 
-                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD');
+                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD_BRIDGE');
                     that.setAnalyticsUserProperty('CONTENT_LANGUAGE', that.getCurrentLanguage().fullName.toUpperCase());
                 };
             }

@@ -203,16 +203,16 @@ export function validateUsername(name) {
 }
 
 export function setAnalyticsUserProperty(propertyName, propertyValue) {
-    /*const identify = new amplitude.Identify();
+    const identify = new amplitude.Identify();
     identify.set(propertyName, propertyValue);
-    amplitude.getInstance().identify(identify);*/
+    amplitude.getInstance().identify(identify);
 
     const propertyObject = {};
     propertyObject[propertyName] = String(propertyValue)
 
-    /*if (propertyName === 'USER_ID' && propertyValue != "0" ) {
+    if (propertyName === 'USER_ID' && propertyValue != "0" ) {
         amplitude.getInstance().setUserId(propertyValue);
-    }*/
+    }
 
     if (!window.FB) {
         setTimeout(() => {
@@ -296,10 +296,10 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             setReferrerData(eventProps.SCREEN_NAME, eventProps.LOCATION, eventProps.ACTION, experimentType);
         }
 
-        /*if (eventProps.ACTION === 'LOGOUT') {
+        if (eventProps.ACTION === 'LOGOUT') {
             amplitude.getInstance().setUserId(null);
             amplitude.getInstance().regenerateDeviceId();
-        }*/
+        }
 
         eventProps = {
             ...eventProps,
@@ -307,6 +307,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             'DEVICE_TYPE': isMobile() ? 'MOBILE':'DESKTOP',
             'WEBSITE_TYPE': 'MARK8',
             'EXPERIMENT_ID': experimentType,
+            'ENVIRONMENT': 'PROD_BRIDGE',
             'CONTENT_LANGUAGE': getCurrentLanguage().fullName.toUpperCase(),
             'SCREEN_LOCATION': eventProps.SCREEN_NAME + '_' + eventProps.LOCATION
         }
@@ -317,7 +318,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventName !== 'VIEWED_RATEREV_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_READER') {
-            // amplitude.getInstance().logEvent(eventName, eventProps);
+            amplitude.getInstance().logEvent(eventName, eventProps);
         } else {
             console.log('SKIPPING EVENT');
         }
