@@ -334,5 +334,21 @@ export default new Router({
                 });
             }
         }
-    ]
-})
+    ],
+    scrollBehavior: () => ({ y: 0 })
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title
+    next()
+});
+
+router.afterEach((to, from) => {
+    ga('set', 'page', to.path + window.location.search);
+    // ga( 'set', 'dimension1', appViewModel.user.userId() == null ? 0 : appViewModel.user.userId() );
+    ga('set', 'dimension2', process.env.GA_WEBSITE);
+    ga('set', 'dimension3', process.env.GA_WEBSITE_MODE);
+    ga('set', 'dimension4', process.env.GA_WEBSITE_VERSION);
+    ga('send', 'pageview');
+});
+
