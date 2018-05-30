@@ -23,6 +23,8 @@ import StaticComponent from '@/pages/Static.vue'
 import PasswordResetPageComponent from '@/pages/PasswordReset.vue'
 
 
+import { getCookie } from '@/mixins/methods'
+
 import DataAccessor from '@/utils/DataAccessor'
 
 Vue.use(Router)
@@ -45,7 +47,7 @@ Vue.use(Router)
 // todo create page SEO
 // todo add login checks in route otherwise it will render login first then actual page
 
-export default new Router({
+var router = new Router({
     mode: 'history',
     routes: [
         {
@@ -335,17 +337,26 @@ export default new Router({
             }
         }
     ],
-    scrollBehavior: () => ({ y: 0 }),
-    beforeEach:((to, from, next) => {
-        document.title = to.meta.title
-    }),
-    afterEach: ((to, from) => {
-        ga('set', 'page', to.path + window.location.search);
-        // ga( 'set', 'dimension1', appViewModel.user.userId() == null ? 0 : appViewModel.user.userId() );
-        ga('set', 'dimension2', process.env.GA_WEBSITE);
-        ga('set', 'dimension3', process.env.GA_WEBSITE_MODE);
-        ga('set', 'dimension4', process.env.GA_WEBSITE_VERSION);
-        ga('send', 'pageview');
-    })
+    scrollBehavior: () => ({ y: 0 })
 });
 
+
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title;
+    console.log(ga);
+    next();
+});
+
+router.afterEach((to, from)=> {
+    console.log("after");
+    ga('set', 'page', to.path + window.location.search);
+    // ga( 'set', 'dimension1', appViewModel.user.userId() == null ? 0 : appViewModel.user.userId() );
+    console.log(process.env.GA_WEBSITE + " - " +  process.env.GA_WEBSITE_MODE + " - " + process.env.GA_WEBSITE_VERSION + " + " + (to.path + window.location.search));
+    ga('set', 'dimension2', process.env.GA_WEBSITE);
+    ga('set', 'dimension3', process.env.GA_WEBSITE_MODE);
+    ga('set', 'dimension4', process.env.GA_WEBSITE_VERSION);
+    ga('send', 'pageview');
+});
+
+export default router;
