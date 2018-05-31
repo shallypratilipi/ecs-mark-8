@@ -5,9 +5,9 @@ import { httpUtil, formatParams } from './HttpUtil';
 const API_PREFIX = "/api";
 
 /* Search */
-const SEARCH_PREFIX = "/search";
+const SEARCH_PREFIX = "/search/v2.0";
 const SEARCH_TRENDING_API = "/trending_search";
-const SEARCH_CORE_API = "/search/v2.0/search";
+const SEARCH_CORE_API = "/search";
 
 /* Recommendation Api */
 const RECOMMENDATION_PREFIX = "/recommendations/v2.1";
@@ -784,7 +784,7 @@ export default {
 
     getInitialSearchResults: function( searchQuery, language, aCallBack ) {
         if( searchQuery == null ) return;
-        httpUtil.get( API_PREFIX + SEARCH_CORE_API,
+        httpUtil.get( API_PREFIX +  SEARCH_PREFIX + SEARCH_CORE_API,
             null,
             { "language": language, "text": searchQuery.trim() },
             function( response, status ) { processGetResponse( response, status, aCallBack ) } );
