@@ -455,7 +455,7 @@
     "pratilipi_review_hide_comments": "टिप्पणी छुपायें",
     "pratilipi_no_reviews": "रचना पर कोई टिप्पणी नहीं है",
     "rating_be_first_one": "अपनी टिप्पणी दर्ज कर आप प्रथम समीक्षक बन सकते हैं।",
-    "author_readby_count": "$read_count लोगों ने पढ़ा",
+    "author_readby_count": "{{ getAuthorData.totalReadCount }} लोगों ने पढ़ा",
     "settings_profile_settings": "प्रोफाइल सेटिंग",
     "settings_notification_settings": "नोटीफिकेशन सेटिंग",
     "settings_update_password": "पासवर्ड अपडेट",

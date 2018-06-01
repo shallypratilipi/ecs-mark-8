@@ -454,7 +454,7 @@
     "pratilipi_review_hide_comments": "ટિપ્પણી છુપાવો",
     "pratilipi_no_reviews": "રચના પર કોઈ પ્રતિભાવ નથી",
     "rating_be_first_one": "આપ પ્રથમ સમીક્ષક બની ને લેખકનો ઉત્સાહ વધારી શકો છો.",
-    "author_readby_count": "$read_count લોકોએ વાંચ્યું.",
+    "author_readby_count": "{{ getAuthorData.totalReadCount }} લોકોએ વાંચ્યું.",
     "settings_profile_settings": "પ્રોફાઈલ સેટિંગ",
     "settings_notification_settings": "નોટિફિકેશન સેટિંગ",
     "settings_update_password": "પાસવર્ડ અપડેટ",

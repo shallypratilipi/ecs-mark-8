@@ -454,7 +454,7 @@
     "pratilipi_review_hide_comments": "মন্তব্য সরিয়ে ফেলুন",
     "pratilipi_no_reviews": "রচনাতে কোন মন্তব্য নেই",
     "rating_be_first_one": "আপনার পূর্বাপর বিবেচনা লিপিবদ্ধ করে আপনি প্রথম সমীক্ষক হতে পারেন।",
-    "author_readby_count": "$read_count জন পড়েছেন",
+    "author_readby_count": "{{ getAuthorData.totalReadCount }} জন পড়েছেন",
     "settings_profile_settings": "প্রোফাইল সেটিং",
     "settings_notification_settings": "নোটিফিকেশন সেটিং",
     "settings_update_password": "পাসওয়ার্ড আপডেট",

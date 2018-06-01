@@ -454,7 +454,7 @@
     "pratilipi_review_hide_comments": "കമന്റുകള്‍ ഹൈഡ് ചെയ്യൂ",
     "pratilipi_no_reviews": "ഈ രചനയ്ക്ക് ഇത് വരെ റിവ്യൂസ് ഒന്നും ഇല്ല",
     "rating_be_first_one": "റിവ്യൂ ചെയ്യുന്ന ആദ്യത്തെ ആളാവൂ",
-    "author_readby_count": "വായിച്ചവര്‍ $read_count പേര്‍",
+    "author_readby_count": "വായിച്ചവര്‍ {{ getAuthorData.totalReadCount }} പേര്‍",
     "settings_profile_settings": "പ്രൊഫൈല്‍ സെറ്റിംഗ്സ്",
     "settings_notification_settings": "നോട്ടിഫിക്കേഷന്‍ സെറ്റിംഗ്സ്",
     "settings_update_password": "പാസ്സ്‌വേര്‍ഡ്‌ അപ്ഡേറ്റ് ചെയ്യൂ",

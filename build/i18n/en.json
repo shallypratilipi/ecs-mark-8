@@ -455,7 +455,7 @@
     "pratilipi_review_hide_comments": "Hide Comments",
     "pratilipi_no_reviews": "Sorry! No Reviews found for this content!",
     "rating_be_first_one": "Be the first one to rate it!",
-    "author_readby_count": "Read by $read_count people",
+    "author_readby_count": "Read by {{ getAuthorData.totalReadCount }} people",
     "settings_profile_settings": "Profile Settings",
     "settings_notification_settings": "Notification Settings",
     "settings_update_password": "Update Password",

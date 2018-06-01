@@ -454,7 +454,7 @@
     "pratilipi_review_hide_comments": "ಕಾಮೆಂಟ್ಸ್ ಹೈಡ್ ಮಾಡಿ",
     "pratilipi_no_reviews": "ಈ ಬರಹಕ್ಕೆ ಯಾವ ಪ್ರತಿಕ್ರಿಯೆಗಳೂ ಇಲ್ಲ",
     "rating_be_first_one": "ಪ್ರತಿಕ್ರಿಯೆ ಬರೆಯಲು ಮೊದಲಿಗರಾಗಿ",
-    "author_readby_count": "$read_count ಜನರಿಂದ ಓದಲ್ಪಟ್ಟಿದ್ದಾರೆ",
+    "author_readby_count": "{{ getAuthorData.totalReadCount }} ಜನರಿಂದ ಓದಲ್ಪಟ್ಟಿದ್ದಾರೆ",
     "settings_profile_settings": "ಪ್ರೊಫೈಲ್ ಸೆಟ್ಟಿಂಗ್ಸ್",
     "settings_notification_settings": "ನೋಟಿಫಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್ಸ್",
     "settings_update_password": "ಅಪ್ಡೇಟ್ ಪಾಸ್ವರ್ಡ್",
