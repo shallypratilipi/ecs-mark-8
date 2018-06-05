@@ -75,8 +75,10 @@
                                 <a href="#" v-if="getUserDetails.userId === getAuthorData.user.userId" v-on:click="tabchange" class="active" data-tab="library">__("library")</a>
                                 <a href="#" id="menu-published" v-on:click="tabchange" data-tab="published"><span>{{ getAuthorData.contentPublished }}</span>__("author_published_contents")</a>
                                 <a href="#" v-on:click="tabchange" data-tab="followers"><span>{{ getAuthorData.followCount }}</span>__("author_followers")</a>
-                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }}</span>__("author_following")</a>
+                                <!-- look here -->
+                                <a href="#" v-on:click="tabchange" data-tab="following"><span>               {{ getAuthorFollowing.length }} </span>__("author_following")</a>
                             </div>
+                            
                             <div class="bottom-contents">
                                 <div class="list published-contents" id="published">
                                     <PratilipiComponent
@@ -110,7 +112,7 @@
                                     :to="{ name: 'Library_Page' }"
                                     v-if="getLibraryListLoadingState === 'LOADING_SUCCESS' && getLibraryList.length !== 0"
                                     class="view_more">
-                                        <div class="view_more_card">
+                                        <div class="view_more_card" v-if="getLibraryListTotalCount>10" >
                                             <i class="material-icons">keyboard_arrow_right</i>
                                             <span>__("view_more")</span>
                                         </div>
@@ -188,7 +190,8 @@ export default {
             'getAuthorFollowingCursor',
             'getAuthorFollowersCursor',
             'getProfileImageLoadingState',
-            'getCoverImageLoadingState'
+            'getCoverImageLoadingState',
+            'getLibraryListTotalCount'
         ]),
         ...mapState({
             publishedContents: state => state.authorpage.published_contents.data,
@@ -771,7 +774,7 @@ export default {
             display: inline-block;
             vertical-align: text-bottom;
 			.view_more_card {
-				width: 260px;
+				width: 294px;
 				background: #fff;
 				border: 1px solid #e9e9e9;
 				height: 233px;
@@ -779,6 +782,10 @@ export default {
 				color: #d0021b;
                 text-align: center;
                 display: inline-block;
+                  @media screen and (max-width: 760px) {
+                width: 255px;
+
+                }
 				i {
 					height: 190px;
 					line-height: 190px;

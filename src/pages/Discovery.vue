@@ -75,6 +75,7 @@ export default {
 .discovery-page {
     margin-top: 85px;
     min-height: 700px;
+    padding-left: 0px;
     @media screen and (max-width: 992px ) {
         margin-top: 65px;
     }
@@ -90,7 +91,8 @@ export default {
         }
     }
     .category-list {
-        text-align: left;
+        text-align: justify;
+        margin-left: 50px;
         @media screen and (max-width: 992px ) {
             text-align: center;
         }

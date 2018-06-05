@@ -30,7 +30,8 @@
                     <div class="review-box">
                         <form>
                             <div class="form-group">
-                                <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea>
+                               <!--  <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
+                                <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue"  placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
                             <button type="button" class="btn btn-primary" :disabled="newReview === '' || !newReview" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId })">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
@@ -51,7 +52,8 @@
                     <div class="review-box">
                         <form>
                             <div class="form-group">
-                                <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea>
+                                <!-- <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
+                                <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue"  placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
                             <button type="button" :disabled="newReview === '' || !newReview" class="btn btn-primary" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId })">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
@@ -67,6 +69,8 @@ import { mapGetters, mapActions } from 'vuex';
 import inViewport from 'vue-in-viewport-mixin';
 import mixins from '@/mixins'
 import Spinner from '@/components/Spinner.vue';
+import TranslatingInputTextArea from '@/components/TranslatingInputTextArea.vue';
+
 
 export default {
     mixins: [
@@ -110,6 +114,9 @@ export default {
         ])
     },
     methods: {
+           updatePrefilledValue(value) {
+            this.newReview = value;
+        },
         ...mapActions('reviews', [
             'setPratilipiRating',
             'saveOrUpdateReview',
@@ -208,6 +215,9 @@ export default {
                 
             }
         }
+    },
+     components: {
+        TranslatingInputTextArea
     }
 }
 

@@ -435,6 +435,9 @@ export default {
 
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
+            $(".container-fluid").css({"background-color": "white",});
+            $(".comment-box").css({"background-color": "#f8f8f8",});
+
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
@@ -452,6 +455,9 @@ export default {
 
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-black");
+            $(".container-fluid").css({"background-color": "black",});
+            $(".comment-box").css({"background-color": "black",});
+
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
@@ -469,6 +475,11 @@ export default {
 
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-yellow");
+
+            $(".container-fluid").css({"background-color": "#F4ECD8",});
+            $(".comment-box").css({"background-color": "#f8f8f8",});
+               
+            
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {

@@ -53,7 +53,10 @@ var router = new Router({
         {
             path: '/',
             name: 'Home',
-            component: Home
+            component: Home,
+             meta: {
+                'title': '__("home_page_title") | __("pratilipi")'
+            }
         }, {
             path: '/search',
             name: 'Search_Page',
