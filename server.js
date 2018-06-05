@@ -192,10 +192,10 @@ app.get( '/*', (req, res, next) => {
     console.log('BUCKET ID: ', bucketId);
     const numberOfBucketsToShowProduct = Math.floor((PRODUCT_PERCENTAGE / 100) * totalGrowthBuckets);
     // todo uncomment to start growth stack & <10
-    if (Number(bucketId) < 20 || Number(bucketId) > 60) {
-        next();
-        return
-    }
+    // if (Number(bucketId) < 20 || Number(bucketId) > 60) {
+    //     next();
+    //     return
+    // }
 
     var website = _getWebsite( req.headers.host );
     if (fs.existsSync(__dirname + `/dist/${website.displayLanguage.code}${req.path}`)) {

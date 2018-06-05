@@ -81,6 +81,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/women",
+                    "title": "নারী বিষয়ক কাহিনী",
+                    "analyticsCategoryName": "women",
+                    "imageFileName": "women.jpg",
+                    "pratilipiListData": {
+                        "language": "BENGALI",
+                        "state": "PUBLISHED",
+                        "listName": "women"
+                    }
+                },
+                {
                     "categoryUrl": "/poetry",
                     "title": "কাব্য",
                     "analyticsCategoryName": "poetry",

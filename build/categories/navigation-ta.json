@@ -27,7 +27,7 @@
                 },
                 {
                     "categoryUrl": "/horror",
-                    "title": "மர்மம் / திகில்",
+                    "title": "மர்மம்",
                     "analyticsCategoryName": "horror",
                     "imageFileName": "horror.jpg",
                     "pratilipiListData": {
@@ -38,7 +38,7 @@
                 },
                 {
                     "categoryUrl": "/family",
-                    "title": "இல்லறம்  / உறவு",
+                    "title": "குடும்பம்",
                     "analyticsCategoryName": "family",
                     "imageFileName": "family.jpg",
                     "pratilipiListData": {

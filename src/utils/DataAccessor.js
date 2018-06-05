@@ -5,7 +5,7 @@ import { httpUtil, formatParams } from './HttpUtil';
 const API_PREFIX = "/api";
 
 /* Search */
-const SEARCH_PREFIX = "/search";
+const SEARCH_PREFIX = "/search/v2.0";
 const SEARCH_TRENDING_API = "/trending_search";
 const SEARCH_CORE_API = "/search";
 
@@ -741,7 +741,7 @@ export default {
         console.log(authorId);
         if (formData == null) return;
         if (authorId == null) return;
-        
+
         httpUtil.postMultipart(API_PREFIX + '/author/cover?authorId=' + authorId,
             null,
             formData,
@@ -753,7 +753,7 @@ export default {
         console.log(authorId);
         if (formData == null) return;
         if (authorId == null) return;
-        
+
         httpUtil.postMultipart(API_PREFIX + '/author/image?authorId=' + authorId,
             null,
             formData,
@@ -765,7 +765,10 @@ export default {
         console.log(pratilipiId);
         if (formData == null) return;
         if (pratilipiId == null) return;
-        
+
+
+
+
         httpUtil.postMultipart(API_PREFIX + '/pratilipi/cover?pratilipiId=' + pratilipiId,
             null,
             formData,
@@ -781,7 +784,7 @@ export default {
 
     getInitialSearchResults: function( searchQuery, language, aCallBack ) {
         if( searchQuery == null ) return;
-        httpUtil.get( API_PREFIX + SEARCH_PREFIX + SEARCH_CORE_API,
+        httpUtil.get( API_PREFIX +  SEARCH_PREFIX + SEARCH_CORE_API,
             null,
             { "language": language, "text": searchQuery.trim() },
             function( response, status ) { processGetResponse( response, status, aCallBack ) } );
@@ -789,7 +792,7 @@ export default {
 
     getPratilipiSearchResults: function( searchQuery, cursor, resultCount, language, aCallBack ) {
         if( searchQuery == null || cursor == null ) return;
-        httpUtil.get( API_PREFIX + SEARCH_PREFIX + SEARCH_CORE_API,
+        httpUtil.get( API_PREFIX + SEARCH_CORE_API,
             null,
             { "language": language,
                 "text": searchQuery.trim(),
