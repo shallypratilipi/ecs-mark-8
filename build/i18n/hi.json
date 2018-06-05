@@ -553,5 +553,7 @@
     "chat_delete_msg": "क्या आप सभी मैसेज डिलीट करना चाहते हैं?",
     "chat_textbox_placeholder": "यहाँ लिखें...",
     "chat_no_msgs": "आपके पास कोई भी मैसेज नहीं है",
-    "chat_no_unread_msgs": "आपके पास बिना पढ़ा हुआ कोई मैसेज नहीं है"
+    "chat_no_unread_msgs": "आपके पास बिना पढ़ा हुआ कोई मैसेज नहीं है",
+    "chat_yesterday": "कल",
+    "chat_today": "आज"
 }

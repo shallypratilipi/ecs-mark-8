@@ -2,7 +2,7 @@ import { httpUtil, formatParams } from './HttpUtil';
 // import Raven from 'raven-js';
 
 
-const API_PREFIX = "/api";
+const API_PREFIX = "https://gamma.pratilipi.com/api";
 
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";

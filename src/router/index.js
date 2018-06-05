@@ -20,6 +20,8 @@ import InterviewsPageComponent from '@/pages/Interviews.vue'
 import InterviewPageComponent from '@/pages/Interview.vue'
 import LibraryPageComponent from '@/pages/Library.vue'
 import StaticComponent from '@/pages/Static.vue'
+import MessagesComponent from '@/pages/Messages.vue'
+import MessageUserComponent from '@/pages/MessageUser.vue'
 import PasswordResetPageComponent from '@/pages/PasswordReset.vue'
 
 
@@ -266,6 +268,22 @@ var router = new Router({
                 next('login#forgot-pass')
             }
         }, {
+            path: '/messages',
+            name: 'Messages_Page',
+            component: MessagesComponent,
+            meta: {
+                'title': '__("chat_messages") | __("pratilipi")',
+                'store': 'messages'
+            }
+        }, {
+            path: '/messages/:channel_id',
+            name: 'MessageUser_Page',
+            component: MessageUserComponent,
+            meta: {
+                'title': 'Messages | __("pratilipi")',
+                'store': 'messageuser'
+            }
+        }, {
             path: '/:list_page_url',
             name: 'List_Page',
             component: ListPageComponent,
@@ -276,7 +294,7 @@ var router = new Router({
             },
             beforeEnter: (to, from, next) => {
                 console.log(to);
-            
+
                 const pathToGo = to.path;
                 DataAccessor.getPageType(pathToGo, (response) => {
                     if (response.status === 200) {

@@ -75,10 +75,8 @@
                                 <a href="#" v-if="getUserDetails.userId === getAuthorData.user.userId" v-on:click="tabchange" class="active" data-tab="library">__("library")</a>
                                 <a href="#" id="menu-published" v-on:click="tabchange" data-tab="published"><span>{{ getAuthorData.contentPublished }}</span>__("author_published_contents")</a>
                                 <a href="#" v-on:click="tabchange" data-tab="followers"><span>{{ getAuthorData.followCount }}</span>__("author_followers")</a>
-                                <!-- look here -->
-                                <a href="#" v-on:click="tabchange" data-tab="following"><span>               {{ getAuthorFollowing.length }} </span>__("author_following")</a>
+                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }}</span>__("author_following")</a>
                             </div>
-                            
                             <div class="bottom-contents">
                                 <div class="list published-contents" id="published">
                                     <PratilipiComponent
@@ -191,7 +189,9 @@ export default {
             'getAuthorFollowersCursor',
             'getProfileImageLoadingState',
             'getCoverImageLoadingState',
-            'getLibraryListTotalCount'
+            'getLibraryListTotalCount',
+            'getRouteToMessageUserState'
+
         ]),
         ...mapState({
             publishedContents: state => state.authorpage.published_contents.data,
@@ -323,7 +323,17 @@ export default {
         },
 
         messageUser() {
-            this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            this.triggerAnanlyticsEvent('STARTCHAT_USERM_USER', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'RECEIVER_ID': this.getAuthorData.authorId
+            });
+
+            if (this.getUserDetails.isGuest) {
+                this.setAfterLoginAction({ action: `${this.$route.meta.store}/triggerRouteToMessageUser`, data: true });
+                this.openLoginModal(this.$route.meta.store, 'STARTCHAT', 'USER_USERM');
+            } else {
+                this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            }
         },
 
         openShareModal() {
@@ -371,6 +381,12 @@ export default {
         }
     },
     watch: {
+        'getRouteToMessageUserState'(state) {
+            if (state) {
+                this.triggerRouteToMessageUser(false);
+                this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            }
+        },
         'getAuthorData.authorId'(newValue) {
 
             if (newValue) {
@@ -782,7 +798,7 @@ export default {
 				color: #d0021b;
                 text-align: center;
                 display: inline-block;
-                  @media screen and (max-width: 760px) {
+                @media screen and (max-width: 760px) {
                 width: 255px;
 
                 }

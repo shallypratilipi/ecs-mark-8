@@ -552,5 +552,7 @@
     "chat_delete_msg": "మీరు అన్ని సందేశాలను తొలగించాలనుకుంటున్నారా?",
     "chat_textbox_placeholder": "ఇక్కడ వ్రాయండి...",
     "chat_no_msgs": "మీకు ఏ సందేశాలు లేవు",
-    "chat_no_unread_msgs": "మీకు చదవని సందేశాలు లేవు"
+    "chat_no_unread_msgs": "మీకు చదవని సందేశాలు లేవు",
+    "chat_yesterday": "నిన్న",
+    "chat_today": "నేడు"
 }

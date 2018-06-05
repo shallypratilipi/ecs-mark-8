@@ -535,7 +535,6 @@
     "login_failed": "লগ ইন অসফল,অনুগ্রহ করে পুনরায় প্রচেষ্টা করুন",
     "signup_failed": "সাইন আপ হয়নি,অনুগ্রহ করে আবার চেষ্টা করুন",
     "name_required": "নাম বাধ্যতামূলক",
-    "reader_read_in_app_helper_text": "অ্যাপে পড়ুন",
     "read_popular_stories": "জনপ্রিয় গল্পগুলি পড়ুন",
     "see_more_categories": "আরো বিভাগ দেখুন",
 
@@ -552,5 +551,7 @@
     "chat_delete_msg": "আপনি কি সব মেসেজ ডিলিট করতে চান?",
     "chat_textbox_placeholder": "এখানে লিখুন...",
     "chat_no_msgs": "আপনার কাছে কোন মেসেজ নেই",
-    "chat_no_unread_msgs": "আপনার কাছেে অপঠিত কোন মেসেজ নেই"
+    "chat_no_unread_msgs": "আপনার কাছেে অপঠিত কোন মেসেজ নেই",
+    "chat_yesterday": "গতকাল",
+    "chat_today": "আজ"
 }

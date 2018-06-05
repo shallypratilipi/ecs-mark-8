@@ -17,7 +17,7 @@ export default {
     //         return total + product.price * product.quantity
     //     }, 0)
     // }
-    
+
     getAuthorData: state => state.author.data,
     getAuthorDataLoadingState: state => state.author.loading_state,
 
@@ -37,7 +37,10 @@ export default {
     getAuthorFollowers: state => state.followers.data,
     getAuthorFollowersLoadingState: state => state.followers.loading_state,
     getAuthorFollowersCursor: state => state.followers.cursor,
-    
+
     getCoverImageLoadingState: state => state.author.cover_image_upload_state,
     getProfileImageLoadingState: state => state.author.profile_image_upload_state,
+
+    getRouteToMessageUserState: state => state.route_to_message_user
+
 }

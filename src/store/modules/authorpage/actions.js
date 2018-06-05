@@ -6,9 +6,9 @@ export default {
         commit('setPublishedContentsLoadingTrue');
         DataAccessor.getPratilipiListByAuthor(authorId, 'PUBLISHED', null, null, resultCount, (data) => {
             if (data.status === 200) {
-                commit('setPublishedContentsLoadingSuccess', data.response);    
+                commit('setPublishedContentsLoadingSuccess', data.response);
             } else {
-                commit('setPublishedContentsLoadingError');    
+                commit('setPublishedContentsLoadingError');
             }
         })
     },
@@ -21,7 +21,7 @@ export default {
             } else {
                 commit('setPublishedContentsDynamicLoadingError');
             }
-        });  
+        });
     },
 
     fetchAuthorDetails({ commit, state }, authorSlug) {
@@ -32,51 +32,51 @@ export default {
             } else {
                 commit('setAuthorDataLoadingError');
             }
-        });    
+        });
     },
 
     fetchInitialAuthorFollowingUsers({ commit, state }, { userId, resultCount }) {
         commit('setInitialAuthorFollowingDataLoadingTrue');
         DataAccessor.getUserFollowing(userId, null, null, resultCount, (data) => {
             if (data.status === 200) {
-                commit('setInitialAuthorFollowingDataLoadingSuccess', data.response);    
+                commit('setInitialAuthorFollowingDataLoadingSuccess', data.response);
             } else {
-                commit('setInitialAuthorFollowingDataLoadingError');    
+                commit('setInitialAuthorFollowingDataLoadingError');
             }
-        });    
+        });
     },
 
     fetchMoreAuthorFollowingUsers({ commit, state }, { userId, resultCount }) {
         commit('setMoreAuthorFollowingDataLoadingTrue');
         DataAccessor.getUserFollowing(userId, state.following.cursor, null, resultCount, (data) => {
             if (data.status === 200) {
-                commit('setMoreAuthorFollowingDataLoadingSuccess', data.response);    
+                commit('setMoreAuthorFollowingDataLoadingSuccess', data.response);
             } else {
-                commit('setMoreAuthorFollowingDataLoadingError');    
+                commit('setMoreAuthorFollowingDataLoadingError');
             }
-        });    
+        });
     },
 
     fetchInitialAuthorFollowerUsers({ commit, state }, { authorId, resultCount }) {
         commit('setInitialAuthorFollowersDataTrue');
         DataAccessor.getAuthorFollowers(authorId, null, null, resultCount, (data) => {
             if (data.status === 200) {
-                commit('setInitialAuthorFollowersDataSuccess', data.response);    
+                commit('setInitialAuthorFollowersDataSuccess', data.response);
             } else {
-                commit('setInitialAuthorFollowersDataError');    
+                commit('setInitialAuthorFollowersDataError');
             }
-        });    
+        });
     },
 
     fetchMoreAuthorFollowerUsers({ commit, state }, { authorId, resultCount }) {
         commit('setMoreAuthorFollowersDataTrue');
         DataAccessor.getAuthorFollowers(authorId, state.followers.cursor, null, resultCount, (data) => {
             if (data.status === 200) {
-                commit('setMoreAuthorFollowersDataSuccess', data.response);    
+                commit('setMoreAuthorFollowersDataSuccess', data.response);
             } else {
-                commit('setMoreAuthorFollowersDataError');    
+                commit('setMoreAuthorFollowersDataError');
             }
-        });    
+        });
     },
 
     fetchInitialLibraryList({ commit, state }, resultCount) {
@@ -101,7 +101,7 @@ export default {
             commit('removePratilipiFromLibraryError');
         });
     },
-    
+
     removeFromLibraryPublished({ commit, state }, pratilipiId) {
         DataAccessor.addOrRemoveFromLibrary(pratilipiId, false, (response) => {
             commit('alert/triggerAlertView', '__('removed_from_library')', { root: true });
@@ -113,7 +113,7 @@ export default {
             commit('removePratilipiFromLibraryPublishedError');
         });
     },
-    
+
     addToLibraryPublished({ commit, state }, pratilipiId) {
         DataAccessor.addOrRemoveFromLibrary(pratilipiId, true, (response) => {
             commit('alert/triggerAlertView', '__('added_to_library')', { root: true });
@@ -129,9 +129,9 @@ export default {
     followOrUnfollowAuthor({ commit, state, dispatch }) {
         commit('setFollowUnfollowLoadingDataLoadingTrue');
         setTimeout(() => {
-            dispatch('fetchInitialAuthorFollowerUsers', { authorId: state.author.data.authorId, resultCount: 5 });    
+            dispatch('fetchInitialAuthorFollowerUsers', { authorId: state.author.data.authorId, resultCount: 5 });
         }, 1200);
-        
+
         DataAccessor.followOrUnfollowAuthor(state.author.data.authorId, !state.author.data.following, function(data) {
             commit('setFollowUnfollowLoadingDataLoadingSuccess', data);
         }, function (error) {
@@ -183,6 +183,11 @@ export default {
         }, function (error) {
             commit('setFollowUnfollowFollowersLoadingDataLoadingError');
         });
+    },
+
+    triggerRouteToMessageUser({ commit, state }, routeState) {
+        console.log('i have been called: ', routeState);
+        commit('setRouteToMessageUser', routeState);
     }
 
 
