@@ -685,6 +685,7 @@ export default {
         }
 
         $('.modal-backdrop').hide();
+        $('body').removeClass("modal-open");
     },
 
     watch: {
