@@ -321,6 +321,13 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
         } else {
             console.log('SKIPPING EVENT');
         }
+        
+        ga('send', {
+            hitType: 'event',
+            eventCategory: eventProps.LOCATION,
+            eventAction: eventProps.ACTION,
+            eventLabel: eventProps.SCREEN_NAME
+        });
 
         if (!window.fbApiInit) {
             setTimeout(() => {
