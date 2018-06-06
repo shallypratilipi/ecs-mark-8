@@ -5,6 +5,7 @@ const compression = require( 'compression' );
 const morgan = require('morgan');
 const request = require('request');
 const parse = require('url-parse');
+var cookieParser = require('cookie-parser');
 
 var fs = require( 'fs' );
 
@@ -137,7 +138,7 @@ var Website = defineEnum({
     DEVO_KANNADA_GR:     { hostName: "kannada-devo-gr.ptlp.co",   mobileHostName: "kn-devo-gr.ptlp.co", displayLanguage: Language.KANNADA,  filterLanguage: Language.KANNADA },
 
     ALPHA:  { hostName: "localhost", mobileHostName: "localhost", displayLanguage: Language.HINDI, filterLanguage: Language.HINDI,  },
-    
+
     DELTA_ALL_LANGUAGE: { hostName: "www-delta.pratilipi.com",          mobileHostName: "m-delta.pratilipi.com",  displayLanguage: Language.ENGLISH,    filterLanguage: null },
     DELTA_HINDI:        { hostName: "hindi-delta.pratilipi.com",        mobileHostName: "hi-delta.pratilipi.com", displayLanguage: Language.HINDI,      filterLanguage: Language.HINDI },
     DELTA_GUJARATI:     { hostName: "gujarati-delta.pratilipi.com",     mobileHostName: "gu-delta.pratilipi.com", displayLanguage: Language.GUJARATI,   filterLanguage: Language.GUJARATI },
@@ -147,8 +148,8 @@ var Website = defineEnum({
     DELTA_BENGALI:      { hostName: "bengali-delta.pratilipi.com",      mobileHostName: "bn-delta.pratilipi.com", displayLanguage: Language.BENGALI,    filterLanguage: Language.BENGALI },
     DELTA_KANNADA:      { hostName: "kannada-delta.pratilipi.com",      mobileHostName: "kn-delta.pratilipi.com", displayLanguage: Language.KANNADA,    filterLanguage: Language.KANNADA },
     DELTA_TELUGU:       { hostName: "telugu-delta.pratilipi.com",       mobileHostName: "te-delta.pratilipi.com", displayLanguage: Language.TELUGU,     filterLanguage: Language.TELUGU },
-    
-    
+
+
 });
 
 function _getWebsite( hostName ) {
@@ -178,6 +179,8 @@ const app = express();
 // gzip all responses
 app.use( compression({ level: 9 }) );
 app.use( morgan('short') );
+app.use(cookieParser());
+
 
 // Health
 app.get( '/health', (req, res, next) => {
@@ -187,15 +190,23 @@ app.get( '/health', (req, res, next) => {
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
     var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
-    var totalGrowthBuckets = Number(req.headers["total-growth-buckets"] || 10);
+    var webVer;
 
-    console.log('BUCKET ID: ', bucketId);
-    const numberOfBucketsToShowProduct = Math.floor((PRODUCT_PERCENTAGE / 100) * totalGrowthBuckets);
-    // todo uncomment to start growth stack & <10
-    // if (Number(bucketId) < 20 || Number(bucketId) > 60) {
-    //     next();
-    //     return
-    // }
+    if (req.query.admin) {
+        res.cookie('webVer', 'KO', { maxAge: 900000, httpOnly: true });
+        res.writeHead(302, {'Location': req.baseUrl + req.path});
+        res.end();
+        return;
+    }
+
+    if (req.cookies["webVer"]){
+        webVer = 'KO';
+    }
+
+    if (webVer) {
+        next();
+        return
+    }
 
     var website = _getWebsite( req.headers.host );
     if (fs.existsSync(__dirname + `/dist/${website.displayLanguage.code}${req.path}`)) {
