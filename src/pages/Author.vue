@@ -65,9 +65,9 @@
                             </div>
 
                             <!-- Message Button -->
-                            <!--<div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
+                            <div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
                                 <i class="material-icons">message</i> __("chat_message")
-                            </div>-->
+                            </div>
                         </div>
                         <Spinner v-if="getAuthorDataLoadingState === 'LOADING'"></Spinner>
                         <div class="col-md-12 profile-bottom" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'">
@@ -75,10 +75,8 @@
                                 <a href="#" v-if="getUserDetails.userId === getAuthorData.user.userId" v-on:click="tabchange" class="active" data-tab="library">__("library")</a>
                                 <a href="#" id="menu-published" v-on:click="tabchange" data-tab="published"><span>{{ getAuthorData.contentPublished }}</span>__("author_published_contents")</a>
                                 <a href="#" v-on:click="tabchange" data-tab="followers"><span>{{ getAuthorData.followCount }}</span>__("author_followers")</a>
-                                <!-- look here -->
-                                <a href="#" v-on:click="tabchange" data-tab="following"><span>               {{ getAuthorFollowing.length }} </span>__("author_following")</a>
+                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorFollowing.length }} </span>__("author_following")</a>
                             </div>
-                            
                             <div class="bottom-contents">
                                 <div class="list published-contents" id="published">
                                     <PratilipiComponent
@@ -191,7 +189,9 @@ export default {
             'getAuthorFollowersCursor',
             'getProfileImageLoadingState',
             'getCoverImageLoadingState',
-            'getLibraryListTotalCount'
+            'getLibraryListTotalCount',
+            'getRouteToMessageUserState'
+
         ]),
         ...mapState({
             publishedContents: state => state.authorpage.published_contents.data,
@@ -323,7 +323,17 @@ export default {
         },
 
         messageUser() {
-            this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            this.triggerAnanlyticsEvent('STARTCHAT_USERM_USER', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'RECEIVER_ID': this.getAuthorData.authorId
+            });
+
+            if (this.getUserDetails.isGuest) {
+                this.setAfterLoginAction({ action: `${this.$route.meta.store}/triggerRouteToMessageUser`, data: true });
+                this.openLoginModal(this.$route.meta.store, 'STARTCHAT', 'USER_USERM');
+            } else {
+                this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            }
         },
 
         openShareModal() {
@@ -371,6 +381,12 @@ export default {
         }
     },
     watch: {
+        'getRouteToMessageUserState'(state) {
+            if (state) {
+                this.triggerRouteToMessageUser(false);
+                this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            }
+        },
         'getAuthorData.authorId'(newValue) {
 
             if (newValue) {
@@ -770,39 +786,39 @@ export default {
             }
         }
         a.view_more {
-			position: relative;
+            position: relative;
             display: inline-block;
             vertical-align: text-bottom;
-			.view_more_card {
-				width: 294px;
-				background: #fff;
-				border: 1px solid #e9e9e9;
-				height: 233px;
-				margin: 0 10px;
-				color: #d0021b;
+            .view_more_card {
+                width: 294px;
+                background: #fff;
+                border: 1px solid #e9e9e9;
+                height: 233px;
+                margin: 0 10px;
+                color: #d0021b;
                 text-align: center;
                 display: inline-block;
-                  @media screen and (max-width: 760px) {
+                @media screen and (max-width: 760px) {
                 width: 255px;
 
                 }
-				i {
-					height: 190px;
-					line-height: 190px;
-					width: 100%;
-					font-size: 50px;
-					border-bottom: 1px solid #e9e9e9;
-				}
-				span {
-					height: 41px;
-					line-height: 37px;
-					display: block;
-				}
-			}
-			&:hover {
-				text-decoration: none;
-			}
-		}
+                i {
+                    height: 190px;
+                    line-height: 190px;
+                    width: 100%;
+                    font-size: 50px;
+                    border-bottom: 1px solid #e9e9e9;
+                }
+                span {
+                    height: 41px;
+                    line-height: 37px;
+                    display: block;
+                }
+            }
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 }
 </style>
