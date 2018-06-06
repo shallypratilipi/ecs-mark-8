@@ -1903,5 +1903,75 @@ export default {
         "SCREEN_NAME": "DISCOVER",
         "LOCATION": "TOPICS",
         "ACTION": "CLICKCATEGORY"  
+    },
+    "STARTCHAT_USERM_USER": {
+        "SCREEN_NAME": "USER",
+        "LOCATION": "USERM",
+        "ACTION": "STARTCHAT"
+    },
+    "SENDMESSAGE_USERCHAT_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "USERCHAT",
+        "ACTION": "SENDMESSAGE"
+    },
+    "CLICKUSER_USERCHAT_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "USERCHAT",
+        "ACTION": "CLICKUSER"
+    },
+    "DELETECHAT_USERCHAT_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "USERCHAT",
+        "ACTION": "DELETECHAT"
+    },
+    "BLOCKUSER_USERCHAT_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "USERCHAT",
+        "ACTION": "BLOCKUSER"
+    },
+    "UNBLOCKUSER_USERCHAT_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "USERCHAT",
+        "ACTION": "UNBLOCKUSER"
+    },
+    "VIEWALLCHATS_USERCHAT_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "USERCHAT",
+        "ACTION": "VIEWALLCHATS"
+    },
+    "DELETECHAT_ALLCHATS_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "ALLCHATS",
+        "ACTION": "DELETECHAT"
+    },
+    "BLOCKUSER_ALLCHATS_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "ALLCHATS",
+        "ACTION": "BLOCKUSER"
+    },
+    "UNBLOCKUSER_ALLCHATS_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "ALLCHATS",
+        "ACTION": "UNBLOCKUSER"
+    },
+    "STARTCHAT_ALLCHATS_P2PCHAT": {
+        "SCREEN_NAME": "P2PCHAT",
+        "LOCATION": "ALLCHATS",
+        "ACTION": "STARTCHAT"
+    },
+    "STARTCHAT_NEWCHATS_NOTIFS": {
+        "SCREEN_NAME": "NOTIFS",
+        "LOCATION": "NEWCHATS",
+        "ACTION": "STARTCHAT"
+    },
+    "VIEWALLCHATS_NEWCHATS_NOTIFS": {
+        "SCREEN_NAME": "NOTIFS",
+        "LOCATION": "NEWCHATS",
+        "ACTION": "VIEWALLCHATS"
+    },
+    "LANDED_NEWCHATS_NOTIFS": {
+        "SCREEN_NAME": "NOTIFS",
+        "LOCATION": "NEWCHATS",
+        "ACTION": "LANDED"
     }
 };
