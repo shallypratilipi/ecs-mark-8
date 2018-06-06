@@ -8,6 +8,7 @@
                         <div class="head-title" v-if="getAuthorListData.length !== 0">__("search_results_authors")</div>
                         <div class="author-section" v-if="getAuthorListData.length !== 0">
                             <slick ref="slick" :options="slickOptions">
+                            
                                 <AuthorCard v-for="eachAuthor in getAuthorListData" 
                                     :key="eachAuthor.authorId" 
                                     :authorData="eachAuthor"
@@ -58,7 +59,7 @@ export default {
     data() {
         return {
             slickOptions: {
-                infinite: false,
+                infinite: true,
                 adaptiveHeight: false,
                 variableWidth: true,
                 draggable: true,
@@ -189,7 +190,7 @@ export default {
 <style lang="scss">
 	.back, .forward {
 		position: absolute;
-		top: 45%;
+		top: 38%;
 		z-index: 2;
 		background-color: #fff;
 		border-radius: 50%;

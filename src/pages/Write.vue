@@ -243,6 +243,8 @@ export default {
         .card-content {
             padding: 5px 10px 10px;
             text-align: left;
+            max-height: 150px;
+            overflow: hidden;
             p {
                 margin: 0;
                 text-align: left;

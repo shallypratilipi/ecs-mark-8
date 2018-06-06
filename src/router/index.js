@@ -95,7 +95,7 @@ var router = new Router({
             component: AuthorPageComponent,
             meta: {
                 'store': 'authorpage',
-                'title': '__("seo_home_page")',
+                'title': '__("seo_author_page")',
                 'id_prop': 'user_slug'
             }
         }, {
@@ -128,7 +128,7 @@ var router = new Router({
             component: EventPageComponent,
             meta: {
                 'store': 'eventpage',
-                'title': '__("seo_home_page")',
+                'title': '__("seo_event_page") | __("pratilipi")',
                 'id_prop': 'event_slug'
             }
         }, {
@@ -145,7 +145,7 @@ var router = new Router({
             component: BlogPageComponent,
             meta: {
                 'store': 'blogpage',
-                'title': '__("seo_home_page")',
+                'title': '__("seo_blogpost_page")',
                 'id_prop': 'blog_id'
             }
         }, {

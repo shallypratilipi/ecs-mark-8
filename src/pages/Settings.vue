@@ -297,7 +297,9 @@ export default {
             this.detectChangesAndTriggerEvent();
             this.updateUserDetails(this.userData);
             this.updateAuthorDetails(this.authorData);
-        },
+            this.$router.push('login');
+
+         },
         triggerEventAndUpdateUserPassword(data) {
             this.triggerAnanlyticsEvent('RESETPASSWORD_PASSWORD_SETNGPRI', 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId

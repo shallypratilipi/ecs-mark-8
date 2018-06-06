@@ -753,13 +753,17 @@ export default {
         &.nav-up {
             @media screen and (max-width: 768px ) {
                 top: -75px;
+
             }
         }
     }
     .reader-progress {
         left:0;
         width: 100%;
-        height: 2px;
+        height: 14px;
+        @media screen and (max-width: 768px ) {
+            height: 2px;
+            }
         margin-bottom: 0px;
         position: fixed;
         top: 47px;
