@@ -216,7 +216,8 @@ export default {
             'uploadCoverImage',
             'uploadProfileImage',
             'removeFromLibraryPublished',
-            'addToLibraryPublished'
+            'addToLibraryPublished',
+            'triggerRouteToMessageUser'
         ]),
         ...mapActions([
             'setShareDetails',
