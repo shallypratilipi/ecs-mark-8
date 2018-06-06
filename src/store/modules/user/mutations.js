@@ -18,18 +18,18 @@ export default {
     // setCheckoutStatus(state, status) {
     //     state.checkoutStatus = status
     // }
-    
+
     setUserDataLoadingTrue(state) {
         state.loading_state = 'LOADING';
         state.loading_error_message = null;
     },
-    
+
     setUserDataLoadingSuccess(state, userData) {
         state.loading_state = 'LOADING_SUCCESS';
         state.data = userData;
         state.loading_error_message = null;
     },
-    
+
     setUserDataLoadingError(state, errorMessage) {
         state.loading_state = 'LOADING_ERROR';
         state.loading_error_message =  errorMessage;
@@ -42,12 +42,12 @@ export default {
     setUserLogoutInProgressTrue(state) {
         state.loading_state = 'LOADING';
     },
-    
+
     setUserLogoutInProgressSuccess(state, data) {
         state.loading_state = 'LOADING_SUCCESS';
         state.logout_user = true;
     },
-    
+
     setUserLogoutInProgressError(state) {
         state.loading_state = 'LOADING_ERROR';
     },
@@ -84,5 +84,9 @@ export default {
 
     setPendingMessagesStatus(state, status) {
         state.pendingMessages = status;
+    },
+
+    setFirebaseGrowthDBInitialisedTrue(state) {
+        state.growth_db_initialized = true;
     }
 }

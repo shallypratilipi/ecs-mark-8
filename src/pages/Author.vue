@@ -65,9 +65,9 @@
                             </div>
 
                             <!-- Message Button -->
-                            <!--<div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
+                            <div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
                                 <i class="material-icons">message</i> __("chat_message")
-                            </div>-->
+                            </div>
                         </div>
                         <Spinner v-if="getAuthorDataLoadingState === 'LOADING'"></Spinner>
                         <div class="col-md-12 profile-bottom" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'">
@@ -110,7 +110,7 @@
                                     :to="{ name: 'Library_Page' }"
                                     v-if="getLibraryListLoadingState === 'LOADING_SUCCESS' && getLibraryList.length !== 0"
                                     class="view_more">
-                                        <div class="view_more_card">
+                                        <div class="view_more_card" v-if="getLibraryListTotalCount>10" >
                                             <i class="material-icons">keyboard_arrow_right</i>
                                             <span>__("view_more")</span>
                                         </div>
@@ -188,7 +188,10 @@ export default {
             'getAuthorFollowingCursor',
             'getAuthorFollowersCursor',
             'getProfileImageLoadingState',
-            'getCoverImageLoadingState'
+            'getCoverImageLoadingState',
+            'getLibraryListTotalCount',
+            'getRouteToMessageUserState'
+
         ]),
         ...mapState({
             publishedContents: state => state.authorpage.published_contents.data,
@@ -320,7 +323,17 @@ export default {
         },
 
         messageUser() {
-            this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            this.triggerAnanlyticsEvent('STARTCHAT_USERM_USER', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'RECEIVER_ID': this.getAuthorData.authorId
+            });
+
+            if (this.getUserDetails.isGuest) {
+                this.setAfterLoginAction({ action: `${this.$route.meta.store}/triggerRouteToMessageUser`, data: true });
+                this.openLoginModal(this.$route.meta.store, 'STARTCHAT', 'USER_USERM');
+            } else {
+                this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            }
         },
 
         openShareModal() {
@@ -368,6 +381,12 @@ export default {
         }
     },
     watch: {
+        'getRouteToMessageUserState'(state) {
+            if (state) {
+                this.triggerRouteToMessageUser(false);
+                this.$router.push({path : '/messages/' + this.getAuthorData.user.userId, query : {profileImageUrl:this.getAuthorData.profileImageUrl, displayName: this.getAuthorData.fullName, profileUrl: this.getAuthorData.pageUrl}});
+            }
+        },
         'getAuthorData.authorId'(newValue) {
 
             if (newValue) {
@@ -771,7 +790,7 @@ export default {
             display: inline-block;
             vertical-align: text-bottom;
 			.view_more_card {
-				width: 260px;
+				width: 294px;
 				background: #fff;
 				border: 1px solid #e9e9e9;
 				height: 233px;
@@ -779,6 +798,10 @@ export default {
 				color: #d0021b;
                 text-align: center;
                 display: inline-block;
+                @media screen and (max-width: 760px) {
+                width: 255px;
+
+                }
 				i {
 					height: 190px;
 					line-height: 190px;

@@ -1,4 +1,4 @@
-{
+ {
     "pratilipi": "प्रतिलिपि",
     "home_page_title": "वाचा मराठी कथा, कविता, कादंबरी, आणि इतर खूप सारे साहित्य",
     "facebook_page": "https://www.facebook.com/Pratilipi-Marathi-1456803991281092/",
@@ -294,7 +294,7 @@
     "reader_goto_content_page": "साहित्याच्या सामग्री पुष्ठावर जा",
     "reader_goto_author_profile": "लेखकाच्या पुष्ठावर जा",
     "reader_goto_home_page": "मुखपुष्ठावर जा",
-    "share_on_facebook": "Share on Facebook",
+    "share_on_facebook": "फेसबुकवर शेअर करा",
     "share_on_twitter": "ट्वीटर वर शेयर करा",
     "share_on_gplus": "गूगल + वर शेयर करा",
     "share_on_whatsapp": "व्हॉट्सअॅपवर शेयर करा",
@@ -434,6 +434,9 @@
     "seo_register_page": "प्रतिलिपि वर आपले अकाउंट बनवा",
     "seo_login_page": "प्रतिलिपि वर लॉग-इन करा",
     "seo_reset_password_page": "आपला पासवर्ड रिसेट करा",
+    "seo_videoseries_list_page": "व्हिडिओ सूची",
+    "seo_videoseries_page": "${ videoseriesName }",
+    "seo_video_page": "${ videoName }",
     "facebook": "फेसबुक",
     "twitter": "ट्वीटर",
     "google_plus": "गूगल+",
@@ -487,9 +490,13 @@
     "tags_edit_category": "श्रेणी एडीट करा",
     "page_not_found_heading": "पेज नॉट फाउंड",
     "page_not_found_description": "तुम्ही चुकीचे पेज सुरु केले आहे. तुमच्या आवडत्या कथा वाचण्यासाठी येथे क्लिक करा.",
-    "awesome_work": "Awesome Work!!!",
-    "has_been_published": "has been published",
-    "share_and_get_popular": "Share your story and get popular",
+    "server_error_heading": "सर्व्हर त्रुटी!",
+    "server_error_description": "आमच्या सर्व्हर मध्ये तांत्रिक त्रुटी आढळली आहे. कृपया पेज पुन्हा लोड करा.",
+    "draft_not_visible_heading": "ही रचना सध्या उपलब्ध नाही.",
+    "draft_not_visible_description": "लेखकाने सध्या ही रचना अप्रकाशित केली आहे.",
+    "awesome_work": "अभिनंदन!",
+    "has_been_published": "प्रकाशित झाले आहे",
+    "share_and_get_popular": "आपली रचना आपल्या मित्रांसोबत शेअर करा आणि त्यांचे मत जाणून घ्या.",
     "top_author_heading": "Top Author",
     "top_author_sub_heading": "based on read count on",
     "top_author_message": "*Share your content to increase read count",
@@ -504,11 +511,12 @@
     "report_button": "रिपोर्ट",
     "report_title": "समस्या नोंदवा",
     "report_issue": "समस्या",
+    "reader_read_in_app_helper_text": "अॅपमध्ये वाचा",
     "hour": "तास",
     "hours": "तास",
     "minute": "मिनिट",
     "minutes": "मिनिटे",
-    
+
     "menu_category": "श्रेणी",
     "menu_profile": "प्रोफाइल",
     "join_pratilipi": "प्रतिलिपिशी जोडा",
@@ -527,10 +535,9 @@
     "login_failed": "लॉगिन अयशस्वी, कृपया पुन्हा प्रयत्न करा",
     "signup_failed": "साइन अप अयशस्वी. पुन्हा प्रयत्न करा.",
     "name_required": "नाव अनिवार्य आहे",
-    "reader_read_in_app_helper_text": "अॅपमध्ये वाचा",
     "read_popular_stories": "लोकप्रिय कथा वाचा",
     "see_more_categories": "अधिक श्रेण्या पहा",
-    
+
     "chat_messages": "मेसेजस",
     "chat_message": "मेसेज",
     "chat_show_all": "सर्व पहा",
@@ -544,5 +551,7 @@
     "chat_delete_msg": "आपण सर्व मेसेजस हटवू इच्छिता?",
     "chat_textbox_placeholder": "ईथे लिहा...",
     "chat_no_msgs": "आपल्याकडे काहीही मेसेजस नाहीत",
-    "chat_no_unread_msgs": "आपल्याकडे कोणतेही न वाचलेले मेसेज नाहीत"
+    "chat_no_unread_msgs": "आपल्याकडे कोणतेही न वाचलेले मेसेज नाहीत",
+    "chat_yesterday": "काल",
+    "chat_today": "आज"
 }

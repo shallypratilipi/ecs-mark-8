@@ -45,10 +45,10 @@
                                             <label for="pratilipi-settings-language">__("language_choose_language") *</label>
                                             <select class="form-control" id="pratilipi-settings-language" @input="updateLanguage">
                                                 <option disabled selected>__("language_choose_language")</option>
-                                                <option 
-                                                    :selected="eachLanguage.fullName.toUpperCase() === authorData.language" 
-                                                    :value="eachLanguage.fullName.toUpperCase()" 
-                                                    v-for="eachLanguage in constants.LANGUAGES" 
+                                                <option
+                                                    :selected="eachLanguage.fullName.toUpperCase() === authorData.language"
+                                                    :value="eachLanguage.fullName.toUpperCase()"
+                                                    v-for="eachLanguage in constants.LANGUAGES"
                                                     :key="eachLanguage.shortName">
                                                     {{ eachLanguage.fullName.toUpperCase() }}
                                                 </option>
@@ -124,7 +124,7 @@
                                             <label class="form-check-label" for="notif_option_like_comment">__("option_like_comment")</label>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="section-title">__("notification_group_network")</div>
                                     <div class="form-row">
                                         <div class="form-check">
@@ -169,7 +169,7 @@
                 </div>
             </div>
             <div class="spinner-overlay" v-if="getAuthorLoadingState === 'LOADING' || getAuthorUpdateState === 'LOADING'">
-                <Spinner></Spinner> 
+                <Spinner></Spinner>
             </div>
         </div>
     </MainLayout>
@@ -213,15 +213,15 @@ export default {
             notificationSettings: {
                 emailFrequency: 'IMMEDIATELY',
                 notificationSubscriptions: {
-                    AUTHOR: null, 
+                    AUTHOR: null,
                     AUTHOR_FOLLOW: null,
-                    COMMENT_REVIEW_REVIEWER: null, 
-                    EVENT: null, 
-                    GENERIC: null, 
-                    PRATILIPI: null, 
-                    PRATILIPI_PUBLISHED_FOLLOWER: null, 
-                    USER_PRATILIPI_REVIEW: null, 
-                    VOTE_COMMENT_REVIEW_COMMENTOR: null, 
+                    COMMENT_REVIEW_REVIEWER: null,
+                    EVENT: null,
+                    GENERIC: null,
+                    PRATILIPI: null,
+                    PRATILIPI_PUBLISHED_FOLLOWER: null,
+                    USER_PRATILIPI_REVIEW: null,
+                    VOTE_COMMENT_REVIEW_COMMENTOR: null,
                     VOTE_REVIEW_REVIEWER: null
                 }
             }
@@ -261,13 +261,13 @@ export default {
             this.authorData.lastName = value;
         },
         tabchange(event) {
-            event.preventDefault();        
+            event.preventDefault();
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".settings-menu a").removeClass("active");
             $(event.currentTarget).addClass("active");
             $(".tabs").hide();
             $("#" + tab_id).show();
-            
+
             if (tab_id === 'notification-settings') {
                 this.triggerAnanlyticsEvent('GOSETNGNOTIFY_SETTINGSM_SETTINGS', 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId
@@ -284,13 +284,13 @@ export default {
                 });
             }
         },
-        updateLanguage(e) { 
+        updateLanguage(e) {
             this.authorData.language = e.target.selectedOptions[0].value;
         },
-        updateEmailFrequency(e) { 
+        updateEmailFrequency(e) {
             this.notificationSettings.emailFrequency = e.target.selectedOptions[0].value;
         },
-        updateGender(e) { 
+        updateGender(e) {
             this.authorData.gender = e.target.selectedOptions[0].value;
         },
         updateProfileSettings() {
@@ -305,10 +305,29 @@ export default {
             this.updateUserPassword(data);
         },
         triggerEventAndLogoutUser() {
+            const that = this;
             this.triggerAnanlyticsEvent('LOGOUT_SETTINGSM_SETTINGS', 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId
             });
-            this.logoutUser();
+
+            import('firebase').then((firebase) => {
+                firebase.auth().signOut().then(function() {
+                    console.log( 'Firebase logout success!' );
+
+                    firebase.auth(firebase.app("FirebaseGrowth")).signOut().then(() => {
+                        console.log('Firebase Growth logout success');
+                        that.logoutUser();
+                    }).catch((error) => {
+                        console.log(error);
+                        console.log('Firebase Growth logout error');
+                        that.logoutUser();
+                    })
+                }).catch(function(error) {
+                    console.log(error);
+                    console.log( 'Firebase logout error!' );
+                    that.logoutUser();
+                });
+            });
         },
         detectChangesAndTriggerEvent() {
 
@@ -440,7 +459,7 @@ export default {
                 node.set({
                     "emailFrequency": that.notificationSettings[ "emailFrequency" ],
                     "notificationSubscriptions": that.notificationSettings[ "notificationSubscriptions" ],
-                    "lastUpdated": firebase.database.ServerValue.TIMESTAMP 
+                    "lastUpdated": firebase.database.ServerValue.TIMESTAMP
                 });
             });
             this.triggerAlert({ message: '__("notification_settings_save_changes")', timer: 3000 });
@@ -459,7 +478,7 @@ export default {
         },
         'getLogoutStatus'(loggedOut) {
             if (loggedOut) {
-                location.reload()    
+                location.reload()
             }
         },
         'getAuthorLoadingState'(loadingState) {
@@ -478,7 +497,7 @@ export default {
                 this.authorData.gender = gender || '';
                 this.authorData.dateOfBirth = dateOfBirth || '';
                 this.authorData.authorId = authorId || '';
-                                
+
                 this.userData.email = this.getUserDetails.email;
                 this.userData.phone = this.getUserDetails.phone;
             }
@@ -499,7 +518,7 @@ export default {
                 this.authorData.gender = gender || '';
                 this.authorData.dateOfBirth = dateOfBirth || '';
                 this.authorData.authorId = authorId || '';
-                
+
                 this.userData.email = this.getUserDetails.email;
                 this.userData.phone = this.getUserDetails.phone;
             }
@@ -511,7 +530,7 @@ export default {
         }
 
         if (this.getUserDetails.authorId) {
-            this.fetchAuthorDetails(this.getUserDetails.authorId);    
+            this.fetchAuthorDetails(this.getUserDetails.authorId);
         }
     },
     mounted() {

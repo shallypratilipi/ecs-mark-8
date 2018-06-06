@@ -28,5 +28,7 @@ export default {
         data: [],
         numberFound: 0,
         cursor: null
-    }
+    },
+    route_to_message_user: false
+
 }

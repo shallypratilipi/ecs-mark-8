@@ -18,8 +18,43 @@
                 'fetchUserDetails',
                 'fetchInitialNotifications',
                 'setNotificationCount',
-                'attachMessageNotificationListener'
-            ])
+                'attachMessageNotificationListener',
+                'setFirebaseGrowthDBInitialisedTrue'
+            ]),
+
+            setGuestUserProperties() {
+                this.setAnalyticsUserProperty('USER_ID', "0");
+                this.setAnalyticsUserProperty('IS_LOGGED_IN', "NO");
+            },
+
+            setLoggedInUserProperties() {
+                this.setAnalyticsUserProperty('USER_ID', this.getUserDetails.userId || "0");
+                this.setAnalyticsUserProperty('IS_LOGGED_IN', "YES");
+                this.setAnalyticsUserProperty('AUTHOR_ID', this.getUserDetails.authorId);
+            },
+
+            initializeFbAsyncInit() {
+                const that = this;
+                window.fbAsyncInit = function() {
+                    FB.init({
+                        appId: process.env.FACEBOOK_APP_ID,
+                        cookie: true,
+                        xfbml: true,
+                        autoLogAppEvents: false,
+                        version: process.env.FACEBOOK_SDK_VERSION
+                    });
+
+                    window.fbApiInit = true;
+                    FB.AppEvents.logPageView();
+                    if (!that.getUserDetails.isGuest) {
+                        that.setLoggedInUserProperties();
+                    } else {
+                        that.setGuestUserProperties();
+                    }
+                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD');
+                    that.setAnalyticsUserProperty('CONTENT_LANGUAGE', that.getCurrentLanguage().fullName.toUpperCase());
+                };
+            }
         },
         computed: {
             ...mapGetters([
@@ -44,6 +79,22 @@
                             };
                             firebase.initializeApp(config);
 
+                            firebase.auth().onAuthStateChanged( function( fbUser ) {
+                                if( fbUser ) {
+                                    console.log("Firebase Default App Login Success ");
+                                    var newNotificationCountNode = firebase.database().ref( "NOTIFICATION" ).child( fbUser.uid ).child( "newNotificationCount" );
+                                    newNotificationCountNode.on( 'value', function( snapshot ) {
+                                        var newNotificationCount = snapshot.val() != null ? snapshot.val() : 0;
+                                        that.setNotificationCount(newNotificationCount);
+                                    });
+                                } else {
+                                    console.log("Non Logged-In FB User. Firebase token : ", that.getUserDetails.firebaseToken);
+                                    firebase.auth().signInWithCustomToken( that.getUserDetails.firebaseToken ).catch(function(error) {
+                                        console.log("Error in Firebase logging in. ", error);
+                                    });
+                                }
+                            });
+
                             const configGrowth = {
                                 apiKey: process.env.FIREBASE_API_KEY,
                                 authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -52,57 +103,29 @@
                                 storageBucket: process.env.FIREBASE_STORAGE_BUCKET
                             };
 
-                            // todo : dont log credentials in frontend
-                            console.log("Growth Firebase props : ", configGrowth);
-                            firebase.initializeApp(configGrowth, "FirebaseGrowth");
-                            that.attachMessageNotificationListener(that.getUserDetails.userId);
+                            var growthFirebaseApp = firebase.initializeApp(configGrowth, "FirebaseGrowth");
+
+                            firebase.auth(growthFirebaseApp).onAuthStateChanged( function( fbUser ) {
+                                if( fbUser ) {
+                                    console.log("Firebase Growth App Login Success ");
+                                    that.setFirebaseGrowthDBInitialisedTrue();
+                                    that.attachMessageNotificationListener(that.getUserDetails.userId);
+                                } else {
+                                    console.log("Non Logged-In FB User. Firebase token : ", that.getUserDetails.firebaseToken);
+                                    firebase.auth(growthFirebaseApp).signInWithCustomToken( that.getUserDetails.firebaseToken ).catch(function(error) {
+                                        console.log("Error in Firebase logging in. ", error);
+                                    });
+                                }
+                            });
                         }
 
-                        firebase.auth().onAuthStateChanged( function( fbUser ) {
-                            if( fbUser ) {
-                                var newNotificationCountNode = firebase.database().ref( "NOTIFICATION" ).child( fbUser.uid ).child( "newNotificationCount" );
-                                newNotificationCountNode.on( 'value', function( snapshot ) {
-                                    var newNotificationCount = snapshot.val() != null ? snapshot.val() : 0;
-                                    that.setNotificationCount(newNotificationCount);
-                                });
-                            } else {
-                                firebase.auth().signInWithCustomToken( that.getUserDetails.firebaseToken );
-                            }
-                        });
                     });
-
-                    this.setAnalyticsUserProperty('USER_ID', this.getUserDetails.userId || "0");
-                    this.setAnalyticsUserProperty('IS_LOGGED_IN', "YES");
-                    this.setAnalyticsUserProperty('AUTHOR_ID', this.getUserDetails.authorId);
+                    this.setLoggedInUserProperties();
                 } else {
-                    this.setAnalyticsUserProperty('USER_ID', "0");
-                    this.setAnalyticsUserProperty('IS_LOGGED_IN', "NO");
+                    this.setGuestUserProperties();
                 }
 
-                const that = this;
-                window.fbAsyncInit = function() {
-                    FB.init({
-                        appId: process.env.FACEBOOK_APP_ID,
-                        cookie: true,
-                        xfbml: true,
-                        autoLogAppEvents: false,
-                        version: 'v2.10'
-                    });
-
-                    window.fbApiInit = true;
-                    FB.AppEvents.logPageView();
-                    if (!isGuest) {
-                        that.setAnalyticsUserProperty('USER_ID', that.getUserDetails.userId || "0");
-                        that.setAnalyticsUserProperty('IS_LOGGED_IN', "YES");
-                        that.setAnalyticsUserProperty('AUTHOR_ID', that.getUserDetails.authorId);
-                    } else {
-                        that.setAnalyticsUserProperty('USER_ID', "0");
-                        that.setAnalyticsUserProperty('IS_LOGGED_IN', "NO");
-                    }
-                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD_BRIDGE');
-                    that.setAnalyticsUserProperty('CONTENT_LANGUAGE', that.getCurrentLanguage().fullName.toUpperCase());
-                }
-
+                this.initializeFbAsyncInit();
             }
         },
         created() {
@@ -110,29 +133,7 @@
 
             const that = this;
             if (this.getUserDetails.isGuest !== undefined || this.getUserDetails.isGuest !== null) {
-                window.fbAsyncInit = function() {
-                    FB.init({
-                        appId: process.env.FACEBOOK_APP_ID,
-                        cookie: true,
-                        xfbml: true,
-                        autoLogAppEvents: false,
-                        version: 'v2.10'
-                    });
-
-                    window.fbApiInit = true;
-                    FB.AppEvents.logPageView();
-                    if (!that.getUserDetails.isGuest) {
-                        that.setAnalyticsUserProperty('USER_ID', that.getUserDetails.userId || "0");
-                        that.setAnalyticsUserProperty('IS_LOGGED_IN', "YES");
-                        that.setAnalyticsUserProperty('AUTHOR_ID', that.getUserDetails.authorId);
-                    } else {
-                        that.setAnalyticsUserProperty('USER_ID', "0");
-                        that.setAnalyticsUserProperty('IS_LOGGED_IN', "NO");
-                    }
-
-                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD_BRIDGE');
-                    that.setAnalyticsUserProperty('CONTENT_LANGUAGE', that.getCurrentLanguage().fullName.toUpperCase());
-                };
+                this.initializeFbAsyncInit();
             }
         }
     }

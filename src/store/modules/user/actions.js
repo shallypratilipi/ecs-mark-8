@@ -50,7 +50,7 @@ export default {
                 dispatch(state.post_login_action.action, state.post_login_action.data, { root: true });
                 commit('clearPostLoginAction');
             }
-            
+
         }, (error) => {
             console.log(error);
             commit('setUserDataLoadingError', error);
@@ -66,7 +66,7 @@ export default {
                 dispatch(state.post_login_action.action, state.post_login_action.data, { root: true });
                 commit('clearPostLoginAction');
             }
-            
+
         }, (error) => {
             console.log(error);
             commit('setUserDataLoadingError', error);
@@ -160,8 +160,14 @@ export default {
             console.log(error);
         });
     },
-    
+
     dispatchReloadAction({ commit, state, dispatch }, { data, action }) {
         dispatch(action, data, { root: true });
+    },
+
+
+    setFirebaseGrowthDBInitialisedTrue({ commit }) {
+        console.log("Setting firebase growth DB status to true")
+        commit('setFirebaseGrowthDBInitialisedTrue');
     }
 }
