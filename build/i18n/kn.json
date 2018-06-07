@@ -552,5 +552,7 @@
     "chat_delete_msg": "ನೀವು ಎಲ್ಲಾ ಮೆಸೇಜ್ ಗಳನ್ನೂ ಅಳಿಸಲು ಇಚ್ಚಿಸುತ್ತೀರಾ?",
     "chat_textbox_placeholder": "ಇಲ್ಲಿ ಬರೆಯಿರಿ...",
     "chat_no_msgs": "ನಿಮಗೆ ಯಾವುದೇ ಸಂದೇಶ ಇರುವುದಿಲ್ಲ",
-    "chat_no_unread_msgs": "ನಿಮಗೆ ಯಾವುದೇ ಓದದ ಸಂದೇಶ ಇರುವುದಿಲ್ಲ"
+    "chat_no_unread_msgs": "ನಿಮಗೆ ಯಾವುದೇ ಓದದ ಸಂದೇಶ ಇರುವುದಿಲ್ಲ",
+    "chat_yesterday": "ನಿನ್ನೆ",
+    "chat_today": "ಇಂದು"
 }

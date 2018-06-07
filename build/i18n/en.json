@@ -552,5 +552,8 @@
     "chat_delete_msg": "Do you want to delete all messages?",
     "chat_textbox_placeholder": "Write here...",
     "chat_no_msgs": "You don't have any messages",
-    "chat_no_unread_msgs": "You don't have any unread messages"
+    "chat_no_unread_msgs": "You don't have any unread messages",
+    "chat_yesterday": "Yesterday",
+    "chat_today": "Today"
 }
+

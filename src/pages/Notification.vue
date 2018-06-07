@@ -6,7 +6,7 @@
                     <div class="col-md-12">
                         <ul class="tab-menu">
                             <li @click="tabchange" class="active" data-tab="notifications">__("notification_notifications")</li>
-                            <!--<li @click="tabchange" data-tab="messages">__("chat_messages") <span class="message-dot" v-if="messageNotificationList.length > 0"></span></li>-->
+                            <li @click="tabchange" data-tab="messages">__("chat_messages") <span class="message-dot" v-if="messageNotificationList.length > 0"></span></li>
                         </ul>
                         <router-link
                         class="notification-settings"
@@ -45,7 +45,7 @@
                             </p>
                         </div>
 
-                        <!--<div class="tab-content" id="messages">
+                        <div class="tab-content" id="messages">
                             <div class="card" v-if="getUserDetails.isGuest">
                                 <div class="head-title">__("seo_login_page")</div>
                                 <div class="card-content">
@@ -55,7 +55,7 @@
                             </div>
                             <ul class="chat-list" v-if="!getUserDetails.isGuest">
                                 <li class="chat-item" v-for="messageNotification in messageNotificationList" v-bind:key="messageNotification.messageId">
-                                    <router-link
+                                    <router-link @click.native="triggerConversationEvent(messageNotification.userId)"
                                         :to="'/messages/' + messageNotification.userId">
                                     <div>
                                         <div class="user-img"><img v-bind:src="messageNotification.profileImageUrl" alt="profile-img"></div>
@@ -76,11 +76,12 @@
 
                             <router-link
                             class="show-more"
+                            @click.native="triggerAllMessagesEvent"
                             :to="{ name: 'Messages_Page'}"
                             v-if="!getUserDetails.isGuest">
                             __("chat_show_all")
                             </router-link>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,7 +135,28 @@ export default {
             $(event.currentTarget).addClass("active");
             $(".tab-content").hide();
             $("#" + tab_id).show();
+            
+            if (tab_id === 'messages') {
+                this.triggerAnanlyticsEvent('LANDED_NEWCHATS_NOTIFS', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId
+                });
+                $(".notification-settings").hide();
+            }
+            if (tab_id === 'notifications') {
+                $(".notification-settings").show();
+            }
         },
+        triggerConversationEvent(receiver_id) {
+            this.triggerAnanlyticsEvent('STARTCHAT_NEWCHATS_NOTIFS', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'RECEIVER_ID': receiver_id
+            });
+        },
+        triggerAllMessagesEvent() {
+            this.triggerAnanlyticsEvent('VIEWALLCHATS_NEWCHATS_NOTIFS', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
+        }
     },
     created() {
 
@@ -256,22 +278,24 @@ export default {
             a {
                 text-decoration: none;
                 color: #212121;
-                display: flex;
+                display: block;
                 font-size: 14px;
                 .notif-display-image {
-                    width: 60px;
-                    height: 60px;
+                    width: 30px;
+                    height: 30px;
                     overflow: hidden;
                     position: relative;
+                    display: inline-block;
                     border-radius: 50%;
-                    align-self: center;
-                    margin: 0 10px;
+                    margin: 0 5px;
+                    vertical-align: top;
                     img {
                         max-width: 100%;
                     }
                 }
                 .message-wrap {
-                    flex-grow: 1;
+                    width: calc(100% - 100px);
+                    display: inline-block;
                 }
                 .notif-date {
                     display: block;
@@ -279,12 +303,13 @@ export default {
                     margin-top: 5px;
                 }
                 .notif-source-image {
-                    width: 60px;
+                    width: 40px;
                     height: 60px;
                     overflow: hidden;
                     position: relative;
-                    align-self: center;
-                    margin: 0 10px;
+                    display: inline-block;
+                    margin: 0 5px;
+                    vertical-align: top;
                     img {
                         max-width: 100%;
                     }
@@ -295,6 +320,7 @@ export default {
     .tab-menu {
         border-bottom: 1px solid #e9e9e9;
         padding: 8px 0 0;
+        margin: 0;
         text-align: left;
         overflow: hidden;
         width: 100%;
@@ -307,7 +333,7 @@ export default {
             color: #555;
             font-size: 13px;
             border-bottom: 2px solid #fff;
-            padding: 5px 5px 11px;
+            padding: 5px 25px 11px;
             display: inline-block;
             a {
                 color: #555;

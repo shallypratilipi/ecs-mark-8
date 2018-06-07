@@ -55,7 +55,7 @@ export default {
     },
 
     setPublishedContentsDynamicLoadingError(state) {
-        
+
     },
 
     setAuthorDataLoadingTrue(state) {
@@ -118,7 +118,7 @@ export default {
         } else {
             state.following.cursor = null;
         }
-        
+
     },
     setMoreAuthorFollowingDataLoadingError(state) {
         state.following.loading_state = 'LOADING_ERROR';
@@ -134,7 +134,7 @@ export default {
         } else {
             state.followers.cursor = null;
         }
-        
+
     },
     setMoreAuthorFollowersDataError(state) {
         state.followers.loading_state = 'LOADING_ERROR';
@@ -180,7 +180,7 @@ export default {
             state.library.data.push(pratilipiAddedToLib);
         }
     },
-    
+
     removePratilipiFromLibraryPublishedError() {},
     addPratilipiToLibraryError() {},
 
@@ -195,7 +195,7 @@ export default {
     setFollowUnfollowLoadingDataLoadingSuccess(state, data){
         state.author.data.following = data.following;
         if (data.following) {
-            state.author.data.followCount++;    
+            state.author.data.followCount++;
         } else {
             state.author.data.followCount--;
         }
@@ -212,7 +212,7 @@ export default {
         const authorFollowedOrUnfollowed = state.following.data.find(eachAuthor => eachAuthor.authorId === data.authorId);
         authorFollowedOrUnfollowed.following = data.following;
         if (data.following) {
-            authorFollowedOrUnfollowed.followCount++;    
+            authorFollowedOrUnfollowed.followCount++;
         } else {
             authorFollowedOrUnfollowed.followCount--;
         }
@@ -227,7 +227,7 @@ export default {
         const authorFollowedOrUnfollowed = state.followers.data.find(eachAuthor => eachAuthor.author.authorId === data.authorId);
         authorFollowedOrUnfollowed.author.following = data.following;
         if (data.following) {
-            authorFollowedOrUnfollowed.author.followCount++;    
+            authorFollowedOrUnfollowed.author.followCount++;
         } else {
             authorFollowedOrUnfollowed.author.followCount--;
         }
@@ -256,5 +256,9 @@ export default {
     },
     setProfileImageUploadingError(state) {
         state.author.profile_image_upload_state = 'LOADING_ERROR';
+    },
+
+    setRouteToMessageUser(state, routeState) {
+        state.route_to_message_user = routeState;
     }
 }

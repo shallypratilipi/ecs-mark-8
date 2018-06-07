@@ -8,5 +8,6 @@ export default {
     loading_error_message: {},
     login_source: null,
     signup_source: null,
-    forgot_password_update_state: 'LOADING_SUCCESS'
+    forgot_password_update_state: 'LOADING_SUCCESS',
+    growth_db_initialized: false
 }

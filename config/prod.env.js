@@ -13,5 +13,7 @@ module.exports = {
     GA_WEBSITE: "'PWA'",
     GA_WEBSITE_MODE: "'Standard'",
     GA_WEBSITE_VERSION: "'Mark-8'",
-    GOOGLE_CLIENT_ID: "'659873510744-kfim969enh181h4gbctffrjg5j47tfuq.apps.googleusercontent.com'"
+    GOOGLE_CLIENT_ID: "'659873510744-kfim969enh181h4gbctffrjg5j47tfuq.apps.googleusercontent.com'",
+    FACEBOOK_SDK_VERSION : "'v3.0'"
+
 }

@@ -26,5 +26,7 @@ export default {
     getSignupSource: state => state.signup_source,
     getLoginSource: state => state.login_source,
     getLoginLoadingState: state => state.loading_state,
-    getForgotPasswordUpdateState: state => state.forgot_password_update_state
+    getForgotPasswordUpdateState: state => state.forgot_password_update_state,
+    getFirebaseGrowthDBLoadingState: state => state.growth_db_initialized
+
 }

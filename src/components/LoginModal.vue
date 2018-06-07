@@ -124,6 +124,7 @@ button.close {
 }
 .modal-body.login {
     padding: 0 10px;
+    max-height: initial;
 }
 .login-menu {
     border-bottom: 1px solid #e9e9e9;

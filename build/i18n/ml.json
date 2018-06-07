@@ -552,5 +552,7 @@
     "chat_delete_msg": "എല്ലാ മെസ്സേജുകളും ഡിലീറ്റ് ചെയ്യണോ?",
     "chat_textbox_placeholder": "ഇവിടെ എഴുതൂ...",
     "chat_no_msgs": "മെസ്സേജുകള്‍ ഒന്നും ഇല്ല",
-    "chat_no_unread_msgs": "വായിക്കാത്ത മെസ്സേജുകള്‍ ഒന്നും ഇല്ല"
+    "chat_no_unread_msgs": "വായിക്കാത്ത മെസ്സേജുകള്‍ ഒന്നും ഇല്ല",
+    "chat_yesterday": "ഇന്നലെ",
+    "chat_today": "ഇന്ന്"
 }

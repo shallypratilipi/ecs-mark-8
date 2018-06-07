@@ -24,6 +24,7 @@ import sharemodal from './modules/sharemodal'
 import alert from './modules/alert'
 import pratilipimodal from './modules/pratilipimodal'
 import inputmodal from './modules/inputmodal'
+import messages from  './modules/messages'
 
 Vue.use(Vuex);
 
@@ -52,6 +53,7 @@ export default new Vuex.Store({
         sharemodal,
         alert,
         pratilipimodal,
-        inputmodal
+        inputmodal,
+        messages
     }
 })
