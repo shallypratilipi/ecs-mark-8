@@ -189,23 +189,19 @@ app.get( '/health', (req, res, next) => {
 
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
-    var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
-    var webVer;
 
-    if (req.query.admin) {
-        res.cookie('webVer', 'KO', { maxAge: 900000, httpOnly: true });
-        res.writeHead(302, {'Location': req.baseUrl + req.path});
-        res.end();
-        return;
+    console.log(`DEBUG :: req.headers :: ${JSON.stringify(req.headers)}`);
+    console.log(`DEBUG :: req.cookies :: ${JSON.stringify(req.cookies)}`);
+    console.log(`DEBUG :: webVer :: ${req.cookies["webVer"]} :: ${req.cookies["access_token"]}`);
+
+    // If webVar is KO, passing to next middleware
+    if (req.cookies["webVer"] === 'KO') {        
+        return next();
     }
 
-    if (req.cookies["webVer"]){
-        webVer = 'KO';
-    }
-
-    if (webVer) {
-        next();
-        return
+    if (req.query.admin === 'true') {
+        res.cookie('webVer', 'KO', { maxAge: 900000, httpOnly: false, path: '/' });
+        return res.redirect(307, req.path);
     }
 
     var website = _getWebsite( req.headers.host );
