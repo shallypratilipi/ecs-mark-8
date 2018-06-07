@@ -511,7 +511,6 @@
     "report_button": "ரிப்போர்ட்",
     "report_title": "ரிப்போர்ட் தலைப்பு",
     "report_issue": "பிரச்சினை",
-    "reader_read_in_app_helper_text": "செயலியில் பார்க்க",
     "hour": "மணி நேரம்",
     "hours": "மணி நேரம்",
     "minute": "நிமிடம்",
@@ -554,5 +553,16 @@
     "chat_no_msgs": "குறுஞ்செய்திகள் எதுவும் இல்லை",
     "chat_no_unread_msgs": "படிக்கப்படாத குறுஞ்செய்திகள் எதுவும் இல்லை",
     "chat_yesterday": "நேற்று",
-    "chat_today": "இன்று"
+    "chat_today": "இன்று",
+
+    "event_participate":"பங்கேற்க",
+    "event_participate_your_drafts":"உங்களது வரைவுகள்",
+    "event_participate_your_submissions":"நீங்கள் சமர்ப்பித்த படைப்புகள்",
+    "event_participate_accepted_message":"உங்களது படைப்பு போட்டிக்கு ஏற்றுக்கொள்ளப்பட்டது. கடைசித் தேதி முடிந்ததும் படைப்பு பதிப்பிக்கப்படும்.",
+    "event_participate_drafted_item_edit":"கீழே இருக்கும் படைப்புகள் ஏற்கனவே உங்களது வரைவுகளில் உள்ளது. அதனை எடிட் செய்ய அதன் மேல் சொடுக்கவும் அல்லது புதிய படைப்பை உருவாக்க கீழே சொடுக்கவும். ",
+    "event_participate_last_edited_on":"கடைசியாக திருத்தப்பட்டது",
+    "event_participate_finish":"முடிக்க",
+    "event_participate_confirm_submission":"சமர்பித்தலை உறுதிப்படுத்தவும்",
+    "event_participate_cannot_change_drafts":"இறுதி சமர்ப்பிப்பிற்கு பிறகு உங்களது படைப்பை திருத்த முடியாது. உறுதியாக படைப்பை சமர்ப்பிக்க வேண்டுமா?",
+    "event_participate_check_your_entry_here":"நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்"
 }

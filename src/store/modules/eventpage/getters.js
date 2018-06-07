@@ -28,6 +28,9 @@ export default {
 
     getEventPratilipis: state => state.pratilipiList.data,
     getEventPratilipisCursor: state => state.pratilipiList.cursor,
-    getEventPratilipisLoadingState: state => state.pratilipiList.loading_state
+    getEventPratilipisLoadingState: state => state.pratilipiList.loading_state,
 
+    getUserEventDataLoadingState: state => state.userEventPratilipis.loading_state,
+    getUserEventData: state => { return state.userEventPratilipis.data.filter(eachPratilipi => eachPratilipi.state === 'SUBMITTED') },
+    getUserEventDraftData: state => { return state.userEventPratilipis.data.filter(eachPratilipi => eachPratilipi.state === 'DRAFTED') }
 }

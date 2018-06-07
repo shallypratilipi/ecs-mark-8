@@ -555,5 +555,15 @@
     "chat_no_msgs": "आपके पास कोई भी मैसेज नहीं है",
     "chat_no_unread_msgs": "आपके पास बिना पढ़ा हुआ कोई मैसेज नहीं है",
     "chat_yesterday": "कल",
-    "chat_today": "आज"
+    "chat_today": "आज",
+    "event_participate":"हिस्सा लें ",
+    "event_participate_your_drafts":"आपकी रचनायें ",
+    "event_participate_your_submissions":"आपके सबमिशन्स ",
+    "event_participate_accepted_message":"हमने आपकी रचना प्राप्त की और जब प्रतियोगिता शुरू होगी हम इसे प्रकाशित करेंगे ",
+    "event_participate_drafted_item_edit":"आपकी रचनायें यहाँ हैं। सम्पादित करने के लिए यहाँ क्लिक करें या नई रचना लिखें ",
+    "event_participate_last_edited_on":"अंतिम सम्पादन ",
+    "event_participate_finish":"समाप्त ",
+    "event_participate_confirm_submission":"कृपया सबमिशन प्रमाणित करें ",
+    "event_participate_cannot_change_drafts":"फाइनल सबमिशन के बाद आप किसी प्रकार का बदलाव नहीं कर पायेंगे। क्या आप इसे सबमिट करने के लिए निश्चित हैं?",
+    "event_participate_check_your_entry_here":"अपनी रचना यहाँ देखें "
 }

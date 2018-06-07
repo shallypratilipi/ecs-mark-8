@@ -94,5 +94,16 @@ export default {
 
     removePratilipiFromLibraryError(state) {
 
+    },
+
+    setUserEventPratilipiDataLoadingTrue(state) {
+        state.userEventPratilipis.loading_state = 'LOADING';
+    },
+    setUserEventPratilipiDataLoadingSuccess(state, eventPratilipis) {
+        state.userEventPratilipis.loading_state = 'LOADING_SUCCESS';
+        state.userEventPratilipis.data = eventPratilipis;
+    },
+    setUserEventPratilipiDataLoadingError(state) {
+        state.userEventPratilipis.loading_state = 'LOADING_ERROR';
     }
 }
