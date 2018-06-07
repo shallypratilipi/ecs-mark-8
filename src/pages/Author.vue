@@ -65,7 +65,7 @@
                             </div>
 
                             <!-- Message Button -->
-                            <div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
+                            <div class="message-btn" v-if="getAuthorData.user && getAuthorData.user.userId && getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
                                 <i class="material-icons">message</i> __("chat_message")
                             </div>
                         </div>
@@ -637,6 +637,7 @@ export default {
             padding: 5px 10px;
             margin-left: 10px;
             border: 1px solid #d0021b;
+            cursor: pointer;
             i {
                 vertical-align: middle;
                 padding-right: 5px;

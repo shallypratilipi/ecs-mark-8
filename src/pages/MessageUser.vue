@@ -791,6 +791,13 @@ export default {
                 line-height: 40px;
                 margin-left: 10px;
                 font-size: 16px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 60%;
+                overflow: hidden;
+                @media screen and (max-width: 345px) {
+                    max-width: 56%;
+                }
             }
             .options {
                 float: right;
