@@ -91,7 +91,7 @@
                     swipe: true,
                     slickOptions: 10,
                     prevArrow: '<div class="back"><i class="material-icons" aria-hidden="true">keyboard_arrow_left</i></div>',
-                    nextArrow: '<div class="forward"><i class="material-icons" aria-hidden="true">keyboard_arrow_right</i></div>'
+                    nextArrow: '<div class="forward"><i class="material-icons" aria-hidden="true"GoooGreen>keyboard_arrow_right</i></div>'
                 }
             }
         },

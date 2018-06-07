@@ -29,7 +29,11 @@
                 </div>
                 <button type="button" @click="validateAndLoginUser({email, password})" class="btn sign-in">__("user_sign_in")</button>
                 <a v-if="!openForgotPasswordInTab" @click="triggerEventAndOpenForgotPasswordModal" href="#" class="forgot-pass">__("user_forgot_password")</a>
+
+
+
                 <router-link v-else :to="'/login#forgot-pass'" target="_blank" class="forgot-pass">__("user_forgot_password")</router-link>
+                <ForgetPassword></ForgetPassword>
                 <div class="terms-section">
                     <span>__("user_is_new")</span>
                     <a href="#" v-on:click="tabsignup" data-tab="signup">__("user_sign_up_for_pratilipi")</a>
@@ -37,19 +41,18 @@
             </form>
         </div>
         <div class="spinner-overlay" v-if="getLoginLoadingState === 'LOADING'">
-            <Spinner></Spinner>
+            <Spinner></Spinner> 
         </div>
     </div>
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from 'vuex'
 import mixins from '@/mixins';
 import Spinner from '@/components/Spinner.vue';
 import GoogleLogin from '@/components/GoogleLogin';
 import FacebookLogin from '@/components/FacebookLogin';
-
+import ForgetPassword from '@/components/ForgetPasswordModal'
 export default {
     name: 'Login-Form',
     mixins: [
@@ -82,7 +85,7 @@ export default {
             'loginUser'
         ]),
         tabsignup(event) {
-            event.preventDefault();
+            event.preventDefault();        
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".login-menu a").removeClass("active");
             $(".signup").addClass("active");
@@ -90,8 +93,8 @@ export default {
             $("#" + tab_id).show();
         },
         validateAndLoginUser({ email, password }) {
-
-
+            
+            
             this.emailIsInvalid = !this.validateEmail(email);
             this.passwordIsInvalid = !this.validatePassword(password);
             if (!this.emailIsInvalid && !this.passwordIsInvalid) {
@@ -99,7 +102,10 @@ export default {
             }
         },
         triggerEventAndOpenForgotPasswordModal() {
-            this.openForgotPasswordModal();
+            console.log("Modal fun activated");
+            // this.openForgotPasswordModal();
+            $('#forgotPassModal').modal('show');
+
             this.triggerAnanlyticsEvent('LANDED_FORGOTPM_FORGOTP', 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId
             });
@@ -108,7 +114,8 @@ export default {
     components: {
         GoogleLogin,
         FacebookLogin,
-        Spinner
+        Spinner,
+        ForgetPassword
     },
     created() {
     }
