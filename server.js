@@ -190,15 +190,16 @@ app.get( '/health', (req, res, next) => {
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
 
+    console.log(`DEBUG :: webVer :: ${req.cookies["webVer"]} :: ${req.cookies["access_token"]}`);
+
     // If webVar is KO, passing to next middleware
-    if (req.cookies["webVer"] === 'KO') {
-        console.log(`DEBUG :: webVer :: KO :: ${req.cookies["access_token"]}`);
+    if (req.cookies["webVer"] === 'KO') {        
         return next();
     }
 
     if (req.query.admin === 'true') {
         res.cookie('webVer', 'KO', { maxAge: 900000, httpOnly: false, path: '/' });
-        return res.redirect(302, (req.secure ? 'https://' : 'http://') + req.headers.host + req.path);
+        return res.redirect(307, req.path);
     }
 
     var website = _getWebsite( req.headers.host );
