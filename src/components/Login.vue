@@ -102,8 +102,6 @@ export default {
             }
         },
         triggerEventAndOpenForgotPasswordModal() {
-            console.log("Modal fun activated");
-            // this.openForgotPasswordModal();
             $('#forgotPassModal').modal('show');
 
             this.triggerAnanlyticsEvent('LANDED_FORGOTPM_FORGOTP', 'CONTROL', {
