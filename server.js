@@ -190,6 +190,8 @@ app.get( '/health', (req, res, next) => {
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
 
+    console.log(`DEBUG :: req.headers :: ${JSON.stringify(req.headers)}`);
+    console.log(`DEBUG :: req.cookies :: ${JSON.stringify(req.cookies)}`);
     console.log(`DEBUG :: webVer :: ${req.cookies["webVer"]} :: ${req.cookies["access_token"]}`);
 
     // If webVar is KO, passing to next middleware
