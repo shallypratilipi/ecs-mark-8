@@ -83,7 +83,7 @@
         data() {
             return {
                 slickOptions: {
-                    infinite: true,
+                    infinite: false,
                     adaptiveHeight: false,
                     variableWidth: true,
                     draggable: true,

@@ -9,6 +9,11 @@
                     <div class="comment-meta">
                         <h6 class="comment-name">
                             <router-link :to="eachReview.userProfilePageUrl" @click.native="triggerClickReviewUser(eachReview.userId)">{{ eachReview.userName }}</router-link>
+                            <router-link :to="index">
+                                            <!-- <h1>hi  {{index}} </h1> -->
+                                
+                            </router-link>
+
                         </h6>
                         <button class="btn more-options" type="button" id="moreOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">more_vert</i>
@@ -123,6 +128,9 @@ export default {
         eachReview: {
             type: Object,
             required: true
+        },
+        index: {
+            type: Number,
         },
         likeOrDislikeReview: {
             type: Function,

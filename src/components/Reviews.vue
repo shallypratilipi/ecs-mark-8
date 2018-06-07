@@ -27,7 +27,7 @@
                 ></Review>
             <Review 
                 v-if="!haveInfiniteScroll && getReviewsData.length > 0"
-                v-for="eachReview in getReviewsData.slice(0, 2)" 
+                v-for="(eachReview,index) in getReviewsData.slice(0, 2)" 
                 :loadCommentsOfReview="loadCommentsOfReview"
                 :likeOrDislikeReview="likeOrDislikeReview" 
                 :userPratilipiData="userPratilipiData"
@@ -41,7 +41,7 @@
                 :screenLocation="'REVIEWS'"
                 :pratilipiData="pratilipiData"
                 ></Review>
-            
+             
         </ul>
         <Spinner v-if="getReviewsLoadingState === 'LOADING'"></Spinner>
     </div>

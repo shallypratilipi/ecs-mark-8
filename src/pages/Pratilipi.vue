@@ -473,6 +473,9 @@ export default {
             $('.overlay-1').fadeIn();
             $(".rating-popout").removeClass("show");
             $("body").addClass("modal-open");
+            window.scrollTo(50,document.querySelector(".review-popout").scrollHeight);
+
+
         },
         closeReviewModal() {
             $(".review-popout").removeClass("show");
