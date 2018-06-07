@@ -637,6 +637,7 @@ export default {
             padding: 5px 10px;
             margin-left: 10px;
             border: 1px solid #d0021b;
+            cursor: pointer;
             i {
                 vertical-align: middle;
                 padding-right: 5px;
