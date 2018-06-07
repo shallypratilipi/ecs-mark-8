@@ -198,6 +198,7 @@ app.get( '/*', (req, res, next) => {
         return;
     }
 
+    console.log(req.cookies["webVer"]);
     if (req.cookies["webVer"] == 'KO'){
         return next();
     }
