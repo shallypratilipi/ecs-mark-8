@@ -190,7 +190,6 @@ app.get( '/health', (req, res, next) => {
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
     var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
-    var webVer;
 
     if (req.query.admin) {
         res.cookie('webVer', 'KO', { maxAge: 900000, httpOnly: true });
@@ -199,13 +198,8 @@ app.get( '/*', (req, res, next) => {
         return;
     }
 
-    if (req.cookies["webVer"]){
-        webVer = 'KO';
-    }
-
-    if (webVer) {
-        next();
-        return
+    if (req.cookies["webVer"] == 'KO'){
+        return next();
     }
 
     var website = _getWebsite( req.headers.host );
