@@ -65,7 +65,7 @@
                             </div>
 
                             <!-- Message Button -->
-                            <div class="message-btn" v-if="getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
+                            <div class="message-btn" v-if="getAuthorData.user && getAuthorData.user.userId && getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
                                 <i class="material-icons">message</i> __("chat_message")
                             </div>
                         </div>
