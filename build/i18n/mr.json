@@ -553,5 +553,16 @@
     "chat_no_msgs": "आपल्याकडे काहीही मेसेजस नाहीत",
     "chat_no_unread_msgs": "आपल्याकडे कोणतेही न वाचलेले मेसेज नाहीत",
     "chat_yesterday": "काल",
-    "chat_today": "आज"
+    "chat_today": "आज",
+     
+    "event_participate":"भाग घ्या ",
+    "event_participate_your_drafts":"मसुदे",
+    "event_participate_your_submissions":"सादर केलेले साहित्य ",
+    "event_participate_accepted_message":"आम्ही आपली प्रविष्टी स्वीकारली आहे आणि कार्यक्रम समाप्त झाल्यानंतर आम्ही आपली सामग्री प्रकाशित करणार आहोत.",
+    "event_participate_drafted_item_edit":"आपण आधीपासून खालील साहित्याचा /साहित्यांचा मसुदा केलेला आहे. तो संपादित करण्यासाठी किंवा खाली एक नवीन तयार करण्यासाठी त्यावर क्लिक करा.",
+    "event_participate_last_edited_on":"अखेरचे संपादन केले ",
+    "event_participate_finish":"समाप्त",
+    "event_participate_confirm_submission":"सादरीकरणाची पुष्टी करा",
+    "event_participate_cannot_change_drafts":"एकदा सादर केल्यांनतर आपणास पुन्हा साहित्यात बदल करता येणार नाही, आपणास खात्रीपूर्वक हे साहित्य सादर करावयाचे आहे?",
+    "event_participate_check_your_entry_here":"आपण केलेली नोंदणी येथे पहा "
 }
