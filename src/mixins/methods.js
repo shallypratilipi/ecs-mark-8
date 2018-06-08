@@ -348,7 +348,6 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventName !== 'VIEWED_RATEREV_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_READER' &&
-            eventName !== 'STARTCHAT_USERM_USER' &&
             eventName !== 'SENDMESSAGE_USERCHAT_P2PCHAT' &&
             eventName !== 'CLICKUSER_USERCHAT_P2PCHAT' &&
             eventName !== 'BLOCKUSER_USERCHAT_P2PCHAT' &&
