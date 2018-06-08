@@ -337,11 +337,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             'DEVICE_TYPE': isMobile() ? 'MOBILE':'DESKTOP',
             'WEBSITE_TYPE': 'MARK8',
             'EXPERIMENT_ID': experimentType,
-<<<<<<< HEAD
             'ENVIRONMENT': 'PROD_BRIDGE',
-=======
-            'ENVIRONMENT': 'PROD',
->>>>>>> c6f793fd7b1f122376aea0cf03233102241c36d5
             'CONTENT_LANGUAGE': getCurrentLanguage().fullName.toUpperCase(),
             'SCREEN_LOCATION': eventProps.SCREEN_NAME + '_' + eventProps.LOCATION
         }
@@ -351,10 +347,6 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventName !== 'VIEWANDROID_OPENAPP_READER' &&
             eventName !== 'VIEWED_RATEREV_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_BOOK' &&
-<<<<<<< HEAD
-            eventName !== 'VIEWED_RECOMMENDBOOK_READER') {
-            amplitude.getInstance().logEvent(eventName, eventProps);
-=======
             eventName !== 'VIEWED_RECOMMENDBOOK_READER' &&
             eventName !== 'STARTCHAT_USERM_USER' &&
             eventName !== 'SENDMESSAGE_USERCHAT_P2PCHAT' &&
@@ -371,8 +363,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventName !== 'STARTCHAT_NEWCHATS_NOTIFS' &&
             eventName !== 'VIEWALLCHATS_NEWCHATS_NOTIFS' &&
             eventName !== 'LANDED_NEWCHATS_NOTIFS') {
-            // amplitude.getInstance().logEvent(eventName, eventProps);
->>>>>>> c6f793fd7b1f122376aea0cf03233102241c36d5
+            amplitude.getInstance().logEvent(eventName, eventProps);
         } else {
             console.info('SKIPPING EVENT');
         }
