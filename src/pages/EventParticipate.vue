@@ -779,7 +779,7 @@ export default {
 
                     ed.on("keyup", function(event){
                         that.setAndLocateSuggestionDropdown();
-                        that.chapters[that.selectedChapter].content = tinymce.activeEditor.getContent();
+                        that.chapters[that.selectedChapter].content = tinymce.activeEditor.getContent({format : 'raw'});
 
                         if (event.code === 'Space' || event.code === 'Enter' || (event.code === 'ArrowDown' && that.suggestions.length > 0) || (event.code === 'ArrowUp' && that.suggestions.length > 0)) {
                             return;
