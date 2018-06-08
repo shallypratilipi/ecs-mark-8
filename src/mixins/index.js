@@ -23,7 +23,9 @@ import {
     openInNewTab,
     openPratilipiModal,
     getCookie,
-    setCookie
+    setCookie,
+    isCurrentEvent,
+    openPrimaryConfirmationModal
 } from './methods'
 import { defaultAuthorImage } from './data'
 
@@ -58,6 +60,8 @@ export default {
         openInNewTab,
         openPratilipiModal,
         getCookie,
-        setCookie
+        setCookie,
+        isCurrentEvent,
+        openPrimaryConfirmationModal
     }
 }

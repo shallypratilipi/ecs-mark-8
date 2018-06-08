@@ -511,7 +511,6 @@
     "report_button": "റിപ്പോർട്ട് ചെയ്യുക",
     "report_title": "പ്രധാന പ്രശ്നം",
     "report_issue": "പ്രശ്നം വിശദമായി",
-    "reader_read_in_app_helper_text": "മൊബൈല്‍ ആപ്പില്‍ വായിക്കൂ",
     "hour": "മണിക്കൂര്‍",
     "hours": "മണിക്കൂര്‍",
     "minute": "മിനിറ്റ്",
@@ -554,5 +553,16 @@
     "chat_no_msgs": "മെസ്സേജുകള്‍ ഒന്നും ഇല്ല",
     "chat_no_unread_msgs": "വായിക്കാത്ത മെസ്സേജുകള്‍ ഒന്നും ഇല്ല",
     "chat_yesterday": "ഇന്നലെ",
-    "chat_today": "ഇന്ന്"
+    "chat_today": "ഇന്ന്",
+
+    "event_participate":"പങ്കെടുക്കൂ ",
+    "event_participate_your_drafts":"താങ്കളുടെ ഡ്രാഫ്റ്റുകള്‍",
+    "event_participate_your_submissions":"താങ്കള്‍ സമര്‍പ്പിച്ച എന്‍ട്രികള്‍ ",
+    "event_participate_accepted_message":"താങ്കളുടെ രചന സ്വീകരിച്ചിരിക്കുന്നു . മറ്റ് മത്സരരചനകളോടൊപ്പം  ഇതും പ്രസിദ്ധീകരിക്കുന്നതാണ് ",
+    "event_participate_drafted_item_edit":"താങ്കള്‍ക്ക് ഇപ്പോള്‍ തന്നെ ഈ പൂര്‍ത്തിയാക്കാത്ത ഡ്രാഫ്റ്റുകള്‍ ഉണ്ട് .അവയില്‍ ക്ലിക്ക് ചെയ്ത് എഡിറ്റ് ചെയ്യുകയോ , അല്ലെങ്കില്‍ പുതിയ ഒരെണ്ണം ഉണ്ടാക്കുകയോ ചെയ്യൂ ",
+    "event_participate_last_edited_on":"അവസാനമായി എഡിറ്റ് ചെയ്തത് ",
+    "event_participate_finish":"പൂര്‍ത്തിയാക്കൂ ",
+    "event_participate_confirm_submission":"സമര്‍പ്പിക്കൂ ",
+    "event_participate_cannot_change_drafts":"സമര്‍പ്പിച്ചു കഴിഞ്ഞ ശേഷം മാറ്റങ്ങള്‍ വരുത്താന്‍ സാധിക്കില്ല .ഇപ്പോള്‍ ഉറപ്പായും സമര്‍പ്പിക്കണോ ?",
+    "event_participate_check_your_entry_here":"താങ്കളുടെ രചന ഇവിടെ ഉണ്ടോ എന്ന് നോക്കൂ "
 }

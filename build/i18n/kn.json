@@ -511,7 +511,6 @@
     "report_button": "ಸಮಸ್ಯೆ ತಿಳಿಸಿ",
     "report_title": "ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ",
     "report_issue": "ಸಮಸ್ಯೆ",
-    "reader_read_in_app_helper_text": "ಅಪ್ಲಿಕೇಶನ್ನಿನಲ್ಲಿ ಓದಿರಿ",
     "hour": "ಗಂಟೆ",
     "hours": "ಗಂಟೆಗಳು",
     "minute": "ನಿಮಿಷ",
@@ -554,5 +553,16 @@
     "chat_no_msgs": "ನಿಮಗೆ ಯಾವುದೇ ಸಂದೇಶ ಇರುವುದಿಲ್ಲ",
     "chat_no_unread_msgs": "ನಿಮಗೆ ಯಾವುದೇ ಓದದ ಸಂದೇಶ ಇರುವುದಿಲ್ಲ",
     "chat_yesterday": "ನಿನ್ನೆ",
-    "chat_today": "ಇಂದು"
+    "chat_today": "ಇಂದು",
+
+    "event_participate":"ಭಾಗವಹಿಸಿ ",
+    "event_participate_your_drafts":"ನಿಮ್ಮ ಡ್ರಾಫ್ಟ್ಗಳು ",
+    "event_participate_your_submissions":"ಈ ಈವೆಂಟಿನ ನಿಮ್ಮ ಬರಹಗಳು ",
+    "event_participate_accepted_message":"ನಿಮ್ಮ ಬರಹದ ನಮೂದನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ಇವೆಂಟ್ ಮುಗಿದ ಬಳಿಕ ಇದು ಪ್ರತಿಲಿಪಿಯಲ್ಲಿ ಲಭ್ಯವಾಗುತ್ತವೆ.",
+    "event_participate_drafted_item_edit":"ನಿಮ್ಮ ಬರಹ ಈಗಾಗಲೇ ಡ್ರಾಫ್ಟ್ ನಲ್ಲಿ ಇದೆ. ಅದನ್ನು ಎಡಿಟ್ ಮಾಡಿ ಅಥವಾ ಹೊಸ ಬರಹವನ್ನು ಬರೆಯಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+    "event_participate_last_edited_on":"ಕೊನೆಯದಾಗಿ ಎಡಿಟ್ ಮಾಡಿದ ದಿನಾಂಕ",
+    "event_participate_finish":"ಮುಕ್ತಾಯ ",
+    "event_participate_confirm_submission":"ಸಬ್ಮಿಟ್ ಮಾಡಲು ಖಾತ್ರಿಪಡಿಸಿ",
+    "event_participate_cannot_change_drafts":"ಸಬ್ಮಿಟ್ ಮಾಡಿದ ಬಳಿಕ ನಿಮ್ಮ ಬರಹವನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಖಾತ್ರಿಯಾಗಿ ಸಬ್ಮಿಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ ?",
+    "event_participate_check_your_entry_here":"ನಿಮ್ಮ ಇವೆಂಟ್ ಬರಹಗಳನ್ನು ಇಲ್ಲಿ ಪರಿಶೀಲಿಸಿ "
 }

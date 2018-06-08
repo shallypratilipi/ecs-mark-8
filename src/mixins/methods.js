@@ -115,6 +115,10 @@ export function openConfirmationModal() {
     $('#confirmation').modal('show');
 }
 
+export function openPrimaryConfirmationModal() {
+    $('#confirmation-primary').modal('show');
+}
+
 export function openWritePratilipiModal() {
     $('#writermodal').modal('show');
 }
@@ -160,6 +164,23 @@ export function getLowResolutionImage(imageUrl) {
         return imageUrl + `?quality=low&type=${type}&width=50`;
     } else {
         return imageUrl + `&quality=low&type=${type}&width=50`;
+    }
+}
+
+// For Author Image
+export function getMediumResolutionImage(imageUrl) {
+    let type;
+
+    if (isChrome()){
+        type = 'webp';
+    } else {
+        type = 'jpg';
+    }
+
+    if (imageUrl.indexOf('?') === -1) {
+        return imageUrl + `?quality=high&type=${type}&width=120`;
+    } else {
+        return imageUrl + `&quality=high&type=${type}&width=120`;
     }
 }
 
@@ -217,27 +238,36 @@ export function setAnalyticsUserProperty(propertyName, propertyValue) {
     if (!window.FB) {
         setTimeout(() => {
             if (propertyName === 'USER_ID') {
-                FB.AppEvents.setUserID(String(propertyValue));
+                try {
+                    FB.AppEvents.setUserID(String(propertyValue));
+                } catch (e) {}
             }
-            if (FB.AppEvents.getUserID() === undefined || FB.AppEvents.getUserID() === null || FB.AppEvents.getUserID().trim() === '') {
+            if (window.FB && FB.AppEvents.getUserID() === undefined || FB.AppEvents.getUserID() === null || FB.AppEvents.getUserID().trim() === '') {
                 return;
             }
-            FB.AppEvents.updateUserProperties(propertyObject, function (res, error) {
-                console.log(res);
-            });
+            try{
+                FB.AppEvents.updateUserProperties(propertyObject, function (res, error) {
+                    console.log(res);
+                });
+            } catch (e) {}
         }, 15000);
     } else {
         if (propertyName === 'USER_ID') {
-            FB.AppEvents.setUserID(String(propertyValue));
+            try {
+                FB.AppEvents.setUserID(String(propertyValue));
+            } catch (e) {}
         }
         if (FB.AppEvents.getUserID() === undefined || FB.AppEvents.getUserID() === null || FB.AppEvents.getUserID().trim() === '') {
             return;
         }
-        FB.AppEvents.updateUserProperties(propertyObject, function (res) {
-            console.log("FACEBOOK USER_PROPS: ", res);
-        });
+
+        try {
+            FB.AppEvents.updateUserProperties(propertyObject, function (res) {
+                console.log("FACEBOOK USER_PROPS: ", res);
+            });
+        } catch(e) {}
     }
-    
+
 }
 
 
@@ -278,7 +308,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventProps = { ...controlAnalyticsEvents[eventName] };
             break;
     }
-    
+
     if (!eventProps.SCREEN_NAME) {
         eventProps.SCREEN_NAME = eventProperty['SCREEN_NAME'];
         delete eventProperty.SCREEN_NAME;
@@ -307,22 +337,46 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             'DEVICE_TYPE': isMobile() ? 'MOBILE':'DESKTOP',
             'WEBSITE_TYPE': 'MARK8',
             'EXPERIMENT_ID': experimentType,
+<<<<<<< HEAD
             'ENVIRONMENT': 'PROD_BRIDGE',
+=======
+            'ENVIRONMENT': 'PROD',
+>>>>>>> c6f793fd7b1f122376aea0cf03233102241c36d5
             'CONTENT_LANGUAGE': getCurrentLanguage().fullName.toUpperCase(),
             'SCREEN_LOCATION': eventProps.SCREEN_NAME + '_' + eventProps.LOCATION
         }
-        console.log(eventName, eventProperty, eventProps);
+        console.info(eventName, eventProperty, eventProps);
         if (eventName !== 'VIEWED_APPBANNER_GLOBAL' &&
             eventName !== 'VIEWED_AUTHORDETAIL_BOOK' &&
             eventName !== 'VIEWANDROID_OPENAPP_READER' &&
             eventName !== 'VIEWED_RATEREV_BOOK' &&
             eventName !== 'VIEWED_RECOMMENDBOOK_BOOK' &&
+<<<<<<< HEAD
             eventName !== 'VIEWED_RECOMMENDBOOK_READER') {
             amplitude.getInstance().logEvent(eventName, eventProps);
+=======
+            eventName !== 'VIEWED_RECOMMENDBOOK_READER' &&
+            eventName !== 'STARTCHAT_USERM_USER' &&
+            eventName !== 'SENDMESSAGE_USERCHAT_P2PCHAT' &&
+            eventName !== 'CLICKUSER_USERCHAT_P2PCHAT' &&
+            eventName !== 'BLOCKUSER_USERCHAT_P2PCHAT' &&
+            eventName !== 'UNBLOCKUSER_USERCHAT_P2PCHAT' &&
+            eventName !== 'DELETECHAT_USERCHAT_P2PCHAT' &&
+            eventName !== 'VIEWALLCHATS_USERCHAT_P2PCHAT' &&
+            eventName !== 'DELETECHAT_ALLCHATS_P2PCHAT' &&
+            eventName !== 'UNBLOCKUSER_ALLCHATS_P2PCHAT' &&
+            eventName !== 'BLOCKUSER_ALLCHATS_P2PCHAT' &&
+            eventName !== 'STARTCHAT_ALLCHATS_P2PCHAT' &&
+            eventName !== 'DELETECHAT_ALLCHATS_P2PCHAT' &&
+            eventName !== 'STARTCHAT_NEWCHATS_NOTIFS' &&
+            eventName !== 'VIEWALLCHATS_NEWCHATS_NOTIFS' &&
+            eventName !== 'LANDED_NEWCHATS_NOTIFS') {
+            // amplitude.getInstance().logEvent(eventName, eventProps);
+>>>>>>> c6f793fd7b1f122376aea0cf03233102241c36d5
         } else {
-            console.log('SKIPPING EVENT');
+            console.info('SKIPPING EVENT');
         }
-        
+
         ga('send', {
             hitType: 'event',
             eventCategory: eventProps.LOCATION,
@@ -334,14 +388,16 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
 
         if (!window.fbApiInit) {
             setTimeout(() => {
-                FB.AppEvents.logEvent(eventName, null, eventProperty)
+                try {
+                    FB.AppEvents.logEvent(eventName, null, eventProperty)
+                } catch (e) {}
             }, 15000);
         } else {
             FB.AppEvents.logEvent(eventName, null, eventProperty)
         }
-        
+
     } else {
-        console.log('NON REGISTERED EVENT: ', eventName);
+        console.info('NON REGISTERED EVENT: ', eventName);
     }
 }
 
@@ -384,4 +440,28 @@ export function setCookie( name, value, days, path ) {
         expires = "expires=" + date.toGMTString() + ";";
     }
     document.cookie = name + "=" + ( value ? value : "" ) + ";" + expires + "path=" + ( path ? path : '/' );
+}
+
+export function isCurrentEvent( eventId ) {
+
+    let isItCurrentEvent = false;
+
+
+    if(!eventId) {
+        return isItCurrentEvent;
+    }
+
+    if ( eventId == 6900000000000074 || eventId == 6900000000000075 || eventId == 6900000000000077 || eventId == 6900000000000078 ){
+        isItCurrentEvent = true;
+    }
+    //
+    // constants.CATEGORY_DATA.sections.forEach((eachSection) => {
+    //     eachSection.categories.forEach((eachCategory) => {
+    //         if (eachCategory && eachCategory.pratilipiListData && eachCategory.pratilipiListData.eventId == eventId) {
+    //             isItCurrentEvent = true;
+    //         }
+    //     });
+    // });
+
+    return isItCurrentEvent;
 }

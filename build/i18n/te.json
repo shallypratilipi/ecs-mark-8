@@ -511,7 +511,6 @@
     "report_button": "రిపోర్ట్",
     "report_title": "రిపోర్ట్ యొక్క టైటిల్",
     "report_issue": "సమస్య",
-    "reader_read_in_app_helper_text": "యాప్ లో చడవండి",
     "hour": "గంటలు",
     "hours": "గంటలు",
     "minute": "నిమిషం",
@@ -554,5 +553,16 @@
     "chat_no_msgs": "మీకు ఏ సందేశాలు లేవు",
     "chat_no_unread_msgs": "మీకు చదవని సందేశాలు లేవు",
     "chat_yesterday": "నిన్న",
-    "chat_today": "నేడు"
+    "chat_today": "నేడు",
+
+    "event_participate":"పాల్గొనండి",
+    "event_participate_your_drafts":"మీ డ్రాఫ్ట్స్ ",
+    "event_participate_your_submissions":"మీ సమర్పణలు",
+    "event_participate_accepted_message":"మీ రచనను పోటీకి అంగీకరించాము. గడువు తేదికి రెండు రోజులు ముందుగ మీ రచనను ప్రచురిస్తాము. ",
+    "event_participate_drafted_item_edit":"మీ రచనలు ఇప్పటికే  డ్రాఫ్ట్స్ లో ఉన్నాయి.సవరించడానికి క్లిక్ చేయండి లేదా కొత్త రచన వ్రాయడానికి దిగువ క్లిక్ చేయండి.",
+    "event_participate_last_edited_on":"చివరిగా సవరించబడినది ",
+    "event_participate_finish":"ముగించు",
+    "event_participate_confirm_submission":"సమర్పణను నిర్ధారించండి",
+    "event_participate_cannot_change_drafts":"చివరి సమర్పణ తర్వాత మీ రచనను మీరు మార్చలేరు, మీరు ఖచ్చితంగా సమర్పించదలిచారా?",
+    "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి"
 }
