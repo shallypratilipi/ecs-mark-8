@@ -478,8 +478,8 @@ export default {
 
             $(".container-fluid").css({"background-color": "#F4ECD8",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
-               
-            
+
+
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
@@ -760,6 +760,10 @@ export default {
         left:0;
         width: 100%;
         height: 2px;
+        height: 14px;
+        @media screen and (max-width: 768px ) {
+            height: 2px;
+          }
         margin-bottom: 0px;
         position: fixed;
         top: 47px;
