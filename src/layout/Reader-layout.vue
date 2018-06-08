@@ -2,14 +2,14 @@
     <div>
         <slot></slot>
         <LoginModal></LoginModal>
-        <!--<ShareModal></ShareModal>-->
+        <ShareModal></ShareModal>
         <Alert :isReader="true"></Alert>
     </div>
 </template>
 
 <script>
 import LoginModal from '@/components/LoginModal.vue';
-// import ShareModal from '@/components/Share.vue';
+import ShareModal from '@/components/Share.vue';
 import Alert from '@/components/Alert.vue';
 import constants from '@/constants';
 import mixins from '@/mixins';
@@ -19,7 +19,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
     components: {
         LoginModal,
-        // ShareModal,
+        ShareModal,
         Alert
     },
     mixins: [
