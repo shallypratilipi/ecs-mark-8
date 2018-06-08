@@ -360,7 +360,7 @@ export default {
                 action: `eventparticipate/updateDescriptionAndTags`,
                 heading: 'event_participate_confirm_submission',
                 message: 'event_participate_cannot_change_drafts',
-                data: { eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description, state: 'SUBMITTED' }
+                data: { eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description || '', state: 'SUBMITTED' }
             });
             this.openPrimaryConfirmationModal();
         },
