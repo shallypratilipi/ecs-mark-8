@@ -18,7 +18,7 @@ import SettingsPageComponent from '@/pages/Settings.vue'
 import ReaderPageComponent from '@/pages/Reader.vue'
 import InterviewsPageComponent from '@/pages/Interviews.vue'
 import InterviewPageComponent from '@/pages/Interview.vue'
-import NewsLetterUnSuscribePageComponent from '@/pages/NewsLetterUnSuscribe.vue'
+// import NewsLetterUnSuscribePageComponent from '@/pages/NewsLetterUnSuscribe.vue'
 import LibraryPageComponent from '@/pages/Library.vue'
 import StaticComponent from '@/pages/Static.vue'
 import MessagesComponent from '@/pages/Messages.vue'
@@ -206,15 +206,15 @@ var router = new Router({
                 'title': '__("seo_home_page")',
                 'id_prop': 'interview_id'
             }
-        }, {
-            path: '/news-letter/unsuscribe',
-            name: 'News_Letter',
-            component: NewsLetterUnSuscribePageComponent,
-            meta: {
-                'store': 'interviewpage',
-                'title': '__("seo_home_page")',
-                'id_prop': 'interview_id'
-            }
+        // }, {
+        //     path: '/news-letter/unsuscribe',
+        //     name: 'News_Letter',
+        //     component: NewsLetterUnSuscribePageComponent,
+        //     meta: {
+        //         'store': 'interviewpage',
+        //         'title': '__("seo_home_page")',
+        //         'id_prop': 'interview_id'
+        //     }
         }, {
             path: '/library',
             name: 'Library_Page',
