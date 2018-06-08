@@ -30,6 +30,7 @@
                 <button type="button" @click="validateAndLoginUser({email, password})" class="btn sign-in">__("user_sign_in")</button>
                 <a v-if="!openForgotPasswordInTab" @click="triggerEventAndOpenForgotPasswordModal" href="#" class="forgot-pass">__("user_forgot_password")</a>
                 <router-link v-else :to="'/login#forgot-pass'" target="_blank" class="forgot-pass">__("user_forgot_password")</router-link>
+                <ForgetPassword></ForgetPassword>
                 <div class="terms-section">
                     <span>__("user_is_new")</span>
                     <a href="#" v-on:click="tabsignup" data-tab="signup">__("user_sign_up_for_pratilipi")</a>
@@ -49,6 +50,7 @@ import mixins from '@/mixins';
 import Spinner from '@/components/Spinner.vue';
 import GoogleLogin from '@/components/GoogleLogin';
 import FacebookLogin from '@/components/FacebookLogin';
+import ForgetPassword from '@/components/ForgetPasswordModal';
 
 export default {
     name: 'Login-Form',
@@ -108,7 +110,8 @@ export default {
     components: {
         GoogleLogin,
         FacebookLogin,
-        Spinner
+        Spinner,
+        ForgetPassword
     },
     created() {
     }

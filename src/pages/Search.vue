@@ -8,8 +8,8 @@
                         <div class="head-title" v-if="getAuthorListData.length !== 0">__("search_results_authors")</div>
                         <div class="author-section" v-if="getAuthorListData.length !== 0">
                             <slick ref="slick" :options="slickOptions">
-                                <AuthorCard v-for="eachAuthor in getAuthorListData" 
-                                    :key="eachAuthor.authorId" 
+                                <AuthorCard v-for="eachAuthor in getAuthorListData"
+                                    :key="eachAuthor.authorId"
                                     :authorData="eachAuthor"
                                     :screenName="'SEARCH'"
                                     :screenLocation="'USERRESULT'"
@@ -58,7 +58,7 @@ export default {
     data() {
         return {
             slickOptions: {
-                infinite: false,
+                infinite: true,
                 adaptiveHeight: false,
                 variableWidth: true,
                 draggable: true,
@@ -97,11 +97,11 @@ export default {
             const { list_page_url } = this.$route.params;
 
             if (newScrollPosition > nintyPercentOfList && this.getPratilipiListLoadingState !== 'LOADING' && this.getPratilipiListCursor !== null) {
-                
+
                 const currentLocale = process.env.LANGUAGE;
                 constants.LANGUAGES.forEach((eachLanguage) => {
                     if (eachLanguage.shortName === currentLocale) {
-                        this.fetchMorePratilipisForSearchPage({ 
+                        this.fetchMorePratilipisForSearchPage({
                             searchQuery: this.$route.query.q,
                             language: eachLanguage.fullName.toUpperCase(),
                             resultCount: 10
@@ -116,7 +116,7 @@ export default {
             const currentLocale = process.env.LANGUAGE;
             constants.LANGUAGES.forEach((eachLanguage) => {
                 if (eachLanguage.shortName === currentLocale) {
-                    this.fetchInitialSearchResult({ 
+                    this.fetchInitialSearchResult({
                         searchQuery: this.$route.query.q,
                         language: eachLanguage.fullName.toUpperCase(),
                     });
@@ -135,7 +135,7 @@ export default {
             const currentLocale = process.env.LANGUAGE;
             constants.LANGUAGES.forEach((eachLanguage) => {
                 if (eachLanguage.shortName === currentLocale) {
-                    this.fetchInitialSearchResult({ 
+                    this.fetchInitialSearchResult({
                         searchQuery: this.$route.query.q,
                         language: eachLanguage.fullName.toUpperCase(),
                     });
@@ -189,7 +189,7 @@ export default {
 <style lang="scss">
 	.back, .forward {
 		position: absolute;
-		top: 45%;
+		top: 38%;
 		z-index: 2;
 		background-color: #fff;
 		border-radius: 50%;
