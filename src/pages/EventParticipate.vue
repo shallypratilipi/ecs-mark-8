@@ -360,7 +360,7 @@ export default {
                 action: `eventparticipate/updateDescriptionAndTags`,
                 heading: 'event_participate_confirm_submission',
                 message: 'event_participate_cannot_change_drafts',
-                data: { eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description, state: 'SUBMITTED' }
+                data: { eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description || '', state: 'SUBMITTED' }
             });
             this.openPrimaryConfirmationModal();
         },
@@ -779,7 +779,7 @@ export default {
 
                     ed.on("keyup", function(event){
                         that.setAndLocateSuggestionDropdown();
-                        that.chapters[that.selectedChapter].content = tinymce.activeEditor.getContent();
+                        that.chapters[that.selectedChapter].content = tinymce.activeEditor.getContent({format : 'raw'});
 
                         if (event.code === 'Space' || event.code === 'Enter' || (event.code === 'ArrowDown' && that.suggestions.length > 0) || (event.code === 'ArrowUp' && that.suggestions.length > 0)) {
                             return;

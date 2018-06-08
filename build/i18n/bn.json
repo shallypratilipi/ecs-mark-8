@@ -551,11 +551,11 @@
     "event_participate":"অংশগ্রহণ করুন",
     "event_participate_your_drafts":"আপনার রচনা",
     "event_participate_your_submissions":"আপনার সাবমিশন্স",
-    "event_participate_accepted_message":"",
-    "event_participate_drafted_item_edit":"",
+    "event_participate_accepted_message":"আমরা আপনার এন্ট্রি গ্রহণ করেছি এবং ইভেন্টটি শেষ হওয়ার পর আমরা আপনার সামগ্রী প্রকাশ করব।",
+    "event_participate_drafted_item_edit":"আপনার ইতিমধ্যেই নিম্নলিখিত খসড়া আইটেম (গুলি) আছে এটি সম্পাদনা করতে ক্লিক করুন বা একটি নতুন রচনা তৈরি করুন।",
     "event_participate_last_edited_on":"শেষ সম্পাদন",
     "event_participate_finish":"শেষ",
-    "event_participate_confirm_submission":"",
-    "event_participate_cannot_change_drafts":"",
-    "event_participate_check_your_entry_here":"এখানে আপনার রচনা দেখুন"
+    "event_participate_confirm_submission":"জমা দেওয়ার নিশ্চিত করুন",
+    "event_participate_cannot_change_drafts":"জমা দেওয়ার পরে আপনি আপনার এন্ট্রি পরিবর্তন করতে পারবেন না, আপনি কি তা জমা দিতে চান?",
+    "event_participate_check_your_entry_here":"এখানে আপনার এন্ট্রি চেক করুন"
 }
