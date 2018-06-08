@@ -105,6 +105,18 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label for="pratilipi-settings-newsletter-frequency">Newsletter frequency</label>
+                                            <select class="form-control" id="pratilipi-settings-newsletter-frequency" @input="updateNewsletterFrequency">
+                                                <option disabled selected>Newsletter Frequency</option>
+                                                <option :selected="'DAILY' === notificationSettings.newsletterFrequency" value="DAILY">__("email_frequency_daily")</option>
+                                                <option :selected="'WEEKLY' === notificationSettings.newsletterFrequency" value="WEEKLY">__("email_frequency_weekly")</option>
+                                                <option :selected="'MONTHLY' === notificationSettings.newsletterFrequency" value="MONTHLY">__("email_frequency_monthly")</option>
+                                                <option :selected="'NEVER' === notificationSettings.newsletterFrequency" value="NEVER">__("email_frequency_never")</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="section-title">__("notification_group_content")</div>
                                     <div class="form-row">
                                         <div class="form-check">
@@ -212,6 +224,7 @@ export default {
             },
             notificationSettings: {
                 emailFrequency: 'IMMEDIATELY',
+                newsletterFrequency: 'DAILY',
                 notificationSubscriptions: {
                     AUTHOR: null,
                     AUTHOR_FOLLOW: null,
@@ -289,6 +302,9 @@ export default {
         },
         updateEmailFrequency(e) {
             this.notificationSettings.emailFrequency = e.target.selectedOptions[0].value;
+        },
+        updateNewsletterFrequency(e) {
+            this.notificationSettings.newsletterFrequency = e.target.selectedOptions[0].value;
         },
         updateGender(e) {
             this.authorData.gender = e.target.selectedOptions[0].value;
@@ -459,6 +475,7 @@ export default {
                 var node = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
                 node.set({
                     "emailFrequency": that.notificationSettings[ "emailFrequency" ],
+                    "newsletterFrequency": that.notificationSettings[ "newsletterFrequency" ],
                     "notificationSubscriptions": that.notificationSettings[ "notificationSubscriptions" ],
                     "lastUpdated": firebase.database.ServerValue.TIMESTAMP
                 });
@@ -475,6 +492,27 @@ export default {
         'getUserDetails.isGuest'(isGuest) {
             if (isGuest) {
                 this.$router.push('login');
+            } else {
+                const that = this;
+                import('firebase').then((firebase) => {
+                    if (firebase.apps.length === 0) {
+                        const config = {
+                            apiKey: process.env.FIREBASE_API_KEY,
+                            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                            databaseURL: process.env.FIREBASE_DATABASE_URL,
+                            storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                        };
+                        firebase.initializeApp(config);
+                    }
+                    const that = this;
+                    const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
+                    userPreferencesNode.on( 'value', function( snapshot ) {
+                        const userPreferences = snapshot.val() != null ? snapshot.val() : {};
+                        console.log(userPreferences);
+
+                        that.notificationSettings = userPreferences;
+                    });
+                });
             }
         },
         'getLogoutStatus'(loggedOut) {
@@ -536,6 +574,13 @@ export default {
     },
     mounted() {
         // Hide Footer when keyboard comes
+        if (this.$route.query && this.$route.query.action === "notification") {
+            $(".settings-menu a").removeClass("active");
+            $("a[data-tab='notification-settings']").addClass("active");
+            $(".tabs").hide();
+            $("#notification-settings").show();
+        }
+
         if (this.isMobile()) {
             $(document).on('focus', 'input, textarea', function() {
                 $(".footer-menu").css("height", "0")
