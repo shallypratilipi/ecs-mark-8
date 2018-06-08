@@ -25,6 +25,7 @@ import alert from './modules/alert'
 import pratilipimodal from './modules/pratilipimodal'
 import inputmodal from './modules/inputmodal'
 import messages from  './modules/messages'
+import eventparticipate from  './modules/eventparticipate'
 
 Vue.use(Vuex);
 
@@ -54,6 +55,7 @@ export default new Vuex.Store({
         alert,
         pratilipimodal,
         inputmodal,
-        messages
+        messages,
+        eventparticipate
     }
 })

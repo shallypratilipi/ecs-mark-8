@@ -18,11 +18,13 @@ import SettingsPageComponent from '@/pages/Settings.vue'
 import ReaderPageComponent from '@/pages/Reader.vue'
 import InterviewsPageComponent from '@/pages/Interviews.vue'
 import InterviewPageComponent from '@/pages/Interview.vue'
+import NewsLetterUnSuscribePageComponent from '@/pages/NewsLetterUnSuscribe.vue'
 import LibraryPageComponent from '@/pages/Library.vue'
 import StaticComponent from '@/pages/Static.vue'
 import MessagesComponent from '@/pages/Messages.vue'
 import MessageUserComponent from '@/pages/MessageUser.vue'
 import PasswordResetPageComponent from '@/pages/PasswordReset.vue'
+import EventParticipatePageComponent from '@/pages/EventParticipate.vue'
 
 
 import { getCookie } from '@/mixins/methods'
@@ -205,6 +207,15 @@ var router = new Router({
                 'id_prop': 'interview_id'
             }
         }, {
+            path: '/news-letter/unsuscribe',
+            name: 'News_Letter',
+            component: NewsLetterUnSuscribePageComponent,
+            meta: {
+                'store': 'interviewpage',
+                'title': '__("seo_home_page")',
+                'id_prop': 'interview_id'
+            }
+        }, {
             path: '/library',
             name: 'Library_Page',
             component: LibraryPageComponent,
@@ -283,6 +294,22 @@ var router = new Router({
                 'title': 'Messages | __("pratilipi")',
                 'store': 'messageuser'
             }
+        }, {
+            path: '/event/:eventSlug/participate',
+            meta: {
+                'title': '__("seo_home_page")',
+                'id_prop': 'eventSlug',
+                'store': 'eventparticipate'
+            },
+            component: EventParticipatePageComponent
+        }, {
+            path: '/event/:eventSlug/participate/:eventPratilipiId',
+            meta: {
+                'title': '__("seo_home_page")',
+                'id_prop': 'eventSlug',
+                'store': 'eventparticipate'
+            },
+            component: EventParticipatePageComponent
         }, {
             path: '/:list_page_url',
             name: 'List_Page',
