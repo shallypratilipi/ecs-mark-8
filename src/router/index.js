@@ -18,7 +18,7 @@ import SettingsPageComponent from '@/pages/Settings.vue'
 import ReaderPageComponent from '@/pages/Reader.vue'
 import InterviewsPageComponent from '@/pages/Interviews.vue'
 import InterviewPageComponent from '@/pages/Interview.vue'
-// import NewsLetterUnSuscribePageComponent from '@/pages/NewsLetterUnSuscribe.vue'
+// import NewsletterUnSubscribePageComponent from '@/pages/NewsletterUnSubscribe.vue'
 import LibraryPageComponent from '@/pages/Library.vue'
 import StaticComponent from '@/pages/Static.vue'
 import MessagesComponent from '@/pages/Messages.vue'
@@ -176,6 +176,13 @@ var router = new Router({
             }
         }, {
             path: '/notifications',
+            beforeEnter: (to, from, next) => {
+                if(to.query.action && to.query.action === "settings" ) {
+                    next('/settings?action=notification');
+                } else {
+                    next();
+                }
+            },
             name: 'Notification',
             component: NotificationComponent,
             meta: {
@@ -207,13 +214,11 @@ var router = new Router({
                 'id_prop': 'interview_id'
             }
         // }, {
-        //     path: '/news-letter/unsuscribe',
-        //     name: 'News_Letter',
-        //     component: NewsLetterUnSuscribePageComponent,
+        //     path: '/newsletter/unsubscribe',
+        //     name: 'Newsletter',
+        //     component: NewsletterUnSubscribePageComponent,
         //     meta: {
-        //         'store': 'interviewpage',
-        //         'title': '__("seo_home_page")',
-        //         'id_prop': 'interview_id'
+        //         'title': '__("seo_home_page")'
         //     }
         }, {
             path: '/library',

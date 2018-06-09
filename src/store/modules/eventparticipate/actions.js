@@ -73,7 +73,7 @@ export default {
                 content: encodeURIComponent(eachChapter.content)
             });
         })
-        DataAccessor.bulkSaveChapters(eventPratilipiId, JSON.stringify(finalContents), (contentData) => {
+        DataAccessor.bulkSaveChapters(eventPratilipiId, encodeURIComponent(JSON.stringify({ encodedContent: encodeURIComponent(JSON.stringify(finalContents)) })), (contentData) => {
             if (contentData) {
                 commit('setContentCreateOrUpdateStateSuccess', contentData);
             } else {

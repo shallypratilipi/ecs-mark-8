@@ -328,7 +328,8 @@ export default {
                     eventPratilipiId: this.$route.params.eventPratilipiId,
                     title: this.title,
                     titleEn: this.titleEn,
-                    type: this.type
+                    type: this.type,
+                    language: this.getCurrentLanguage().fullName.toUpperCase()
                 });
             } else {
                 const { eventId } = this.getEventData;
