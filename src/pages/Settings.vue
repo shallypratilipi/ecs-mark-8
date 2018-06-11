@@ -226,16 +226,16 @@ export default {
                 emailFrequency: 'IMMEDIATELY',
                 newsletterFrequency: 'DAILY',
                 notificationSubscriptions: {
-                    AUTHOR: null,
-                    AUTHOR_FOLLOW: null,
-                    COMMENT_REVIEW_REVIEWER: null,
-                    EVENT: null,
-                    GENERIC: null,
-                    PRATILIPI: null,
-                    PRATILIPI_PUBLISHED_FOLLOWER: null,
-                    USER_PRATILIPI_REVIEW: null,
-                    VOTE_COMMENT_REVIEW_COMMENTOR: null,
-                    VOTE_REVIEW_REVIEWER: null
+                    AUTHOR: true,
+                    AUTHOR_FOLLOW: true,
+                    COMMENT_REVIEW_REVIEWER: true,
+                    EVENT: true,
+                    GENERIC: true,
+                    PRATILIPI: true,
+                    PRATILIPI_PUBLISHED_FOLLOWER: true,
+                    USER_PRATILIPI_REVIEW: true,
+                    VOTE_COMMENT_REVIEW_COMMENTOR: true,
+                    VOTE_REVIEW_REVIEWER: true
                 }
             }
         }
@@ -473,7 +473,7 @@ export default {
             const that = this;
             import('firebase').then((firebase) => {
                 var node = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
-                node.set({
+                node.update({
                     "emailFrequency": that.notificationSettings[ "emailFrequency" ],
                     "newsletterFrequency": that.notificationSettings[ "newsletterFrequency" ],
                     "notificationSubscriptions": that.notificationSettings[ "notificationSubscriptions" ],
@@ -507,10 +507,15 @@ export default {
                     const that = this;
                     const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
                     userPreferencesNode.on( 'value', function( snapshot ) {
-                        const userPreferences = snapshot.val() != null ? snapshot.val() : {};
+                        const userPreferences = snapshot.val();
                         console.log(userPreferences);
-
-                        that.notificationSettings = userPreferences;
+                        if(userPreferences) {
+                            that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
+                            that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                            if(userPreferences.notificationSubscriptions) {
+                                that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
+                            }
+                        }
                     });
                 });
             }
@@ -607,10 +612,15 @@ export default {
             const that = this;
             const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
             userPreferencesNode.on( 'value', function( snapshot ) {
-                const userPreferences = snapshot.val() != null ? snapshot.val() : {};
+                const userPreferences = snapshot.val();
                 console.log(userPreferences);
-
-                that.notificationSettings = userPreferences;
+                if(userPreferences) {
+                    that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
+                    that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                    if(userPreferences.notificationSubscriptions) {
+                        that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
+                    }
+                }
             });
         });
     }
