@@ -51,7 +51,7 @@
                     } else {
                         that.setGuestUserProperties();
                     }
-                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD');
+                    that.setAnalyticsUserProperty('ENVIRONMENT', 'PROD_BRIDGE');
                     that.setAnalyticsUserProperty('CONTENT_LANGUAGE', that.getCurrentLanguage().fullName.toUpperCase());
                 };
             }
