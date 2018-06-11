@@ -64,6 +64,7 @@ export default {
             this.isLoading=true;
             const {userId} = this.$route.query;
             if(!userId) {
+                that.isLoading=false;
                 alert("Invalid URL");
                 return;
             }
