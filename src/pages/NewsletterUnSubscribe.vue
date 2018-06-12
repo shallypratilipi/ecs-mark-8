@@ -2,6 +2,7 @@
     <MainLayout>
         <div class="static-page page-wrap">
             <div class="container">
+                <Spinner v-if="isLoading"></Spinner>
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Unsubscribe Newsletter</h2>
@@ -49,7 +50,8 @@ export default {
     },
     data() {
         return {
-            unSubscribeOption: null
+            unSubscribeOption: null,
+            isLoading: false
         }
     },
     computed: {
@@ -59,20 +61,43 @@ export default {
 
         unSubscribeUser() {
             const that = this;
+            this.isLoading=true;
             const {userId} = this.$route.query;
             if(!userId) {
+                that.isLoading=false;
                 alert("Invalid URL");
                 return;
             }
-            import('firebase').then((firebase) => {
-               var node = firebase.database().ref( "PREFERENCE" ).child( userId );
-               node.set({
-                   "newsletterUnsubscribeReason": that.unSubscribeOption,
-                   "newsletterFrequency": "NEVER",
-                   "lastUpdated": firebase.database.ServerValue.TIMESTAMP
+            import('firebase').then(async (firebase) => {
+              if (firebase.apps.length === 0) {
+                const config = {
+                                apiKey: process.env.FIREBASE_API_KEY,
+                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                                databaseURL: process.env.FIREBASE_DATABASE_URL,
+                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                            };
+               firebase.initializeApp(config);
+              }
+               
+               let node = firebase.database().ref( "PREFERENCE" ).child( userId );
+               await node.update({
+                   newsletterUnsubscribeReason: that.unSubscribeOption,
+                   newsletterFrequency: "NEVER",
+                   lastUpdated: firebase.database.ServerValue.TIMESTAMP
+               })
+               .then(()=> {
+                  that.isLoading=false;
+                  alert("You have been successfully unsubscribed.");
+                  that.$router.push('/');
+               })
+               .catch(()=> {
+                  that.isLoading=false;
+                  alert("There was some error. Please try again")
                });
-               alert("You have been successfully unsubscribed.");
-               that.$router.push('/');
+           })
+           .catch(() => {
+              that.isLoading=false;
+              alert("There was some error. Please try again")
            });
         }
         
