@@ -440,7 +440,12 @@ export function isCurrentEvent( eventId ) {
         return isItCurrentEvent;
     }
 
-    if ( eventId == 6900000000000080 || eventId == 6900000000000079 || eventId == 6900000000000083 ){
+    if ( eventId == 6900000000000080 ||
+        eventId == 6900000000000079 ||
+        eventId == 6900000000000083 ||
+        eventId == 6900000000000075 ||
+        eventId == 6900000000000074 ||
+        eventId == 6900000000000077 ) {
         isItCurrentEvent = true;
     }
     //
