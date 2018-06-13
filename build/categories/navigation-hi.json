@@ -218,6 +218,17 @@
             "title": "कुछ नया",
             "categories": [
                 {
+                    "categoryUrl": "/event/प्रतिलिपि-कथा-सम्मान-2018-fxywqpab55",
+                    "title": "प्रतिलिपि कथा सम्मान 2018",
+                    "analyticsCategoryName": "event-stories",
+                    "imageFileName": "event_generic7.jpg",
+                    "pratilipiListData": {
+                        "language": "HINDI",
+                        "state": "PUBLISHED",
+                        "eventId": 6900000000000078
+                    }
+                },
+                {
                     "categoryUrl": "/sarvadhik-pathako-ki-pasand",
                     "title": "सर्वाधिक पाठकों की पसंद",
                     "analyticsCategoryName": "most-read",
@@ -279,17 +290,6 @@
                     "imageFileName": "blog.jpg",
                     "pratilipiListData": {
                         "language": "HINDI"
-                    }
-                },
-                {
-                    "categoryUrl": "/event/अगले-जनम-मोहे-बिटिया-ही-कीजो-gmtf6ga9w3",
-                    "title": "अगले जनम मोहे बिटिया ही कीजो",
-                    "analyticsCategoryName": "event-women",
-                    "imageFileName": "event_fiction.jpg",
-                    "pratilipiListData": {
-                        "language": "HINDI",
-                        "state": "PUBLISHED",
-                        "eventId": 6900000000000064
                     }
                 },
                 {
