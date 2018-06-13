@@ -107,9 +107,9 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6 col-sm-12">
-                                            <label for="pratilipi-settings-newsletter-frequency">Newsletter frequency</label>
+                                            <label for="pratilipi-settings-newsletter-frequency">__('newsletter_frequency')</label>
                                             <select class="form-control" id="pratilipi-settings-newsletter-frequency" @input="updateNewsletterFrequency">
-                                                <option disabled selected>Newsletter Frequency</option>
+                                                <option disabled selected>__('newsletter_frequency')</option>
                                                 <option :selected="'DAILY' === notificationSettings.newsletterFrequency" value="DAILY">__("email_frequency_daily")</option>
                                                 <option :selected="'WEEKLY' === notificationSettings.newsletterFrequency" value="WEEKLY">__("email_frequency_weekly")</option>
                                                 <option :selected="'MONTHLY' === notificationSettings.newsletterFrequency" value="MONTHLY">__("email_frequency_monthly")</option>
