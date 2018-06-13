@@ -18,7 +18,7 @@ import SettingsPageComponent from '@/pages/Settings.vue'
 import ReaderPageComponent from '@/pages/Reader.vue'
 import InterviewsPageComponent from '@/pages/Interviews.vue'
 import InterviewPageComponent from '@/pages/Interview.vue'
-// import NewsLetterUnSuscribePageComponent from '@/pages/NewsLetterUnSuscribe.vue'
+import NewsletterUnSubscribePageComponent from '@/pages/NewsletterUnSubscribe.vue'
 import LibraryPageComponent from '@/pages/Library.vue'
 import StaticComponent from '@/pages/Static.vue'
 import MessagesComponent from '@/pages/Messages.vue'
@@ -60,7 +60,21 @@ var router = new Router({
             component: Home,
              meta: {
                 'title': '__("home_page_title") | __("pratilipi")'
+            },
+                  beforeEnter: (to, from, next) => {
+            if (to.query.email && to.query.token && to.query.passwordReset) {
+                next({
+                    path: '/reset-password',
+                    query: {
+                        email: to.query.email,
+                        token: to.query.token
+                    }
+                });
+            } else {
+                next();
             }
+
+        }
         }, {
             path: '/search',
             name: 'Search_Page',
@@ -215,6 +229,7 @@ var router = new Router({
         //         'title': '__("seo_home_page")',
         //         'id_prop': 'interview_id'
         //     }
+
         }, {
             path: '/library',
             name: 'Library_Page',

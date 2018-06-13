@@ -60,14 +60,6 @@ export default {
             });
         }
     },
-    created() {
-        const currentLocale = process.env.LANGUAGE;
-        constants.LANGUAGES.forEach((eachLanguage) => {
-            if (eachLanguage.shortName === currentLocale) {
-                this.fetchTrendingSearch(eachLanguage.fullName.toUpperCase());
-            }
-        });
-    }
 }
 </script>
 

@@ -7,18 +7,25 @@
 <script>
     import '@/static_scripts/google_analytics.js'
     import '@/static_scripts/facebook_analytics.js'
+    import constants from '@/constants'
+
     import mixins from '@/mixins';
     import { mapGetters, mapActions } from 'vuex'
 
     export default {
         name: 'App',
         methods: {
+
+            ...mapActions('searchpage', [
+                'fetchTrendingSearch'
+            ]),
             ...mapActions([
                 'fetchUserDetails',
                 'fetchInitialNotifications',
                 'setNotificationCount',
                 'attachMessageNotificationListener',
                 'setFirebaseGrowthDBInitialisedTrue'
+                
             ]),
 
             setGuestUserProperties() {
@@ -129,12 +136,19 @@
         },
         created() {
             this.fetchUserDetails();
-
             const that = this;
             if (this.getUserDetails.isGuest !== undefined || this.getUserDetails.isGuest !== null) {
                 this.initializeFbAsyncInit();
             }
-        }
+            const currentLocale = process.env.LANGUAGE;
+            constants.LANGUAGES.forEach((eachLanguage) => {
+            if (eachLanguage.shortName === currentLocale) {
+                this.fetchTrendingSearch(eachLanguage.fullName.toUpperCase());
+            }
+            });
+        },
+
+
     }
 </script>
 

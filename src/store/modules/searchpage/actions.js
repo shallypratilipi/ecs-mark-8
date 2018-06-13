@@ -49,7 +49,6 @@ export default {
     },
 
     fetchTrendingSearch({ commit, state }, language) {
-        commit('setTrendingSearchLoadingTrue');
         DataAccessor.getTrendingSearchKeywords( language, (data) => {
             if (data.status === 200) {
                 commit('setTrendingSearchLoadingSuccess', data.response);
@@ -60,8 +59,6 @@ export default {
     },
 
     followOrUnfollowAuthor({ commit, state }, { authorId, following }) {
-        console.log(authorId);
-        console.log(following);
         commit('setFollowUnfollowLoadingDataLoadingTrue');
         DataAccessor.followOrUnfollowAuthor(authorId, !following, function(data) {
             commit('setFollowUnfollowLoadingDataLoadingSuccess', data);

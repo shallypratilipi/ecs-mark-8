@@ -799,6 +799,7 @@ export default {
     },
 
     getInitialSearchResults: function( searchQuery, language, aCallBack ) {
+
         if( searchQuery == null ) return;
         httpUtil.get( API_PREFIX +  SEARCH_PREFIX + SEARCH_CORE_API,
             null,

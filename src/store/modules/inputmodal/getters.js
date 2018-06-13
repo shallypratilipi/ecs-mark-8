@@ -14,6 +14,8 @@ export default {
                 return '__("pratilipi_delete_content")';
             case 'event_participate_confirm_submission':
                 return '__("event_participate_confirm_submission")';
+            case 'author_about':
+                return '__("author_about")';
         }
     },
 

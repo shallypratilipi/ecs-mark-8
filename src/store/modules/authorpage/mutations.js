@@ -18,7 +18,10 @@ export default {
     // setCheckoutStatus(state, status) {
     //     state.checkoutStatus = status
     // }
-
+  setUpdateAuthorLoadingSuccess(state, data) {
+        state.author.author_update_state = 'LOADING_SUCCESS';
+        state.author.data = data;
+    },
     setPublishedContentsLoadingTrue(state) {
         state.published_contents.loading_state = 'LOADING';
         state.published_contents.data = [];
@@ -260,5 +263,14 @@ export default {
 
     setRouteToMessageUser(state, routeState) {
         state.route_to_message_user = routeState;
-    }
+    },
+     setInputModalSaveAction(state, { action, data, prefilled_value, prefilled_value_two, initial_value, pratilipi_data }) {
+        state.action = action;
+        state.data = data;
+        state.prefilled_value = prefilled_value;
+        state.prefilled_value_two = prefilled_value_two;
+        state.initial_value = initial_value;
+        state.pratilipi_data = pratilipi_data;
+    },
+    
 }

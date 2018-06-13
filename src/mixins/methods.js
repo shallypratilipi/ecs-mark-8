@@ -223,6 +223,8 @@ export function validateUsername(name) {
     }
 }
 
+
+
 export function setAnalyticsUserProperty(propertyName, propertyValue) {
     /*const identify = new amplitude.Identify();
     identify.set(propertyName, propertyValue);
@@ -440,7 +442,12 @@ export function isCurrentEvent( eventId ) {
         return isItCurrentEvent;
     }
 
-    if ( eventId == 6900000000000080 || eventId == 6900000000000079 || eventId == 6900000000000083 ){
+    if ( eventId == 6900000000000080 ||
+        eventId == 6900000000000079 ||
+        eventId == 6900000000000083 ||
+        eventId == 6900000000000075 ||
+        eventId == 6900000000000074 ||
+        eventId == 6900000000000077 ) {
         isItCurrentEvent = true;
     }
     //
@@ -453,4 +460,14 @@ export function isCurrentEvent( eventId ) {
     // });
 
     return isItCurrentEvent;
+}
+
+export function validateFirstAndSecondPassword(firstPassword, secondPassword) {
+
+    if(firstPassword == secondPassword)
+    {
+        return true;
+    } else {
+        return false
+    }
 }

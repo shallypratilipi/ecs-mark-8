@@ -565,5 +565,7 @@
     "event_participate_finish":"समाप्त ",
     "event_participate_confirm_submission":"कृपया सबमिशन प्रमाणित करें ",
     "event_participate_cannot_change_drafts":"फाइनल सबमिशन के बाद आप किसी प्रकार का बदलाव नहीं कर पायेंगे। क्या आप इसे सबमिट करने के लिए निश्चित हैं?",
-    "event_participate_check_your_entry_here":"अपनी रचना यहाँ देखें "
+    "event_participate_check_your_entry_here":"अपनी रचना यहाँ देखें ",
+    "password_do_not_match": "Password do not match"
+    
 }

@@ -205,7 +205,6 @@
         },
         mounted() {
             window.addEventListener('scroll', this.updateScroll);
-
             // Hide Footer when keyboard comes
             if (this.isMobile()) {
                 $(document).on('focus', 'input', function() {

@@ -75,7 +75,7 @@
                                 <a href="#" v-if="getUserDetails.userId === getAuthorData.user.userId" v-on:click="tabchange" class="active" data-tab="library">__("library")</a>
                                 <a href="#" id="menu-published" v-on:click="tabchange" data-tab="published"><span>{{ getAuthorData.contentPublished }}</span>__("author_published_contents")</a>
                                 <a href="#" v-on:click="tabchange" data-tab="followers"><span>{{ getAuthorData.followCount }}</span>__("author_followers")</a>
-                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }}</span>__("author_following")</a>
+                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }} </span>__("author_following")</a> 
                             </div>
                             <div class="bottom-contents">
                                 <div class="list published-contents" id="published">
@@ -166,7 +166,9 @@ export default {
         return {
             user_id: null,
             scrollPosition: null,
-            showShowMoreOfSummary: false
+            showShowMoreOfSummary: false,
+            authorDataForEdit: {
+            },
         }
     },
     computed: {
@@ -217,11 +219,12 @@ export default {
             'uploadProfileImage',
             'removeFromLibraryPublished',
             'addToLibraryPublished',
-            'triggerRouteToMessageUser'
+            'triggerRouteToMessageUser',
         ]),
         ...mapActions([
             'setShareDetails',
-            'setAfterLoginAction'
+            'setAfterLoginAction',
+            'setInputModalSaveAction'
         ]),
         tabchange(event) {
             event.preventDefault();
@@ -365,7 +368,28 @@ export default {
             this.uploadProfileImage(formData);
         },
         editAuthorSummary() {
-            this.openInputModal();
+            this.setInputModalSaveAction({
+                action: `${this.$route.meta.store}/updateAuthorDetails`,
+                heading: 'author_about',
+                prefilled_value: this.getAuthorData.summary,
+                initial_value: this.getAuthorData.summary,
+                pratilipi_data: this.getAuthorData,
+                data: {
+                    authorData: { ...this.authorDataForEdit, 
+                                    firstName: this.getAuthorData.firstName, 
+                                    lastName: this.getAuthorData.lastName, 
+                                    firstNameEn: this.getAuthorData.firstNameEn,
+                                    lastNameEn :this.getAuthorData.lastNameEn,
+                                    language :this.getAuthorData.language,
+                                    summary: this.getAuthorData.summary,
+                                    penName :this.getAuthorData.penName,
+                                    gender : this.getAuthorData.gender,
+                                    dateOfBirth : this.getAuthorData.dateOfBirth,
+                                    authorId: this.getAuthorData.authorId,
+                                },
+                }
+            });
+            this.openInputModal();  
         },
         detectOverflow() {
             const element = $('.profile-summary p');

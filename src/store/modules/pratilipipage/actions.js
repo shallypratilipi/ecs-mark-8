@@ -162,7 +162,6 @@ export default {
             commit('setPratilipiSummaryUpdateError');
         });
     },
-
     saveOrUpdateTitle({ commit, state }, data) {
         data.title = data.value;
         data.titleEn = data.value_two;

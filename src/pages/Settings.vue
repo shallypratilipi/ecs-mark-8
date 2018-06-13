@@ -213,16 +213,16 @@ export default {
             notificationSettings: {
                 emailFrequency: 'IMMEDIATELY',
                 notificationSubscriptions: {
-                    AUTHOR: null,
-                    AUTHOR_FOLLOW: null,
-                    COMMENT_REVIEW_REVIEWER: null,
-                    EVENT: null,
-                    GENERIC: null,
-                    PRATILIPI: null,
-                    PRATILIPI_PUBLISHED_FOLLOWER: null,
-                    USER_PRATILIPI_REVIEW: null,
-                    VOTE_COMMENT_REVIEW_COMMENTOR: null,
-                    VOTE_REVIEW_REVIEWER: null
+                    AUTHOR: true,
+                    AUTHOR_FOLLOW: true,
+                    COMMENT_REVIEW_REVIEWER: true,
+                    EVENT: true,
+                    GENERIC: true,
+                    PRATILIPI: true,
+                    PRATILIPI_PUBLISHED_FOLLOWER: true,
+                    USER_PRATILIPI_REVIEW: true,
+                    VOTE_COMMENT_REVIEW_COMMENTOR: true,
+                    VOTE_REVIEW_REVIEWER: true
                 }
             }
         }
@@ -457,7 +457,7 @@ export default {
             const that = this;
             import('firebase').then((firebase) => {
                 var node = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
-                node.set({
+                node.update({
                     "emailFrequency": that.notificationSettings[ "emailFrequency" ],
                     "notificationSubscriptions": that.notificationSettings[ "notificationSubscriptions" ],
                     "lastUpdated": firebase.database.ServerValue.TIMESTAMP
@@ -475,6 +475,32 @@ export default {
         'getUserDetails.isGuest'(isGuest) {
             if (isGuest) {
                 this.$router.push('login');
+            } else {
+                const that = this;
+                import('firebase').then((firebase) => {
+                    if (firebase.apps.length === 0) {
+                        const config = {
+                            apiKey: process.env.FIREBASE_API_KEY,
+                            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                            databaseURL: process.env.FIREBASE_DATABASE_URL,
+                            storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                        };
+                        firebase.initializeApp(config);
+                    }
+                    const that = this;
+                    const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
+                    userPreferencesNode.on( 'value', function( snapshot ) {
+                        const userPreferences = snapshot.val();
+                        console.log(userPreferences);
+                        if(userPreferences) {
+                            that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
+                            that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                            if(userPreferences.notificationSubscriptions) {
+                                that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
+                            }
+                        }
+                    });
+                });
             }
         },
         'getLogoutStatus'(loggedOut) {
@@ -562,10 +588,15 @@ export default {
             const that = this;
             const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
             userPreferencesNode.on( 'value', function( snapshot ) {
-                const userPreferences = snapshot.val() != null ? snapshot.val() : {};
+                const userPreferences = snapshot.val();
                 console.log(userPreferences);
-
-                that.notificationSettings = userPreferences;
+                if(userPreferences) {
+                    that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
+                    that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                    if(userPreferences.notificationSubscriptions) {
+                        that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
+                    }
+                }
             });
         });
     }
