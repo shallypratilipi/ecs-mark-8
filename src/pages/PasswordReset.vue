@@ -78,7 +78,6 @@ export default {
             this.passwordIsInvalid = !this.validatePassword(newPassword);
         if(!this.passwordConfirm && !this.passwordIsInvalid)
         {
-              console
               this.resetUserPassword({
                     email: this.$route.query.email,
                     idToken: this.$route.query.token, 

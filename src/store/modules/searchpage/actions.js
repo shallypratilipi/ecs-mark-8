@@ -49,6 +49,7 @@ export default {
     },
 
     fetchTrendingSearch({ commit, state }, language) {
+        commit('setTrendingSearchLoadingTrue');        
         DataAccessor.getTrendingSearchKeywords( language, (data) => {
             if (data.status === 200) {
                 commit('setTrendingSearchLoadingSuccess', data.response);
