@@ -564,5 +564,7 @@
     "event_participate_finish":"समाप्त",
     "event_participate_confirm_submission":"सादरीकरणाची पुष्टी करा",
     "event_participate_cannot_change_drafts":"एकदा सादर केल्यांनतर आपणास पुन्हा साहित्यात बदल करता येणार नाही, आपणास खात्रीपूर्वक हे साहित्य सादर करावयाचे आहे?",
-    "event_participate_check_your_entry_here":"आपण केलेली नोंदणी येथे पहा "
+    "event_participate_check_your_entry_here":"आपण केलेली नोंदणी येथे पहा ",
+    "password_do_not_match": "पासवर्ड जुळले पाहिजे"
+
 }

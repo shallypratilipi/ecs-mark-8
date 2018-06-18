@@ -564,5 +564,8 @@
     "event_participate_finish":"ముగించు",
     "event_participate_confirm_submission":"సమర్పణను నిర్ధారించండి",
     "event_participate_cannot_change_drafts":"చివరి సమర్పణ తర్వాత మీ రచనను మీరు మార్చలేరు, మీరు ఖచ్చితంగా సమర్పించదలిచారా?",
-    "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి"
+    "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి",
+
+    "password_do_not_match": "పాస్‌వర్డులు రెండూ సరిపోవాలి"
+
 }

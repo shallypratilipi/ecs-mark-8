@@ -555,6 +555,8 @@
     "chat_no_msgs": "You don't have any messages",
     "chat_no_unread_msgs": "You don't have any unread messages",
     "chat_yesterday": "Yesterday",
-    "chat_today": "Today"
+    "chat_today": "Today",
+    "password_do_not_match": "Passwords should match"
+
 }
 

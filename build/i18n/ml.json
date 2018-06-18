@@ -564,5 +564,7 @@
     "event_participate_finish":"പൂര്‍ത്തിയാക്കൂ ",
     "event_participate_confirm_submission":"സമര്‍പ്പിക്കൂ ",
     "event_participate_cannot_change_drafts":"സമര്‍പ്പിച്ചു കഴിഞ്ഞ ശേഷം മാറ്റങ്ങള്‍ വരുത്താന്‍ സാധിക്കില്ല .ഇപ്പോള്‍ ഉറപ്പായും സമര്‍പ്പിക്കണോ ?",
-    "event_participate_check_your_entry_here":"താങ്കളുടെ രചന ഇവിടെ ഉണ്ടോ എന്ന് നോക്കൂ "
+    "event_participate_check_your_entry_here":"താങ്കളുടെ രചന ഇവിടെ ഉണ്ടോ എന്ന് നോക്കൂ ",
+    "password_do_not_match": "പാസ്സ്‌വേര്‍ഡുകള്‍ രണ്ടും ഒന്നല്ല  "
+
 }

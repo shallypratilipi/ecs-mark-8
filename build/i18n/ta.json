@@ -564,5 +564,10 @@
     "event_participate_finish":"முடிக்க",
     "event_participate_confirm_submission":"சமர்பித்தலை உறுதிப்படுத்தவும்",
     "event_participate_cannot_change_drafts":"இறுதி சமர்ப்பிப்பிற்கு பிறகு உங்களது படைப்பை திருத்த முடியாது. உறுதியாக படைப்பை சமர்ப்பிக்க வேண்டுமா?",
-    "event_participate_check_your_entry_here":"நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்"
+    "event_participate_check_your_entry_here":"நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்",
+
+    "password_do_not_match": "கடவுச்சொற்கள் ஒன்றாக இருக்கவேண்டும் "
+
+
+
 }

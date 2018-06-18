@@ -565,5 +565,7 @@
     "event_participate_finish":"સમાપ્ત ",
     "event_participate_confirm_submission":"સબમિશન કન્ફર્મ કરો ",
     "event_participate_cannot_change_drafts":"ફાઇનલ સબમિશન પછી આપ રચનામાં કોઈ ફેરફાર નહી કરી શકો.શું આપ ફાઇનલ સબમિશન કરવા ઈચ્છો છો?",
-    "event_participate_check_your_entry_here":"આપની રચના એન્ટ્રી અહીં ચેક કરો "
+    "event_participate_check_your_entry_here":"આપની રચના એન્ટ્રી અહીં ચેક કરો ",
+    "password_do_not_match": "પાસવર્ડ સમાન હોવો જોઈએ."
+
 }
