@@ -1,10 +1,12 @@
-<template v-if="isVisible">
-    <div class="container">
-        <div class="inner-container">
-            <div class="message">{{message}}</div>
-            <div class="button-holder">
-                <button v-if="includeDisableButton" @click="disableWebPush()" class="btn">Don't Allow</button>
-                <button @click="enableWebPush()" class="btn">Allow</button>
+<template>
+    <div class="webpush-strip">
+        <div class="container" v-if="isVisible">
+            <div class="inner-container">
+                <div class="message">{{message}}</div>
+                <div class="button-holder">
+                    <button v-if="includeDisableButton" @click="disableWebPush()" class="btn">Don't Allow</button>
+                    <button @click="enableWebPush()" class="btn">Allow</button>
+                </div>
             </div>
         </div>
     </div>
@@ -34,6 +36,12 @@ export default {
         includeDisableButton: {
             type: Boolean,
             default: false
+        },
+        'in-viewport-once': {
+            default: true
+        },
+        'in-viewport-offset-top': {
+            default: -350
         }
     },
     data() {

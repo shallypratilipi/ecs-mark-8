@@ -136,7 +136,7 @@
 
                             <div class="book-bottom-webpush-subscribe">
                                 <WebPushStrip
-                                    message="Hi, I'm the message"
+                                    :message="getWebPushStripMessage()"
                                     screenName="READER"
                                     v-if="selectedChapter == getIndexData.length">
                                 </WebPushStrip>
@@ -559,6 +559,9 @@ export default {
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
+        },
+        getWebPushStripMessage() {
+            return `Enjoyed reading this ${this.getPratilipiData.type.toLowerCase()}? Allow Pratilipi to send you notifications for good stories...`
         }
     },
     computed: {
