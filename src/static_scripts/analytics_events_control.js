@@ -91,6 +91,22 @@ export default {
         "LOCATION": "TOPICS",
         "ACTION": "LANDED"
     },
+    "VIEWED_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "VIEWED"
+    },
+    "ALLOW_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "ALLOW"
+    },
+    "DISALLOW_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "DISALLOW"
+    },
+    "CLOSE_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "CLOSE"
+    },
     "CREATEAUTHOR_AUTHORS_ADMIN": {
         "SCREEN_NAME": "ADMIN",
         "LOCATION": "AUTHORS",

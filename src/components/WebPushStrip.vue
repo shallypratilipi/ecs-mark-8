@@ -53,12 +53,12 @@ export default {
         enableWebPush() {
             this.isVisible = false
             this.triggerAnanlyticsEvent(`ENABLED_WEBPUSHSTRIP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
-            WebPushUtil.enabledOnCustomPrompt()
+            WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store)
         },
         disableWebPush() {
             this.isVisible = false
             this.triggerAnanlyticsEvent(`DISABLED_WEBPUSHSTRIP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
-            WebPushUtil.disabledOnCustomPrompt()
+            WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
         }
     },
     computed: {

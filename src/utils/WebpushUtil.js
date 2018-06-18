@@ -18,7 +18,9 @@
 // some boring import statements, important but boring
 import {
     getCookie,
-    setCookie
+    setCookie,
+    triggerAnanlyticsEvent,
+    getAnalyticsPageSource
 } from '@/mixins/methods'
 
 import DataAccessor from '@/utils/DataAccessor'
@@ -70,23 +72,41 @@ const WebpushUtil = (function () { // eslint-disable-line
         (getNthActionCount() < WEB_PUSH_SHOW_LIMIT)
 
     // enabledOnCustomPrompt => As the name defines
-    // TODO: Impl
-    const enabledOnCustomPrompt = () => {
-        // some analytics calls
-        // showing the prompt to user
-        // increment the cookie?
-        // hide for the session?
+    const enabledOnCustomPrompt = (pageSource) => {
+        const SCREEN_NAME = getAnalyticsPageSource(pageSource)
+        // assumption => The next line of code fires up the popup
+        if ((window.Notification.permission !== 'granted') && (window.Notification.permission !== 'denied')) {
+            triggerAnanlyticsEvent('VIEWED_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+        }
+
+        // Just a method to fire some events
+        const _fireAnalyticsEvents = () => {
+            // user had clicked on 'Allow'
+            if (window.Notification.permission === 'granted') {
+                triggerAnanlyticsEvent('ALLOW_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+            // user had clicked on 'Disallow'
+            } else if (window.Notification.permission === 'denied') {
+                triggerAnanlyticsEvent('DISALLOW_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+            // user had clicked on 'Close'
+            } else {
+                triggerAnanlyticsEvent('CLOSE_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+                // user is trying to play with us, cool down the user by not showing it for the session
+                setCookie(WEB_PUSH_SESSION_COOKIE_NAME, Date.now(), null, '/')
+            }
+        }
+
+        // Firing the browser popup
         _enableBrowserPush()
-            .then() // more analytics call
-            .catch(() => -1) // more analytics call
+            .then(_fireAnalyticsEvents)
+            .catch(_fireAnalyticsEvents)
     }
 
     // disabledOnCustomPrompt => As the name defines again, genius
-    // TODO: Impl
     const disabledOnCustomPrompt = () => {
-        // some analytics calls
         // setting cookies
+        // 1. WEB_PUSH_COOKIE_NAME => Number of times user had closed the custom prompt, on the whole. TTLed for WEB_PUSH_COOKIE_DAYS days
         setCookie(WEB_PUSH_COOKIE_NAME, (parseInt(getCookie(WEB_PUSH_COOKIE_NAME)) || 0) + 1, WEB_PUSH_COOKIE_DAYS, '/')
+        // 2. WEB_PUSH_SESSION_COOKIE_NAME => User had closed on the custom prompt, so don't annoy for the session
         setCookie(WEB_PUSH_SESSION_COOKIE_NAME, Date.now(), null, '/')
     }
 
