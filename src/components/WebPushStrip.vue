@@ -1,5 +1,5 @@
-<template>
-    <div class="container" v-if="isVisible">
+<template v-if="isVisible">
+    <div class="container">
         <div class="inner-container">
             <div class="message">{{message}}</div>
             <div class="button-holder">
