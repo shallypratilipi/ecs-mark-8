@@ -563,5 +563,7 @@
     "event_participate_finish":"শেষ",
     "event_participate_confirm_submission":"জমা দেওয়ার নিশ্চিত করুন",
     "event_participate_cannot_change_drafts":"জমা দেওয়ার পরে আপনি আপনার এন্ট্রি পরিবর্তন করতে পারবেন না, আপনি কি তা জমা দিতে চান?",
-    "event_participate_check_your_entry_here":"এখানে আপনার এন্ট্রি চেক করুন"
+    "event_participate_check_your_entry_here":"এখানে আপনার এন্ট্রি চেক করুন",
+    "password_do_not_match": "পাসওয়ার্ড মেলা উচিৎ"
+
 }
