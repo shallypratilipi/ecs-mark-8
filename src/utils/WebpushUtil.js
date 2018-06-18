@@ -22,6 +22,7 @@ import {
 } from '@/mixins/methods'
 
 import DataAccessor from '@/utils/DataAccessor'
+import constants from '@/constants'
 
 // WEB_PUSH_COOKIE_NAME => Number of times user had clicked close on a custom prompt (Integer, converted as string in browser cookies)
 // WEB_PUSH_COOKIE_DAYS => TTL for the WEB_PUSH_COOKIE_NAME in days
@@ -37,12 +38,15 @@ const WEB_PUSH_SESSION_COOKIE_NAME = 'web_push_closed_now'
 const STAGED_START_BUCKET_ID = 20
 const STAGED_END_BUCKET_ID = 30
 
+// setting up language
+const LANGUAGE = constants.LANGUAGES.filter(l => l.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase()
+
 // WebpushUtil
 const WebpushUtil = (function () { // eslint-disable-line
 
     // _createOrUpdateFCMToken => creates or updates a fcm token through DataAccessor
     const _createOrUpdateFCMToken = (fcmToken) =>
-        new Promise((resolve, reject) => DataAccessor.createOrUpdateFCMToken(fcmToken, resolve, reject))
+        new Promise((resolve, reject) => DataAccessor.createOrUpdateFCMToken(fcmToken, LANGUAGE, resolve, reject))
 
     // _enableBrowserPush => Returns a promise, Shows the custom prompt (if needed) and makes server api calls
     const _enableBrowserPush = () =>
@@ -75,7 +79,7 @@ const WebpushUtil = (function () { // eslint-disable-line
         // showing the prompt to user
         _enableBrowserPush()
             .then() // more analytics call
-            .catch() // error handling
+            .catch(() => -1) // more analytics call
     }
 
     // disabledOnCustomPrompt => As the name defines again, genius
@@ -90,7 +94,7 @@ const WebpushUtil = (function () { // eslint-disable-line
     // if user had granted access, make an api call with the updated token
     (function _init () {
         if (window.Notification.permission === 'granted') {
-            _enableBrowserPush()
+            _enableBrowserPush().catch(() => -1)
         }
     })()
 
@@ -102,4 +106,4 @@ const WebpushUtil = (function () { // eslint-disable-line
     }
 })()
 
-export {WebpushUtil}
+export default WebpushUtil
