@@ -10,7 +10,7 @@
                         </ul>
                         <router-link
                         class="notification-settings"
-                        :to="{ name: 'Settings_Page'}"
+                        :to="'/settings?action=notification'"
                         v-if="!getUserDetails.isGuest">
                             <i class="material-icons">settings</i>
                         </router-link>

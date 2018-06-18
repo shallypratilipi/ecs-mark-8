@@ -55,7 +55,7 @@ const CONTACT_API = "/contact";
 const TAGS_API = "/pratilipi/v2/categories/system";
 const USER_EMAIL_API = "/user/email";
 const TOP_AUTHORS_API = "/author/list/readcount";
-const USER_FCM_TOKEN_API = "/user/accesstoken/fcmtoken";
+const WEB_DEVICES_API = "/devices/web";
 
 const EVENT_PARTICIPATE_PREFIX = '/event-participate';
 const EVENT_PARTICIPATE_PREFIX_ADMIN = '/event-participate/admin';
@@ -738,13 +738,6 @@ export default {
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 
-    updateFCMToken: (fcmToken, aCallBack) => {
-        if (fcmToken == null) return;
-        httpUtil.post(API_PREFIX + USER_FCM_TOKEN_API,
-            null, { "fcmToken": fcmToken },
-            function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
-    },
-
     uploadCoverImage: (formData, authorId, successCallBack, errorCallBack) => {
         console.log(formData);
         console.log(authorId);
@@ -928,6 +921,13 @@ export default {
         httpUtil.post( API_PREFIX + EVENT_PARTICIPATE_PREFIX_ADMIN + EVENT_PARTICIPATE_UPDATE,
             null,
             data,
+            function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
+    },
+
+    createOrUpdateFCMToken: (fcmToken, language, successCallBack, errorCallBack) => {
+        httpUtil.post( API_PREFIX + WEB_DEVICES_API,
+            null,
+            { fcmToken: JSON.stringify(fcmToken), language },
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
     }
 

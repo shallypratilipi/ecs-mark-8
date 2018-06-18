@@ -190,6 +190,13 @@ var router = new Router({
             }
         }, {
             path: '/notifications',
+            beforeEnter: (to, from, next) => {
+                if(to.query.action && to.query.action === "settings" ) {
+                    next('/settings?action=notification');
+                } else {
+                    next();
+                }
+            },
             name: 'Notification',
             component: NotificationComponent,
             meta: {
@@ -220,16 +227,13 @@ var router = new Router({
                 'title': '__("seo_home_page")',
                 'id_prop': 'interview_id'
             }
-        // }, {
-        //     path: '/news-letter/unsuscribe',
-        //     name: 'News_Letter',
-        //     component: NewsLetterUnSuscribePageComponent,
-        //     meta: {
-        //         'store': 'interviewpage',
-        //         'title': '__("seo_home_page")',
-        //         'id_prop': 'interview_id'
-        //     }
-
+        }, {
+            path: '/newsletter/unsubscribe',
+            name: 'Newsletter',
+            component: NewsletterUnSubscribePageComponent,
+            meta: {
+                'title': '__("seo_home_page")'
+            }
         }, {
             path: '/library',
             name: 'Library_Page',

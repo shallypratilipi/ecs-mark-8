@@ -94,6 +94,18 @@
                                 <form>
                                     <div class="form-row">
                                         <div class="form-group col-md-6 col-sm-12">
+                                            <label for="pratilipi-settings-newsletter-frequency">__('newsletter_frequency')</label>
+                                            <select class="form-control" id="pratilipi-settings-newsletter-frequency" @input="updateNewsletterFrequency">
+                                                <option disabled selected>__('newsletter_frequency')</option>
+                                                <option :selected="'DAILY' === notificationSettings.newsletterFrequency" value="DAILY">__("email_frequency_daily")</option>
+                                                <option :selected="'WEEKLY' === notificationSettings.newsletterFrequency" value="WEEKLY">__("email_frequency_weekly")</option>
+                                                <option :selected="'MONTHLY' === notificationSettings.newsletterFrequency" value="MONTHLY">__("email_frequency_monthly")</option>
+                                                <option :selected="'NEVER' === notificationSettings.newsletterFrequency" value="NEVER">__("email_frequency_never")</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <label for="pratilipi-settings-email-frequency">__('email_frequency')</label>
                                             <select class="form-control" id="pratilipi-settings-email-frequency" @input="updateEmailFrequency">
                                                 <option disabled selected>__("email_frequency")</option>
@@ -115,14 +127,6 @@
                                             <input type="checkbox"  v-model="notificationSettings.notificationSubscriptions.COMMENT_REVIEW_REVIEWER" class="form-check-input" id="notif_option_new_comment">
                                             <label class="form-check-label" for="notif_option_new_comment">__("option_new_comment")</label>
                                         </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" v-model="notificationSettings.notificationSubscriptions.VOTE_REVIEW_REVIEWER" class="form-check-input" id="notif_option_like_review">
-                                            <label class="form-check-label" for="notif_option_like_review">__("option_like_review")</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" v-model="notificationSettings.notificationSubscriptions.VOTE_COMMENT_REVIEW_COMMENTOR" class="form-check-input" id="notif_option_like_comment">
-                                            <label class="form-check-label" for="notif_option_like_comment">__("option_like_comment")</label>
-                                        </div>
                                     </div>
 
                                     <div class="section-title">__("notification_group_network")</div>
@@ -134,10 +138,6 @@
                                         <div class="form-check">
                                             <input type="checkbox" v-model="notificationSettings.notificationSubscriptions.PRATILIPI_PUBLISHED_FOLLOWER" class="form-check-input" id="notif_option_pratilipi_published_follower">
                                             <label class="form-check-label" for="notif_option_pratilipi_published_follower">__("option_pratilipi_published_follower")</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="notif_option_pratilipi_updates">
-                                            <label class="form-check-label" for="notif_option_pratilipi_updates">__("option_pratilipi_updates")</label>
                                         </div>
                                     </div>
                                     <button type="button" class="btn update-btn" @click="setUserPreference">__("save_changes")</button>
@@ -212,6 +212,7 @@ export default {
             },
             notificationSettings: {
                 emailFrequency: 'IMMEDIATELY',
+                newsletterFrequency: 'DAILY',
                 notificationSubscriptions: {
                     AUTHOR: true,
                     AUTHOR_FOLLOW: true,
@@ -289,6 +290,9 @@ export default {
         },
         updateEmailFrequency(e) {
             this.notificationSettings.emailFrequency = e.target.selectedOptions[0].value;
+        },
+        updateNewsletterFrequency(e) {
+            this.notificationSettings.newsletterFrequency = e.target.selectedOptions[0].value;
         },
         updateGender(e) {
             this.authorData.gender = e.target.selectedOptions[0].value;
@@ -459,6 +463,7 @@ export default {
                 var node = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
                 node.update({
                     "emailFrequency": that.notificationSettings[ "emailFrequency" ],
+                    "newsletterFrequency": that.notificationSettings[ "newsletterFrequency" ],
                     "notificationSubscriptions": that.notificationSettings[ "notificationSubscriptions" ],
                     "lastUpdated": firebase.database.ServerValue.TIMESTAMP
                 });
@@ -562,6 +567,13 @@ export default {
     },
     mounted() {
         // Hide Footer when keyboard comes
+        if (this.$route.query && this.$route.query.action === "notification") {
+            $(".settings-menu a").removeClass("active");
+            $("a[data-tab='notification-settings']").addClass("active");
+            $(".tabs").hide();
+            $("#notification-settings").show();
+        }
+
         if (this.isMobile()) {
             $(document).on('focus', 'input, textarea', function() {
                 $(".footer-menu").css("height", "0")
