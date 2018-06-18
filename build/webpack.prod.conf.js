@@ -11,6 +11,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
+const translation = require('./i18n')
+const languageJSON = translation[process.env.LANGUAGE || 'hi']
 
 const env = process.env.NODE_ENV === 'testing'
     ? require('../config/test.env')
@@ -127,9 +129,24 @@ const webpackConfig = merge(baseWebpackConfig, {
             {
                 from: path.resolve(__dirname, '../static'),
                 to: config.build.assetsSubDirectory,
-                ignore: ['.*']
+                ignore: ['.*'],
+                transform(content, path) {
+                    return new Promise((resolve, reject) => {
+                        if (path.indexOf('manifest.json') > -1) {
+                            const manifestData = JSON.parse(content.toString('utf-8'));
+                            manifestData.lang = process.env.LANGUAGE;
+                            manifestData.description = languageJSON['home_page_title'];
+                            manifestData.short_name = languageJSON['pratilipi'];
+                            manifestData.name = languageJSON['pratilipi'];
+                            manifestData.gcm_sender_id = '659873510744';
+                            resolve(JSON.stringify(manifestData, null, 4));
+                        } else {
+                            resolve(content);
+                        }
+                    });
+                }
             }
-        ])
+      ])
     ]
 })
 
