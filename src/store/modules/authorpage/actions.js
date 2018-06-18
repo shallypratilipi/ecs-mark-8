@@ -188,7 +188,19 @@ export default {
     triggerRouteToMessageUser({ commit, state }, routeState) {
         console.log('i have been called: ', routeState);
         commit('setRouteToMessageUser', routeState);
-    }
+    },
+     updateAuthorDetails({ commit, state }, authorData) {
+        console.log("Auth data value that i am getting is");
+        console.log(authorData);
+        authorData.authorData.summary = authorData.value;
+        DataAccessor.createOrUpdateAuthor(authorData.authorData, (response) => {
+            console.log("Success in updateAuthorDetails");
+            commit('setUpdateAuthorLoadingSuccess', response);
+        }, () => {
+            console.log("error in updateAuthorDetails");
+            commit('setUpdateAuthorLoadingError');
+        });
+    },
 
 
 }

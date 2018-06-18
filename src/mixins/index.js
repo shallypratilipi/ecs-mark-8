@@ -25,7 +25,8 @@ import {
     getCookie,
     setCookie,
     isCurrentEvent,
-    openPrimaryConfirmationModal
+    openPrimaryConfirmationModal,
+    validateFirstAndSecondPassword
 } from './methods'
 import { defaultAuthorImage } from './data'
 
@@ -62,6 +63,7 @@ export default {
         getCookie,
         setCookie,
         isCurrentEvent,
-        openPrimaryConfirmationModal
+        openPrimaryConfirmationModal,
+        validateFirstAndSecondPassword
     }
 }

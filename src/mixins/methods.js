@@ -223,6 +223,8 @@ export function validateUsername(name) {
     }
 }
 
+
+
 export function setAnalyticsUserProperty(propertyName, propertyValue) {
     /*const identify = new amplitude.Identify();
     identify.set(propertyName, propertyValue);
@@ -459,4 +461,14 @@ export function isCurrentEvent( eventId ) {
     // });
 
     return isItCurrentEvent;
+}
+
+export function validateFirstAndSecondPassword(firstPassword, secondPassword) {
+
+    if(firstPassword == secondPassword)
+    {
+        return true;
+    } else {
+        return false
+    }
 }

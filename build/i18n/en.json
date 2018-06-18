@@ -543,6 +543,7 @@
     "name_required": "Name is mandatory",
     "read_popular_stories": "Read popular stories",
     "see_more_categories": "See more categories",
+    "password_do_not_match": "Password do not match",
 
     "chat_messages": "Messages",
     "chat_message": "Message",

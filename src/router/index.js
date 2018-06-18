@@ -60,7 +60,21 @@ var router = new Router({
             component: Home,
              meta: {
                 'title': '__("home_page_title") | __("pratilipi")'
+            },
+                  beforeEnter: (to, from, next) => {
+            if (to.query.email && to.query.token && to.query.passwordReset) {
+                next({
+                    path: '/reset-password',
+                    query: {
+                        email: to.query.email,
+                        token: to.query.token
+                    }
+                });
+            } else {
+                next();
             }
+
+        }
         }, {
             path: '/search',
             name: 'Search_Page',
