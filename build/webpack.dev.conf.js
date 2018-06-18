@@ -8,6 +8,7 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const portfinder = require('portfinder')
 
 const HOST = process.env.HOST;
@@ -15,6 +16,8 @@ const PORT = process.env.PORT && Number(process.env.PORT);
 const cookie = require('cookie');
 const request = require('request');
 let StringReplacePlugin = require('string-replace-webpack-plugin');
+const translation = require('./i18n');
+const languageJSON = translation[process.env.LANGUAGE || 'hi'];
 
 const devWebpackConfig = merge(baseWebpackConfig, {
     module: {
@@ -73,6 +76,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         new webpack.DefinePlugin({
             'process.env': require('../config/dev.env')
         }),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, '../src/sw.js'),
+        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -93,7 +99,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             {
                 from: path.resolve(__dirname, '../static'),
                 to: config.dev.assetsSubDirectory,
-                ignore: ['.*']
+                ignore: ['.*'],
+                transform(content, path) {
+                    return new Promise((resolve, reject) => {
+                        if (path.indexOf('manifest.json') > -1) {
+                            const manifestData = JSON.parse(content.toString('utf-8'));
+                            manifestData.lang = process.env.LANGUAGE;
+                            manifestData.description = languageJSON['home_page_title'];
+                            manifestData.short_name = languageJSON['pratilipi'];
+                            manifestData.name = languageJSON['pratilipi'];
+                            manifestData.gcm_sender_id = '659873510744';
+                            resolve(JSON.stringify(manifestData, null, 4));
+                        } else {
+                            resolve(content);
+                        }
+                    });
+                }
             }
         ])
     ]

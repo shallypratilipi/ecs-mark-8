@@ -5,7 +5,7 @@
                 <Spinner v-if="isLoading"></Spinner>
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Unsubscribe Newsletter</h2>
+                        <h2>__("newsletter_unsubscribe_heading")</h2>
                         <div class="page-content">
                         </div>
                     </div>
@@ -14,18 +14,18 @@
                     <div class="col-md-6">
                         <div class="form-check">
                            <input v-model="unSubscribeOption" id="radio-option-1" class="form-check-input" type="radio" name="newsletter-option" value="TOO_MANY_EMAILS">
-                           <label class="form-check-label" for="radio-option-1">I receive too many emails.</label>
+                           <label class="form-check-label" for="radio-option-1">__("newsletter_reason_too_many_emails")</label>
                        </div>
                        <div class="form-check">
                            <input v-model="unSubscribeOption" id="radio-option-2" class="form-check-input" type="radio" name="newsletter-option" value="CONTENT_IRRELEVANT">
-                           <label class="form-check-label" for="radio-option-2">Content is not relevant to me.</label>
+                           <label class="form-check-label" for="radio-option-2">__("newsletter_reason_content_irrelevant")</label>
                        </div>
                        <div class="form-check">
                            <input v-model="unSubscribeOption" id="radio-option-3" class="form-check-input" type="radio" name="newsletter-option" value="NO_TIME_TO_READ">
-                           <label class="form-check-label" for="radio-option-3">I don't have enough time to read.</label>
+                           <label class="form-check-label" for="radio-option-3">__("newsletter_reason_no_time_to_read")</label>
                        </div>
                        <div>
-                            <button type="button" @click="unSubscribeUser" :disabled="!unSubscribeOption"  class="btn btn-save">Unsubscribe</button>
+                            <button type="button" @click="unSubscribeUser" :disabled="!unSubscribeOption"  class="btn btn-save">__("newsletter_unsubscribe_button")</button>
                        </div>
                     </div>
                     <div class="col-md-6">
