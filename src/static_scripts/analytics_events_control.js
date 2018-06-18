@@ -1119,6 +1119,21 @@ export default {
         "LOCATION": "SETTINGS",
         "ACTION": "READERGAP"
     },
+    "VIEWED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "DISABLED"
+    },
     "TYPELOGINFIELD_CONFIRMPASS_REGISTER": {
         "SCREEN_NAME": "REGISTER",
         "LOCATION": "CONFIRMPASS",

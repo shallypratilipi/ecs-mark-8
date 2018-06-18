@@ -32,11 +32,7 @@ const WEB_PUSH_COOKIE_DAYS = 7
 const WEB_PUSH_SHOW_LIMIT = 3
 
 // WEB_PUSH_SESSION_COOKIE_NAME => Temporary cookie set to identify that the user had disabled push in the current session
-const WEB_PUSH_SESSION_COOKIE_NAME = 'web_push_closed_now'
-
-// staged release
-const STAGED_START_BUCKET_ID = 20
-const STAGED_END_BUCKET_ID = 30
+const WEB_PUSH_SESSION_COOKIE_NAME = 'web_push_closed_session'
 
 // setting up language
 const LANGUAGE = constants.LANGUAGES.filter(l => l.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase()
@@ -54,6 +50,10 @@ const WebpushUtil = (function () { // eslint-disable-line
             .then((serviceWorkerRegistration) => serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true}))
             .then(_createOrUpdateFCMToken)
 
+    // getNthActionCount => Returns the number of times the user had made actions on webpush - only close event for now
+    const getNthActionCount = () =>
+        (parseInt(getCookie(WEB_PUSH_COOKIE_NAME)) || 0)
+
     // isBrowserPushCompatible => Returns a boolean stating if the push is compatible with the browser or not
     const isBrowserPushCompatible = () => ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window)
 
@@ -63,20 +63,19 @@ const WebpushUtil = (function () { // eslint-disable-line
     // 3. user has blocked the notifications already
     // 4. custom prompt has been closed by the user in the session, so don't piss off the user until next session
     // 5. custom prompt has been closed by the user x times already, so don't piss off the user for another WEB_PUSH_COOKIE_DAYS days
-    // 6. staged release, if there's any
     const canShowCustomPrompt = () => isBrowserPushCompatible() &&
         (window.Notification.permission !== 'granted') &&
         (window.Notification.permission !== 'denied') &&
         (getCookie(WEB_PUSH_SESSION_COOKIE_NAME) === undefined) &&
-        ((parseInt(getCookie(WEB_PUSH_COOKIE_NAME)) || 0) < WEB_PUSH_SHOW_LIMIT) &&
-        ((parseInt(getCookie('bucketId')) || -1) >= STAGED_START_BUCKET_ID) &&
-        ((parseInt(getCookie('bucketId')) || -1) < STAGED_END_BUCKET_ID)
+        (getNthActionCount() < WEB_PUSH_SHOW_LIMIT)
 
     // enabledOnCustomPrompt => As the name defines
     // TODO: Impl
     const enabledOnCustomPrompt = () => {
         // some analytics calls
         // showing the prompt to user
+        // increment the cookie?
+        // hide for the session?
         _enableBrowserPush()
             .then() // more analytics call
             .catch(() => -1) // more analytics call
@@ -101,6 +100,7 @@ const WebpushUtil = (function () { // eslint-disable-line
     return {
         isBrowserPushCompatible, // check if browser push is compatible with the browser
         canShowCustomPrompt, // check if custom prompts can be shown based on multiple factors
+        getNthActionCount, // number of times the user had made actions on webpush - only close event for now
         enabledOnCustomPrompt, // user had clicked on 'yes' on custom prompt
         disabledOnCustomPrompt // user had clicked on 'no' on custom prompt
     }
