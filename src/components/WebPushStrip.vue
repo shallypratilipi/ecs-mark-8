@@ -37,6 +37,12 @@ export default {
             type: Boolean,
             default: false
         },
+        // inactivating in-viewport if canShowCustomPrompt is false. 
+        // v-if="isVisible" is applied on 'container' class, event gets triggered even if canShowCustomPrompt is false
+        // A workaround to solve this problem
+        'in-viewport-active': {
+            default: WebPushUtil.canShowCustomPrompt()
+        },
         'in-viewport-once': {
             default: true
         },
@@ -68,7 +74,9 @@ export default {
     },
     watch: {
         'inViewport.now'(visible) {
-            if (visible) {
+            // v-if="isVisible" is applied on 'container' class, event gets triggered even if canShowCustomPrompt is false
+            // A workaround to solve this problem
+            if (visible && WebPushUtil.canShowCustomPrompt()) {
                 this.triggerAnanlyticsEvent(`VIEWED_WEBPUSHSTRIP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId})
             }
         }
