@@ -76,11 +76,11 @@ export default {
 
         "getMarketingFrequencyLoadingState"(state) {
             if(state==="LOADING_SUCCESS") {
-                alert('You have been unsuccessfully unsubscribed.')
+                alert(__("newsletter_success_alert"))
                 this.$router.push('/');
             }
             if(state==="LOADING_ERROR") {
-                alert('Something went wrong. Please try again.');
+                alert(__("newsletter_error_alert"));
             }
         }
         
