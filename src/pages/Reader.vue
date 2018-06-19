@@ -314,7 +314,7 @@ export default {
             rateRev: 'RATEREV',
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
-            isWebPushEnabled: WebPushUtil.canShowCustomPrompt()
+            isWebPushEnabled: WebPushUtil.canShowCustomPrompt() && process.env.STAGE !== 'prod'
         }
     },
     methods: {
