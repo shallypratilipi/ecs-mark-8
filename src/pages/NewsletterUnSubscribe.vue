@@ -76,11 +76,11 @@ export default {
 
         "getMarketingFrequencyLoadingState"(state) {
             if(state==="LOADING_SUCCESS") {
-                alert(__("newsletter_success_alert"))
+                alert('__("newsletter_success_alert")')
                 this.$router.push('/');
             }
             if(state==="LOADING_ERROR") {
-                alert(__("newsletter_error_alert"));
+                alert('__("newsletter_error_alert")');
             }
         }
         
