@@ -543,6 +543,7 @@
     "name_required": "नाव अनिवार्य आहे",
     "read_popular_stories": "लोकप्रिय कथा वाचा",
     "see_more_categories": "अधिक श्रेण्या पहा",
+    "password_do_not_match": "पासवर्ड जुळले पाहिजे",
 
     "chat_messages": "मेसेजस",
     "chat_message": "मेसेज",
@@ -571,6 +572,12 @@
     "event_participate_confirm_submission":"सादरीकरणाची पुष्टी करा",
     "event_participate_cannot_change_drafts":"एकदा सादर केल्यांनतर आपणास पुन्हा साहित्यात बदल करता येणार नाही, आपणास खात्रीपूर्वक हे साहित्य सादर करावयाचे आहे?",
     "event_participate_check_your_entry_here":"आपण केलेली नोंदणी येथे पहा ",
-    "password_do_not_match": "पासवर्ड जुळले पाहिजे"
+
+    "web_push_modal_title": "आपणास हे साहित्य आवडले का?",
+    "web_push_message_1": "आपणास अशाप्रकारच्या आणखीन कथांचे नोटिफिकेशन पाठवण्याकरता प्रतिलिपिस परवानगी द्या",
+    "web_push_message_2": "आपणास उत्तम कथा नोटिफिकेशन मध्ये प्राप्त करायला आवडेल?",
+    "web_push_message_3": "आपणास उत्तम कथांचे नोटिफिकेशन पाठवण्याकरता प्रतिलिपिस परवानगी द्या",
+    "web_push_button_allow": "परवानगी द्या",
+    "web_push_button_cancel": "रद्द करा"
 
 }

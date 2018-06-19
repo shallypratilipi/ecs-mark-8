@@ -536,6 +536,7 @@
     "reader_read_in_app_helper_text": "অ্যাপে পড়ুন",
     "read_popular_stories": "জনপ্রিয় গল্পগুলি পড়ুন",
     "see_more_categories": "আরো বিভাগ দেখুন",
+    "password_do_not_match": "পাসওয়ার্ড মেলা উচিৎ",
 
     "chat_messages": "মেসেজ",
     "chat_message": "মেসেজ",
@@ -564,6 +565,12 @@
     "event_participate_confirm_submission":"জমা দেওয়ার নিশ্চিত করুন",
     "event_participate_cannot_change_drafts":"জমা দেওয়ার পরে আপনি আপনার এন্ট্রি পরিবর্তন করতে পারবেন না, আপনি কি তা জমা দিতে চান?",
     "event_participate_check_your_entry_here":"এখানে আপনার এন্ট্রি চেক করুন",
-    "password_do_not_match": "পাসওয়ার্ড মেলা উচিৎ"
+
+    "web_push_modal_title": "কাহিনীটি  কি আপনার ভাল লেগেছে?",
+    "web_push_message_1": "এই জাতীয় অন্যান্য কাহিনীর বিজ্ঞপ্তি পাঠানোর জন্য প্রতিলিপিকে অনুমতি দিন",
+    "web_push_message_2": "আপনি কি মনের মতন কাহিনীর বিজ্ঞপ্তি পেতে আগ্রহী?",
+    "web_push_message_3": "মনের মতন কাহিনীর বিজ্ঞপ্তি পাঠানোর জন্য প্রতিলিপিকে অনুমতি দিন",
+    "web_push_button_allow": "অনুমতি দিন",
+    "web_push_button_cancel": "বাতিল করুন"
 
 }
