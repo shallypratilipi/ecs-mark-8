@@ -23,7 +23,7 @@
 <script>
 import mixins from '@/mixins'
 import { mapGetters } from 'vuex'
-import WebPushUtil from '@/utils/WebpushUtil'
+import WebPushUtil from '@/utils/WebPushUtil'
 
 export default {
     mixins: [
