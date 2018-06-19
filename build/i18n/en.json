@@ -563,7 +563,13 @@
     "chat_no_unread_msgs": "You don't have any unread messages",
     "chat_yesterday": "Yesterday",
     "chat_today": "Today",
-    "password_do_not_match": "Passwords should match"
+
+    "web_push_title": "Enjoyed reading this?",
+    "web_push_message_1": "Allow Pratilipi to send you notifications for other such stories",
+    "web_push_message_2": "Would you like to get good stories in the notification?",
+    "web_push_message_3": "Allow Pratilipi to send you notifications for good stories...",
+    "web_push_allow": "Allow",
+    "web_push_cancel": "Cancel"
 
 }
 

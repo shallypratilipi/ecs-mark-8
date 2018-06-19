@@ -314,7 +314,7 @@ export default {
             rateRev: 'RATEREV',
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
-            isWebPushEnabled: WebPushUtil.canShowCustomPrompt() && process.env.STAGE !== 'prod'
+            isWebPushEnabled: WebPushUtil.canShowCustomPrompt() && process.env.STAGE !== 'prod' && false
         }
     },
     methods: {
@@ -576,13 +576,13 @@ export default {
             this.percentScrolled = (wintop/(docheight-winheight))*100
         },
         getWebPushStripMessage() {
-            return `Enjoyed reading this ${this.getPratilipiData.type.toLowerCase()}? Allow Pratilipi to send you notifications for good stories...`
+            return `__("web_push_title") __("web_push_message_3")`
         },
         getWebPushModalTitle() {
-            return `Enjoyed reading this ${this.getPratilipiData.type.toLowerCase()}?`
+            return `__("web_push_title")`
         },
         getWebPushModalMessage() {
-            return `Allow Pratilipi to send you notifications for other such stories?`
+            return `__("web_push_message_2")`
         }
     },
     computed: {

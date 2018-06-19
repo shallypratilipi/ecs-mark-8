@@ -519,7 +519,6 @@
     "report_button": "रिपोर्ट",
     "report_title": "रिपोर्ट की समस्या",
     "report_issue": "समस्या",
-    "reader_read_in_app_helper_text": "ऐप में पढ़ें",
     "hour": "घंटा",
     "hours": "घंटे",
     "minute": "मिनट",
@@ -546,6 +545,7 @@
     "reader_read_in_app_helper_text": "ऐप में पढ़ें",
     "read_popular_stories": "लोकप्रिय कहानियां पढ़ें",
     "see_more_categories": "और श्रेणियां देखें",
+    "password_do_not_match": "पासवर्ड्स मेल खाने चाहिये ",
 
     "chat_messages": "मैसेजेज",
     "chat_message": "मैसेज",
@@ -573,6 +573,12 @@
     "event_participate_confirm_submission":"कृपया सबमिशन प्रमाणित करें ",
     "event_participate_cannot_change_drafts":"फाइनल सबमिशन के बाद आप किसी प्रकार का बदलाव नहीं कर पायेंगे। क्या आप इसे सबमिट करने के लिए निश्चित हैं?",
     "event_participate_check_your_entry_here":"अपनी रचना यहाँ देखें ",
-    "password_do_not_match": "पासवर्ड्स मेल खाने चाहिये "
-    
+
+    "web_push_title": "रचना पसंद आयी?",
+    "web_push_message_1": "पाइए आपकी मनपसंद कहानियाँ अब नोटिफिकेशन में",
+    "web_push_message_2": "प्रतिलिपि की और से कहानियाँ पाने के लिए नोटिफिकेशन प्राप्त करें",
+    "web_push_message_3": "एक से बढ़कर एक कहानियाँ अब पाइए नोटिफिकेशन में",
+    "web_push_allow": "अनुमति दें",
+    "web_push_cancel": "रद करें"
+
 }

@@ -545,6 +545,7 @@
     "reader_read_in_app_helper_text": "ಅಪ್ಲಿಕೇಶನ್ನಿನಲ್ಲಿ ಓದಿರಿ",
     "read_popular_stories": "ಜನಪ್ರಿಯ ಕಥೆಗಳನ್ನು ಓದಿ",
     "see_more_categories": "ಹೆಚ್ಚಿನ ವಿಭಾಗಗಳನ್ನು ನೋಡಿ",
+    "password_do_not_match": "ಪಾಸ್ವರ್ಡ್ಗಳು ಹೊಂದಿಕೆಯಾಗಬೇಕು ",
 
     "chat_messages": "ಸಂದೇಶಗಳು",
     "chat_message": "ಸಂದೇಶ",
@@ -573,6 +574,12 @@
     "event_participate_confirm_submission":"ಸಬ್ಮಿಟ್ ಮಾಡಲು ಖಾತ್ರಿಪಡಿಸಿ",
     "event_participate_cannot_change_drafts":"ಸಬ್ಮಿಟ್ ಮಾಡಿದ ಬಳಿಕ ನಿಮ್ಮ ಬರಹವನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಖಾತ್ರಿಯಾಗಿ ಸಬ್ಮಿಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ ?",
     "event_participate_check_your_entry_here":"ನಿಮ್ಮ ಇವೆಂಟ್ ಬರಹಗಳನ್ನು ಇಲ್ಲಿ ಪರಿಶೀಲಿಸಿ ",
-    "password_do_not_match": "ಪಾಸ್ವರ್ಡ್ಗಳು ಹೊಂದಿಕೆಯಾಗಬೇಕು "
+
+    "web_push_title": "ಇದನ್ನು ಓದಿ ಆನಂದಿಸಿದಿರಾ?",
+    "web_push_message_1": "ಈ ರೀತಿಯ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಕಳುಹಿಸಲು ಪ್ರತಿಲಿಪಿಗೆ ಅನುಮತಿಸಿ",
+    "web_push_message_2": "ಉತ್ತಮ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಪಡೆಯಲು ಇಚ್ಛಿಸುತ್ತೀರಾ?",
+    "web_push_message_3": "ಅತ್ಯುತ್ತಮ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಕಳುಹಿಸಲು ಪ್ರತಿಲಿಪಿಗೆ ಅನುಮತಿಸಿ",
+    "web_push_allow": "ಅನುಮತಿಸಿ",
+    "web_push_cancel": "ರದ್ದುಗೊಳಿಸಿ"
 
 }
