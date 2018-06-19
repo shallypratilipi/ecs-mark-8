@@ -166,9 +166,7 @@ export default {
         return {
             user_id: null,
             scrollPosition: null,
-            showShowMoreOfSummary: false,
-            authorDataForEdit: {
-            },
+            showShowMoreOfSummary: false
         }
     },
     computed: {
@@ -375,18 +373,10 @@ export default {
                 initial_value: this.getAuthorData.summary,
                 pratilipi_data: this.getAuthorData,
                 data: {
-                    authorData: { ...this.authorDataForEdit, 
-                                    firstName: this.getAuthorData.firstName, 
-                                    lastName: this.getAuthorData.lastName, 
-                                    firstNameEn: this.getAuthorData.firstNameEn,
-                                    lastNameEn :this.getAuthorData.lastNameEn,
-                                    language :this.getAuthorData.language,
-                                    summary: this.getAuthorData.summary,
-                                    penName :this.getAuthorData.penName,
-                                    gender : this.getAuthorData.gender,
-                                    dateOfBirth : this.getAuthorData.dateOfBirth,
-                                    authorId: this.getAuthorData.authorId,
-                                },
+                    authorData: { 
+                        authorId: this.getAuthorData.authorId,
+                        summary: this.getAuthorData.summary
+                    }
                 }
             });
             this.openInputModal();  
