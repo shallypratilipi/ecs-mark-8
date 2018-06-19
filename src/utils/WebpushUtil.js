@@ -68,7 +68,7 @@ const WebpushUtil = (function () { // eslint-disable-line
     const canShowCustomPrompt = () => isBrowserPushCompatible() &&
         (window.Notification.permission !== 'granted') &&
         (window.Notification.permission !== 'denied') &&
-        (getCookie(WEB_PUSH_SESSION_COOKIE_NAME) === undefined) &&
+        (!getCookie(WEB_PUSH_SESSION_COOKIE_NAME)) &&
         (getNthActionCount() < WEB_PUSH_SHOW_LIMIT)
 
     // enabledOnCustomPrompt => As the name defines
