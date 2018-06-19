@@ -3,6 +3,7 @@ export default {
         loading_state: 'LOADING',
         user_update_state: 'LOADING_SUCCESS',
         author_update_state: 'LOADING_SUCCESS',
-        data: {}
-    }
+        data: {},
+    },
+    marketing_frequency: null
 }

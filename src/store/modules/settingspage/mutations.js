@@ -50,5 +50,14 @@ export default {
     },
     setUpdateAuthorLoadingError(state) {
         state.author.author_update_state = 'LOADING_ERROR';
+    },
+    setMarketingFrequencyLoadingTrue(state) {
+        state.marketing_frequency = "LOADING";
+    },
+    setMarketingFrequencyLoadingSuccess(state) {
+        state.marketing_frequency = "LOADING_SUCCESS";
+    },
+    setMarketingFrequencyLoadingError(state) {
+        state.marketing_frequency = "LOADING_ERROR";
     }
 }

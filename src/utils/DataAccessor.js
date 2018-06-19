@@ -56,6 +56,7 @@ const TAGS_API = "/pratilipi/v2/categories/system";
 const USER_EMAIL_API = "/user/email";
 const TOP_AUTHORS_API = "/author/list/readcount";
 const WEB_DEVICES_API = "/devices/web";
+const MARKETING_API = "/marketing/v1.0/newsletter/unsubscribe";
 
 const EVENT_PARTICIPATE_PREFIX = '/event-participate';
 const EVENT_PARTICIPATE_PREFIX_ADMIN = '/event-participate/admin';
@@ -928,6 +929,13 @@ export default {
         httpUtil.post( API_PREFIX + WEB_DEVICES_API,
             null,
             { fcmToken: JSON.stringify(fcmToken), language },
+            function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
+    },
+
+    postMarketingNewsletterUnsubscribe: (uuid, newsletterFrequency, newsletterUnsubscribeReason, successCallBack, errorCallBack) => {
+        httpUtil.post( API_PREFIX + MARKETING_API,
+            null,
+            { uuid, newsletterFrequency, newsletterUnsubscribeReason },
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
     }
 

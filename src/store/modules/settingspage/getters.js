@@ -21,4 +21,5 @@ export default {
     getAuthorData: state => state.author.data,
     getAuthorLoadingState: state => state.author.loading_state,
     getAuthorUpdateState: state => state.author.author_update_state,
+    getMarketingFrequencyLoadingState: state => state.marketing_frequency
 }

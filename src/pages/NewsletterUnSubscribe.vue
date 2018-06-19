@@ -2,7 +2,7 @@
     <MainLayout>
         <div class="static-page page-wrap">
             <div class="container">
-                <Spinner v-if="isLoading"></Spinner>
+                <Spinner v-if="getMarketingFrequencyLoadingState === 'LOADING'"></Spinner>
                 <div class="row">
                     <div class="col-md-12">
                         <h2>__("newsletter_unsubscribe_heading")</h2>
@@ -51,58 +51,37 @@ export default {
     data() {
         return {
             unSubscribeOption: null,
-            isLoading: false
         }
     },
     computed: {
+        ...mapGetters("settingspage",["getMarketingFrequencyLoadingState"])
         
     },
     methods: {
 
+        ...mapActions("settingspage",["updateMarketingNewsletter"]),
+
         unSubscribeUser() {
             const that = this;
-            this.isLoading=true;
-            const {userId} = this.$route.query;
-            if(!userId) {
-                that.isLoading=false;
+            const {uuid} = this.$route.query;
+            if(!uuid) {
                 alert("Invalid URL");
                 return;
             }
-            import('firebase').then(async (firebase) => {
-              if (firebase.apps.length === 0) {
-                const config = {
-                                apiKey: process.env.FIREBASE_API_KEY,
-                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-                                databaseURL: process.env.FIREBASE_DATABASE_URL,
-                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-                            };
-               firebase.initializeApp(config);
-              }
-               
-               let node = firebase.database().ref( "PREFERENCE" ).child( userId );
-               await node.update({
-                   newsletterUnsubscribeReason: that.unSubscribeOption,
-                   newsletterFrequency: "NEVER",
-                   lastUpdated: firebase.database.ServerValue.TIMESTAMP
-               })
-               .then(()=> {
-                  that.isLoading=false;
-                  alert("You have been successfully unsubscribed.");
-                  that.$router.push('/');
-               })
-               .catch(()=> {
-                  that.isLoading=false;
-                  alert("There was some error. Please try again")
-               });
-           })
-           .catch(() => {
-              that.isLoading=false;
-              alert("There was some error. Please try again")
-           });
+            this.updateMarketingNewsletter({uuid, newsletterUnsubscribeReason: this.unSubscribeOption,newsletterFrequency: "NEVER"})
         }
         
     },
     watch: {
+
+        "getMarketingFrequencyLoadingState"(state) {
+            if(state==="LOADING_SUCCESS") {
+                this.$router.push('/');
+            }
+            if(state==="LOADING_ERROR") {
+                alert('Something went wrong. Please try again.');
+            }
+        }
         
     },
     created() {
