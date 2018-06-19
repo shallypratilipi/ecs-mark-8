@@ -134,6 +134,14 @@
                                 </Reviews>
                             </div>
 
+                            <div class="book-bottom-webpush-subscribe">
+                                <WebPushStrip
+                                    :message="getWebPushStripMessage()"
+                                    screenName="READER"
+                                    v-if="selectedChapter == getIndexData.length">
+                                </WebPushStrip>
+                            </div>
+
                             <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
@@ -264,6 +272,7 @@ import 'vue-awesome/icons/google-plus'
 import 'vue-awesome/icons/whatsapp'
 import 'vue-awesome/icons/link'
 import Reviews from '@/components/Reviews.vue';
+import WebPushStrip from '@/components/WebPushStrip.vue';
 import Recommendation from '@/components/Recommendation.vue';
 // import OpenInApp from '@/components/OpenInApp.vue';
 // import ShareStrip from '@/components/ShareStrip.vue';
@@ -274,6 +283,7 @@ export default {
         ReadLayout,
         Spinner,
         Reviews,
+        WebPushStrip,
         Recommendation,
         // ShareStrip,
         // OpenInApp
@@ -549,6 +559,9 @@ export default {
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
+        },
+        getWebPushStripMessage() {
+            return `Enjoyed reading this ${this.getPratilipiData.type.toLowerCase()}? Allow Pratilipi to send you notifications for good stories...`
         }
     },
     computed: {
@@ -1249,9 +1262,17 @@ export default {
         .write-review-btn, .all-reviews, .comments-list li, .show-more {
             display: none !important;
         }
+        .comments-list {
+            padding-left: 0;
+        }
         .comments-list li.ownReview  {
             display: block !important;
         }
+    }
+    .book-bottom-webpush-subscribe {
+        position: relative;
+        margin: 10px 0;
+        padding: 0 15px;
     }
 }
 </style>
