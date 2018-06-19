@@ -55,7 +55,7 @@ const CONTACT_API = "/contact";
 const TAGS_API = "/pratilipi/v2/categories/system";
 const USER_EMAIL_API = "/user/email";
 const TOP_AUTHORS_API = "/author/list/readcount";
-const WEB_DEVICES_API = "/devices/web";
+const WEB_DEVICES_API = "/web-push/fcmToken";
 const MARKETING_API = "/marketing/v1.0/newsletter/unsubscribe";
 
 const EVENT_PARTICIPATE_PREFIX = '/event-participate';
