@@ -138,7 +138,7 @@
                                 <WebPushStrip
                                     :message="getWebPushStripMessage()"
                                     screenName="READER"
-                                    v-if="selectedChapter == getIndexData.length">
+                                    v-if="selectedChapter == getIndexData.length && isWebPushEnabled">
                                 </WebPushStrip>
                             </div>
 
@@ -151,6 +151,13 @@
                                     v-if="getPratilipiData && getPratilipiData.pratilipiId">
                                 </Recommendation>
                             </div>
+
+                            <WebPushModal
+                                :title="getWebPushModalTitle()"
+                                :message="getWebPushModalMessage()"
+                                screenName="READER"
+                                includeDisableButton=true
+                                v-if="selectedChapter == getIndexData.length && isWebPushEnabled"></WebPushModal>
 
                         </div>
                     </div>
@@ -273,9 +280,11 @@ import 'vue-awesome/icons/whatsapp'
 import 'vue-awesome/icons/link'
 import Reviews from '@/components/Reviews.vue';
 import WebPushStrip from '@/components/WebPushStrip.vue';
+import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
 // import OpenInApp from '@/components/OpenInApp.vue';
 // import ShareStrip from '@/components/ShareStrip.vue';
+import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -284,6 +293,7 @@ export default {
         Spinner,
         Reviews,
         WebPushStrip,
+        WebPushModal,
         Recommendation,
         // ShareStrip,
         // OpenInApp
@@ -297,11 +307,14 @@ export default {
             selectedChapter: 1,
             scrollPosition: null,
             scrollDirection: null,
+            percentScrolled: null,
             counter: 0,
             openRateRev: false,
             openRateReaderm: false,
             rateRev: 'RATEREV',
-            shouldShowOpenInAppStrip: true
+            shouldShowOpenInAppStrip: true,
+            webPushModalTriggered: false,
+            isWebPushEnabled: WebPushUtil.canShowCustomPrompt()
         }
     },
     methods: {
@@ -559,9 +572,17 @@ export default {
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
+            let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
+            this.percentScrolled = (wintop/(docheight-winheight))*100
         },
         getWebPushStripMessage() {
             return `Enjoyed reading this ${this.getPratilipiData.type.toLowerCase()}? Allow Pratilipi to send you notifications for good stories...`
+        },
+        getWebPushModalTitle() {
+            return `Enjoyed reading this ${this.getPratilipiData.type.toLowerCase()}?`
+        },
+        getWebPushModalMessage() {
+            return `Allow Pratilipi to send you notifications for other such stories?`
         }
     },
     computed: {
@@ -600,11 +621,6 @@ export default {
         $('.read-page').bind("contextmenu",function(e){
             e.preventDefault();
         }),
-        $(window).scroll(function() {
-            var wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height();
-            var totalScroll = (wintop/(docheight-winheight))*100;
-            $(".reader-progress .progress-bar").css("width",totalScroll+"%");
-        }),
         window.addEventListener('scroll', this.updateScroll);
     },
     watch: {
@@ -637,6 +653,7 @@ export default {
                 this.fetchPratilipiContentForIMAGE({ pratilipiId: newId, chapterNo: this.$route.query.chapterNo ? Number(this.$route.query.chapterNo) : 1 });
             }
             this.fetchAuthorDetails();
+            this.webPushModalTriggered = false;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -668,6 +685,13 @@ export default {
                 this.shouldShowOpenInAppStrip = false;
             } else {
                 this.shouldShowOpenInAppStrip = true;
+            }
+        },
+        'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
+            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
+                this.webPushModalTriggered = true
+                this.openWebPushModal()
             }
         },
         'getPratilipiLoadingState'(status) {

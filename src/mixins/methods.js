@@ -123,6 +123,10 @@ export function openWritePratilipiModal() {
     $('#writermodal').modal('show');
 }
 
+export function openWebPushModal() {
+    $('#webPushModal').modal('show');
+}
+
 export function isMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
