@@ -572,11 +572,11 @@
     "event_participate_cannot_change_drafts":"फाइनल सबमिशन के बाद आप किसी प्रकार का बदलाव नहीं कर पायेंगे। क्या आप इसे सबमिट करने के लिए निश्चित हैं?",
     "event_participate_check_your_entry_here":"अपनी रचना यहाँ देखें ",
 
-    "web_push_modal_title": "रचना पसंद आयी?",
+    "web_push_title": "रचना पसंद आयी?",
     "web_push_message_1": "पाइए आपकी मनपसंद कहानियाँ अब नोटिफिकेशन में",
     "web_push_message_2": "प्रतिलिपि की और से कहानियाँ पाने के लिए नोटिफिकेशन प्राप्त करें",
     "web_push_message_3": "एक से बढ़कर एक कहानियाँ अब पाइए नोटिफिकेशन में",
-    "web_push_button_allow": "अनुमति दें",
-    "web_push_button_cancel": "रद करें"
+    "web_push_allow": "अनुमति दें",
+    "web_push_cancel": "रद करें"
 
 }

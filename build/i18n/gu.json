@@ -573,11 +573,11 @@
     "event_participate_cannot_change_drafts":"ફાઇનલ સબમિશન પછી આપ રચનામાં કોઈ ફેરફાર નહી કરી શકો.શું આપ ફાઇનલ સબમિશન કરવા ઈચ્છો છો?",
     "event_participate_check_your_entry_here":"આપની રચના એન્ટ્રી અહીં ચેક કરો ",
 
-    "web_push_modal_title": "આ રચના પસંદ આવી?",
+    "web_push_title": "આ રચના પસંદ આવી?",
     "web_push_message_1": "આ પ્રકારની વાર્તાઓ નોટીફિકેશનમાં મેળવવા પ્રતિલિપિને અનુમતિ આપો",
     "web_push_message_2": "નોટીફિકેશન દ્વારા ઉત્તમ વાર્તાઓ મેળવવા ઈચ્છો છો?",
     "web_push_message_3": "નોટીફિકેશન દ્વારા વાર્તાઓ મોકલવા માટે પ્રતિલિપિને અનુમતિ આપો..",
-    "web_push_button_allow": "અનુમતિ આપો",
-    "web_push_button_cancel": "રદ કરો"
+    "web_push_allow": "અનુમતિ આપો",
+    "web_push_cancel": "રદ કરો"
 
 }

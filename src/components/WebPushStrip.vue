@@ -4,8 +4,8 @@
             <div class="inner-container">
                 <div class="message">{{message}}</div>
                 <div class="button-holder">
-                    <button type="button" v-if="includeDisableButton" @click="disableWebPush()" class="btn">Don't Allow</button>
-                    <button type="button" @click="enableWebPush()" class="btn">Allow</button>
+                    <button type="button" v-if="includeDisableButton" @click="disableWebPush()" class="btn">__("web_push_cancel")</button>
+                    <button type="button" @click="enableWebPush()" class="btn">__("web_push_allow")</button>
                 </div>
             </div>
         </div>
