@@ -87,7 +87,7 @@ export default {
     },
 
     setFollowUnfollowLoadingDataLoadingSuccess(state, data){
-        const authorFollowedOrUnfollowed = state.author.data.find(eachAuthor => eachAuthor.authorId === data.authorId);
+        const authorFollowedOrUnfollowed = state.author.data.find(eachAuthor => eachAuthor.authorId == data.referenceId);
         authorFollowedOrUnfollowed.following = data.following;
         if (data.following) {
             authorFollowedOrUnfollowed.followCount++;    

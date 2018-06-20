@@ -82,7 +82,7 @@ export default {
 
     setInitialAuthorFollowingDataLoadingSuccess(state, data){
         state.following.loading_state = 'LOADING_SUCCESS';
-        state.following.data = data.authorList;
+        state.following.data = data.data;
         state.following.cursor = data.cursor;
         state.following.numberFound = data.numberFound;
     },
@@ -100,7 +100,7 @@ export default {
 
     setInitialAuthorFollowersDataSuccess(state, data){
         state.followers.loading_state = 'LOADING_SUCCESS';
-        state.followers.data = data.userList;
+        state.followers.data = data.data;
         state.followers.cursor = data.cursor;
         state.followers.numberFound = data.numberFound;
     },
@@ -115,8 +115,8 @@ export default {
     },
     setMoreAuthorFollowingDataLoadingSuccess(state, response) {
         state.following.loading_state = 'LOADING_SUCCESS';
-        if (response.authorList && response.authorList.length > 0) {
-            state.following.data = state.following.data.concat(response.authorList);
+        if (response.data && response.data.length > 0) {
+            state.following.data = state.following.data.concat(response.data);
             state.following.cursor = response.cursor;
         } else {
             state.following.cursor = null;
@@ -131,8 +131,8 @@ export default {
     },
     setMoreAuthorFollowersDataSuccess(state, response) {
         state.followers.loading_state = 'LOADING_SUCCESS';
-        if (response.userList && response.userList.length > 0) {
-            state.followers.data = state.followers.data.concat(response.userList);
+        if (response.data && response.data.length > 0) {
+            state.followers.data = state.followers.data.concat(response.data);
             state.followers.cursor = response.cursor;
         } else {
             state.followers.cursor = null;

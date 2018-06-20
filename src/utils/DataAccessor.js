@@ -39,13 +39,15 @@ const NAVIGATION_LIST_API = "/navigation/list";
 const USER_PRATILIPI_REVIEW_LIST_API = "/userpratilipi/review/list";
 const COMMENT_LIST_API = "/comment/list";
 const USER_PRATILIPI_REVIEW_API = "/userpratilipi/review";
-const USER_AUTHOR_FOLLOW_API = "/userauthor/follow?_apiVer=2";
+const USER_AUTHOR_FOLLOW_POST_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOW_GET_API = "/follows/v2.0/isFollowing";
 const USER_PRATILIPI_LIBRARY_API = "/userpratilipi/library";
 const COMMENT_API = "/comment";
 const VOTE_API = "/vote";
 const INIT_API = "/init?_apiVer=2";
 const INIT_BANNER_LIST_API = "/init/banner/list";
-const USER_AUTHOR_FOLLOW_LIST_API = "/userauthor/follow/list";
+const USER_AUTHOR_FOLLOWERS_LIST_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOWING_LIST_API = "/follows/v2.0/users";
 const EVENT_API = "/event";
 const EVENTS_API = "/events/v2.0";
 const EVENT_LIST_API = "/event/list";
@@ -203,7 +205,7 @@ export default {
         requests.push(new request("req2", AUTHOR_API, { "authorId": "$req1.primaryContentId" }));
 
         if (includeUserAuthor)
-            requests.push(new request("req3", USER_AUTHOR_FOLLOW_API, { "authorId": "$req1.primaryContentId" }));
+            requests.push(new request("req3", USER_AUTHOR_FOLLOW_GET_API, { "referenceId": "$req1.primaryContentId", "referenceType": "AUTHOR" }));
 
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
@@ -229,20 +231,16 @@ export default {
             });
     },
 
-    getAuthorById: (authorId, includeUserAuthor, aCallBack) => {
+    getAuthorById: (authorId, aCallBack) => {
 
         var requests = [];
         requests.push(new request("req1", AUTHOR_API, { "authorId": authorId }));
-
-        if (includeUserAuthor)
-            requests.push(new request("req2", USER_AUTHOR_FOLLOW_API, { "authorId": authorId }));
 
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
                 if (aCallBack != null) {
                     var author = response.req1 && response.req1.status == 200 ? response.req1.response : null;
-                    var userauthor = includeUserAuthor && response.req2 && response.req2.status == 200 ? response.req2.response : null;
-                    aCallBack(author, userauthor);
+                    aCallBack(author);
                 }
             });
     },
@@ -477,7 +475,7 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (offset != null) params["offset"] = offset;
         if (resultCount != null) params["resultCount"] = resultCount;
-        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOW_LIST_API,
+        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOWERS_LIST_API + '/' + authorId + '/followers',
             null,
             params,
             function(response, status) { processGetResponse(response, status, aCallBack) });
@@ -489,7 +487,7 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (offset != null) params["offset"] = offset;
         if (resultCount != null) params["resultCount"] = resultCount;
-        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOW_LIST_API,
+        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOWING_LIST_API + '/' + userId + '/following',
             null,
             params,
             function(response, status) { processGetResponse(response, status, aCallBack) });
@@ -579,7 +577,7 @@ export default {
 
     followOrUnfollowAuthor: (authorId, following, successCallBack, errorCallBack) => {
         if (authorId == null || following == null) return;
-        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_API,
+        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_POST_API + '/' + authorId,
             null, { "authorId": authorId, "state": following ? "FOLLOWING" : "UNFOLLOWED" },
             function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
     },

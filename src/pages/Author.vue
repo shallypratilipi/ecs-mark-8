@@ -119,7 +119,7 @@
                                 <div class="list followers" id="followers">
                                     <AuthorCard  v-for="each_follower in getAuthorFollowers"
                                         :authorData="each_follower"
-                                        :key="each_follower.userId"
+                                        :key="each_follower.user.id"
                                         :screenName=" getUserDetails.authorId === getAuthorData.authorId ? 'MYPROFILE' : 'USER'"
                                         :screenLocation="'FOLLOWERS'"
                                         :followOrUnfollowAuthor="followOrUnfollowFollowers"
@@ -131,7 +131,7 @@
                                 <div class="list following" id="following">
                                     <AuthorCard v-for="each_following in getAuthorFollowing"
                                         :authorData="each_following"
-                                        :key="each_following.userId"
+                                        :key="each_following.user.id"
                                         :screenName=" getUserDetails.authorId === getAuthorData.authorId ? 'MYPROFILE' : 'USER'"
                                         :screenLocation="'FOLLOWINGS'"
                                         :followOrUnfollowAuthor="followOrUnfollowFollowing"
@@ -412,12 +412,14 @@ export default {
 
                 this.fetchInitialAuthorFollowingUsers({
                     userId: this.getAuthorData.user.userId,
-                    resultCount: 20
+                    resultCount: 20,
+                    cursor: 0
                 });
 
                 this.fetchInitialAuthorFollowerUsers({
                     authorId: newValue,
-                    resultCount: 20
+                    resultCount: 20,
+                    cursor: 0
                 });
 
                 if (this.getUserDetails.author.authorId === this.getAuthorData.authorId) {
@@ -431,21 +433,22 @@ export default {
         },
         'scrollPosition'(newScrollPosition){
             const nintyPercentOfList = ( 50 / 100 ) * $('.author-page').innerHeight();
+            var currentlyActiveTab = $(".profile-menu .active").attr('data-tab');
 
             if (newScrollPosition > nintyPercentOfList) {
-                if (this.publishedContentsLoadingState !== 'LOADING' && this.getPublishedContentsCursor) {
+                if (this.publishedContentsLoadingState !== 'LOADING' && this.getPublishedContentsCursor && currentlyActiveTab === 'published') {
                     this.fetchMorePublishedContents({
                         authorId: this.getAuthorData.authorId,
                         resultCount: 10
                     });
                 }
-                if (this.getAuthorFollowingLoadingState !== 'LOADING' && this.getAuthorFollowingCursor) {
+                if (this.getAuthorFollowingLoadingState !== 'LOADING' && this.getAuthorFollowingCursor && currentlyActiveTab === 'following' ) {
                     this.fetchMoreAuthorFollowingUsers({
                         userId: this.getAuthorData.user.userId,
                         resultCount: 5
                     });
                 }
-                if (this.getAuthorFollowersLoadingState !== 'LOADING' && this.getAuthorFollowersCursor) {
+                if (this.getAuthorFollowersLoadingState !== 'LOADING' && this.getAuthorFollowersCursor && currentlyActiveTab === 'followers' ) {
                     this.fetchMoreAuthorFollowerUsers({
                         authorId: this.getAuthorData.authorId,
                         resultCount: 5

@@ -35,9 +35,9 @@ export default {
         });
     },
 
-    fetchInitialAuthorFollowingUsers({ commit, state }, { userId, resultCount }) {
+    fetchInitialAuthorFollowingUsers({ commit, state }, { userId, resultCount, cursor }) {
         commit('setInitialAuthorFollowingDataLoadingTrue');
-        DataAccessor.getUserFollowing(userId, null, null, resultCount, (data) => {
+        DataAccessor.getUserFollowing(userId, cursor, null, resultCount, (data) => {
             if (data.status === 200) {
                 commit('setInitialAuthorFollowingDataLoadingSuccess', data.response);
             } else {
@@ -57,9 +57,9 @@ export default {
         });
     },
 
-    fetchInitialAuthorFollowerUsers({ commit, state }, { authorId, resultCount }) {
+    fetchInitialAuthorFollowerUsers({ commit, state }, { authorId, resultCount, cursor }) {
         commit('setInitialAuthorFollowersDataTrue');
-        DataAccessor.getAuthorFollowers(authorId, null, null, resultCount, (data) => {
+        DataAccessor.getAuthorFollowers(authorId, cursor, null, resultCount, (data) => {
             if (data.status === 200) {
                 commit('setInitialAuthorFollowersDataSuccess', data.response);
             } else {
