@@ -138,7 +138,7 @@
                                 <WebPushStrip
                                     :message="getWebPushStripMessage()"
                                     screenName="READER"
-                                    v-if="selectedChapter == getIndexData.length && isWebPushEnabled">
+                                    v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
                                 </WebPushStrip>
                             </div>
 
@@ -156,8 +156,8 @@
                                 :title="getWebPushModalTitle()"
                                 :message="getWebPushModalMessage()"
                                 screenName="READER"
-                                includeDisableButton=true
-                                v-if="selectedChapter == getIndexData.length && isWebPushEnabled"></WebPushModal>
+                                :includeDisableButton=true
+                                v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
 
                         </div>
                     </div>
@@ -314,7 +314,8 @@ export default {
             rateRev: 'RATEREV',
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
-            isWebPushEnabled: WebPushUtil.canShowCustomPrompt() && process.env.STAGE !== 'prod' && false
+            isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30,
+            isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 40
         }
     },
     methods: {
