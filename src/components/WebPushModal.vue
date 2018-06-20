@@ -13,7 +13,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" v-if="includeDisableButton" @click="disableWebPush()" class="btn">__("web_push_cancel")</button>
-                    <button type="button" @click="enableWebPush()" class="btn">__("web_push_allow")</button>
+                    <button type="button" @click="enableWebPush()" class="btn btn-submit">__("web_push_allow")</button>
                 </div>
             </div>
         </div>
@@ -88,6 +88,15 @@ export default {
             #{$property}: #{$value};
     }
     #webPushModal {
-
+        margin: 50px auto;
+        .modal-footer {
+            border: none;
+            .btn-submit {
+                background: #d0021b;
+                color: #fff;
+                border: 0;
+                font-size: 14px;
+            }
+        }
     }
 </style>

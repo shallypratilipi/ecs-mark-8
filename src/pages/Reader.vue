@@ -136,6 +136,7 @@
 
                             <div class="book-bottom-webpush-subscribe">
                                 <WebPushStrip
+                                    :title="getWebPushStripTitle()"
                                     :message="getWebPushStripMessage()"
                                     screenName="READER"
                                     v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
@@ -314,8 +315,8 @@ export default {
             rateRev: 'RATEREV',
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
-            isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30,
-            isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 40
+            isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40,
+            isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60
         }
     },
     methods: {
@@ -461,6 +462,8 @@ export default {
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
+            $(".webpush-strip").removeClass("bg-black");
+            $(".webpush-strip").addClass("bg-grey");
 
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -481,6 +484,8 @@ export default {
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
+            $(".webpush-strip").removeClass("bg-grey");
+            $(".webpush-strip").addClass("bg-black");
 
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -502,6 +507,8 @@ export default {
 
             $(".container-fluid").css({"background-color": "#F4ECD8",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
+            $(".webpush-strip").removeClass("bg-black");
+            $(".webpush-strip").addClass("bg-grey");
 
 
 
@@ -576,8 +583,11 @@ export default {
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
             this.percentScrolled = (wintop/(docheight-winheight))*100
         },
+        getWebPushStripTitle() {
+            return `__("web_push_title")`
+        },
         getWebPushStripMessage() {
-            return `__("web_push_title") __("web_push_message_3")`
+            return `__("web_push_message_3")`
         },
         getWebPushModalTitle() {
             return `__("web_push_title")`

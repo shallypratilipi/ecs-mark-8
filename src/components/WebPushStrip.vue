@@ -1,7 +1,8 @@
 <template>
-    <div class="webpush-strip">
+    <div class="webpush-strip bg-grey">
         <div class="container" v-if="isVisible">
             <div class="inner-container">
+                <div class="title">{{title}}</div>
                 <div class="message">{{message}}</div>
                 <div class="button-holder">
                     <button type="button" v-if="includeDisableButton" @click="disableWebPush()" class="btn">__("web_push_cancel")</button>
@@ -25,6 +26,10 @@ export default {
         inViewport
     ],
     props: {
+        title: {
+            type: String,
+            required: true
+        },
         message: {
             type: String,
             required: true
@@ -99,11 +104,17 @@ export default {
                 margin: 0 5px;
                 padding: 15px;
                 font-size: 14px;
-                background: #f8f8f8;
                 position: relative;
+                div.title {
+                    padding: 0 12px;
+                    margin-bottom: 6px;
+                    text-align: left;
+                    width: 100%;
+                    font-size: 16px;
+                }
                 div.message {
                     padding: 0 12px;
-                    margin-bottom: 12px;
+                    margin-bottom: 6px;
                     text-align: left;
                     width: 100%;
                 }
@@ -120,6 +131,16 @@ export default {
                     }
                 }
             }
+        }
+    }
+    .webpush-strip.bg-grey {
+        .container .inner-container {
+            background: #f8f8f8;
+        }
+    }
+    .webpush-strip.bg-black {
+        .container .inner-container {
+            background: black;
         }
     }
 </style>
