@@ -89,13 +89,17 @@ export default {
     }
     #webPushModal {
         margin: 50px auto;
+        .modal-body {
+            .message-container {
+                text-align: left;
+            }
+        }
         .modal-footer {
             border: none;
             .btn-submit {
                 background: #d0021b;
                 color: #fff;
                 border: 0;
-                font-size: 14px;
             }
         }
     }
