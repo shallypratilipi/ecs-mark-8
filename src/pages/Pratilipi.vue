@@ -188,7 +188,8 @@ export default {
             suggestedTags: [],
             newSuggestedTag: '',
             showShowMoreOfSummary: false,
-            hasLandedBeenTriggered: false
+            hasLandedBeenTriggered: false,
+            isCreated: null,
         }
     },
     mixins: [
@@ -228,7 +229,7 @@ export default {
             'setInputModalSaveAction',
             'setConfirmModalAction'
         ]),
-        ...mapActions('alert', [
+        ...mapActions('alert', [   
             'triggerAlert'
         ]),
         logReadEvent() {
@@ -494,13 +495,13 @@ export default {
         }
     },
     created() {
+         this.isCreated = true;
         const slug_id = this.$route.params.slug_id;
         const pratilipiData = this.$route.params.pratilipiData;
         this.selectedPratilipiType = this.getPratilipiData.type;
         this.selectedTags = this.getPratilipiData.tags ? [ ...this.getPratilipiData.tags ] : [];
         this.suggestedTags = this.getPratilipiData.suggestedTags;
         document.title = this.getPratilipiData.title;
-
         this.fetchPratilipiDetailsAndUserPratilipiData(slug_id);
     },
     components: {
@@ -543,7 +544,14 @@ export default {
             }
         },
         'getUserDetails.userId'() {
+            if(!this.isCreated)
+            {
             this.fetchPratilipiDetailsAndUserPratilipiData(this.$route.params.slug_id);
+            }
+            else
+            {
+            this.isCreated=false;                
+            }
         },
         selectedPratilipiType(newType) {
             if (newType === this.getPratilipiData.type) {

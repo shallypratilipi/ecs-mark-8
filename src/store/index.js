@@ -26,6 +26,7 @@ import pratilipimodal from './modules/pratilipimodal'
 import inputmodal from './modules/inputmodal'
 import messages from  './modules/messages'
 import eventparticipate from  './modules/eventparticipate'
+import videoseries from './modules/videoseries'
 
 Vue.use(Vuex);
 
@@ -56,6 +57,7 @@ export default new Vuex.Store({
         pratilipimodal,
         inputmodal,
         messages,
-        eventparticipate
+        eventparticipate,
+        videoseries
     }
 })
