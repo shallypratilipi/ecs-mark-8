@@ -13,9 +13,12 @@
                     <form>
                         <div class="form-group">
                             <label for="pratilipi_write_language">__("writer_select_language")</label>
-                            <select class="form-control" id="pratilipi_write_language" v-model="language">
+                            <select class="form-control" id="pratilipi_write_language" v-model="language"  >
                                 <option disabled value="">__('writer_select_language')</option>
-                                <option :value="eachLanguage.fullName.toUpperCase()"  v-for="eachLanguage in constants.LANGUAGES" :key="eachLanguage.shortName">{{ eachLanguage.languageNative }}</option>
+                                <option :value="eachLanguage.fullName.toUpperCase()"  v-for="eachLanguage in constants.LANGUAGES"  :key="eachLanguage.shortName"> 
+                                     {{ eachLanguage.languageNative }}
+
+                                </option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -60,7 +63,8 @@ export default {
             title: '',
             titleEn: '',
             language: '',
-            type: ''
+            type: '',
+            isCreated: false,
         }
     },
     methods: {
@@ -71,9 +75,53 @@ export default {
             'createPratilipiAndGoToWriter'
         ])
     },
+
+      created() {
+        this.isCreated = true;
+        const currentLocale = process.env.LANGUAGE;
+        constants.LANGUAGES.forEach((eachLanguage) => {
+            if (eachLanguage.shortName == currentLocale) {
+                this.language= eachLanguage.fullName.toUpperCase() ;
+            }
+        });
+    },
     components: {
         TranslatingInput
+    },
+
+
+    watch: {
+        language(value) {
+            if(!this.isCreated){
+             switch(value.toLowerCase()) {
+
+                case 'hindi': window.location="https://hindi.pratilipi.com/create";
+                                break;
+                case 'bengali': window.location="https://bengali.pratilipi.com/create";
+                                break;
+                case 'gujarati': window.location="https://gujarati.pratilipi.com/create";
+                                break;
+                case 'bengali': window.location="https://bengali.pratilipi.com/create";
+                                break;
+                case 'kannada': window.location="https://kannada.pratilipi.com/create";
+                                break;
+                case 'malayalam': window.location="https://malayalam.pratilipi.com/create";
+                                break;
+                case 'marathi': window.location="https://marathi.pratilipi.com/create";
+                                break;
+                case 'tamil': window.location="https://tamil.pratilipi.com/create";
+                                break;
+                case 'telugu': window.location="https://telugu.pratilipi.com/create";
+                                break;
+                }    
+            }
+            else {
+                this.isCreated = false;
+            }
+                    
+        },
     }
+    
 }
 </script>
 
