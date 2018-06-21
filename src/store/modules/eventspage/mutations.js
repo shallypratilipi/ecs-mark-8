@@ -25,9 +25,6 @@ export default {
 
     setEventsDataLoadingSuccess(state, data) {
         state.events.loading_state = 'LOADING_SUCCESS';
-        console.log("value of setEventsDataLoadingSuccess data is", data);
-        console.log("value of setEventsDataLoadingSuccess data.eventList is", data.eventList);
-
         state.events.data = data.eventList;
     },
 

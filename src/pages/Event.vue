@@ -88,7 +88,7 @@ export default {
             canParticipate: false
         }
     },
-    mixins: [ 
+    mixins: [
         mixins
     ],
     computed: {
@@ -165,7 +165,6 @@ export default {
     },
     created() {
         const { event_data, event_slug } = this.$route.params;
-        console.log("Value of route: ", event_data);
         if (event_data) {
             this.cacheEventData(event_data);
         } else {
