@@ -113,7 +113,7 @@ export default {
                                 break;
                 case 'telugu': window.location="https://telugu.pratilipi.com/create";
                                 break;
-            }    
+                }    
             }
             else {
                 this.isCreated = false;

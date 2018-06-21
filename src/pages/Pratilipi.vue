@@ -544,12 +544,10 @@ export default {
             }
         },
         'getUserDetails.userId'() {
-            if(!this.isCreated)
-            {
+            if(!this.isCreated) {
             this.fetchPratilipiDetailsAndUserPratilipiData(this.$route.params.slug_id);
             }
-            else
-            {
+            else {
             this.isCreated=false;                
             }
         },

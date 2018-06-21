@@ -206,8 +206,8 @@ export default {
                 language: null,
                 summary: null,
                 penName: null,
-                gender: " ",
-                dateOfBirth: " "
+                gender: null,
+                dateOfBirth: null
             },
             userData: {
                 email: null,
@@ -306,7 +306,7 @@ export default {
         updateProfileSettings() {
             this.detectChangesAndTriggerEvent();
             this.updateUserDetails(this.userData);
-                this.updateAuthorDetails(this.authorData);
+            this.updateAuthorDetails(this.authorData);
             // this.$router.push('login');
         },
         triggerEventAndUpdateUserPassword(data) {
