@@ -58,7 +58,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6 col-sm-12">
                                             <label for="pratilipi-settings-summary">__('edit_author_summary')</label>
-                                            <textarea class="form-control" id="pratilipi-settings-summary" v-model="authorData.summary" rows="3"></textarea>
+                                             <TranslatingInputTextArea  :value="authorData.summary" :oninput="updateSummary"  ></TranslatingInputTextArea>
                                         </div>
                                     </div>
                                     <div class="section-title">Private Information</div>
@@ -181,13 +181,16 @@ import TranslatingInput from '@/components/TranslatingInput.vue';
 import Spinner from '@/components/Spinner.vue';
 import constants from '@/constants';
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import TranslatingInputTextArea from '@/components/TranslatingInputTextArea.vue';
+
 
 export default {
     components: {
         MainLayout,
         TranslatingInput,
-        Spinner
+        Spinner,
+        TranslatingInputTextArea
     },
     data() {
         return {
@@ -203,8 +206,8 @@ export default {
                 language: null,
                 summary: null,
                 penName: null,
-                gender: null,
-                dateOfBirth: null
+                gender: " ",
+                dateOfBirth: " "
             },
             userData: {
                 email: null,
@@ -258,6 +261,9 @@ export default {
         updateFirstName(value) {
             this.authorData.firstName = value;
         },
+        updateSummary(value) {
+            this.authorData.summary = value;
+        },
         updateLastName(value) {
             this.authorData.lastName = value;
         },
@@ -300,7 +306,7 @@ export default {
         updateProfileSettings() {
             this.detectChangesAndTriggerEvent();
             this.updateUserDetails(this.userData);
-            this.updateAuthorDetails(this.authorData);
+                this.updateAuthorDetails(this.authorData);
             // this.$router.push('login');
         },
         triggerEventAndUpdateUserPassword(data) {
@@ -611,7 +617,8 @@ export default {
                 }
             });
         });
-    }
+    },
+       
 }
 </script>
 
