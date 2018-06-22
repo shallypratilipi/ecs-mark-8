@@ -131,7 +131,7 @@
                                 <div class="list following" id="following">
                                     <AuthorCard v-for="each_following in getAuthorFollowing"
                                         :authorData="each_following"
-                                        :key="each_following.user.id"
+                                        :key="each_following.author.id"
                                         :screenName=" getUserDetails.authorId === getAuthorData.authorId ? 'MYPROFILE' : 'USER'"
                                         :screenLocation="'FOLLOWINGS'"
                                         :followOrUnfollowAuthor="followOrUnfollowFollowing"
