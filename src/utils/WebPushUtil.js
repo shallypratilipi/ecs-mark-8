@@ -18,7 +18,9 @@
 // some boring import statements, important but boring
 import {
     getCookie,
-    setCookie
+    setCookie,
+    triggerAnanlyticsEvent,
+    getAnalyticsPageSource
 } from '@/mixins/methods'
 
 import DataAccessor from '@/utils/DataAccessor'
@@ -32,11 +34,7 @@ const WEB_PUSH_COOKIE_DAYS = 7
 const WEB_PUSH_SHOW_LIMIT = 3
 
 // WEB_PUSH_SESSION_COOKIE_NAME => Temporary cookie set to identify that the user had disabled push in the current session
-const WEB_PUSH_SESSION_COOKIE_NAME = 'web_push_closed_now'
-
-// staged release
-const STAGED_START_BUCKET_ID = 20
-const STAGED_END_BUCKET_ID = 30
+const WEB_PUSH_SESSION_COOKIE_NAME = 'web_push_closed_session'
 
 // setting up language
 const LANGUAGE = constants.LANGUAGES.filter(l => l.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase()
@@ -54,6 +52,10 @@ const WebpushUtil = (function () { // eslint-disable-line
             .then((serviceWorkerRegistration) => serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true}))
             .then(_createOrUpdateFCMToken)
 
+    // getNthActionCount => Returns the number of times the user had made actions on webpush - only close event for now
+    const getNthActionCount = () =>
+        (parseInt(getCookie(WEB_PUSH_COOKIE_NAME)) || 0)
+
     // isBrowserPushCompatible => Returns a boolean stating if the push is compatible with the browser or not
     const isBrowserPushCompatible = () => ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window)
 
@@ -63,44 +65,62 @@ const WebpushUtil = (function () { // eslint-disable-line
     // 3. user has blocked the notifications already
     // 4. custom prompt has been closed by the user in the session, so don't piss off the user until next session
     // 5. custom prompt has been closed by the user x times already, so don't piss off the user for another WEB_PUSH_COOKIE_DAYS days
-    // 6. staged release, if there's any
     const canShowCustomPrompt = () => isBrowserPushCompatible() &&
         (window.Notification.permission !== 'granted') &&
         (window.Notification.permission !== 'denied') &&
-        (getCookie(WEB_PUSH_SESSION_COOKIE_NAME) === undefined) &&
-        ((parseInt(getCookie(WEB_PUSH_COOKIE_NAME)) || 0) < WEB_PUSH_SHOW_LIMIT) &&
-        ((parseInt(getCookie('bucketId')) || -1) >= STAGED_START_BUCKET_ID) &&
-        ((parseInt(getCookie('bucketId')) || -1) < STAGED_END_BUCKET_ID)
+        (!getCookie(WEB_PUSH_SESSION_COOKIE_NAME)) &&
+        (getNthActionCount() < WEB_PUSH_SHOW_LIMIT)
 
     // enabledOnCustomPrompt => As the name defines
-    // TODO: Impl
-    const enabledOnCustomPrompt = () => {
-        // some analytics calls
-        // showing the prompt to user
+    const enabledOnCustomPrompt = (pageSource) => {
+        const SCREEN_NAME = getAnalyticsPageSource(pageSource)
+        // assumption => The next line of code fires up the popup
+        if ((window.Notification.permission !== 'granted') && (window.Notification.permission !== 'denied')) {
+            triggerAnanlyticsEvent('VIEWED_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+        }
+
+        // Just a method to fire some events
+        const _fireAnalyticsEvents = () => {
+            // user had clicked on 'Allow'
+            if (window.Notification.permission === 'granted') {
+                triggerAnanlyticsEvent('ALLOW_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+            // user had clicked on 'Disallow'
+            } else if (window.Notification.permission === 'denied') {
+                triggerAnanlyticsEvent('DISALLOW_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+            // user had clicked on 'Close'
+            } else {
+                triggerAnanlyticsEvent('CLOSE_BROWSERWEBPUSH_GLOBAL', 'CONTROL', {SCREEN_NAME})
+                // user is trying to play with us, cool down the user by not showing it for the session
+                setCookie(WEB_PUSH_SESSION_COOKIE_NAME, Date.now(), null, '/')
+            }
+        }
+
+        // Firing the browser popup
         _enableBrowserPush()
-            .then() // more analytics call
-            .catch(() => -1) // more analytics call
+            .then(_fireAnalyticsEvents)
+            .catch(_fireAnalyticsEvents)
     }
 
     // disabledOnCustomPrompt => As the name defines again, genius
-    // TODO: Impl
     const disabledOnCustomPrompt = () => {
-        // some analytics calls
         // setting cookies
+        // 1. WEB_PUSH_COOKIE_NAME => Number of times user had closed the custom prompt, on the whole. TTLed for WEB_PUSH_COOKIE_DAYS days
         setCookie(WEB_PUSH_COOKIE_NAME, (parseInt(getCookie(WEB_PUSH_COOKIE_NAME)) || 0) + 1, WEB_PUSH_COOKIE_DAYS, '/')
+        // 2. WEB_PUSH_SESSION_COOKIE_NAME => User had closed on the custom prompt, so don't annoy for the session
         setCookie(WEB_PUSH_SESSION_COOKIE_NAME, Date.now(), null, '/')
     }
 
     // if user had granted access, make an api call with the updated token
-    (function _init () {
+    setTimeout(() => {
         if (window.Notification.permission === 'granted') {
             _enableBrowserPush().catch(() => -1)
         }
-    })()
+    })
 
     return {
         isBrowserPushCompatible, // check if browser push is compatible with the browser
         canShowCustomPrompt, // check if custom prompts can be shown based on multiple factors
+        getNthActionCount, // number of times the user had made actions on webpush - only close event for now
         enabledOnCustomPrompt, // user had clicked on 'yes' on custom prompt
         disabledOnCustomPrompt // user had clicked on 'no' on custom prompt
     }

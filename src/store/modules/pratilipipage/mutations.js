@@ -130,15 +130,6 @@ export default {
         state.userAuthor.loading_state = 'LOADING';
     },
     
-    setUserAuthorDataLoadingSuccess(state, authorData) {
-        state.userAuthor.data = authorData;
-        state.userAuthor.loading_state = 'LOADING_SUCCESS';
-    },
-    
-    setUserAuthorDataLoadingError(state) {
-        state.userAuthor.loading_state = 'LOADING_ERROR';
-    },
-
     setFollowUnfollowLoadingDataLoadingTrue(state) {
 
     },

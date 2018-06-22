@@ -91,6 +91,22 @@ export default {
         "LOCATION": "TOPICS",
         "ACTION": "LANDED"
     },
+    "VIEWED_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "VIEWED"
+    },
+    "ALLOW_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "ALLOW"
+    },
+    "DISALLOW_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "DISALLOW"
+    },
+    "CLOSE_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "CLOSE"
+    },
     "CREATEAUTHOR_AUTHORS_ADMIN": {
         "SCREEN_NAME": "ADMIN",
         "LOCATION": "AUTHORS",
@@ -1118,6 +1134,41 @@ export default {
         "SCREEN_NAME": "READER",
         "LOCATION": "SETTINGS",
         "ACTION": "READERGAP"
+    },
+    "VIEWED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "DISABLED"
+    },
+    "VIEWED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "ENABLED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "DISABLED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "CLOSED"
     },
     "TYPELOGINFIELD_CONFIRMPASS_REGISTER": {
         "SCREEN_NAME": "REGISTER",

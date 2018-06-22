@@ -1,0 +1,146 @@
+<template>
+    <div class="webpush-strip bg-grey">
+        <div class="container" v-if="isVisible">
+            <div class="inner-container">
+                <div class="title">{{title}}</div>
+                <div class="message">{{message}}</div>
+                <div class="button-holder">
+                    <button type="button" v-if="includeDisableButton" @click="disableWebPush()" class="btn">__("web_push_cancel")</button>
+                    <button type="button" @click="enableWebPush()" class="btn">__("web_push_allow")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+
+import inViewport from 'vue-in-viewport-mixin'
+import mixins from '@/mixins'
+import { mapGetters } from 'vuex'
+import WebPushUtil from '@/utils/WebPushUtil'
+
+export default {
+    mixins: [
+        mixins,
+        inViewport
+    ],
+    props: {
+        title: {
+            type: String,
+            required: true
+        },
+        message: {
+            type: String,
+            required: true
+        },
+        screenName: {
+            type: String,
+            required: true
+        },
+        includeDisableButton: {
+            type: Boolean,
+            default: false
+        },
+        'in-viewport-once': {
+            default: true
+        },
+        'in-viewport-offset-top': {
+            default: -350
+        }
+    },
+    data() {
+        return {
+            isVisible: true
+        }
+    },
+    methods: {
+        enableWebPush() {
+            this.isVisible = false
+            this.triggerAnanlyticsEvent(`ENABLED_WEBPUSHSTRIP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
+            WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store)
+        },
+        disableWebPush() {
+            this.isVisible = false
+            this.triggerAnanlyticsEvent(`DISABLED_WEBPUSHSTRIP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
+            WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'getUserDetails'
+        ])
+    },
+    watch: {
+        'inViewport.now'(visible) {
+            if (visible) {
+                this.triggerAnanlyticsEvent(`VIEWED_WEBPUSHSTRIP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId})
+            }
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+    @mixin css-prefix($property, $value) {
+    -webkit-#{$property}: #{$value};
+    -khtml-#{$property}: #{$value};
+        -moz-#{$property}: #{$value};
+        -ms-#{$property}: #{$value};
+        -o-#{$property}: #{$value};
+            #{$property}: #{$value};
+    }
+    .webpush-strip {
+        .container {
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            max-width: 700px;
+            .inner-container {
+                @include css-prefix('display', 'flex');
+                @include css-prefix('flex-direction', 'row');
+                flex-wrap: wrap;
+                box-sizing: border-box;
+                margin: 0 5px;
+                padding: 15px;
+                font-size: 14px;
+                position: relative;
+                div.title {
+                    padding: 0 12px;
+                    margin-bottom: 6px;
+                    text-align: left;
+                    width: 100%;
+                    font-size: 16px;
+                }
+                div.message {
+                    padding: 0 12px;
+                    margin-bottom: 6px;
+                    text-align: left;
+                    width: 100%;
+                }
+                div.button-holder {
+                    margin-left: auto;
+                    button {
+                        text-align: center;
+                        border: none;
+                        outline: none;
+                        color: #d0021b;
+                        background: transparent;
+                        cursor: pointer;
+                        padding: 0.375rem 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+    .webpush-strip.bg-grey {
+        .container .inner-container {
+            background: #f8f8f8;
+        }
+    }
+    .webpush-strip.bg-black {
+        .container .inner-container {
+            background: black;
+        }
+    }
+</style>

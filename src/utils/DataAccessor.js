@@ -2,7 +2,7 @@ import { httpUtil, formatParams } from './HttpUtil';
 // import Raven from 'raven-js';
 
 
-const API_PREFIX = (window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1 ? "https://gamma.pratilipi.com" : "/api";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
 
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";
@@ -46,7 +46,8 @@ const COMMENT_API = "/comment";
 const VOTE_API = "/social/v2.0";
 const INIT_API = "/init?_apiVer=2";
 const INIT_BANNER_LIST_API = "/init/banner/list";
-const USER_AUTHOR_FOLLOW_LIST_API = "/userauthor/follow/list";
+const USER_AUTHOR_FOLLOWERS_LIST_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOWING_LIST_API = "/follows/v2.0/users";
 const EVENT_API = "/event";
 const EVENTS_API = "/events/v2.0";
 const EVENT_LIST_API = "/event/list";
@@ -56,7 +57,8 @@ const CONTACT_API = "/contact";
 const TAGS_API = "/pratilipi/v2/categories/system";
 const USER_EMAIL_API = "/user/email";
 const TOP_AUTHORS_API = "/author/list/readcount";
-const WEB_DEVICES_API = "/devices/web";
+const WEB_DEVICES_API = "/web-push/fcmToken";
+const MARKETING_API = "/marketing/v1.0/newsletter/unsubscribe";
 
 const EVENT_PARTICIPATE_PREFIX = '/event-participate';
 const EVENT_PARTICIPATE_PREFIX_ADMIN = '/event-participate/admin';
@@ -234,20 +236,17 @@ export default {
             });
     },
 
-    getAuthorById: (authorId, includeUserAuthor, aCallBack) => {
+    getAuthorById: (authorId, aCallBack) => {
 
         var requests = [];
         requests.push(new request("req1", AUTHOR_API, { "authorId": authorId }));
-
         if (includeUserAuthor)
             requests.push(new request("req2", USER_AUTHOR_FOLLOW_SINGLE_API, { "referenceType": "AUTHOR" ,"referenceId": authorId }));
-
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
                 if (aCallBack != null) {
                     var author = response.req1 && response.req1.status == 200 ? response.req1.response : null;
-                    var userauthor = includeUserAuthor && response.req2 && response.req2.status == 200 ? response.req2.response : null;
-                    aCallBack(author, userauthor);
+                    aCallBack(author);
                 }
             });
     },
@@ -537,7 +536,7 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (offset != null) params["offset"] = offset;
         if (resultCount != null) params["resultCount"] = resultCount;
-        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOW_LIST_API,
+        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOWERS_LIST_API + '/' + authorId + '/followers',
             null,
             params,
             function(response, status) { processGetResponse(response, status, aCallBack) });
@@ -549,7 +548,7 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (offset != null) params["offset"] = offset;
         if (resultCount != null) params["resultCount"] = resultCount;
-        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOW_LIST_API,
+        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOWING_LIST_API + '/' + userId + '/following',
             null,
             params,
             function(response, status) { processGetResponse(response, status, aCallBack) });
@@ -592,22 +591,13 @@ export default {
 
     createOrUpdateAuthor: (author, successCallBack, errorCallBack) => {
         if (author == null || author.authorId == null) return;
-        // const authorDataToSend = ...author;
-        if(!author.dateOfBirth == "")
-        {
+        if (author.dateOfBirth) {
             const dateObj = new Date(author.dateOfBirth);
             let date = dateObj.getDate();
             let month = dateObj.getMonth();
             month++;
             let year = dateObj.getFullYear();
             author.dateOfBirth = date + "-" + month + "-" + year;
-        }
-        for (let key in author)
-        {
-            if(author[key] == undefined)
-            {
-                author[key] = "";
-            }
         }
         httpUtil.post(API_PREFIX + AUTHOR_API,
             null,
@@ -990,6 +980,13 @@ export default {
         httpUtil.post( API_PREFIX + WEB_DEVICES_API,
             null,
             { fcmToken: JSON.stringify(fcmToken), language },
+            function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
+    },
+
+    postMarketingNewsletterUnsubscribe: (uuid, newsletterFrequency, newsletterUnsubscribeReason, successCallBack, errorCallBack) => {
+        httpUtil.post( API_PREFIX + MARKETING_API,
+            null,
+            { uuid, newsletterFrequency, newsletterUnsubscribeReason },
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
     }
 

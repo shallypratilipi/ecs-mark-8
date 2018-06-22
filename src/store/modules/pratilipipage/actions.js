@@ -130,16 +130,11 @@ export default {
     fetchAuthorDetails({ commit, state }, authorId) {
         commit('setAuthorDetailsLoadingTrue');
         commit('setUserAuthorDataLoadingTrue');
-        DataAccessor.getAuthorById(authorId, true, function(authorData, userAuthorData) {
+        DataAccessor.getAuthorById(authorId, function(authorData) {
             if (authorData) {
                 commit('setAuthorDetailsLoadingSuccess', authorData);
             } else {
                 commit('setAuthorDetailsLoadingError');    
-            }
-            if (userAuthorData) {
-                commit('setUserAuthorDataLoadingSuccess', userAuthorData);
-            } else {
-                commit('setUserAuthorDataLoadingError');    
             }
         });
     },

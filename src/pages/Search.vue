@@ -146,7 +146,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '../../node_modules/slick-carousel/slick/slick.css';
 .search-page {
     margin-top: 85px;
     text-align: left;
@@ -184,12 +185,9 @@ export default {
         text-align: left;
         position: relative;
     }
-}
-</style>
-<style lang="scss">
 	.back, .forward {
 		position: absolute;
-		top: 38%;
+		top: 80px;
 		z-index: 2;
 		background-color: #fff;
 		border-radius: 50%;
@@ -240,7 +238,5 @@ export default {
 	.forward {
 		right: -15px;
 	}
-</style>
-<style lang="scss">
-    @import '../../node_modules/slick-carousel/slick/slick.css';
+}
 </style>

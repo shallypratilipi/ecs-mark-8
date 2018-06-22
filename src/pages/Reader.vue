@@ -134,6 +134,15 @@
                                 </Reviews>
                             </div>
 
+                            <div class="book-bottom-webpush-subscribe">
+                                <WebPushStrip
+                                    :title="getWebPushStripTitle()"
+                                    :message="getWebPushStripMessage()"
+                                    screenName="READER"
+                                    v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
+                                </WebPushStrip>
+                            </div>
+
                             <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
@@ -143,6 +152,13 @@
                                     v-if="getPratilipiData && getPratilipiData.pratilipiId">
                                 </Recommendation>
                             </div>
+
+                            <WebPushModal
+                                :title="getWebPushModalTitle()"
+                                :message="getWebPushModalMessage()"
+                                screenName="READER"
+                                :includeDisableButton=true
+                                v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
 
                         </div>
                     </div>
@@ -264,9 +280,12 @@ import 'vue-awesome/icons/google-plus'
 import 'vue-awesome/icons/whatsapp'
 import 'vue-awesome/icons/link'
 import Reviews from '@/components/Reviews.vue';
+import WebPushStrip from '@/components/WebPushStrip.vue';
+import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
 // import OpenInApp from '@/components/OpenInApp.vue';
 // import ShareStrip from '@/components/ShareStrip.vue';
+import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -274,6 +293,8 @@ export default {
         ReadLayout,
         Spinner,
         Reviews,
+        WebPushStrip,
+        WebPushModal,
         Recommendation,
         // ShareStrip,
         // OpenInApp
@@ -287,11 +308,15 @@ export default {
             selectedChapter: 1,
             scrollPosition: null,
             scrollDirection: null,
+            percentScrolled: null,
             counter: 0,
             openRateRev: false,
             openRateReaderm: false,
             rateRev: 'RATEREV',
-            shouldShowOpenInAppStrip: true
+            shouldShowOpenInAppStrip: true,
+            webPushModalTriggered: false,
+            isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40,
+            isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60
         }
     },
     methods: {
@@ -437,6 +462,8 @@ export default {
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
+            $(".webpush-strip").removeClass("bg-black");
+            $(".webpush-strip").addClass("bg-grey");
 
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -457,6 +484,8 @@ export default {
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
+            $(".webpush-strip").removeClass("bg-grey");
+            $(".webpush-strip").addClass("bg-black");
 
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -478,6 +507,8 @@ export default {
 
             $(".container-fluid").css({"background-color": "#F4ECD8",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
+            $(".webpush-strip").removeClass("bg-black");
+            $(".webpush-strip").addClass("bg-grey");
 
 
 
@@ -549,6 +580,20 @@ export default {
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
+            let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
+            this.percentScrolled = (wintop/(docheight-winheight))*100
+        },
+        getWebPushStripTitle() {
+            return `__("web_push_title")`
+        },
+        getWebPushStripMessage() {
+            return `__("web_push_message_3")`
+        },
+        getWebPushModalTitle() {
+            return `__("web_push_title")`
+        },
+        getWebPushModalMessage() {
+            return `__("web_push_message_2")`
         }
     },
     computed: {
@@ -587,11 +632,6 @@ export default {
         $('.read-page').bind("contextmenu",function(e){
             e.preventDefault();
         }),
-        $(window).scroll(function() {
-            var wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height();
-            var totalScroll = (wintop/(docheight-winheight))*100;
-            $(".reader-progress .progress-bar").css("width",totalScroll+"%");
-        }),
         window.addEventListener('scroll', this.updateScroll);
     },
     watch: {
@@ -624,6 +664,7 @@ export default {
                 this.fetchPratilipiContentForIMAGE({ pratilipiId: newId, chapterNo: this.$route.query.chapterNo ? Number(this.$route.query.chapterNo) : 1 });
             }
             this.fetchAuthorDetails();
+            this.webPushModalTriggered = false;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -655,6 +696,13 @@ export default {
                 this.shouldShowOpenInAppStrip = false;
             } else {
                 this.shouldShowOpenInAppStrip = true;
+            }
+        },
+        'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
+            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
+                this.webPushModalTriggered = true
+                this.openWebPushModal()
             }
         },
         'getPratilipiLoadingState'(status) {
@@ -1249,9 +1297,17 @@ export default {
         .write-review-btn, .all-reviews, .comments-list li, .show-more {
             display: none !important;
         }
+        .comments-list {
+            padding-left: 0;
+        }
         .comments-list li.ownReview  {
             display: block !important;
         }
+    }
+    .book-bottom-webpush-subscribe {
+        position: relative;
+        margin: 10px 0;
+        padding: 0 15px;
     }
 }
 </style>

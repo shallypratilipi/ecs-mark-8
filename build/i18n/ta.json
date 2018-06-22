@@ -390,13 +390,15 @@
     "read_stories_without_internet": "எண்ணிலடங்கா கதைகளை இலவசமாகப் படிக்க",
     "android_download": "டவுண்லோட் செய்ய",
     "notification_settings": "அறிவிப்புகள் செட்டிங்ஸ்",
-    "email_frequency": "மின்னஞ்சல் எப்போதெல்லாம் அனுப்பலாம்?",
-    "newsletter_frequency": "படைப்புத்தொகுப்பை எப்போதெல்லாம் அனுப்பலாம்?",
+    "email_frequency": "ஃபாலோவிங் மற்றும் விமர்சனங்களுக்கான மின்னஞ்சல்கள்",
+    "newsletter_frequency": "பிரதிலிபியின் படைப்புத்தொகுப்பு",
     "newsletter_unsubscribe_heading": "படைப்புத்தொகுப்பை நிறுத்த",
     "newsletter_reason_too_many_emails": "நிறைய மின்னஞ்சல்கள் வருகிறது",
     "newsletter_reason_content_irrelevant": "படைப்புகள் எனக்கு பிடித்தமானதாக இல்லை",
     "newsletter_reason_no_time_to_read": "எனக்கு படிப்பதற்கு நேரமில்லை",
     "newsletter_unsubscribe_button": "நிறுத்த",
+    "newsletter_success_alert": "பிரதிலிபியின் படைப்புத்தொகுப்பை நிறுத்திவிட்டீர்கள்",
+    "newsletter_error_alert": "படைப்புத்தொகுப்பை நிறுத்தும் பணி தோல்வியில் முடிந்தது. சிறிது நேரம் கழித்து முயற்சிக்கவும்.",
     "email_frequency_immediate": "உடனடியாக",
     "email_frequency_daily": "தினமும்",
     "email_frequency_weekly": "வாரமொருமுறை",
@@ -543,6 +545,7 @@
     "reader_read_in_app_helper_text": "செயலியில் பார்க்க",
     "read_popular_stories": "பிரபலமான கதைகளைப் படிக்கவும்",
     "see_more_categories": "மேலும் வகைகளைக் காணவும்",
+    "password_do_not_match": "கடவுச்சொற்கள் ஒன்றாக இருக்கவேண்டும் ",
 
     "chat_messages": "குறுஞ்செய்திகள்",
     "chat_message": "குறுஞ்செய்தி அனுப்ப",
@@ -572,8 +575,11 @@
     "event_participate_cannot_change_drafts":"இறுதி சமர்ப்பிப்பிற்கு பிறகு உங்களது படைப்பை திருத்த முடியாது. உறுதியாக படைப்பை சமர்ப்பிக்க வேண்டுமா?",
     "event_participate_check_your_entry_here":"நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்",
 
-    "password_do_not_match": "கடவுச்சொற்கள் ஒன்றாக இருக்கவேண்டும் "
-
-
+    "web_push_title": "வாசித்தது பிடித்திருந்ததா?",
+    "web_push_message_1": "இதே போன்ற கதைகளை நோட்டிஃபிகேஷனில் அனுப்ப பிரதிலிபிக்கு அனுமதி கொடுக்கவும்",
+    "web_push_message_2": "நல்ல கதைகளை நோட்டிஃபிகேஷனில் பெற விருப்பமா?",
+    "web_push_message_3": "நல்ல கதைகளை நோட்டிஃபிகேஷனில் அனுப்ப பிரதிலிபிக்கு அனுமதி கொடுக்கவும்",
+    "web_push_allow": "சரி",
+    "web_push_cancel": "வேண்டாம்"
 
 }

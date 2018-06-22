@@ -1,36 +1,36 @@
 <template>
     <div class="follow-wrap">
         <div class="follow">
-            <router-link :to="authorData.pageUrl || authorData.profilePageUrl" @click.native="triggerUserClick">
-                <div class="follow-img" v-bind:style="{ backgroundImage: 'url(' + authorData.profileImageUrl + (authorData.profileImageUrl.endsWith('/author/image') ? '?' : '&')  + 'width=100)' }"></div>
-                <div v-if="authorData.name || authorData.name === ''" class="follow-name">{{ authorData.name }}</div>
-                <div v-else class="follow-name">{{ authorData.author.name }}</div>
+            <router-link :to="authorData.author.pageUrl || authorData.profilePageUrl" @click.native="triggerUserClick">
+                <div class="follow-img" v-bind:style="{ backgroundImage: 'url(' + authorData.author.profileImageUrl + (authorData.author.profileImageUrl.endsWith('/author/image') ? '?' : '&')  + 'width=100)' }"></div>
+                <div v-if="authorData.author.displayName || authorData.author.displayName === ''" class="follow-name">{{ authorData.author.displayName }}</div>
+                <div v-else class="follow-name">{{ authorData.author.displayName }}</div>
             </router-link>
             <div class="follow-count">__("author_followers"): 
-                <span v-if="authorData.followCount !== undefined">{{ authorData.followCount}}</span>
-                <span v-else>{{ authorData.author.followCount }}</span>
+                <span v-if="authorData.followersCount !== undefined">{{ authorData.followersCount}}</span>
+                <span v-else>{{ authorData.followersCount }}</span>
             </div>
             
             <span class="button-container">
-                <span v-if="authorData.authorId === undefined && authorData.author.authorId !== getUserDetails.authorId">
+                <span v-if="authorData.author.id === undefined && authorData.author.id !== getUserDetails.authorId">
                     <button class="btn btn-light follow-link" 
-                        v-if="authorData.author.following === false"
-                        @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.authorId, following: false })">
+                        v-if="authorData.following === false"
+                        @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.id, following: false })">
                         <i class="material-icons">person_add</i>
                         __("author_follow")
                     </button>
-                    <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.authorId, following: true })" class="btn btn-light follow-link">
+                    <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.id, following: true })" class="btn btn-light follow-link">
                         <i class="material-icons">check</i>
                         __("author_following")
                     </button>
                 </span>
-                <span v-if="authorData.authorId !== undefined && authorData.authorId !== getUserDetails.authorId">
+                <span v-if="authorData.author.id !== undefined && authorData.author.id !== getUserDetails.authorId">
                     <button class="btn btn-light follow-link"
                     v-if="authorData.following === false"
-                    @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.authorId, following: false })">
+                    @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.id, following: false })">
                         <i class="material-icons">person_add</i> __("author_follow")
                     </button>
-                    <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.authorId, following: true })" class="btn btn-light follow-link">
+                    <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.id, following: true })" class="btn btn-light follow-link">
                         <i class="material-icons">check</i> __("author_following")
                     </button>    
                 </span>

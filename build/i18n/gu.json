@@ -390,13 +390,15 @@
     "read_stories_without_internet": "ઈન્ટરનેટ વિના પણ મનપસંદ વાર્તાઓ વાંચો",
     "android_download": "ડાઉનલોડ કરો",
     "notification_settings": "નોટિફિકેશન સેટિંગ",
-    "email_frequency": "ઈ-મેઈલ મેળવો",
-    "newsletter_frequency": "પ્રતિલિપિ સંગ્રહ મેઈલ આવૃત્તિ ",
+    "email_frequency": "ફોલોઈંગ અને કમેન્ટ્સ મેળવો ઈ-મેઇલમાં",
+    "newsletter_frequency": "પ્રતિલિપિ સંગ્રહ",
     "newsletter_unsubscribe_heading": "પ્રતિલિપિ સંગ્રહને અન-સબસ્ક્રાઈબ કરો ",
     "newsletter_reason_too_many_emails": "મને ઘણા ઈ-મેઈલ મળે છે",
     "newsletter_reason_content_irrelevant": "મારા સંબંધિત સાહિત્ય નથી ",
     "newsletter_reason_no_time_to_read": "મારી પાસે વાંચવાનો સમય નથી ",
     "newsletter_unsubscribe_button": "અન-સબસ્ક્રાઈબ",
+    "newsletter_success_alert": "આપ હવે પ્રતિલિપિ દૈનિક સંગ્રહમાંથી અન-સબસ્ક્રાઈબ થઇ ગયા છો. ",
+    "newsletter_error_alert": "માફ કરશો. અન-સબસ્ક્રાઈબ થઇ શક્યું નથી. થોડીવાર બાદ પ્રયત્ન કરશો.",
     "email_frequency_immediate": "તરત",
     "email_frequency_daily": "દૈનિક",
     "email_frequency_weekly": "સાપ્તાહિક",
@@ -517,7 +519,6 @@
     "report_button": "રિપોર્ટ",
     "report_title": "સમસ્યાનો વિષય",
     "report_issue": "સમસ્યા",
-    "reader_read_in_app_helper_text": "એપમાં વાંચો",
     "hour": "કલાક",
     "hours": "કલાક",
     "minute": "મિનિટ",
@@ -544,6 +545,7 @@
     "reader_read_in_app_helper_text": "એપમાં વાંચો",
     "read_popular_stories": "લોકપ્રિય વાર્તાઓ વાંચો",
     "see_more_categories": "વધુ કૅટેગરીઝ જુઓ",
+    "password_do_not_match": "પાસવર્ડ સમાન હોવો જોઈએ.",
 
     "chat_messages": "મેસેજ",
     "chat_message": "મેસેજ",
@@ -572,6 +574,12 @@
     "event_participate_confirm_submission":"સબમિશન કન્ફર્મ કરો ",
     "event_participate_cannot_change_drafts":"ફાઇનલ સબમિશન પછી આપ રચનામાં કોઈ ફેરફાર નહી કરી શકો.શું આપ ફાઇનલ સબમિશન કરવા ઈચ્છો છો?",
     "event_participate_check_your_entry_here":"આપની રચના એન્ટ્રી અહીં ચેક કરો ",
-    "password_do_not_match": "પાસવર્ડ સમાન હોવો જોઈએ."
+
+    "web_push_title": "આ રચના પસંદ આવી?",
+    "web_push_message_1": "આ પ્રકારની વાર્તાઓ નોટીફિકેશનમાં મેળવવા પ્રતિલિપિને અનુમતિ આપો",
+    "web_push_message_2": "નોટીફિકેશન દ્વારા ઉત્તમ વાર્તાઓ મેળવવા ઈચ્છો છો?",
+    "web_push_message_3": "નોટીફિકેશન દ્વારા વાર્તાઓ મોકલવા માટે પ્રતિલિપિને અનુમતિ આપો..",
+    "web_push_allow": "અનુમતિ આપો",
+    "web_push_cancel": "રદ કરો"
 
 }

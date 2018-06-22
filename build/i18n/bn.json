@@ -390,13 +390,15 @@
     "read_stories_without_internet": "আপনার পছন্দের কাহিনী পড়ুন ইন্টারনেট ছাড়াই",
     "android_download": "ডাউনলোড করুন",
     "notification_settings": "বিজ্ঞপ্তি সেটিং",
-    "email_frequency": "ই-মেল করুন",
-    "newsletter_frequency": "প্রতিলিপি সংকলন মেলের দ্রুততা",
+    "email_frequency": "অনুসরণ এবং কমেন্টস সম্পর্কিত ইমেইল ",
+    "newsletter_frequency": "প্রতিলিপি সংকলন ",
     "newsletter_unsubscribe_heading": "প্রতিলিপি সংকলন আনসাবস্ক্রাইব করুন",
     "newsletter_reason_too_many_emails": "আমি একাধিক ই-মেল পাচ্ছি",
     "newsletter_reason_content_irrelevant": "বিষয়বস্তু আমার জন্য প্রাসঙ্গিক নয়",
     "newsletter_reason_no_time_to_read": "আমার পড়ার সময়ের অভাব",
     "newsletter_unsubscribe_button": "আনসাবস্ক্রাইব",
+    "newsletter_success_alert": "আপনি প্রতিলিপি সংকলন মেল আনসাবস্ক্রাইব করতে সফল হয়েছেন।",
+    "newsletter_error_alert": "আনসাবস্ক্রাইব ব্যার্থ। অনুগ্রহ করে পুনঃপ্রচেষ্টা করুন।",
     "email_frequency_immediate": "অবিলম্বে",
     "email_frequency_daily": "রোজ",
     "email_frequency_weekly": "সাপ্তাহিক",
@@ -536,6 +538,7 @@
     "reader_read_in_app_helper_text": "অ্যাপে পড়ুন",
     "read_popular_stories": "জনপ্রিয় গল্পগুলি পড়ুন",
     "see_more_categories": "আরো বিভাগ দেখুন",
+    "password_do_not_match": "পাসওয়ার্ড মেলা উচিৎ",
 
     "chat_messages": "মেসেজ",
     "chat_message": "মেসেজ",
@@ -564,6 +567,12 @@
     "event_participate_confirm_submission":"জমা দেওয়ার নিশ্চিত করুন",
     "event_participate_cannot_change_drafts":"জমা দেওয়ার পরে আপনি আপনার এন্ট্রি পরিবর্তন করতে পারবেন না, আপনি কি তা জমা দিতে চান?",
     "event_participate_check_your_entry_here":"এখানে আপনার এন্ট্রি চেক করুন",
-    "password_do_not_match": "পাসওয়ার্ড মেলা উচিৎ"
+
+    "web_push_title": "কাহিনীটি  কি আপনার ভাল লেগেছে?",
+    "web_push_message_1": "এই জাতীয় অন্যান্য কাহিনীর বিজ্ঞপ্তি পাঠানোর জন্য প্রতিলিপিকে অনুমতি দিন",
+    "web_push_message_2": "আপনি কি মনের মতন কাহিনীর বিজ্ঞপ্তি পেতে আগ্রহী?",
+    "web_push_message_3": "মনের মতন কাহিনীর বিজ্ঞপ্তি পাঠানোর জন্য প্রতিলিপিকে অনুমতি দিন",
+    "web_push_allow": "অনুমতি দিন",
+    "web_push_cancel": "বাতিল করুন"
 
 }
