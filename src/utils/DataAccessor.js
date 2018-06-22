@@ -39,8 +39,8 @@ const NAVIGATION_LIST_API = "/navigation/list";
 const USER_PRATILIPI_REVIEW_LIST_API = "/userpratilipi/review/list";
 const COMMENT_LIST_API = "/comment/list";
 const USER_PRATILIPI_REVIEW_API = "/userpratilipi/review";
-const USER_AUTHOR_FOLLOW_API = "/follows/v2.0/authors";
-const USER_AUTHOR_FOLLOW_SINGLE_API = "/follows/v2.0/isFollowing";
+const USER_AUTHOR_FOLLOW_POST_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOW_GET_API = "/follows/v2.0/isFollowing";
 const USER_PRATILIPI_LIBRARY_API = "/userpratilipi/library";
 const COMMENT_API = "/comment";
 const VOTE_API = "/social/v2.0";
@@ -210,7 +210,7 @@ export default {
         requests.push(new request("req2", AUTHOR_API, { "authorId": "$req1.primaryContentId" }));
 
         if (includeUserAuthor)
-            requests.push(new request("req3", USER_AUTHOR_FOLLOW_SINGLE_API, { "referenceType": "AUTHOR", "referenceId" : "$req1.primaryContentId" }));
+            requests.push(new request("req3", USER_AUTHOR_FOLLOW_GET_API, { "referenceId": "$req1.primaryContentId", "referenceType": "AUTHOR" }));
 
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
@@ -240,8 +240,7 @@ export default {
 
         var requests = [];
         requests.push(new request("req1", AUTHOR_API, { "authorId": authorId }));
-        if (includeUserAuthor)
-            requests.push(new request("req2", USER_AUTHOR_FOLLOW_SINGLE_API, { "referenceType": "AUTHOR" ,"referenceId": authorId }));
+        
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
                 if (aCallBack != null) {
@@ -636,7 +635,7 @@ export default {
 
     followOrUnfollowAuthor: (authorId, following, successCallBack, errorCallBack) => {
         if (authorId == null || following == null) return;
-        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_API + '/' + authorId,
+        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_POST_API + '/' + authorId,
             null, { "authorId": authorId, "state": following ? "FOLLOWING" : "UNFOLLOWED" },
             function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
     },

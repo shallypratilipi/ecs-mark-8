@@ -560,7 +560,7 @@ export default {
                 this.userData.email = this.getUserDetails.email;
                 this.userData.phone = this.getUserDetails.phone;
             }
-        },
+        }
 
     },
     created() {
@@ -594,7 +594,7 @@ export default {
         });
         
         if(this.getUserDetails.userId != undefined)
-            {
+        {
                 const that = this;
                 import('firebase').then((firebase) => {
                     if (firebase.apps.length === 0) {
@@ -607,7 +607,7 @@ export default {
                         firebase.initializeApp(config);
                     }
                     const that = this;
-                               const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
+                    const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
                     userPreferencesNode.on( 'value', function( snapshot ) {
                         const userPreferences = snapshot.val();
                         if(userPreferences) {
@@ -620,7 +620,7 @@ export default {
                     });
                     
                 });
-     };
+        }
     },
        
 }
