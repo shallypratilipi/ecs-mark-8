@@ -43,7 +43,7 @@ const USER_AUTHOR_FOLLOW_POST_API = "/follows/v2.0/authors";
 const USER_AUTHOR_FOLLOW_GET_API = "/follows/v2.0/isFollowing";
 const USER_PRATILIPI_LIBRARY_API = "/userpratilipi/library";
 const COMMENT_API = "/comment";
-const VOTE_API = "/social/v2.0";
+const VOTE_API = "/vote";
 const INIT_API = "/init?_apiVer=2";
 const INIT_BANNER_LIST_API = "/init/banner/list";
 const USER_AUTHOR_FOLLOWERS_LIST_API = "/follows/v2.0/authors";
