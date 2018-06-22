@@ -65,6 +65,7 @@ export default {
         if (!data.pratilipiList || data.pratilipiList.length === 0) {
             state.pratilipiList.cursor = null;
         } else {
+            state.pratilipiList.loading_state = "LOADING_SUCCESS";
             state.pratilipiList.data = state.pratilipiList.data.concat(data.pratilipiList);
             state.pratilipiList.cursor = data.cursor;
         }

@@ -39,11 +39,11 @@ const NAVIGATION_LIST_API = "/navigation/list";
 const USER_PRATILIPI_REVIEW_LIST_API = "/userpratilipi/review/list";
 const COMMENT_LIST_API = "/comment/list";
 const USER_PRATILIPI_REVIEW_API = "/userpratilipi/review";
-const USER_AUTHOR_FOLLOW_POST_API = "/follows/v2.0/authors";
-const USER_AUTHOR_FOLLOW_GET_API = "/follows/v2.0/isFollowing";
+const USER_AUTHOR_FOLLOW_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOW_SINGLE_API = "/follows/v2.0/isFollowing";
 const USER_PRATILIPI_LIBRARY_API = "/userpratilipi/library";
 const COMMENT_API = "/comment";
-const VOTE_API = "/vote";
+const VOTE_API = "/social/v2.0";
 const INIT_API = "/init?_apiVer=2";
 const INIT_BANNER_LIST_API = "/init/banner/list";
 const USER_AUTHOR_FOLLOWERS_LIST_API = "/follows/v2.0/authors";
@@ -68,6 +68,12 @@ const EVENT_PARTICIPATE_CREATE = '/metadata';
 const EVENT_PARTICIPATE_UPDATE = '/metadata';
 const EVENT_PARTICIPATE_CONTENT = '/content';
 const EVENT_PARTICIPATE_PUBLISH = '/publish';
+
+const INIT_VIDEOSERIES_LIST_API = "/init/v2.0/videoseries";
+const INIT_VIDEOSERIES_PLAYLIST = "/init/v2.0/videos";
+const INIT_VIDEOSERIES_DETAILS = "/init/v2.0/videoseries/";
+const INIT_OTHER_VIDEOS = "/init/v2.0/videos/other";
+
 
 const request = function(name, api, params) {
     return {
@@ -143,7 +149,6 @@ export default {
     },
 
     getPratilipiBySlug: (slug, includeUserPratilipi, aCallBack) => {
-
         var requests = [];
         requests.push(new request("req1", PRATILIPI_NEW_API, { "slug": slug }));
 
@@ -205,7 +210,7 @@ export default {
         requests.push(new request("req2", AUTHOR_API, { "authorId": "$req1.primaryContentId" }));
 
         if (includeUserAuthor)
-            requests.push(new request("req3", USER_AUTHOR_FOLLOW_GET_API, { "referenceId": "$req1.primaryContentId", "referenceType": "AUTHOR" }));
+            requests.push(new request("req3", USER_AUTHOR_FOLLOW_SINGLE_API, { "referenceType": "AUTHOR", "referenceId" : "$req1.primaryContentId" }));
 
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
@@ -235,7 +240,8 @@ export default {
 
         var requests = [];
         requests.push(new request("req1", AUTHOR_API, { "authorId": authorId }));
-
+        if (includeUserAuthor)
+            requests.push(new request("req2", USER_AUTHOR_FOLLOW_SINGLE_API, { "referenceType": "AUTHOR" ,"referenceId": authorId }));
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
                 if (aCallBack != null) {
@@ -287,6 +293,61 @@ export default {
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 
+    getVideoseriesList : ( language, aCallBack ) => {
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_LIST_API,
+            null,
+            { "language": language },
+            function( response, status ) { processGetResponse( response, status, aCallBack );
+            } );
+    },
+
+    getOtherVideos : ( videos_slug, aCallBack ) => {
+    httpUtil.get( API_PREFIX + INIT_OTHER_VIDEOS,
+            null,
+            { "slug": videos_slug },
+            function( response, status ) { processGetResponse( response, status, aCallBack );
+            } );
+    },
+    
+    getVideoPlayList : ( videoseries_slug , aCallBack ) => {
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST,
+            null,
+            { "slug": videoseries_slug },
+            function( response, status ) { processGetResponse( response, status, aCallBack );
+            } );
+    },
+    
+     getVideoDetails : ( videoseries_slug, aCallBack ) => {
+        var params = {};
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_DETAILS + videoseries_slug ,
+            null,
+            params,
+            function( response, status ) {
+             processGetResponse( response, status, aCallBack );
+            } );
+    },
+    getCurrentVideoPlay : ( videos_slug, aCallBack ) => {
+        var params = {};
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST + '/' + videos_slug ,
+            null,
+            params,
+            function( response, status ) {
+             processGetResponse( response, status, aCallBack );
+            } );
+    },
+    getLatestVideo : ( videoseries_slug_latest, aCallBack ) => {
+        var params = {};
+
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST ,
+            null,
+            { "slug": videoseries_slug_latest },
+            function( response, status ) {
+             processGetResponse( response, status, aCallBack );
+            } );
+    },
+
+
+    
     getBlogPostByUri: (pageUri, aCallBack) => {
         var requests = [];
         requests.push(new request("req1", PAGE_API, { "uri": pageUri }));
@@ -530,7 +591,6 @@ export default {
 
     createOrUpdateAuthor: (author, successCallBack, errorCallBack) => {
         if (author == null || author.authorId == null) return;
-
         if (author.dateOfBirth) {
             const dateObj = new Date(author.dateOfBirth);
             let date = dateObj.getDate();
@@ -539,7 +599,6 @@ export default {
             let year = dateObj.getFullYear();
             author.dateOfBirth = date + "-" + month + "-" + year;
         }
-
         httpUtil.post(API_PREFIX + AUTHOR_API,
             null,
             author,
@@ -577,7 +636,7 @@ export default {
 
     followOrUnfollowAuthor: (authorId, following, successCallBack, errorCallBack) => {
         if (authorId == null || following == null) return;
-        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_POST_API + '/' + authorId,
+        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_API + '/' + authorId,
             null, { "authorId": authorId, "state": following ? "FOLLOWING" : "UNFOLLOWED" },
             function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
     },
@@ -737,10 +796,7 @@ export default {
             null, { "language": language, "resultCount": resultCount || 20 },
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
-
     uploadCoverImage: (formData, authorId, successCallBack, errorCallBack) => {
-        console.log(formData);
-        console.log(authorId);
         if (formData == null) return;
         if (authorId == null) return;
 
@@ -751,8 +807,6 @@ export default {
     },
 
     uploadProfileImage: (formData, authorId, successCallBack, errorCallBack) => {
-        console.log(formData);
-        console.log(authorId);
         if (formData == null) return;
         if (authorId == null) return;
 
@@ -763,8 +817,6 @@ export default {
     },
 
     uploadPratilipiImage: (formData, pratilipiId, successCallBack, errorCallBack) => {
-        console.log(formData);
-        console.log(pratilipiId);
         if (formData == null) return;
         if (pratilipiId == null) return;
 

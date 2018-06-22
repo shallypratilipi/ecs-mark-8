@@ -37,5 +37,5 @@ export default {
             case 'pratilipi_confirm_delete_content':
                 return '__("pratilipi_confirm_delete_content")';
         }
-    }
+    },
 }

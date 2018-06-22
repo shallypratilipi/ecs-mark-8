@@ -27,6 +27,9 @@
                             </router-link>
                         </div>
                     </div>
+                    <div class="col-md-12 loader-overflow">
+                    <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader>
+                    </div>
                     <div class="col-md-12" v-if="getUserEventData.length > 0 && canParticipate ">
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
@@ -73,14 +76,17 @@ import UserEventPratilipiComponent from '@/components/UserEventPratilipi.vue';
 import Spinner from '@/components/Spinner.vue';
 import constants from '@/constants'
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import DummyLoader from '@/components/DummyLoader.vue';
+
 
 export default {
     components: {
         MainLayout,
         PratilipiComponent,
         UserEventPratilipiComponent,
-        Spinner
+        Spinner,
+        DummyLoader
     },
     data() {
         return {
@@ -88,7 +94,7 @@ export default {
             canParticipate: false
         }
     },
-    mixins: [
+    mixins: [ 
         mixins
     ],
     computed: {
@@ -99,7 +105,9 @@ export default {
             'getEventPratilipisLoadingState',
             'getEventPratilipisCursor',
             'getUserEventData',
-            'getUserEventDraftData'
+            'getUserEventDraftData',
+            'getUserEventDataLoadingState'
+
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -182,6 +190,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.loader-overflow {
+    overflow: hidden;
+}
 .event-page {
     margin-top: 85px;
     text-align: left;

@@ -25,6 +25,10 @@ import MessagesComponent from '@/pages/Messages.vue'
 import MessageUserComponent from '@/pages/MessageUser.vue'
 import PasswordResetPageComponent from '@/pages/PasswordReset.vue'
 import EventParticipatePageComponent from '@/pages/EventParticipate.vue'
+import VideoseriesPageComponent from '@/pages/Videoseries.vue'
+import VideoPlayListPageComponent from '@/pages/VideoPlayList.vue'
+import VideoPlayPageComponent from '@/pages/Videoplay.vue'
+
 
 
 import { getCookie } from '@/mixins/methods'
@@ -83,7 +87,18 @@ var router = new Router({
                 'store': 'searchpage',
                 'title': '__("seo_search_page") | __("pratilipi")'
             }
-        }, {
+        },
+
+        {
+            path: '/videoseries',
+            name: 'Videoseries_Page',
+            component: VideoseriesPageComponent,
+            meta: {
+                'store': 'videoseries',
+                'title': '__("seo_search_page") | __("pratilipi")'
+            }
+        },
+         {
             path: '/login',
             name: 'Login_Page',
             component: LoginPageComponent,
@@ -149,7 +164,27 @@ var router = new Router({
                 'title': '__("seo_home_page")',
                 'id_prop': 'event_slug'
             }
-        }, {
+        },{
+            path: '/videoseries/:videoseries_slug',
+            name: 'VideoPlayList_Page',
+            component: VideoPlayListPageComponent,
+            meta: {
+                'store': 'videoseries',
+                'title': '__("seo_home_page")',
+                'id_prop': 'videoseries_slug'
+            }
+        },
+        {
+            path: '/videos/:videos_slug',
+            name: 'Videos_Page',
+            component: VideoPlayPageComponent,
+            meta: {
+                'store': 'videoseries',
+                'title': '__("seo_home_page")',
+                'id_prop': 'videos_slug'
+            }
+        }, 
+        {
             path: '/blog',
             name: 'Blogs_Page',
             component: BlogsPageComponent,
