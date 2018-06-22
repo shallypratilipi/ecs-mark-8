@@ -302,7 +302,7 @@ export default {
             } );
     },
 
- getOtherVideos : ( videos_slug, aCallBack ) => {
+    getOtherVideos : ( videos_slug, aCallBack ) => {
     httpUtil.get( API_PREFIX + INIT_OTHER_VIDEOS,
             null,
             { "slug": videos_slug },
@@ -805,13 +805,6 @@ export default {
         httpUtil.get(API_PREFIX + TOP_AUTHORS_API,
             null, { "language": language, "resultCount": resultCount || 20 },
             function(response, status) { processGetResponse(response, status, aCallBack) });
-    },
-    updateFCMToken: (fcmToken, aCallBack) => {
-        if (fcmToken == null) return;
-        httpUtil.post(API_PREFIX + USER_FCM_TOKEN_API,
-            null, { "fcmToken": fcmToken },
-            function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) 
-            });
     },
     uploadCoverImage: (formData, authorId, successCallBack, errorCallBack) => {
         if (formData == null) return;

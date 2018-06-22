@@ -38,7 +38,4 @@ export default {
                 return '__("pratilipi_confirm_delete_content")';
         }
     },
-    getModalPreFilledValue: state => {
-        return state.prefilled_value
-    }
 }
