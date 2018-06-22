@@ -487,7 +487,6 @@ export default {
             if (isGuest) {
                 this.$router.push('login');
             } else {
-                console.log("Initialized from watch");
                 const that = this;
                 import('firebase').then((firebase) => {
                     if (firebase.apps.length === 0) {
@@ -607,13 +606,10 @@ export default {
                         };
                         firebase.initializeApp(config);
                     }
-                    console.log("My DATA: " +  this.getUserDetails.userId);
                     const that = this;
-                        console.log("INITIALIZED");
                                const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
                     userPreferencesNode.on( 'value', function( snapshot ) {
                         const userPreferences = snapshot.val();
-                        console.log(userPreferences);
                         if(userPreferences) {
                             that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
                             that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
