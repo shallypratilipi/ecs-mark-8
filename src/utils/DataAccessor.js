@@ -2,7 +2,7 @@ import { httpUtil, formatParams } from './HttpUtil';
 // import Raven from 'raven-js';
 
 
-const API_PREFIX = (window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1 ? "https://gamma.pratilipi.com" : "/api";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
 
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";
