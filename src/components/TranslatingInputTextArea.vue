@@ -1,6 +1,6 @@
 <template>
     <span class="translate-input-wrapper">
-        <textarea type="text" class="form-control" 
+        <textarea class="form-control" type="text"
             :value="value" 
             @keyup.up="goUpInSuggestions"
             @keyup.down="goDownInSuggestions"
@@ -67,7 +67,7 @@ export default {
             const currentText = this.value;
             const words = currentText.split(' ');
             words.pop();
-            words.push(selectedWord);
+            words.push(selectedWord.trim());
             const textWithoutLastWord = words.join(' ');
             this.oninput(textWithoutLastWord);
             this.suggestions = [];
