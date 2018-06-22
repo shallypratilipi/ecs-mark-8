@@ -315,8 +315,8 @@ export default {
             rateRev: 'RATEREV',
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
-            isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40,
-            isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60
+            isWebPushStripEnabled: false,
+            isWebPushModalEnabled: false
         }
     },
     methods: {
@@ -664,7 +664,13 @@ export default {
                 this.fetchPratilipiContentForIMAGE({ pratilipiId: newId, chapterNo: this.$route.query.chapterNo ? Number(this.$route.query.chapterNo) : 1 });
             }
             this.fetchAuthorDetails();
+
+            // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
+
+            // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
+            this.isWebPushStripEnabled = WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40;
+            this.isWebPushModalEnabled =  WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
