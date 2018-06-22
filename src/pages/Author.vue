@@ -375,16 +375,8 @@ export default {
                 initial_value: this.getAuthorData.summary,
                 pratilipi_data: this.getAuthorData,
                 data: {
-                    authorData: { ...this.authorDataForEdit, 
-                                    firstName: this.getAuthorData.firstName, 
-                                    lastName: this.getAuthorData.lastName, 
-                                    firstNameEn: this.getAuthorData.firstNameEn,
-                                    lastNameEn :this.getAuthorData.lastNameEn,
-                                    language :this.getAuthorData.language,
+                    authorData: {
                                     summary: this.getAuthorData.summary,
-                                    penName :this.getAuthorData.penName,
-                                    gender : this.getAuthorData.gender,
-                                    dateOfBirth : this.getAuthorData.dateOfBirth,
                                     authorId: this.getAuthorData.authorId,
                                 },
                 }
