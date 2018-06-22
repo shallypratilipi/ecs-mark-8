@@ -111,11 +111,11 @@ const WebpushUtil = (function () { // eslint-disable-line
     }
 
     // if user had granted access, make an api call with the updated token
-    (function _init () {
+    setTimeout(() => {
         if (window.Notification.permission === 'granted') {
             _enableBrowserPush().catch(() => -1)
         }
-    })()
+    })
 
     return {
         isBrowserPushCompatible, // check if browser push is compatible with the browser
