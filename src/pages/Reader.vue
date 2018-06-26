@@ -135,12 +135,19 @@
                             </div>
 
                             <div class="book-bottom-webpush-subscribe">
-                                <WebPushStrip
-                                    :title="getWebPushStripTitle()"
-                                    :message="getWebPushStripMessage()"
-                                    screenName="READER"
-                                    v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
-                                </WebPushStrip>
+                                <div class="webpush-container">
+                                    <div class="webpush-inner-container">
+                                        <WebPushStrip
+                                            screenName="READER"
+                                            :title="getWebPushStripTitle()"
+                                            :message="getWebPushStripMessage()"
+                                            :includeIcon=false
+                                            :includeDisableButton=false
+                                            :includeCloseButton=false
+                                            v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
+                                        </WebPushStrip>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
@@ -462,8 +469,8 @@ export default {
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
-            $(".webpush-strip").removeClass("bg-black");
-            $(".webpush-strip").addClass("bg-grey");
+            $(".book-bottom-webpush-subscribe").removeClass("bg-black");
+            $(".book-bottom-webpush-subscribe").addClass("bg-grey");
 
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -484,8 +491,8 @@ export default {
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
-            $(".webpush-strip").removeClass("bg-grey");
-            $(".webpush-strip").addClass("bg-black");
+            $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
+            $(".book-bottom-webpush-subscribe").addClass("bg-black");
 
 
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -507,8 +514,8 @@ export default {
 
             $(".container-fluid").css({"background-color": "#F4ECD8",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
-            $(".webpush-strip").removeClass("bg-black");
-            $(".webpush-strip").addClass("bg-grey");
+            $(".book-bottom-webpush-subscribe").removeClass("bg-black");
+            $(".book-bottom-webpush-subscribe").addClass("bg-grey");
 
 
 
@@ -669,8 +676,8 @@ export default {
             this.webPushModalTriggered = false;
 
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
-            this.isWebPushStripEnabled = WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40;
-            this.isWebPushModalEnabled =  WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -1314,6 +1321,24 @@ export default {
         position: relative;
         margin: 10px 0;
         padding: 0 15px;
+        .webpush-container {
+            max-width: 700px;
+            margin: auto;
+            .webpush-inner-container {
+                margin: 0 5px;
+                background: #f8f8f8;
+            }
+        }
+    }
+    .book-bottom-webpush-subscribe.bg-grey {
+        .webpush-container .webpush-inner-container {
+            background: #f8f8f8;
+        }
+    }
+    .book-bottom-webpush-subscribe.bg-black {
+        .webpush-container .webpush-inner-container {
+            background: black;
+        }
     }
 }
 </style>
