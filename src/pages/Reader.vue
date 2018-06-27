@@ -139,11 +139,8 @@
                                     <div class="webpush-inner-container">
                                         <WebPushStrip
                                             screenName="READER"
-                                            :title="getWebPushStripTitle()"
-                                            :message="getWebPushStripMessage()"
-                                            :includeIcon=false
-                                            :includeDisableButton=false
-                                            :includeCloseButton=false
+                                            title="__('web_push_title')"
+                                            message="__('web_push_message_3')"
                                             v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
                                         </WebPushStrip>
                                     </div>
@@ -161,9 +158,9 @@
                             </div>
 
                             <WebPushModal
-                                :title="getWebPushModalTitle()"
-                                :message="getWebPushModalMessage()"
                                 screenName="READER"
+                                title="__('web_push_title')"
+                                message="__('web_push_message_2')"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
 
@@ -589,18 +586,6 @@ export default {
             this.scrollPosition = window.scrollY
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
             this.percentScrolled = (wintop/(docheight-winheight))*100
-        },
-        getWebPushStripTitle() {
-            return `__("web_push_title")`
-        },
-        getWebPushStripMessage() {
-            return `__("web_push_message_3")`
-        },
-        getWebPushModalTitle() {
-            return `__("web_push_title")`
-        },
-        getWebPushModalMessage() {
-            return `__("web_push_message_2")`
         }
     },
     computed: {
@@ -677,7 +662,7 @@ export default {
 
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
             this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40;
-            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 50;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);

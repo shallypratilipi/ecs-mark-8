@@ -176,6 +176,12 @@
                 </div>
                 <Spinner v-if="getPratilipiLoadingState === 'LOADING'"></Spinner>
                 <ServerError :action="'pratilipipage/fetchPratilipiDetailsAndUserPratilipiData'" :data="$route.params.slug_id" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
+                <WebPushModal
+                    screenName="PRATILIPI"
+                    title="__('web_push_title')"
+                    message="__('web_push_message_2')"
+                    :includeDisableButton=true
+                    v-if="isWebPushModalEnabled"></WebPushModal>
             </div>
         </div>
     </MainLayout>
@@ -189,6 +195,7 @@ import Spinner from '@/components/Spinner.vue';
 import Reviews from '@/components/Reviews.vue';
 import ServerError from '@/components/ServerError.vue';
 import WebPushStrip from '@/components/WebPushStrip.vue';
+import WebPushModal from '@/components/WebPushModal.vue';
 // import BookTags from '@/components/BookTags.vue';
 import mixins from '@/mixins';
 import constants from '@/constants'
@@ -209,7 +216,11 @@ export default {
             showShowMoreOfSummary: false,
             hasLandedBeenTriggered: false,
             isCreated: null,
-            isWebPushStripEnabled: false
+            isWebPushStripEnabled: false,
+            isWebPushModalEnabled: false,
+            webPushModalTriggered: false,
+            scrollPosition: null,
+            percentScrolled: null
         }
     },
     mixins: [
@@ -517,10 +528,14 @@ export default {
             this.isWebPushStripEnabled = false
             this.triggerAnanlyticsEvent(`CLOSED_WEBPUSHSTRIP_PRATILIPI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
             WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
+        },
+        updateScroll() {
+            this.scrollPosition = window.scrollY
+            this.percentScrolled = ($(window).scrollTop()/($(document).height()-$(window).height()))*100
         }
     },
     created() {
-         this.isCreated = true;
+        this.isCreated = true;
         const slug_id = this.$route.params.slug_id;
         const pratilipiData = this.$route.params.pratilipiData;
         this.selectedPratilipiType = this.getPratilipiData.type;
@@ -537,7 +552,11 @@ export default {
         // BookTags,
         Reviews,
         ServerError,
-        WebPushStrip
+        WebPushStrip,
+        WebPushModal
+    },
+    mounted() {
+        window.addEventListener('scroll', this.updateScroll);
     },
     watch: {
         '$route.params.slug_id' (slug_id) {
@@ -554,8 +573,14 @@ export default {
             this.suggestedTags = this.getPratilipiData.suggestedTags;
             document.title = this.getPratilipiData.title;
 
+            // default value for webPushModalTriggered is false
+            this.webPushModalTriggered = false;
+
             // setting isWebPushStripEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && this.isTestEnvironment();
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 50 && (parseInt(this.getCookie('bucketId')) || 0) < 60 && this.isTestEnvironment();
+
+            // setting isWebPushModalEnabled
+            this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 60 && (parseInt(this.getCookie('bucketId')) || 0) < 70 && this.isTestEnvironment();
         },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS' && !this.hasLandedBeenTriggered) {
@@ -580,6 +605,12 @@ export default {
             this.isCreated=false;                
             }
         },
+        'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            if (newPercentScrolled > 90 && !this.webPushModalTriggered) {
+                this.webPushModalTriggered = true
+                this.openWebPushModal()
+            }
+        },
         selectedPratilipiType(newType) {
             if (newType === this.getPratilipiData.type) {
                 this.selectedTags = this.getPratilipiData.tags ? [ ...this.getPratilipiData.tags ] : [];
@@ -587,6 +618,9 @@ export default {
                 this.selectedTags = [];
             }
         }
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.updateScroll);
     }
 }
 </script>

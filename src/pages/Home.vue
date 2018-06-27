@@ -14,7 +14,7 @@
                         :screenLocation="'COLLECTIONS'"
                         v-bind="{ addToLibrary, removeFromLibrary }"
                 ></PratilipiListComponent>
-                <div class="card webpush-strip-container" v-if="isWebPushStripEnabled && index === 1">
+                <div class="card webpush-strip-container" v-if="isWebPushStripEnabled && index === 3">
                     <div class="container-fluid">
                         <div class="webpush-title">
                             __("web_push_section_title")
@@ -58,7 +58,7 @@
         data() {
             return {
                 sectionList: [],
-                isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt() && this.isMobile() && this.isTestEnvironment()
+                isWebPushStripEnabled: this.isMobile() && WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 70 && (parseInt(this.getCookie('bucketId')) || 0) < 90 && this.isTestEnvironment()
             }
         },
         mixins: [

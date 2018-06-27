@@ -29,6 +29,11 @@ export default {
     mixins: [
         mixins
     ],
+    data() {
+        return {
+            action: null
+        }
+    },
     props: {
         title: {
             type: String,
@@ -52,13 +57,13 @@ export default {
     },
     methods: {
         enableWebPush() {
+            this.action = "ENABLED"
             $('#webPushModal').modal('hide')
-            this.triggerAnanlyticsEvent(`ENABLED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
             WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store)
         },
         disableWebPush() {
+            this.action = "DISABLED"
             $('#webPushModal').modal('hide')
-            this.triggerAnanlyticsEvent(`DISABLED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
             WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
         }
     },
@@ -67,7 +72,13 @@ export default {
             this.triggerAnanlyticsEvent(`VIEWED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId})
         })
         $('#webPushModal').on('hide.bs.modal', (e) => {
-            this.triggerAnanlyticsEvent(`CLOSED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId})
+            if (this.action === "ENABLED") {
+                this.triggerAnanlyticsEvent(`ENABLED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
+            } else if (this.action === "DISABLED") {
+                this.triggerAnanlyticsEvent(`DISABLED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
+            } else {
+                this.triggerAnanlyticsEvent(`CLOSED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
+            }
         })
     },
     computed: {
@@ -87,7 +98,7 @@ export default {
         -o-#{$property}: #{$value};
             #{$property}: #{$value};
     }
-    #webPushModal {
+    .modal {
         margin: 50px auto;
         .modal-body {
             .message-container {
