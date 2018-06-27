@@ -74,10 +74,10 @@ const INIT_VIDEOSERIES_PLAYLIST = "/init/v2.0/videos";
 const INIT_VIDEOSERIES_DETAILS = "/init/v2.0/videoseries/";
 const INIT_OTHER_VIDEOS = "/init/v2.0/videos/other";
 
-const BLOGS_API = "/api/oasis/blogs/v1.0";
+const BLOGS_API = "/oasis/blogs/v1.0";
 const BLOGS_LIST_API = "/oasis/blogs/v1.0/list";
-const AUTHOR_INTERVIEWS_API = "/api/oasis/author-interviews/v1.0";
-const AUTHOR_INTERVIEWS_LIST_API = "/api/oasis/author-interviews/v1.0/list";
+const AUTHOR_INTERVIEWS_API = "/oasis/author-interviews/v1.0";
+const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
 
 const request = function(name, api, params) {
     return {
