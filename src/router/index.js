@@ -193,7 +193,7 @@ var router = new Router({
                 'title': '__("seo_blog_page") | __("pratilipi")'
             }
         }, {
-            path: '/blog/:blog_id',
+            path: '/blog/:slug',
             name: 'Blog_Page',
             component: BlogPageComponent,
             meta: {
@@ -254,7 +254,7 @@ var router = new Router({
                 'title': '__("seo_author_interview") | __("pratilipi")'
             }
         }, {
-            path: '/author-interviews/:interview_id',
+            path: '/author-interviews/:slug',
             name: 'Interview_Page',
             component: InterviewPageComponent,
             meta: {

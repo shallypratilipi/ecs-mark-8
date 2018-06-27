@@ -41,13 +41,13 @@ export default {
         ])
     },
     watch: {
-        '$route.params.interview_id' (interview_id) {
-            this.fetchInterviewData(interview_id);
+        '$route.params.slug' (slug) {
+            this.fetchInterviewData(slug);
         }
     },
     created() {
-        const { interview_id } = this.$route.params;
-        this.fetchInterviewData(`/author-interviews/${interview_id}`);
+        const { slug } = this.$route.params;
+        this.fetchInterviewData(`/author-interviews/${slug}`);
 
     }
 }

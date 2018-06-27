@@ -41,13 +41,13 @@ export default {
         ])
     },
     watch: {
-        '$route.params.blog_id' (blog_id) {
-            this.fetchBlogData(blogId);
+        '$route.params.slug' (slug) {
+            this.fetchBlogData(slug);
         }
     },
     created() {
-        const { blog_id } = this.$route.params;
-        this.fetchBlogData(`/blog/${blog_id}`);
+        const { slug } = this.$route.params;
+        this.fetchBlogData(`/blog/${slug}`);
         
     }
 }
