@@ -476,3 +476,7 @@ export function validateFirstAndSecondPassword(firstPassword, secondPassword) {
         return false
     }
 }
+
+export function isTestEnvironment() {
+    return (!window.location.host.endsWith('.pratilipi.com')) || window.location.host.split('.')[0].includes('-gamma')
+}

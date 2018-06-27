@@ -2,6 +2,7 @@
     # Api Reference:
     https://developer.mozilla.org/en-US/docs/Web/API/notification
     https://developer.mozilla.org/en-US/docs/Web/API/PushManager
+    https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification
     https://www.sitepoint.com/how-to-use-push-notifications-for-web-applications/
     https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications
     https://developers.google.com/web/fundamentals/codelabs/push-notifications/
