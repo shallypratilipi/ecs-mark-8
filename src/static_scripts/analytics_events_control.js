@@ -647,6 +647,26 @@ export default {
         "LOCATION": "WEBPUSHSTRIP",
         "ACTION": "CLOSED"
     },
+    "VIEWED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "CLOSED"
+    },
     "CLICKSHRBOOK_LIBRARYM_LIBRARY": {
         "SCREEN_NAME": "LIBRARY",
         "LOCATION": "LIBRARYM",

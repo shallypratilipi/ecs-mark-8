@@ -34,6 +34,12 @@
                 </div>
             </div>
             <ServerError :action="'homepage/getListOfSections'" :data="getCurrentLanguage().fullName.toUpperCase()" v-if="getHomePageLoadingState === 'LOADING_ERROR'"></ServerError>
+            <WebPushModal
+                screenName="HOME"
+                title="__('web_push_title')"
+                message="__('web_push_message_2')"
+                :includeDisableButton=true
+                v-if="isWebPushModalEnabled"></WebPushModal>
         </div>
     </MainLayout>
 </template>
@@ -46,6 +52,7 @@
     import Banners from '@/components/Banners.vue';
     import ServerError from '@/components/ServerError.vue';
     import WebPushStrip from '@/components/WebPushStrip.vue';
+    import WebPushModal from '@/components/WebPushModal.vue';
     import constants from '@/constants'
     import mixins from '@/mixins'
     import WebPushUtil from '@/utils/WebPushUtil'
@@ -58,7 +65,11 @@
         data() {
             return {
                 sectionList: [],
-                isWebPushStripEnabled: this.isMobile() && WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 70 && (parseInt(this.getCookie('bucketId')) || 0) < 90 && this.isTestEnvironment()
+                isWebPushStripEnabled: this.isMobile() && WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 70 && (parseInt(this.getCookie('bucketId')) || 0) < 90 && this.isTestEnvironment(),
+                isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 90 && (parseInt(this.getCookie('bucketId')) || 0) < 100 && this.isTestEnvironment(),
+                webPushModalTriggered: false,
+                scrollPosition: null,
+                percentScrolled: null
             }
         },
         mixins: [
@@ -87,6 +98,10 @@
                 this.isWebPushStripEnabled = false
                 this.triggerAnanlyticsEvent(`CLOSED_WEBPUSHSTRIP_HOME`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
                 WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
+            },
+            updateScroll() {
+                this.scrollPosition = window.scrollY
+                this.percentScrolled = ($(window).scrollTop()/($(document).height()-$(window).height()))*100
             }
         },
         components: {
@@ -96,7 +111,8 @@
             Banners,
             ServerError,
             DummyLoader,
-            WebPushStrip
+            WebPushStrip,
+            WebPushModal
         },
         created() {
             this.fetchBanners(this.getCurrentLanguage().fullName.toUpperCase());
@@ -107,6 +123,18 @@
             this.triggerAnanlyticsEvent('LANDED_HOMEM_HOME', 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId
             });
+            window.addEventListener('scroll', this.updateScroll);
+        },
+        watch: {
+            'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+                if (newPercentScrolled > 90 && !this.webPushModalTriggered) {
+                    this.webPushModalTriggered = true
+                    this.openWebPushModal()
+                }
+            }
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.updateScroll);
         }
     }
 </script>
