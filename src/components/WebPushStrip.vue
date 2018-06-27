@@ -1,6 +1,6 @@
 <template>
     <div class="webpush-strip">
-        <div class="container" v-if="isVisible">
+        <div class="inner-container" v-if="isVisible">
             <div v-if="title" class="title">{{title}}</div>
             <div v-if="message" class="message-container">
                 <div v-if="includeIcon" class="icon"><i class="material-icons">notifications</i></div>
@@ -109,7 +109,7 @@ export default {
             #{$property}: #{$value};
     }
     .webpush-strip {
-        .container {
+        .inner-container {
             @include css-prefix('display', 'flex');
             @include css-prefix('flex-direction', 'row');
             @include css-prefix('flex-wrap', 'wrap');
@@ -163,6 +163,8 @@ export default {
                     background: transparent;
                     cursor: pointer;
                     padding: 0.375rem 0.5rem;
+                    padding-right: 0;
+                    font-size: 14px;
                 }
             }
             button.close-button {

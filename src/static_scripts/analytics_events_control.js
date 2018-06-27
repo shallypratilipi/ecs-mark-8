@@ -1173,12 +1173,12 @@ export default {
     "VIEWED_WEBPUSHPOPUP_READER": {
         "SCREEN_NAME": "READER",
         "LOCATION": "WEBPUSHPOPUP",
-        "ACTION": "DISABLED"
+        "ACTION": "VIEWED"
     },
     "ENABLED_WEBPUSHPOPUP_READER": {
         "SCREEN_NAME": "READER",
         "LOCATION": "WEBPUSHPOPUP",
-        "ACTION": "DISABLED"
+        "ACTION": "ENABLED"
     },
     "DISABLED_WEBPUSHPOPUP_READER": {
         "SCREEN_NAME": "READER",

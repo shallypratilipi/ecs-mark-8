@@ -27,7 +27,8 @@ import {
     setCookie,
     isCurrentEvent,
     openPrimaryConfirmationModal,
-    validateFirstAndSecondPassword
+    validateFirstAndSecondPassword,
+    isTestEnvironment
 } from './methods'
 import { defaultAuthorImage } from './data'
 
@@ -66,6 +67,7 @@ export default {
         setCookie,
         isCurrentEvent,
         openPrimaryConfirmationModal,
-        validateFirstAndSecondPassword
+        validateFirstAndSecondPassword,
+        isTestEnvironment
     }
 }

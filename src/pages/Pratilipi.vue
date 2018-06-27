@@ -119,7 +119,7 @@
                         </div>
                         <div class="card webpush-strip-container" v-if="isWebPushStripEnabled">
                             <div class="head-title">
-                                Get Stories
+                                __("web_push_section_title")
                                 <button class="close" @click="closeWebPushStrip()">
                                     <i class="material-icons">close</i>
                                 </button>
@@ -555,7 +555,7 @@ export default {
             document.title = this.getPratilipiData.title;
 
             // setting isWebPushStripEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt();
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && this.isTestEnvironment();
         },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS' && !this.hasLandedBeenTriggered) {
@@ -866,20 +866,24 @@ export default {
                 bottom: 0;
             }
         }
+        .webpush-strip-container {
+            button.close {
+                position: absolute;
+                right: 8px;
+                i {
+                    font-size: 20px;
+                }
+            }
+        }
     }
 </style>
 <style lang="scss">
-    .webpush-strip-container {
-        button.close {
-            position: absolute;
-            right: 8px;
-            i {
-                font-size: 20px;
-            }
-        }
-        .webpush-strip {
-            .container {
-                padding: 8px !important;
+    .pratilipi-page {
+        .webpush-strip-container {
+            .webpush-strip {
+                .inner-container {
+                    padding: 8px !important;
+                }
             }
         }
     }
