@@ -81,7 +81,8 @@
                             <form>
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
-                                    <textarea class="form-control" id="reportModalTextarea" rows="3" placeholder="__('report_issue')"></textarea>
+                                    <textarea class="form-control" id="reportModalTextarea" rows="3"
+                                              placeholder="__('report_iss    ue')"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
@@ -320,7 +321,10 @@ export default {
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
             isWebPushStripEnabled: false,
-            isWebPushModalEnabled: false
+            isWebPushModalEnabled: false,
+            maxRead: 0,
+            chapterCount: 0,
+            recordTime: null
         }
     },
     methods: {
@@ -332,12 +336,20 @@ export default {
             'removeFromLibrary',
             'fetchPratilipiContentForIMAGE',
             'fetchAuthorDetails',
-            'followOrUnfollowAuthor'
+            'followOrUnfollowAuthor',
+            'postReadingPercentage'
         ]),
         ...mapActions([
             'setShareDetails',
             'setAfterLoginAction'
         ]),
+        recordMaxRead() {
+            let chapterCount = this.chapterCount;
+            let maxRead = this.maxRead;
+            let indexData = this.getIndexData;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
+        },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent(`LIBRARYADD_READERM_READER`, 'CONTROL', {
@@ -611,11 +623,11 @@ export default {
         ])
     },
     created() {
+        this.recordTime = new Date();
         this.fetchPratilipiDetails(this.$route.query.id);
         if (this.getPratilipiData && this.getPratilipiData.author) {
             this.fetchAuthorDetails();
         }
-
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
@@ -697,6 +709,19 @@ export default {
             }
         },
         'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            if (this.$route.query.chapterNo) {
+                this.chapterCount = Number(this.$route.query.chapterNo);
+            }
+            else {
+                this.chapterCount = 1;
+            }
+            if (this.maxRead < newPercentScrolled) {
+                this.maxRead = newPercentScrolled;
+                if (new Date() - this.recordTime > 1000) {
+                    this.recordMaxRead();
+                    this.recordTime = new Date();
+                }
+            }
             $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
             if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
                 this.webPushModalTriggered = true
@@ -806,7 +831,7 @@ export default {
         left:0;
         width: 100%;
         height: 2px;
-      
+
         margin-bottom: 0px;
         position: fixed;
         top: 47px;
