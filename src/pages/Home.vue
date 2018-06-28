@@ -65,8 +65,8 @@
         data() {
             return {
                 sectionList: [],
-                isWebPushStripEnabled: this.isMobile() && WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 70 && (parseInt(this.getCookie('bucketId')) || 0) < 90 && this.isTestEnvironment(),
-                isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 90 && (parseInt(this.getCookie('bucketId')) || 0) < 100 && this.isTestEnvironment(),
+                isWebPushStripEnabled: this.isMobile() && WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 70 && (parseInt(this.getCookie('bucketId')) || 0) < 90,
+                isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 90 && (parseInt(this.getCookie('bucketId')) || 0) < 100,
                 webPushModalTriggered: false,
                 scrollPosition: null,
                 percentScrolled: null
