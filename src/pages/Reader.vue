@@ -343,9 +343,14 @@ export default {
             'setShareDetails',
             'setAfterLoginAction'
         ]),
-        recordMaxRead() {
+        recordMaxRead(maxRead) {
+            if (this.$route.query.chapterNo) {
+                this.chapterCount = Number(this.$route.query.chapterNo);
+            }
+            else {
+                this.chapterCount = 1;
+            }
             let chapterCount = this.chapterCount;
-            let maxRead = this.maxRead;
             let indexData = this.getIndexData;
             let pratilipiId = this.getPratilipiData.pratilipiId;
             this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
@@ -597,7 +602,19 @@ export default {
         updateScroll() {
             this.scrollPosition = window.scrollY
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
-            this.percentScrolled = (wintop/(docheight-winheight))*100
+            this.percentScrolled = (wintop/(docheight-winheight))*100;
+        },
+        getWebPushStripTitle() {
+            return `__("web_push_title")`
+        },
+        getWebPushStripMessage() {
+            return `__("web_push_message_3")`
+        },
+        getWebPushModalTitle() {
+            return `__("web_push_title")`
+        },
+        getWebPushModalMessage() {
+            return `__("web_push_message_2")`
         }
     },
     computed: {
@@ -635,10 +652,27 @@ export default {
     mounted() {
         $('.read-page').bind("contextmenu",function(e){
             e.preventDefault();
-        }),
+        });
         window.addEventListener('scroll', this.updateScroll);
+        let that = this;
+        setTimeout(function(){
+            let docheight = $('.book-content').height();
+            let winheight = $(window).height();
+                that.maxRead = ((winheight/docheight)*100);
+                that.recordMaxRead(that.maxRead);
+        }, 1000);
     },
+
     watch: {
+        '$route' (newValue) {
+            let that = this;
+            setTimeout(function(){
+            let docheight = $('.book-content').height();
+            let winheight = $(window).height();
+            that.maxRead = ((winheight/docheight)*100);
+            that.recordMaxRead(that.maxRead);
+        }, 1000);
+    },
         '$route.query.id'(newValue) {
             this.fetchPratilipiDetails(newValue);
         },
@@ -709,16 +743,10 @@ export default {
             }
         },
         'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
-            if (this.$route.query.chapterNo) {
-                this.chapterCount = Number(this.$route.query.chapterNo);
-            }
-            else {
-                this.chapterCount = 1;
-            }
             if (this.maxRead < newPercentScrolled) {
                 this.maxRead = newPercentScrolled;
                 if (new Date() - this.recordTime > 1000) {
-                    this.recordMaxRead();
+                    this.recordMaxRead(this.maxRead);
                     this.recordTime = new Date();
                 }
             }
