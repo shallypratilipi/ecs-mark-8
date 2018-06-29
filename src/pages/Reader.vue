@@ -160,7 +160,8 @@
 
                             <WebPushModal
                                 title="__('web_push_title')"    
-                                message="__('web_push_message_2')"                                screenName="READER"
+                                message="__('web_push_message_2')"                                
+                                screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
 
