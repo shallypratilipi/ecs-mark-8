@@ -81,7 +81,8 @@
                             <form>
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
-                                    <textarea class="form-control" id="reportModalTextarea" rows="3" placeholder="__('report_issue')"></textarea>
+                                    <textarea class="form-control" id="reportModalTextarea" rows="3"
+                                              placeholder="__('report_issue')"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
@@ -135,9 +136,9 @@
                             </div>
 
                             <div class="book-bottom-webpush-subscribe">
-                                <div class="webpush-container">
+                                   <div class="webpush-container">
                                     <div class="webpush-inner-container">
-                                        <WebPushStrip
+                                       <WebPushStrip
                                             screenName="READER"
                                             title="__('web_push_title')"
                                             message="__('web_push_message_3')"
@@ -158,9 +159,8 @@
                             </div>
 
                             <WebPushModal
-                                screenName="READER"
-                                title="__('web_push_title')"
-                                message="__('web_push_message_2')"
+                                title="__('web_push_title')"    
+                                message="__('web_push_message_2')"                                screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
 
@@ -291,7 +291,6 @@ import Recommendation from '@/components/Recommendation.vue';
 // import ShareStrip from '@/components/ShareStrip.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex'
-
 export default {
     components: {
         ReadLayout,
@@ -320,7 +319,10 @@ export default {
             shouldShowOpenInAppStrip: true,
             webPushModalTriggered: false,
             isWebPushStripEnabled: false,
-            isWebPushModalEnabled: false
+            isWebPushModalEnabled: false,
+            maxRead: 0,
+            chapterCount: 0,
+            recordTime: null
         }
     },
     methods: {
@@ -332,12 +334,25 @@ export default {
             'removeFromLibrary',
             'fetchPratilipiContentForIMAGE',
             'fetchAuthorDetails',
-            'followOrUnfollowAuthor'
+            'followOrUnfollowAuthor',
+            'postReadingPercentage'
         ]),
         ...mapActions([
             'setShareDetails',
             'setAfterLoginAction'
         ]),
+        recordMaxRead(maxRead) {
+            if (this.$route.query.chapterNo) {
+                this.chapterCount = Number(this.$route.query.chapterNo);
+            }
+            else {
+                this.chapterCount = 1;
+            }
+            let chapterCount = this.chapterCount;
+            let indexData = this.getIndexData;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
+        },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent(`LIBRARYADD_READERM_READER`, 'CONTROL', {
@@ -390,7 +405,6 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter - 1 } });
         },
         goToNextChapter() {
@@ -400,7 +414,6 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter + 1 } });
         },
         increaseFont() {
@@ -458,18 +471,14 @@ export default {
         themeWhite() {
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-white");
-
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-white");
-
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
             $(".book-bottom-webpush-subscribe").removeClass("bg-black");
             $(".book-bottom-webpush-subscribe").addClass("bg-grey");
-
-
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -480,18 +489,14 @@ export default {
         themeBlack() {
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-black");
-
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-black");
-
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
             $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
             $(".book-bottom-webpush-subscribe").addClass("bg-black");
-
-
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -502,20 +507,14 @@ export default {
         themeYellow() {
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-yellow");
-
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-yellow");
-
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-yellow");
-
             $(".container-fluid").css({"background-color": "#F4ECD8",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
             $(".book-bottom-webpush-subscribe").removeClass("bg-black");
-            $(".book-bottom-webpush-subscribe").addClass("bg-grey");
-
-
-
+-           $(".book-bottom-webpush-subscribe").addClass("bg-grey");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -569,7 +568,6 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': data
             });
-
             $('#sidebar').removeClass('active');
             $('.overlay').fadeOut();
         },
@@ -585,8 +583,8 @@ export default {
         updateScroll() {
             this.scrollPosition = window.scrollY
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
-            this.percentScrolled = (wintop/(docheight-winheight))*100
-        }
+            this.percentScrolled = (wintop / (docheight - winheight)) * 100;
+        },
     },
     computed: {
         fontStyleObject() {
@@ -611,11 +609,11 @@ export default {
         ])
     },
     created() {
+        this.recordTime = new Date();
         this.fetchPratilipiDetails(this.$route.query.id);
         if (this.getPratilipiData && this.getPratilipiData.author) {
             this.fetchAuthorDetails();
         }
-
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
@@ -623,10 +621,27 @@ export default {
     mounted() {
         $('.read-page').bind("contextmenu",function(e){
             e.preventDefault();
-        }),
+        });
         window.addEventListener('scroll', this.updateScroll);
+        let that = this;
+        setTimeout(function () {
+            let docheight = $('.book-content').height();
+            let winheight = $(window).height();
+            that.maxRead = ((winheight / docheight) * 100);
+            that.recordMaxRead(that.maxRead);
+        }, 1000);
     },
+
     watch: {
+        '$route' (newValue) {
+            let that = this;
+            setTimeout(function(){
+            let docheight = $('.book-content').height();
+            let winheight = $(window).height();
+            that.maxRead = ((winheight/docheight)*100);
+            that.recordMaxRead(that.maxRead);
+        }, 1000);
+    },
         '$route.query.id'(newValue) {
             this.fetchPratilipiDetails(newValue);
         },
@@ -639,7 +654,6 @@ export default {
                 this.fetchPratilipiContentForHTML({ pratilipiId: this.getPratilipiData.pratilipiId, chapterNo: Number(newValue) });
                 this.selectedChapter = newValue;
             }
-
             if (this.getPratilipiData.contentType === 'IMAGE') {
                 if (this.getPratilipiData.pratilipiId != this.$route.query.id) {
                     this.fetchPratilipiContentForIMAGE({ pratilipiId: this.getPratilipiData.pratilipiId, chapterNo: Number(newValue) });
@@ -656,13 +670,11 @@ export default {
                 this.fetchPratilipiContentForIMAGE({ pratilipiId: newId, chapterNo: this.$route.query.chapterNo ? Number(this.$route.query.chapterNo) : 1 });
             }
             this.fetchAuthorDetails();
-
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
-
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
             this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40;
-            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 50;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 50;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -675,21 +687,17 @@ export default {
                 $('.header-section').removeClass('nav-up');
                 $('.reader-progress').removeClass('progress-up');
             }
-
             if (newScrollPosition < prevScrollPosition) {
                 this.counter++;
                 this.scrollDirection = 'UP';
             } else {
                 this.scrollDirection = 'DOWN';
             }
-
             if (this.counter > 5) {
                 $('.header-section').removeClass('nav-up');
                 $('.reader-progress').removeClass('progress-up');
                 this.counter = 0;
             }
-
-
             if ($(window).height() + newScrollPosition > $('.content-section').height()) {
                 this.shouldShowOpenInAppStrip = false;
             } else {
@@ -697,6 +705,13 @@ export default {
             }
         },
         'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            if (this.maxRead < newPercentScrolled) {
+                this.maxRead = newPercentScrolled;
+                if (new Date() - this.recordTime > 1000) {
+                    this.recordMaxRead(this.maxRead);
+                    this.recordTime = new Date();
+                }
+            }
             $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
             if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
                 this.webPushModalTriggered = true
@@ -806,7 +821,6 @@ export default {
         left:0;
         width: 100%;
         height: 2px;
-      
         margin-bottom: 0px;
         position: fixed;
         top: 47px;
@@ -838,7 +852,6 @@ export default {
         font-size: 16px;
         padding: 0;
         text-align: justify;
-
         -moz-user-select: -moz-none;
         -moz-user-select: none;
         -o-user-select: none;
@@ -1256,7 +1269,6 @@ export default {
     .reader-progress {
         background: #000;
     }
-
 }
 .theme-yellow {
     background: #F4ECD8 !important;
@@ -1306,7 +1318,7 @@ export default {
         position: relative;
         margin: 10px 0;
         padding: 0 15px;
-        .webpush-container {
+         .webpush-container {
             max-width: 700px;
             margin: auto;
             .webpush-inner-container {
@@ -1320,9 +1332,9 @@ export default {
             background: #f8f8f8;
         }
     }
-    .book-bottom-webpush-subscribe.bg-black {
-        .webpush-container .webpush-inner-container {
-            background: black;
+   .book-bottom-webpush-subscribe.bg-black {
+       .webpush-container .webpush-inner-container {
+           background: black;
         }
     }
 }

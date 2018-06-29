@@ -78,6 +78,7 @@ const BLOGS_API = "/oasis/blogs/v1.0";
 const BLOGS_LIST_API = "/oasis/blogs/v1.0/list";
 const AUTHOR_INTERVIEWS_API = "/oasis/author-interviews/v1.0";
 const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
+const READ_PERCENTAGE_API = "/api/user_pratilipi/v2.0/user_pratilipis";
 
 const request = function(name, api, params) {
     return {
@@ -244,7 +245,7 @@ export default {
 
         var requests = [];
         requests.push(new request("req1", AUTHOR_API, { "authorId": authorId }));
-        
+
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
                 if (aCallBack != null) {
@@ -311,7 +312,7 @@ export default {
             function( response, status ) { processGetResponse( response, status, aCallBack );
             } );
     },
-    
+
     getVideoPlayList : ( videoseries_slug , aCallBack ) => {
     httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST,
             null,
@@ -319,7 +320,7 @@ export default {
             function( response, status ) { processGetResponse( response, status, aCallBack );
             } );
     },
-    
+
      getVideoDetails : ( videoseries_slug, aCallBack ) => {
         var params = {};
     httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_DETAILS + videoseries_slug ,
@@ -349,8 +350,6 @@ export default {
             } );
     },
 
-
-    
     getBlogPostByUri: (slug, aCallBack) => {
 	var params = {
 		"slug": slug
@@ -367,7 +366,7 @@ export default {
     getBlogPostListByUri: (language, state, cursor, resultCount, aCallBack) => {
         var params = {
             "language": language
-        };
+        }
         params["state"] = state != null ? state : "PUBLISHED";
         if (cursor != null) params["cursor"] = cursor;
         if (resultCount != null) params["resultCount"] = resultCount;
@@ -992,6 +991,22 @@ export default {
             null,
             { uuid, newsletterFrequency, newsletterUnsubscribeReason },
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
-    }
+    },
+
+    postReadingPercent: (pratilipiId, chapterNo, percentageScrolled, index, successCallBack, errorCallBack) => {
+        let params = {
+            "pratilipiId": pratilipiId,
+            "chapterNo": chapterNo,
+            "percentageScrolled": percentageScrolled,
+            "index": JSON.stringify(index),
+            "agent": "Web"
+        };
+        httpUtil.post(API_PREFIX + READ_PERCENTAGE_API,
+            null,
+            params,
+            function (response, status) {
+                processPostResponse(response, status, successCallBack, errorCallBack)
+            });
+    },
 
 };

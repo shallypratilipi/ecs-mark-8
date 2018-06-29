@@ -48,7 +48,6 @@ export default {
     created() {
         const { slug } = this.$route.params;
         this.fetchInterviewData(`/author-interviews/${slug}`);
-
     }
 }
 </script>
