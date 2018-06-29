@@ -82,7 +82,7 @@
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
                                     <textarea class="form-control" id="reportModalTextarea" rows="3"
-                                              placeholder="__('report_iss    ue')"></textarea>
+                                              placeholder="__('report_issue')"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
@@ -159,9 +159,8 @@
                             </div>
 
                             <WebPushModal
-                                :title="getWebPushModalTitle()"
-                                :message="getWebPushModalMessage()"
-                                screenName="READER"
+                                title="__('web_push_title')"    
+                                message="__('web_push_message_2')"                                screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
 
@@ -586,19 +585,6 @@ export default {
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
             this.percentScrolled = (wintop / (docheight - winheight)) * 100;
         },
-
-        getWebPushStripTitle() {
-            return `__("web_push_title")`
-        },
-        getWebPushStripMessage() {
-            return `__("web_push_message_3")`
-        },
-        getWebPushModalTitle() {
-            return `__("web_push_title")`
-        },
-        getWebPushModalMessage() {
-            return `__("web_push_message_2")`
-        }
     },
     computed: {
         fontStyleObject() {
@@ -623,7 +609,6 @@ export default {
         ])
     },
     created() {
-        console.log("CREATED::::");
         this.recordTime = new Date();
         this.fetchPratilipiDetails(this.$route.query.id);
         if (this.getPratilipiData && this.getPratilipiData.author) {
