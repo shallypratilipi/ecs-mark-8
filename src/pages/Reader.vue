@@ -1,3 +1,4 @@
+<template>
     <ReadLayout>
         <div class="read-page">
             <div class="header-section" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
@@ -622,6 +623,7 @@ export default {
         ])
     },
     created() {
+        console.log("CREATED::::");
         this.recordTime = new Date();
         this.fetchPratilipiDetails(this.$route.query.id);
         if (this.getPratilipiData && this.getPratilipiData.author) {
