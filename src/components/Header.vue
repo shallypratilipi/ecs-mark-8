@@ -172,8 +172,8 @@
                     'USER_ID': this.getUserDetails.userId,
                     SCREEN_NAME
                 });
+                this.resetNotificationCount();
                 this.$router.push('/notifications');
-                this.resetNotificationCount;
             },
             ...mapActions([
                 'resetNotificationCount'
