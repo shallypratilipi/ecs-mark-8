@@ -361,6 +361,7 @@ export default {
 			var blogpost = status == 200 ? response : null;
 			aCallBack(blogpost);
 		});
+    },
     getBlogPostByUri: (pageUri, aCallBack) => {
         var requests = [];
         requests.push(new request("req1", PAGE_API, { "uri": pageUri }));
@@ -375,10 +376,11 @@ export default {
             });
     },
 
+
     getBlogPostListByUri: (language, state, cursor, resultCount, aCallBack) => {
         var params = {
             "language": language
-        };
+        }
         params["state"] = state != null ? state : "PUBLISHED";
         if (cursor != null) params["cursor"] = cursor;
         if (resultCount != null) params["resultCount"] = resultCount;
