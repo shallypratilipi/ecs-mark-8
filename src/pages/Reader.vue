@@ -353,7 +353,6 @@ export default {
                 let chapterCount = this.chapterCount;
                 let indexData = this.getIndexData;
                 let pratilipiId = this.getPratilipiData.pratilipiId;
-
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
         },
@@ -638,13 +637,13 @@ export default {
 
     watch: {
         '$route' (newValue) {
-                let that = this;   
-                setTimeout(function(){ 
-                let docheight = $('.book-content').height();   
-                let winheight = $(window).height();    
-                that.maxRead = ((winheight/docheight)*100);    
-                that.recordMaxRead(that.maxRead);  
-           }, 1000);  
+            let that = this;
+            setTimeout(function () {
+                let docheight = $('.book-content').height();
+                let winheight = $(window).height();
+                that.maxRead = ((winheight / docheight) * 100);
+                that.recordMaxRead(that.maxRead);
+           }, 1000);
         },
         '$route.query.id'(newValue) {
             this.fetchPratilipiDetails(newValue);
@@ -712,8 +711,8 @@ export default {
             if (this.maxRead < newPercentScrolled) {
                 this.maxRead = newPercentScrolled;
                 if (new Date() - this.recordTime > 1000) {
-                        this.recordMaxRead(this.maxRead);
-                        this.recordTime = new Date();
+                    this.recordMaxRead(this.maxRead);
+                    this.recordTime = new Date();
                 }
             }
             $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
