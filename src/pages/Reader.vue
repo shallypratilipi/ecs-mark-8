@@ -159,8 +159,8 @@
                             </div>
 
                             <WebPushModal
-                                title="__('web_push_title')"    
-                                message="__('web_push_message_2')"                                
+                                title="__('web_push_title')"
+                                message="__('web_push_message_2')"
                                 screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
@@ -626,23 +626,16 @@ export default {
         window.addEventListener('scroll', this.updateScroll);
         let that = this;
         setTimeout(function () {
-            let docheight = $('.book-content').height();
-            let winheight = $(window).height();
-            that.maxRead = ((winheight / docheight) * 100);
-            that.recordMaxRead(that.maxRead);
+            if (!this.getUserDetails.isGuest) {
+                let docheight = $('.book-content').height();
+                let winheight = $(window).height();
+                that.maxRead = ((winheight / docheight) * 100);
+                that.recordMaxRead(that.maxRead);
+            }
         }, 1000);
     },
 
     watch: {
-        '$route' (newValue) {
-            let that = this;
-            setTimeout(function(){
-            let docheight = $('.book-content').height();
-            let winheight = $(window).height();
-            that.maxRead = ((winheight/docheight)*100);
-            that.recordMaxRead(that.maxRead);
-        }, 1000);
-    },
         '$route.query.id'(newValue) {
             this.fetchPratilipiDetails(newValue);
         },
@@ -709,8 +702,10 @@ export default {
             if (this.maxRead < newPercentScrolled) {
                 this.maxRead = newPercentScrolled;
                 if (new Date() - this.recordTime > 1000) {
-                    this.recordMaxRead(this.maxRead);
-                    this.recordTime = new Date();
+                    if (!this.getUserDetails.isGuest) {
+                        this.recordMaxRead(this.maxRead);
+                        this.recordTime = new Date();
+                    }
                 }
             }
             $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
