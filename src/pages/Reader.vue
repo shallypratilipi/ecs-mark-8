@@ -159,8 +159,8 @@
                             </div>
 
                             <WebPushModal
-                                title="__('web_push_title')"    
-                                message="__('web_push_message_2')"                                
+                                title="__('web_push_title')"
+                                message="__('web_push_message_2')"
                                 screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
@@ -343,16 +343,18 @@ export default {
             'setAfterLoginAction'
         ]),
         recordMaxRead(maxRead) {
-            if (this.$route.query.chapterNo) {
-                this.chapterCount = Number(this.$route.query.chapterNo);
+            if(!this.getUserDetails.isGuest) {
+                if (this.$route.query.chapterNo) {
+                    this.chapterCount = Number(this.$route.query.chapterNo);
+                }
+                else {
+                    this.chapterCount = 1;
+                }
+                let chapterCount = this.chapterCount;
+                let indexData = this.getIndexData;
+                let pratilipiId = this.getPratilipiData.pratilipiId;
+                this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
-            else {
-                this.chapterCount = 1;
-            }
-            let chapterCount = this.chapterCount;
-            let indexData = this.getIndexData;
-            let pratilipiId = this.getPratilipiData.pratilipiId;
-            this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
         },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -636,13 +638,13 @@ export default {
     watch: {
         '$route' (newValue) {
             let that = this;
-            setTimeout(function(){
-            let docheight = $('.book-content').height();
-            let winheight = $(window).height();
-            that.maxRead = ((winheight/docheight)*100);
-            that.recordMaxRead(that.maxRead);
-        }, 1000);
-    },
+            setTimeout(function () {
+                let docheight = $('.book-content').height();
+                let winheight = $(window).height();
+                that.maxRead = ((winheight / docheight) * 100);
+                that.recordMaxRead(that.maxRead);
+           }, 1000);
+        },
         '$route.query.id'(newValue) {
             this.fetchPratilipiDetails(newValue);
         },
