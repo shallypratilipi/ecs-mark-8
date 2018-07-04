@@ -77,7 +77,7 @@ const BLOGS_API = "/oasis/blogs/v1.0";
 const BLOGS_LIST_API = "/oasis/blogs/v1.0/list";
 const AUTHOR_INTERVIEWS_API = "/oasis/author-interviews/v1.0";
 const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
-const READ_PERCENTAGE_API = "/api/user_pratilipi/v2.0/user_pratilipis";
+const READ_PERCENTAGE_API = "/user_pratilipi/v2.0/user_pratilipis";
 
 const request = function(name, api, params) {
     return {

@@ -87,6 +87,74 @@ export default {
         isHidden: {
             type: Boolean
         },
+        methods: {
+            changeSearchText(event) {
+                this.searchText = event.target.value;
+            },
+            triggerHomeEvent() {
+                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+                this.triggerAnanlyticsEvent('GOHOME_HEADER_GLOBAL', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId,
+                    SCREEN_NAME
+                });
+                this.$router.push('/');
+            },
+            triggerLanguageEvent() {
+                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+                this.triggerAnanlyticsEvent('GOLANGUAGE_HEADER_GLOBAL', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId,
+                    SCREEN_NAME
+                });
+            },
+            goToSearchPage() {
+                this.triggerAnanlyticsEvent(`SEARCH_SEARCHM_SEARCH`, 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId,
+                    'ENTITY_VALUE': this.searchText
+                });
+                this.$router.push({ name: 'Search_Page', query: { q: this.searchText } });
+                $("#search-box-small .search-dropdown").hide();
+                $("#search-box-big .search-dropdown").hide();
+            },
+            opendesktopsearch() {
+                $("#search-box-big .search-dropdown").show();
+                this.triggerAnanlyticsEvent('LANDED_SEARCHM_SEARCH', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId
+                });
+                $(document).mouseup(function(e) {
+                    var container = $(".search-dropdown");
+                    if (!container.is(e.target) && container.has(e.target).length === 0) {
+                        container.hide();
+                    }
+                });
+            },
+            openmobilesearch() {
+                $("#search-box-small .search-dropdown").show();
+                this.triggerAnanlyticsEvent('LANDED_SEARCHM_SEARCH', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId
+                });
+                $(document).mouseup(function(e) {
+                    var container = $(".search-dropdown");
+                    if (!container.is(e.target) && container.has(e.target).length === 0) {
+                        container.hide();
+                    }
+                });
+            },
+            triggerEventAndResetNotificationCount() {
+                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+                this.triggerAnanlyticsEvent('GONOTIFPAGE_HEADER_GLOBAL', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId,
+                    SCREEN_NAME
+                });
+                this.resetNotificationCount();
+                this.$router.push('/notifications');
+            },
+            ...mapActions([
+                'resetNotificationCount'
+            ]),
+            updateScroll() {
+                this.scrollPosition = window.scrollY
+            }
+        },
         hideFooter: {
             type: Boolean
         }
