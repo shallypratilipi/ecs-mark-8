@@ -37,7 +37,7 @@ export default {
     addPratilipiToLibrarySuccess(state) {
         state.userPratilipi.data.addedToLib = true;
     },
-    
+
     addPratilipiToLibraryError(state) {
 
     },
@@ -45,7 +45,7 @@ export default {
     removePratilipiFromLibrarySuccess(state) {
         state.userPratilipi.data.addedToLib = false;
     },
-    
+
     removePratilipiFromLibraryError(state) {
 
     },
@@ -116,27 +116,18 @@ export default {
     setAuthorDetailsLoadingTrue(state) {
         state.author.loading_state = 'LOADING';
     },
-    
+
     setAuthorDetailsLoadingSuccess(state, authorData) {
         state.author.data = authorData;
         state.author.loading_state = 'LOADING_SUCCESS';
     },
-    
+
     setAuthorDetailsLoadingError(state) {
         state.author.loading_state = 'LOADING_ERROR';
     },
 
     setUserAuthorDataLoadingTrue(state) {
         state.userAuthor.loading_state = 'LOADING';
-    },
-    
-    setUserAuthorDataLoadingSuccess(state, authorData) {
-        state.userAuthor.data = authorData;
-        state.userAuthor.loading_state = 'LOADING_SUCCESS';
-    },
-    
-    setUserAuthorDataLoadingError(state) {
-        state.userAuthor.loading_state = 'LOADING_ERROR';
     },
 
     setFollowUnfollowLoadingDataLoadingTrue(state) {
@@ -146,7 +137,7 @@ export default {
     setFollowUnfollowLoadingDataLoadingSuccess(state, data){
         state.author.data.following = data.following;
         if (data.following) {
-            state.author.data.followCount++;    
+            state.author.data.followCount++;
         } else {
             state.author.data.followCount--;
         }
@@ -155,7 +146,7 @@ export default {
     setPratilipiSummaryUpdateSuccess(state, data) {
         state.pratilipi.data.summary = data.summary;
     },
-    
+
     setPratilipiSummaryUpdateError(state) {
 
     },
@@ -224,7 +215,7 @@ export default {
     setUpdatedTypeAndCategoriesError(state) {
 
     },
-    
+
     setRouteToMessageUser(state, routeState) {
         state.route_to_message_user = routeState;
     }

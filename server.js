@@ -179,16 +179,17 @@ app.get( '/health', (req, res, next) => {
     res.send( Date.now() + "" );
 });
 
+
+
+
 // Serving PWA files
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
 
     var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
-    var totalGrowthBuckets = Number(req.headers["total-growth-buckets"] || 10);
 
     console.log('BUCKET ID: ', bucketId);
-    const numberOfBucketsToShowProduct = Math.floor((PRODUCT_PERCENTAGE / 100) * totalGrowthBuckets);
-    if (Number(bucketId) > 10) {
+    if (process.env.REALM != 'product' && Number(bucketId) > 10) {
         next();
         return
     }
@@ -200,6 +201,7 @@ app.get( '/*', (req, res, next) => {
         res.sendFile(__dirname + `/dist/${website.displayLanguage.code}/index.html`)
     }
 });
+
 
 app.get('/*', (req, res, next) => {
     var website = _getWebsite( req.headers.host );

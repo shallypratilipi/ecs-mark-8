@@ -6,7 +6,7 @@
                     <div class="col-md-12">
                         <ul class="tab-menu">
                             <li @click="tabchange" class="active" data-tab="notifications">__("notification_notifications")</li>
-                            <li @click="tabchange" data-tab="messages">__("chat_messages") <span class="message-dot" v-if="messageNotificationList.length > 0 || this.getUserDetails.isGuest"></span></li>
+                            <li @click="tabchange" data-tab="messages">__("chat_messages") <span class="message-dot" v-if="messageNotificationList.length > 0"></span></li>
                         </ul>
                         <router-link
                         class="notification-settings"
@@ -135,7 +135,7 @@ export default {
             $(event.currentTarget).addClass("active");
             $(".tab-content").hide();
             $("#" + tab_id).show();
-            
+
             if (tab_id === 'messages') {
                 this.triggerAnanlyticsEvent('LANDED_NEWCHATS_NOTIFS', 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId
