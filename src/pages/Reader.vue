@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Reader Options Modal -->
             <div class="modal fade" id="readerOptions" tabindex="-1" role="dialog" aria-labelledby="readerOptionsLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -66,13 +66,13 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Report Modal -->
-            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="reportModalLabel">__("report_title")</h5>
+                            <h5 class="modal-title">__("report_title")</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <i class="material-icons">close</i>
                             </button>
@@ -81,8 +81,7 @@
                             <form>
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
-                                    <textarea class="form-control" id="reportModalTextarea" rows="3"
-                                              placeholder="__('report_issue')"></textarea>
+                                    <textarea class="form-control" id="reportModalTextarea" rows="3" placeholder="__('report_issue')"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
@@ -91,22 +90,22 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="book-content">
                 <div class="container">
                     <div class="row">
                         <div class="col-12 p-0" v-if="getPratilipiContent.length > 0 && getPratilipiData.pratilipiId == $route.query.id">
                             <h2
                                 class="chapter-title p-lr-15"
-                                v-for="eachIndex in getIndexData"
+                                v-for="eachIndex in getIndexData" 
                                 :key="eachIndex.chapterId"
                                 v-if="eachIndex.chapterNo == selectedChapter">
                                     {{ eachIndex.title || eachIndex.chapterNo }}
                             </h2>
-                            <div class="content-section lh-md p-lr-15"
-                                :class="fontStyleObject"
+                            <div class="content-section lh-md p-lr-15" 
+                                :class="fontStyleObject" 
                                 v-for="eachChapter in getPratilipiContent"
-                                v-if="eachChapter.chapterNo == selectedChapter"
+                                v-if="eachChapter.chapterNo == selectedChapter" 
                                 :key="eachChapter.chapterNo"
                                 v-html="eachChapter.content">
                             </div>
@@ -116,11 +115,11 @@
                                 <div class="next" v-if="selectedChapter != getIndexData.length" @click="goToNextChapter">__("reader_next_chapter")</div>
                             </div>
 
-                          <!-- <ShareStrip
+                           <ShareStrip
                                 v-if="selectedChapter == getIndexData.length"
                                 :data="getPratilipiData"
                                 :type="'PRATILIPI'">
-                            </ShareStrip>-->
+                            </ShareStrip>
 
                             <div class="book-bottom-ratings p-lr-15">
                                 <Reviews
@@ -169,7 +168,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="footer-section">
                 <div class="container">
                     <div class="row">
@@ -197,7 +196,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <nav id="sidebar" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                 <div id="dismiss" @click="closeSidebar">
                     <i class="material-icons">close</i>
@@ -219,8 +218,8 @@
                 </div>
                 <div class="book-index">
                     <ul>
-                        <li
-                            v-for="eachIndex in getIndexData"
+                        <li 
+                            v-for="eachIndex in getIndexData" 
                             :key="eachIndex.chapterId"
                             :class="{ isActive: eachIndex.chapterNo === selectedChapter }">
                                 <router-link
@@ -232,14 +231,14 @@
                     </ul>
                 </div>
             </nav>
-
+            
             <div class="container">
                 <div class="row">
                     <div class="review-popout reader-review-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeReviewModal"><i class="material-icons">close</i></button>
-                        <Reviews
-                            :pratilipiId="getPratilipiData.pratilipiId"
-                            :authorId="getPratilipiData.author.authorId"
+                        <Reviews 
+                            :pratilipiId="getPratilipiData.pratilipiId" 
+                            :authorId="getPratilipiData.author.authorId" 
                             :haveInfiniteScroll="true"
                             screenName="READER"
                             screenLocation="RATEREV"
@@ -248,12 +247,12 @@
                             :userPratilipiData='getUserPratilipiData'>
                         </Reviews>
                     </div>
-
+                    
                     <div class="rating-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeRatingModal"><i class="material-icons">close</i></button>
-                        <Reviews
-                            :pratilipiId="getPratilipiData.pratilipiId"
-                            :authorId="getPratilipiData.author.authorId"
+                        <Reviews 
+                            :pratilipiId="getPratilipiData.pratilipiId" 
+                            :authorId="getPratilipiData.author.authorId" 
                             :haveInfiniteScroll="false"
                             screenName="READER"
                             screenLocation="READERM"
@@ -264,7 +263,7 @@
                     </div>
                 </div>
             </div>
-            <!--<OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>-->
+            <OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
             <div class="overlay" @click="closeSidebar"></div>
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
@@ -288,10 +287,11 @@ import Reviews from '@/components/Reviews.vue';
 import WebPushStrip from '@/components/WebPushStrip.vue';
 import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
-// import OpenInApp from '@/components/OpenInApp.vue';
-// import ShareStrip from '@/components/ShareStrip.vue';
+import OpenInApp from '@/components/OpenInApp.vue';
+import ShareStrip from '@/components/ShareStrip.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
     components: {
         ReadLayout,
@@ -300,8 +300,8 @@ export default {
         WebPushStrip,
         WebPushModal,
         Recommendation,
-        // ShareStrip,
-        // OpenInApp
+        ShareStrip,
+        OpenInApp
     },
     mixins: [
         mixins
@@ -408,6 +408,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
+            
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter - 1 } });
         },
         goToNextChapter() {
@@ -417,6 +418,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
+            
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter + 1 } });
         },
         increaseFont() {
@@ -476,6 +478,7 @@ export default {
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-white");
+            
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});

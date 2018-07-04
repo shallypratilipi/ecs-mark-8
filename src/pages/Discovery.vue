@@ -11,8 +11,9 @@
                             <ul>
                                 <li v-for="each_category in each_category_section.categories" :key="each_category.categoryUrl" v-if="each_category.pratilipiListData.listName">
                                     <router-link
-                                    :to="{ path: each_category.categoryUrl }" @click.native="triggerAnanlyticsEventForClick(each_category.categoryUrl)">
-                                        <span class="category-img" v-bind:style="{ backgroundImage: 'url(https://0.ptlp.co/resource-all/android-category-banners/' + each_category.imageFileName  + ')' }"></span>
+                                    :to="{ path: each_category.categoryUrl }" @click.native="triggerAnanlyticsEventForClick(each_category.categoryUrl)"
+                                    class="category-img"
+                                    v-bind:style="{ backgroundImage: 'url(https://0.ptlp.co/resource-all/android-category-banners/' + each_category.imageFileName  + ')' }">
                                         <span class="category-name">{{ each_category.title }}</span>
                                     </router-link>
                                 </li>
@@ -75,7 +76,6 @@ export default {
 .discovery-page {
     margin-top: 85px;
     min-height: 700px;
-    padding-left: 0px;
     @media screen and (max-width: 992px ) {
         margin-top: 65px;
     }
@@ -91,8 +91,7 @@ export default {
         }
     }
     .category-list {
-        text-align: justify;
-        margin-left: 50px;
+        text-align: left;
         @media screen and (max-width: 992px ) {
             text-align: center;
         }
@@ -109,7 +108,7 @@ export default {
             width: 300px;
             background: #fff;
             border: 1px solid #e9e9e9;
-            height: 252px;
+            height: 200px;
             margin: 10px;
             color: #d0021b;
             display: inline-block;
@@ -127,21 +126,26 @@ export default {
             }
             .category-img {
                 width: 100%;
-                height: 210px;
+                height: 200px;
                 display: block;
                 background-size: cover;
                 background-position: right center;
+                position: relative;
                 @media screen and (max-width: 768px ) {
-                    height: 100px;
+                    height: 150px;
                 }
             }
             .category-name {
                 text-align: center;
-                font-size: 14px;
+                font-size: 15px;
                 display: block;
                 height: 40px;
                 line-height: 40px;
-                color: #d00b12;
+                color: #fff;
+                background: rgba(0,0,0,0.7);
+                position: absolute;
+                bottom: 0;
+                width: 100%;
                 @media screen and (max-width: 768px ) {
                     height: 50px;
                     line-height: 50px;

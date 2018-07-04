@@ -130,6 +130,15 @@ export default {
         state.userAuthor.loading_state = 'LOADING';
     },
     
+    setUserAuthorDataLoadingSuccess(state, authorData) {
+        state.userAuthor.data = authorData;
+        state.userAuthor.loading_state = 'LOADING_SUCCESS';
+    },
+    
+    setUserAuthorDataLoadingError(state) {
+        state.userAuthor.loading_state = 'LOADING_ERROR';
+    },
+
     setFollowUnfollowLoadingDataLoadingTrue(state) {
 
     },
@@ -214,5 +223,9 @@ export default {
     },
     setUpdatedTypeAndCategoriesError(state) {
 
+    },
+    
+    setRouteToMessageUser(state, routeState) {
+        state.route_to_message_user = routeState;
     }
 }

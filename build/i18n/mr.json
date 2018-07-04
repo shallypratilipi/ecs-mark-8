@@ -1,4 +1,4 @@
- {
+{
     "pratilipi": "प्रतिलिपि",
     "home_page_title": "वाचा मराठी कथा, कविता, कादंबरी, आणि इतर खूप सारे साहित्य",
     "facebook_page": "https://www.facebook.com/Pratilipi-Marathi-1456803991281092/",
@@ -574,7 +574,12 @@
     "event_participate_confirm_submission":"सादरीकरणाची पुष्टी करा",
     "event_participate_cannot_change_drafts":"एकदा सादर केल्यांनतर आपणास पुन्हा साहित्यात बदल करता येणार नाही, आपणास खात्रीपूर्वक हे साहित्य सादर करावयाचे आहे?",
     "event_participate_check_your_entry_here":"आपण केलेली नोंदणी येथे पहा ",
-
+    
+    "chat_banner_send_messages": "लेखकास संदेश पाठवा",
+    "chat_banner_start_chatting": "बोलणे सुरु करा",
+    
+    "message_capsule_conversation": "आपली {{ initialUnreadConversations }} संभाषणे अपठीत",
+    "message_capsule_conversations": "आपले {{ initialUnreadConversations }} संभाषण अपठीत",
     "web_push_title": "आपणास हे साहित्य आवडले का?",
     "web_push_section_title": "उत्कृष्ट कथा प्राप्त करा",
     "web_push_message_1": "आपणास अशाप्रकारच्या आणखीन कथांचे नोटिफिकेशन पाठवण्याकरता प्रतिलिपिस परवानगी द्या",
@@ -582,5 +587,4 @@
     "web_push_message_3": "आपणास उत्तम कथांचे नोटिफिकेशन पाठवण्याकरता प्रतिलिपिस परवानगी द्या",
     "web_push_allow": "परवानगी द्या",
     "web_push_cancel": "रद्द करा"
-
 }

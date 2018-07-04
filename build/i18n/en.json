@@ -563,14 +563,29 @@
     "chat_no_unread_msgs": "You don't have any unread messages",
     "chat_yesterday": "Yesterday",
     "chat_today": "Today",
-
+    
     "web_push_title": "Enjoyed reading this?",
     "web_push_section_title": "Get Stories",
     "web_push_message_1": "Allow Pratilipi to send you notifications for other such stories",
     "web_push_message_2": "Would you like to get good stories in the notification?",
     "web_push_message_3": "Allow Pratilipi to send you notifications for good stories...",
     "web_push_allow": "Allow",
-    "web_push_cancel": "Cancel"
-
+    "web_push_cancel": "Cancel",
+    
+    "event_participate":"Participate",
+    "event_participate_your_drafts":"Your Drafts",
+    "event_participate_your_submissions":"Your Submissions",
+    "event_participate_accepted_message":"We have accepted your entry and we'll be publishing your content after the event is over.",
+    "event_participate_drafted_item_edit":"Your already have the following drafted item(s). Click on it to edit it or create a new one below.",
+    "event_participate_last_edited_on":"Last Edited On",
+    "event_participate_finish":"Finish",
+    "event_participate_confirm_submission":"Confirm Submission",
+    "event_participate_cannot_change_drafts":"You cannot change your entry after final submission, are you sure you want to submit it?",
+    "event_participate_check_your_entry_here":"Check Your Entry Here",
+    
+    "chat_banner_send_messages": "Send messages to the author",
+    "chat_banner_start_chatting": "Start Chatting",
+    
+    "message_capsule_conversation": "You have {{ initialUnreadConversations }} unread conversation",
+    "message_capsule_conversations": "You have {{ initialUnreadConversations }} unread conversations"
 }
-

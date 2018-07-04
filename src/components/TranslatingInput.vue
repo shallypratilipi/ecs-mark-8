@@ -7,7 +7,8 @@
             @input="getTranslation"
             @keyup.enter="selectSuggestion"
             :placeholder="placeholder"
-            name="" >
+            name=""
+            :class="classObj">
         <ul class="translations">
             <li v-for="(eachSuggestion, index) in suggestions" :class="{ 'active': index === selectedSuggestion }" :key="index" @click="selectTranslatedWord(eachSuggestion)">{{ eachSuggestion }}</li>
         </ul>
@@ -32,6 +33,9 @@ export default {
         },
         placeholder: {
             type: String
+        },
+        classObj: {
+            type: Object
         }
     },
     computed: {
@@ -106,24 +110,28 @@ export default {
 .translate-input-wrapper {
     position: relative;
     display: block;
+
+    .form-control.error {
+        border-color: #d00b12;
+    }
 }
-    .translations {
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        background: #fff;
-        z-index: 100;
-        width: 100%;
-        border: 1px solid #ced4da;
-        border-top: 0;
-        li {
-            list-style: none;
-            padding: 3px 10px;
-            border-left: 1px solid #e9e9e9;
-            border-right: 1px solid #e9e9e9;
-            &.active {
-                background: #e9e9e9;
-            }
+.translations {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background: #fff;
+    z-index: 100;
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-top: 0;
+    li {
+        list-style: none;
+        padding: 3px 10px;
+        border-left: 1px solid #e9e9e9;
+        border-right: 1px solid #e9e9e9;
+        &.active {
+            background: #e9e9e9;
         }
     }
+}
 </style>

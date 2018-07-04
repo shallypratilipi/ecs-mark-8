@@ -563,7 +563,7 @@
     "chat_no_unread_msgs": "આપની પાસે ન-વંચાયેલા કોઈ મેસેજ નથી",
     "chat_yesterday": "કાલે",
     "chat_today": "આજે",
-    
+
     "event_participate":"ભાગ લો ",
     "event_participate_your_drafts":"તમારા ડ્રાફ્ટ ",
     "event_participate_your_submissions":"તમારી સબમિટ થયેલી રચનાઓ ",
@@ -574,13 +574,18 @@
     "event_participate_confirm_submission":"સબમિશન કન્ફર્મ કરો ",
     "event_participate_cannot_change_drafts":"ફાઇનલ સબમિશન પછી આપ રચનામાં કોઈ ફેરફાર નહી કરી શકો.શું આપ ફાઇનલ સબમિશન કરવા ઈચ્છો છો?",
     "event_participate_check_your_entry_here":"આપની રચના એન્ટ્રી અહીં ચેક કરો ",
-
+    
     "web_push_title": "આ રચના પસંદ આવી?",
     "web_push_section_title": "વાર્તાઓ મેળવો",
     "web_push_message_1": "આ પ્રકારની વાર્તાઓ નોટીફિકેશનમાં મેળવવા પ્રતિલિપિને અનુમતિ આપો",
     "web_push_message_2": "નોટીફિકેશન દ્વારા ઉત્તમ વાર્તાઓ મેળવવા ઈચ્છો છો?",
     "web_push_message_3": "નોટીફિકેશન દ્વારા વાર્તાઓ મોકલવા માટે પ્રતિલિપિને અનુમતિ આપો..",
     "web_push_allow": "અનુમતિ આપો",
-    "web_push_cancel": "રદ કરો"
-
+    "web_push_cancel": "રદ કરો",
+    
+    "chat_banner_send_messages": "લેખકને મેસેજ મોકલો",
+    "chat_banner_start_chatting": "વાત કરવાની શરૂઆત કરો",
+    
+    "message_capsule_conversation": "આપના {{ initialUnreadConversations }} ન વંચાયેલ મેસેજ છે.",
+    "message_capsule_conversations": "આપના {{ initialUnreadConversations }} ન વંચાયેલ મેસેજ છે."
 }

@@ -184,7 +184,6 @@ import mixins from '@/mixins';
 import { mapGetters, mapActions } from 'vuex';
 import TranslatingInputTextArea from '@/components/TranslatingInputTextArea.vue';
 
-
 export default {
     components: {
         MainLayout,
@@ -561,7 +560,6 @@ export default {
                 this.userData.phone = this.getUserDetails.phone;
             }
         }
-
     },
     created() {
         if (this.getUserDetails.isGuest) {

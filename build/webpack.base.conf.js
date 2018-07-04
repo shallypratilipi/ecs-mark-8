@@ -11,7 +11,6 @@ const navigation = require('./categories');
 const languageJSON = translation[process.env.LANGUAGE || 'hi'];
 const navigationJSON = navigation[process.env.LANGUAGE || 'hi'];
 
-
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -53,19 +52,19 @@ module.exports = {
         enforce: 'pre',
         test: /\.(vue|js)$/,
         use: [{
-            loader: StringReplacePlugin.replace({
-                replacements: [{
-                    pattern: /__\(["|'](_*[a-zA-Z0-9]+(?:_[a-zA-Z0-9]+)*)["|']\)/g,
-                    replacement: function (match) {
-                        return languageJSON[match.substring(4, match.length - 2)]
-                    }
-                }, {
-                    pattern: /__NAVIGATION_SECTION_LIST__/g,
-                    replacement: function (match) {
-                        return JSON.stringify(navigationJSON)
-                    }
-                }]
-            })
+          loader: StringReplacePlugin.replace({
+            replacements: [{
+              pattern: /__\(["|'](_*[a-zA-Z0-9]+(?:_[a-zA-Z0-9]+)*)["|']\)/g,
+              replacement: function (match) {
+                return languageJSON[match.substring(4, match.length - 2)]
+              }
+            }, {
+              pattern: /__NAVIGATION_SECTION_LIST__/g,
+              replacement: function (match) {
+                return JSON.stringify(navigationJSON)
+              }
+            }]
+          })
         }]
       },
       {

@@ -165,9 +165,7 @@ export default {
         dispatch(action, data, { root: true });
     },
 
-
     setFirebaseGrowthDBInitialisedTrue({ commit }) {
-        console.log("Setting firebase growth DB status to true")
         commit('setFirebaseGrowthDBInitialisedTrue');
     }
 }

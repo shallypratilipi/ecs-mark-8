@@ -2,7 +2,7 @@
     <MainLayout>
         <div class="home-page page-wrap">
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
-                     :banners="getHomePageBanners"
+                :banners="getHomePageBanners"
             ></Banners>
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>
             <div v-if="getHomePageLoadingState === 'LOADING_SUCCESS'" v-for="(eachSection, index) in getHomePageSections" v-bind:key="eachSection.listPageUrl">
@@ -58,7 +58,7 @@
     import WebPushUtil from '@/utils/WebPushUtil'
 
 
-    import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
     export default {
         name: 'Home',

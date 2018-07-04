@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="<%= htmlWebpackPlugin.options.language %>">
+  <head>
     <meta charset="utf-8">
+    <meta http-equiv="expires" content="0" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="google" content="notranslate"/>
+    <meta name="google" content="notranslate" />
     <title>Pratilipi | Read Stories, Poems and Books</title>
-    <meta name="description"
-          content="A platform to discover, read and share your favorite stories, poems and books in a language, device and format of your choice.">
+    <meta name="description" content="A platform to discover, read and share your favorite stories, poems and books in a language, device and format of your choice.">
+    <meta name="theme-color" content="#d00b12"/>
+    <meta property="og:locale" content="<%= htmlWebpackPlugin.options.language %>_IN">
+    <meta property="fb:app_id" content="<%= htmlWebpackPlugin.options.fbAppId %>">
+
     <link rel="shortcut icon" type="image/png" href="/static/favicon.png"/>
-    <link href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link rel="manifest" href="/static/manifest.json" crossorigin="use-credentials"/>
-</head>
-<body>
-<div id="app"></div>
-<!-- built files will be auto injected -->
-</body>
+    <link rel="preload" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" as="style">
+    <link href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
 </html>

@@ -574,7 +574,12 @@
     "event_participate_confirm_submission":"ಸಬ್ಮಿಟ್ ಮಾಡಲು ಖಾತ್ರಿಪಡಿಸಿ",
     "event_participate_cannot_change_drafts":"ಸಬ್ಮಿಟ್ ಮಾಡಿದ ಬಳಿಕ ನಿಮ್ಮ ಬರಹವನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಖಾತ್ರಿಯಾಗಿ ಸಬ್ಮಿಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ ?",
     "event_participate_check_your_entry_here":"ನಿಮ್ಮ ಇವೆಂಟ್ ಬರಹಗಳನ್ನು ಇಲ್ಲಿ ಪರಿಶೀಲಿಸಿ ",
-
+    
+    "chat_banner_send_messages": "ಲೇಖಕರಿಗೆ ಸಂದೇಶವನ್ನು ಕಳುಹಿಸಿರಿ",
+    "chat_banner_start_chatting": "ಚಾಟ್ ಮಾಡಲು ಶುರು ಮಾಡಿ",
+    
+    "message_capsule_conversation": "ನೀವು {{ initialUnreadConversations }} ಸಂದೇಶವನ್ನು ಓದಿಲ್ಲ",
+    "message_capsule_conversations": "ನೀವು {{ initialUnreadConversations }} ಸಂದೇಶಗಳನ್ನು ಓದಿಲ್ಲ",
     "web_push_title": "ಇದನ್ನು ಓದಿ ಆನಂದಿಸಿದಿರಾ?",
     "web_push_section_title": "ಕಥಾನಕಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳಿ",
     "web_push_message_1": "ಈ ರೀತಿಯ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಕಳುಹಿಸಲು ಪ್ರತಿಲಿಪಿಗೆ ಅನುಮತಿಸಿ",
@@ -582,5 +587,4 @@
     "web_push_message_3": "ಅತ್ಯುತ್ತಮ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಕಳುಹಿಸಲು ಪ್ರತಿಲಿಪಿಗೆ ಅನುಮತಿಸಿ",
     "web_push_allow": "ಅನುಮತಿಸಿ",
     "web_push_cancel": "ರದ್ದುಗೊಳಿಸಿ"
-
 }

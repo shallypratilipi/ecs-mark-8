@@ -13,10 +13,10 @@
                                 <a href="#" class="signup active" v-on:click="tabsignup" data-tab="signup">__("user_sign_up")</a>
                                 <a href="#" class="signin" v-on:click="tabsignin" data-tab="signin">__("user_sign_in")</a>
                             </div>
-
+                            
                             <Login></Login>
                             <Register></Register>
-
+                            
                             <!-- Modal -->
                             <!--<ForgetPasswordModal></ForgetPasswordModal>-->
 
@@ -138,7 +138,7 @@ export default {
             });
         },
         tabsignin(event) {
-            event.preventDefault();
+            event.preventDefault();        
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".login-menu a").removeClass("active");
             $(".signin").addClass("active");
@@ -162,7 +162,6 @@ export default {
                 'USER_ID': this.getUserDetails.userId
             });
         }
-
         this.triggerAnanlyticsEvent('LANDED_REGISTERM_REGISTER', 'CONTROL', {
             'USER_ID': this.getUserDetails.userId
         });

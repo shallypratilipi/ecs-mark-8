@@ -4,7 +4,7 @@
 
 	var localFilesToCache = [
 		'.',
-		'pwa-stylesheets/css/style.css?250520181827',
+		'pwa-stylesheets/css/style.css?110520181542',
 		'pwa-images/404.svg',
 		'pwa-images/library-empty.svg',
 		'pwa-images/NewSprite_2.png',
@@ -29,7 +29,7 @@
 		'https://www.ptlp.co/resource-all/font/font-hi.css'
 	];
 
-	var STATIC_VERSION = "250520181827";
+	var STATIC_VERSION = "110520181542";
 	var DYNAMIC_VERSION = "7";
 	var staticCacheName = 'pratilipi-cache-static-' + STATIC_VERSION;
 	var dynamicCacheName = 'pratilipi-cache-dynamic-' + DYNAMIC_VERSION;
@@ -38,7 +38,7 @@
 	var apiPrefix = "https://hindi-devo-gr.ptlp.co";
 
 	/* Cache Keys */
-	var PWA_INDEX_HTML = "app-shell-250520181827.html";
+	var PWA_INDEX_HTML = "app-shell-110520181542.html";
 	var INIT_BANNER_LIST = "init-banner-list.json";
 	var TRENDING_SEARCH_KEYWORDS = "trending-search-keywords.json";
 
@@ -171,22 +171,13 @@
 	});
 
 	self.addEventListener( 'push', function(event) {
+		const title = 'Test Title';
+		const options = {
+			body: 'Test body....'
+		};
 
-		// Implementation => Only for marketing notifications.
-		var pratilipi = event.data.json();
-
-		if( pratilipi ) {
-			var title = pratilipi.displayTitle,
-				options = {
-					badge: 'https://storage.googleapis.com/public.pratilipi.com/pratilipi-logo/png/ic_launcher.png',
-					body: pratilipi.summary,
-					icon: 'https://storage.googleapis.com/public.pratilipi.com/pratilipi-logo/png/Logo-2C-RGB-200px.png', 
-					// image: pratilipi.coverImageUrl,
-					data: pratilipi // on notificationclick event
-				};
-			var notificationPromise = self.registration.showNotification(title, options);
-			event.waitUntil( notificationPromise );
-		}
+		const notificationPromise = self.registration.showNotification(title, options);
+		event.waitUntil( notificationPromise );
 
 	});
 
@@ -194,7 +185,7 @@
 	self.addEventListener( 'notificationclick', function(event) {
 		event.notification.close();
 		event.waitUntil(
-			clients.openWindow(event.notification.data.pageUrl)
+			clients.openWindow('https://www.pratilipi.com')
 		);
 	});
 

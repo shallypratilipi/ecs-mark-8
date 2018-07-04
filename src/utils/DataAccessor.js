@@ -1,5 +1,4 @@
 import { httpUtil, formatParams } from './HttpUtil';
-// import Raven from 'raven-js';
 
 
 const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
@@ -101,9 +100,17 @@ const processRequests = function(requests) {
 
 const processGetResponse = function(response, status, aCallBack) {
     if (status !== 200 && status !== 404) {
-        /*Raven.captureMessage(response.message || 'GET call failed', {
-            level: 'error' // one of 'info', 'warning', or 'error'
-        });*/
+        import('raven-js').then((Raven) => {
+            Raven.captureMessage('Server Exception', {
+                level: 'error', // one of 'info', 'warning', or 'error'
+                extra: {
+                    language: process.env.LANGUAGE,
+                    status,
+                    response: response.message,
+                    method: 'GET'
+                }
+            });
+        });
     }
 
     if (aCallBack != null)
@@ -119,8 +126,20 @@ const processGetResponse = function(response, status, aCallBack) {
 const processPostResponse = function(response, status, successCallBack, errorCallBack) {
     if (status == 200 && successCallBack != null)
         successCallBack(response);
-    else if (status != 200 && errorCallBack != null)
+    else if (status != 200 && errorCallBack != null) {
+        import('raven-js').then((Raven) => {
+            Raven.captureMessage('Server Exception', {
+                level: 'error', // one of 'info', 'warning', or 'error'
+                extra: {
+                    language: process.env.LANGUAGE,
+                    status,
+                    response: response.message,
+                    method: 'POST'
+                }
+            });
+        });
         errorCallBack(response);
+    }
 };
 
 
@@ -323,7 +342,7 @@ export default {
 
      getVideoDetails : ( videoseries_slug, aCallBack ) => {
         var params = {};
-    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_DETAILS + videoseries_slug ,
+        httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_DETAILS + videoseries_slug ,
             null,
             params,
             function( response, status ) {
@@ -351,16 +370,13 @@ export default {
     },
 
     getBlogPostByUri: (slug, aCallBack) => {
-	var params = {
-		"slug": slug
-	}
-	httpUtil.get(API_PREFIX + BLOGS_API,
-		null,
-		params,
-		function (response, status) {
-			var blogpost = status == 200 ? response : null;
-			aCallBack(blogpost);
-		});
+	      var params = {
+		        "slug": slug
+	      }
+	      httpUtil.get(API_PREFIX + BLOGS_API, null, params, function (response, status) {
+    			  var blogpost = status == 200 ? response : null;
+			      aCallBack(blogpost);
+        });
     },
 
     getBlogPostListByUri: (language, state, cursor, resultCount, aCallBack) => {
@@ -373,7 +389,7 @@ export default {
 	httpUtil.get(API_PREFIX + BLOGS_LIST_API,
             null,
             params,
-            function(response, status) { 
+            function(response, status) {
 		var blogpost = status == 200 ? response : null;
                 aCallBack(blogpost);
 	    });
@@ -400,10 +416,10 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (resultCount != null) params["resultCount"] = resultCount;
 
-	httpUtil.get(API_PREFIX + AUTHOR_INTERVIEWS_LIST_API,
+	      httpUtil.get(API_PREFIX + AUTHOR_INTERVIEWS_LIST_API,
             null,
             params,
-            function(response, status) { 
+            function(response, status) {
                 var blogpost = status == 200 ? response : null;
                 aCallBack(blogpost);
             });

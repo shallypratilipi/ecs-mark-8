@@ -11,7 +11,7 @@
                             <button v-if="canParticipate" type="button" class="participate_btn" name="button" @click="goToEventParticipate">__('event_participate')</button>
                         </div>
                     </div>
-                    <div class="col-md-12" v-if="getUserEventDraftData.length > 0 && canParticipate ">
+                    <div class="col-md-12" v-if="getUserEventDraftData.length > 0 && canParticipate">
                         <div class="page-content event-list card" id="yourDrafts">
                             <div class="head-title">__('event_participate_your_drafts')</div>
                             <router-link v-for="pratilipiData in getUserEventDraftData" :key="pratilipiData._id" :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData._id + "?step=2"'>
@@ -27,10 +27,7 @@
                             </router-link>
                         </div>
                     </div>
-                    <div class="col-md-12 loader-overflow">
-                    <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader>
-                    </div>
-                    <div class="col-md-12" v-if="getUserEventData.length > 0 && canParticipate ">
+                    <div class="col-md-12" v-if="getUserEventData.length > 0 && canParticipate">
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
                             <router-link v-for="pratilipiData in getUserEventData" :key="pratilipiData._id" :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData._id + "?step=2"'>
@@ -76,17 +73,14 @@ import UserEventPratilipiComponent from '@/components/UserEventPratilipi.vue';
 import Spinner from '@/components/Spinner.vue';
 import constants from '@/constants'
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex';
-import DummyLoader from '@/components/DummyLoader.vue';
-
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     components: {
         MainLayout,
         PratilipiComponent,
         UserEventPratilipiComponent,
-        Spinner,
-        DummyLoader
+        Spinner
     },
     data() {
         return {
@@ -94,7 +88,7 @@ export default {
             canParticipate: false
         }
     },
-    mixins: [ 
+    mixins: [
         mixins
     ],
     computed: {
@@ -105,9 +99,7 @@ export default {
             'getEventPratilipisLoadingState',
             'getEventPratilipisCursor',
             'getUserEventData',
-            'getUserEventDraftData',
-            'getUserEventDataLoadingState'
-
+            'getUserEventDraftData'
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -190,9 +182,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.loader-overflow {
-    overflow: hidden;
-}
 .event-page {
     margin-top: 85px;
     text-align: left;

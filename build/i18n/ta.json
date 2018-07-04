@@ -574,7 +574,12 @@
     "event_participate_confirm_submission":"சமர்பித்தலை உறுதிப்படுத்தவும்",
     "event_participate_cannot_change_drafts":"இறுதி சமர்ப்பிப்பிற்கு பிறகு உங்களது படைப்பை திருத்த முடியாது. உறுதியாக படைப்பை சமர்ப்பிக்க வேண்டுமா?",
     "event_participate_check_your_entry_here":"நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்",
-
+    
+    "chat_banner_send_messages": "எழுத்தாளரிடம் பேசுங்கள்",
+    "chat_banner_start_chatting": "குறுஞ்செய்தி அனுப்புங்கள்",
+    
+    "message_capsule_conversation": "உங்கள் பக்கத்தில் {{ initialUnreadConversations }} படிக்கப்படாத குறுஞ்செய்தி உள்ளது",
+    "message_capsule_conversations": "உங்கள் பக்கத்தில் {{ initialUnreadConversations }} படிக்கப்படாத குறுஞ்செய்திகள் உள்ளன",
     "web_push_title": "வாசித்தது பிடித்திருந்ததா?",
     "web_push_section_title": "கதைகளை பெறுங்கள்",
     "web_push_message_1": "இதே போன்ற கதைகளை நோட்டிஃபிகேஷனில் அனுப்ப பிரதிலிபிக்கு அனுமதி கொடுக்கவும்",
