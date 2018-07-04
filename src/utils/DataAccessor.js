@@ -100,17 +100,19 @@ const processRequests = function(requests) {
 
 const processGetResponse = function(response, status, aCallBack) {
     if (status !== 200 && status !== 404) {
-        import('raven-js').then((Raven) => {
-            Raven.captureMessage('Server Exception', {
-                level: 'error', // one of 'info', 'warning', or 'error'
-                extra: {
-                    language: process.env.LANGUAGE,
-                    status,
-                    response: response.message,
-                    method: 'GET'
-                }
+        if (process.env.REALM !== 'PROD') {
+            import('raven-js').then((Raven) => {
+                Raven.captureMessage('Server Exception', {
+                    level: 'error', // one of 'info', 'warning', or 'error'
+                    extra: {
+                        language: process.env.LANGUAGE,
+                        status,
+                        response: response.message,
+                        method: 'GET'
+                    }
+                });
             });
-        });
+        }
     }
 
     if (aCallBack != null)
@@ -127,17 +129,20 @@ const processPostResponse = function(response, status, successCallBack, errorCal
     if (status == 200 && successCallBack != null)
         successCallBack(response);
     else if (status != 200 && errorCallBack != null) {
-        import('raven-js').then((Raven) => {
-            Raven.captureMessage('Server Exception', {
-                level: 'error', // one of 'info', 'warning', or 'error'
-                extra: {
-                    language: process.env.LANGUAGE,
-                    status,
-                    response: response.message,
-                    method: 'POST'
-                }
+
+        if (process.env.REALM !== 'PROD') {
+            import('raven-js').then((Raven) => {
+                Raven.captureMessage('Server Exception', {
+                    level: 'error', // one of 'info', 'warning', or 'error'
+                    extra: {
+                        language: process.env.LANGUAGE,
+                        status,
+                        response: response.message,
+                        method: 'POST'
+                    }
+                });
             });
-        });
+        }
         errorCallBack(response);
     }
 };
