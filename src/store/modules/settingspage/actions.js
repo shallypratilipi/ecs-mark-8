@@ -3,7 +3,7 @@ import DataAccessor from '@/utils/DataAccessor'
 export default {
     fetchAuthorDetails({ commit, state }, authorId) {
         commit('setAuthorDataLoadingTrue');
-        DataAccessor.getAuthorById(authorId, null, function(authorData) {
+        DataAccessor.getAuthorById(authorId, function(authorData) {
             if (authorData) {
                 commit('setAuthorDataLoadingSuccess', authorData);
             } else {
@@ -53,5 +53,15 @@ export default {
 
             commit('setUpdateAuthorLoadingError');
         });  
+    },
+
+    // This is for unsubscribe non logged in page
+    updateMarketingNewsletter({ commit, state }, { uuid, newsletterFrequency, newsletterUnsubscribeReason }) {
+        commit('setMarketingFrequencyLoadingTrue');
+        DataAccessor.postMarketingNewsletterUnsubscribe(uuid, newsletterFrequency, newsletterUnsubscribeReason, (data) => {
+            commit('setMarketingFrequencyLoadingSuccess');
+        }, () => {
+            commit('setMarketingFrequencyLoadingError');
+        });
     }
 }

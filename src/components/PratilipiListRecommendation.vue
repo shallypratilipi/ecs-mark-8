@@ -16,6 +16,7 @@
                     :redirectToReader="redirectToReader"
                     :screenName="screenName"
                 	:screenLocation="screenLocation"
+                    :experimentId="experimentId"
                     ></PratilipiComponent>
 					<router-link :to="listPageUrl" v-if="listPageUrl" class="view_more">
 						<div class="view_more_card">
@@ -69,6 +70,9 @@ export default {
         screenLocation: {
             type: String,
             required: true
+        },
+        experimentId: {
+            type: String
         }
     },
     mixins: [

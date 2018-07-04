@@ -1,5 +1,63 @@
 import constants from '@/constants';
 import controlAnalyticsEvents from '@/static_scripts/analytics_events_control'
+import ratingV1AnalyticsEvents from '@/static_scripts/experiment_events/rating_v1'
+import ratingV2AnalyticsEvents from '@/static_scripts/experiment_events/rating_v2'
+import ratingV3AnalyticsEvents from '@/static_scripts/experiment_events/rating_v3'
+import ratingV4AnalyticsEvents from '@/static_scripts/experiment_events/rating_v4'
+import readerV1AnalyticsEvents from '@/static_scripts/experiment_events/reader_v1'
+import readerV2AnalyticsEvents from '@/static_scripts/experiment_events/reader_v2'
+import readerV3AnalyticsEvents from '@/static_scripts/experiment_events/reader_v3'
+import readerV4AnalyticsEvents from '@/static_scripts/experiment_events/reader_v4'
+import readerV5AnalyticsEvents from '@/static_scripts/experiment_events/reader_v5'
+import readerV6AnalyticsEvents from '@/static_scripts/experiment_events/reader_v6'
+import readerV7AnalyticsEvents from '@/static_scripts/experiment_events/reader_v7'
+import readerV8AnalyticsEvents from '@/static_scripts/experiment_events/reader_v8'
+import profileV1AnalyticsEvents from '@/static_scripts/experiment_events/profile_v1'
+import profileV2AnalyticsEvents from '@/static_scripts/experiment_events/profile_v2'
+import profileV3AnalyticsEvents from '@/static_scripts/experiment_events/profile_v3'
+import profileV4AnalyticsEvents from '@/static_scripts/experiment_events/profile_v4'
+import discoveryV1AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v1'
+import discoveryV2AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v2'
+import discoveryV3AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v3'
+import discoveryV4AnalyticsEvents from '@/static_scripts/experiment_events/discovery_v4'
+import homeV1AnalyticsEvents from '@/static_scripts/experiment_events/home_v1'
+import homeV2AnalyticsEvents from '@/static_scripts/experiment_events/home_v2'
+import homeV3AnalyticsEvents from '@/static_scripts/experiment_events/home_v3'
+import homeV4AnalyticsEvents from '@/static_scripts/experiment_events/home_v4'
+import bookv1AnalyticsEvents from '@/static_scripts/experiment_events/book_v1'
+import bookv2AnalyticsEvents from '@/static_scripts/experiment_events/book_v2'
+import bookv3AnalyticsEvents from '@/static_scripts/experiment_events/book_v3'
+import bookv4AnalyticsEvents from '@/static_scripts/experiment_events/book_v4'
+
+const rating_v1 = ['WGEN001'];
+const rating_v2 = ['WGEN002'];
+const rating_v3 = ['WGEN003'];
+const rating_v4 = ['WGEN004'];
+// const reader_v1 = ['WGEN005'];
+// const reader_v2 = ['WGEN006'];
+// const reader_v3 = ['WGEN007'];
+// const reader_v4 = ['WGEN008'];
+const reader_v5 = ['WGEN005'];
+const reader_v6 = ['WGEN006'];
+const reader_v7 = ['WGEN007'];
+const reader_v8 = ['WGEN008'];
+const profile_v1 = ['WGEN009'];
+const profile_v2 = ['WGEN010'];
+const profile_v3 = ['WGEN011'];
+const profile_v4 = ['WGEN012'];
+const discovery_v1 = ['WGEN013'];
+const discovery_v2 = ['WGEN014'];
+const discovery_v3 = ['WGEN015'];
+const discovery_v4 = ['WGEN016'];
+const home_v1 = ['WGEN017'];
+const home_v2 = ['WGEN018'];
+const home_v3 = ['WGEN019'];
+const home_v4 = ['WGEN020'];
+const book_v1 = ['WGEN021'];
+const book_v2 = ['WGEN022'];
+const book_v3 = ['WGEN023'];
+const book_v4 = ['WGEN024'];
+
 
 let REFERRER_EVENT;
 let REFERRER_EXPERIMENTID;
@@ -95,6 +153,9 @@ export function getAnalyticsPageSource(pageSource) {
         case 'register':
             analyticsPageSource = 'SIGNUP';
             break;
+        case 'messages':
+            analyticsPageSource = 'MESSAGES';
+            break;
     }
     return analyticsPageSource;
 }
@@ -121,6 +182,10 @@ export function openPrimaryConfirmationModal() {
 
 export function openWritePratilipiModal() {
     $('#writermodal').modal('show');
+}
+
+export function openWebPushModal() {
+    $('#webPushModal').modal('show');
 }
 
 export function isMobile() {
@@ -224,15 +289,21 @@ export function validateUsername(name) {
 }
 
 export function setAnalyticsUserProperty(propertyName, propertyValue) {
-    const identify = new amplitude.Identify();
-    identify.set(propertyName, propertyValue);
-    amplitude.getInstance().identify(identify);
+
+    if (process.env.REALM !== 'PROD') {
+        const identify = new amplitude.Identify();
+        identify.set(propertyName, propertyValue);
+        amplitude.getInstance().identify(identify);
+    }
 
     const propertyObject = {};
     propertyObject[propertyName] = String(propertyValue)
 
     if (propertyName === 'USER_ID' && propertyValue != "0" ) {
-        amplitude.getInstance().setUserId(propertyValue);
+
+        if (process.env.REALM !== 'PROD') {
+            amplitude.getInstance().setUserId(propertyValue);
+        }
     }
 
     if (!window.FB) {
@@ -307,6 +378,90 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
         case (experimentType === 'CONTROL'):
             eventProps = { ...controlAnalyticsEvents[eventName] };
             break;
+        case (rating_v1.indexOf(experimentType) > -1):
+            eventProps = { ...ratingV1AnalyticsEvents[eventName] };
+            break;
+        case (rating_v2.indexOf(experimentType) > -1):
+            eventProps = { ...ratingV2AnalyticsEvents[eventName] };
+            break;
+        case (rating_v3.indexOf(experimentType) > -1):
+            eventProps = { ...ratingV3AnalyticsEvents[eventName] };
+            break;
+        case (rating_v4.indexOf(experimentType) > -1):
+            eventProps = { ...ratingV4AnalyticsEvents[eventName] };
+            break;
+        // case (reader_v1.indexOf(experimentType) > -1):
+        //     eventProps = { ...readerV1AnalyticsEvents[eventName] };
+        //     break;
+        // case (reader_v2.indexOf(experimentType) > -1):
+        //     eventProps = { ...readerV2AnalyticsEvents[eventName] };
+        //     break;
+        // case (reader_v3.indexOf(experimentType) > -1):
+        //     eventProps = { ...readerV3AnalyticsEvents[eventName] };
+        //     break;
+        // case (reader_v4.indexOf(experimentType) > -1):
+        //     eventProps = { ...readerV4AnalyticsEvents[eventName] };
+        //     break;
+        case (reader_v5.indexOf(experimentType) > -1):
+            eventProps = { ...readerV5AnalyticsEvents[eventName] };
+            break;
+        case (reader_v6.indexOf(experimentType) > -1):
+            eventProps = { ...readerV6AnalyticsEvents[eventName] };
+            break;
+        case (reader_v7.indexOf(experimentType) > -1):
+            eventProps = { ...readerV7AnalyticsEvents[eventName] };
+            break;
+        case (reader_v8.indexOf(experimentType) > -1):
+            eventProps = { ...readerV8AnalyticsEvents[eventName] };
+            break;
+        case (profile_v1.indexOf(experimentType) > -1):
+            eventProps = { ...profileV1AnalyticsEvents[eventName] };
+            break;
+        case (profile_v2.indexOf(experimentType) > -1):
+            eventProps = { ...profileV2AnalyticsEvents[eventName] };
+            break;
+        case (profile_v3.indexOf(experimentType) > -1):
+            eventProps = { ...profileV3AnalyticsEvents[eventName] };
+            break;
+        case (profile_v4.indexOf(experimentType) > -1):
+            eventProps = { ...profileV4AnalyticsEvents[eventName] };
+            break;
+        case (discovery_v1.indexOf(experimentType) > -1):
+            eventProps = { ...discoveryV1AnalyticsEvents[eventName] };
+            break;
+        case (discovery_v2.indexOf(experimentType) > -1):
+            eventProps = { ...discoveryV2AnalyticsEvents[eventName] };
+            break;
+        case (discovery_v3.indexOf(experimentType) > -1):
+            eventProps = { ...discoveryV3AnalyticsEvents[eventName] };
+            break;
+        case (discovery_v4.indexOf(experimentType) > -1):
+            eventProps = { ...discoveryV4AnalyticsEvents[eventName] };
+            break;
+        case (home_v1.indexOf(experimentType) > -1):
+            eventProps = { ...homeV1AnalyticsEvents[eventName] };
+            break;
+        case (home_v2.indexOf(experimentType) > -1):
+            eventProps = { ...homeV2AnalyticsEvents[eventName] };
+            break;
+        case (home_v3.indexOf(experimentType) > -1):
+            eventProps = { ...homeV3AnalyticsEvents[eventName] };
+            break;
+        case (home_v4.indexOf(experimentType) > -1):
+            eventProps = { ...homeV4AnalyticsEvents[eventName] };
+            break;
+        case (book_v1.indexOf(experimentType) > -1):
+            eventProps = { ...bookv1AnalyticsEvents[eventName] };
+            break;
+        case (book_v2.indexOf(experimentType) > -1):
+            eventProps = { ...bookv2AnalyticsEvents[eventName] };
+            break;
+        case (book_v3.indexOf(experimentType) > -1):
+            eventProps = { ...bookv3AnalyticsEvents[eventName] };
+            break;
+        case (book_v4.indexOf(experimentType) > -1):
+            eventProps = { ...bookv4AnalyticsEvents[eventName] };
+            break;
     }
 
     if (!eventProps.SCREEN_NAME) {
@@ -327,8 +482,10 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
         }
 
         if (eventProps.ACTION === 'LOGOUT') {
-            amplitude.getInstance().setUserId(null);
-            amplitude.getInstance().regenerateDeviceId();
+            if (process.env.REALM !== 'PROD') {
+                amplitude.getInstance().setUserId(null);
+                amplitude.getInstance().regenerateDeviceId();
+            }
         }
 
         eventProps = {
@@ -337,7 +494,7 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             'DEVICE_TYPE': isMobile() ? 'MOBILE':'DESKTOP',
             'WEBSITE_TYPE': 'MARK8',
             'EXPERIMENT_ID': experimentType,
-            'ENVIRONMENT': 'PROD_BRIDGE',
+            'ENVIRONMENT': process.env.REALM,
             'CONTENT_LANGUAGE': getCurrentLanguage().fullName.toUpperCase(),
             'SCREEN_LOCATION': eventProps.SCREEN_NAME + '_' + eventProps.LOCATION
         }
@@ -360,9 +517,10 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventName !== 'STARTCHAT_ALLCHATS_P2PCHAT' &&
             eventName !== 'DELETECHAT_ALLCHATS_P2PCHAT' &&
             eventName !== 'STARTCHAT_NEWCHATS_NOTIFS' &&
-            eventName !== 'VIEWALLCHATS_NEWCHATS_NOTIFS' &&
-            eventName !== 'LANDED_NEWCHATS_NOTIFS') {
-            amplitude.getInstance().logEvent(eventName, eventProps);
+            eventName !== 'VIEWALLCHATS_NEWCHATS_NOTIFS') {
+                if (process.env.REALM !== 'PROD') {
+                    amplitude.getInstance().logEvent(eventName, eventProps);
+                }
         } else {
             console.info('SKIPPING EVENT');
         }
@@ -373,8 +531,6 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventAction: eventProps.ACTION,
             eventLabel: eventProps.SCREEN_NAME
         });
-
-        ga( 'send', 'event', eventProps.LOCATION, eventProps.ACTION, eventProps.SCREEN_NAME );
 
         if (!window.fbApiInit) {
             setTimeout(() => {
@@ -447,7 +603,7 @@ export function isCurrentEvent( eventId ) {
         eventId == 6900000000000075 ||
         eventId == 6900000000000074 ||
         eventId == 6900000000000077 ||
-        eventId == 6900000000000084) {
+        eventId == 6900000000000084 ) {
         isItCurrentEvent = true;
     }
     //
@@ -460,4 +616,18 @@ export function isCurrentEvent( eventId ) {
     // });
 
     return isItCurrentEvent;
+}
+
+export function validateFirstAndSecondPassword(firstPassword, secondPassword) {
+
+    if(firstPassword == secondPassword)
+    {
+        return true;
+    } else {
+        return false
+    }
+}
+
+export function isTestEnvironment() {
+    return (!window.location.host.endsWith('.pratilipi.com')) || window.location.host.split('.')[0].includes('-gamma')
 }

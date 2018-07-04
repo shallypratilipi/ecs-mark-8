@@ -10,13 +10,13 @@ export default {
             if (pratilipiData) {
                 commit('setReaderPratilipiDataLoadingSuccess', pratilipiData);
             } else {
-                commit('setReaderPratilipiDataLoadingError');    
+                commit('setReaderPratilipiDataLoadingError');
             }
 
             if (indexData) {
                 commit('setReaderPratilipiIndexDataLoadingSuccess', indexData);
             } else {
-                commit('setReaderPratilipiIndexDataLoadingError');    
+                commit('setReaderPratilipiIndexDataLoadingError');
             }
 
             if (state.userPratilipi && userPratilipiData.pratilipiId === state.userPratilipi.data.pratilipiId && state.userPratilipi.data.rating) {
@@ -27,9 +27,9 @@ export default {
             if (userPratilipiData) {
                 commit('setReaderPratilipiUserDataLoadingSuccess', userPratilipiData);
             } else {
-                commit('setReaderPratilipiUserDataLoadingError');    
+                commit('setReaderPratilipiUserDataLoadingError');
             }
-            
+
         });
     },
 
@@ -153,7 +153,7 @@ export default {
             } else {
                 commit('setAuthorDataLoadingError');
             }
-        });    
+        });
     },
 
     followOrUnfollowAuthor({ commit, state }) {
@@ -164,4 +164,11 @@ export default {
             commit('setFollowUnfollowLoadingDataLoadingError');
         });
     },
+
+    postReadingPercentage({commit, state}, {pratilipiId, chapterCount, maxRead, indexData}) {
+        DataAccessor.postReadingPercent(pratilipiId, chapterCount, maxRead, indexData, (response) => {
+        }, (errorData) => {
+            console.log("ERROR IN READ PERCENTAGE API");
+        })
+    }
 }

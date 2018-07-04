@@ -13,6 +13,7 @@
         <Alert></Alert>
     </div>
 </template>
+
 <script>
 import Header from '@/components/Header.vue';
 import AppBanner from '@/components/AppBanner.vue';
@@ -97,7 +98,7 @@ export default {
 
         $('div.modal').on('hide.bs.modal', function() {
             const hash = this.id;
-            history.pushState('', document.title, window.location.pathname);
+            history.pushState('', document.title, window.location.href.substr(0, window.location.href.indexOf('#')));
         });
     }
 }

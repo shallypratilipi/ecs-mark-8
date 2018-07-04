@@ -58,16 +58,10 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': trendingWord
             });
+            $("#search-box-small .search-dropdown").hide();
+            $("#search-box-big .search-dropdown").hide();
         }
     },
-    created() {
-        const currentLocale = process.env.LANGUAGE;
-        constants.LANGUAGES.forEach((eachLanguage) => {
-            if (eachLanguage.shortName === currentLocale) {
-                this.fetchTrendingSearch(eachLanguage.fullName.toUpperCase());
-            }
-        });
-    }
 }
 </script>
 

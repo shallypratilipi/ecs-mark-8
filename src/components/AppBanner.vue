@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-10 app-info">
                     <span class="name">__("pratilipi_android_application")</span>
-                    <span class="stars"><img class="rating-image" src="../assets/Stars-for-App-Install-Strip.png"></span>
+                    <span class="stars"><img class="rating-image" src="../assets/Stars-for-App-Install-Strip.png" alt="rating"></span>
                 </div>
             </div>
             <div class="row">

@@ -6,8 +6,8 @@
                     <div class="col-md-4">
                         <div class="foot-title">__("footer_mobile_app")</div>
                         <div class="foot-items">
-                            <a @click.prevent="triggerEvent" href="#" target="_blank">
-                                <img src="../assets/google-play-badge.png" alt="google-play" class="google-play-badge">
+                            <a @click.prevent="triggerEvent" href="#" target="_blank" rel="noopener">
+                                <img v-lazy="require('../assets/google-play-badge.png')" alt="google-play" class="google-play-badge">
                             </a>
                         </div>
                     </div>
@@ -21,10 +21,10 @@
                     <div class="col-md-4">
                         <div class="foot-title">__("footer_follow_us_on_social_media")</div>
                         <div class="foot-items social">
-                            <a @click="triggerFbEvent" :href="'__('facebook_page')'" class="fb" target="_blank"><icon name="facebook-f"></icon></a>
-                            <a @click="triggerTwEvent" :href="'__('twitter_page')'" class="twitter" target="_blank"><icon name="twitter"></icon></a>
-                            <a @click="triggerGpEvent" :href="'__('googleplus_page')'" class="google" target="_blank"><icon name="google-plus"></icon></a>
-                            <a @click="triggerLnEvent" :href="'__('linkedin_page')'" class="linkedin" target="_blank"><icon name="linkedin"></icon></a>
+                            <a @click="triggerFbEvent" :href="'__('facebook_page')'" class="fb" target="_blank" rel="noopener"><icon name="facebook-f"></icon></a>
+                            <a @click="triggerTwEvent" :href="'__('twitter_page')'" class="twitter" target="_blank" rel="noopener"><icon name="twitter"></icon></a>
+                            <a @click="triggerGpEvent" :href="'__('googleplus_page')'" class="google" target="_blank" rel="noopener"><icon name="google-plus"></icon></a>
+                            <a @click="triggerLnEvent" :href="'__('linkedin_page')'" class="linkedin" target="_blank" rel="noopener"><icon name="linkedin"></icon></a>
                         </div>
                     </div>
                 </div>
@@ -36,15 +36,15 @@
                     <div class="col-sm-12">
                         <button class="show-more" @click="toggleTopFooter"><i class="material-icons">arrow_drop_down</i></button>
                         <p>
-                            © {{ new Date().getFullYear() }} Nasadiya Tech. Pvt. Ltd. |
+                            © {{ new Date().getFullYear() }} Nasadiya Tech. Pvt. Ltd. | 
                             <router-link
-                                :to="{ name: 'About_Page' }">__("footer_about_us")</router-link> |
+                              :to="{ name: 'About_Page' }">__("footer_about_us")</router-link> | 
                             <router-link
-                                :to="{ name: 'Career_Page' }">__("footer_work_with_us")</router-link> |
+                                :to="{ name: 'Career_Page' }">__("footer_work_with_us")</router-link> | 
                             <router-link
-                                :to="{ name: 'Privacy_Page' }">__("footer_privacy_policy")</router-link> |
+                              :to="{ name: 'Privacy_Page' }">__("footer_privacy_policy")</router-link> |
                             <router-link
-                                :to="{ name: 'Terms_Page' }">__("footer_terms_of_service")</router-link>
+                              :to="{ name: 'Terms_Page' }">__("footer_terms_of_service")</router-link>
                         </p>
                     </div>
                 </div>
@@ -54,70 +54,70 @@
 </template>
 
 <script>
-    import 'vue-awesome/icons/facebook-f'
-    import 'vue-awesome/icons/twitter'
-    import 'vue-awesome/icons/google-plus'
-    import 'vue-awesome/icons/linkedin'
-    import mixins from '@/mixins'
-    import { mapGetters, mapActions } from 'vuex'
+import 'vue-awesome/icons/facebook-f'
+import 'vue-awesome/icons/twitter'
+import 'vue-awesome/icons/google-plus'
+import 'vue-awesome/icons/linkedin'
+import mixins from '@/mixins'
+import { mapGetters, mapActions } from 'vuex'
 
-    export default {
-        mixins: [
-            mixins
-        ],
-        computed: {
-            ...mapGetters([
-                'getUserDetails'
-            ])
+export default {
+    mixins: [
+        mixins
+    ],
+    computed: {
+        ...mapGetters([
+            'getUserDetails'
+        ])
+    },
+    methods: {
+        toggleTopFooter() {
+            $(".show-more").toggleClass("shown");
+            $(".top-footer").toggleClass("shown");
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         },
-        methods: {
-            toggleTopFooter() {
-                $(".show-more").toggleClass("shown");
-                $(".top-footer").toggleClass("shown");
-                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-            },
-            triggerEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('GETANDROID_FOOTER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    SCREEN_NAME
-                });
-                window.open('https://play.google.com/store/apps/details?id=com.pratilipi.mobile.android&utm_source=web_footer&utm_campaign=app_download')
-            },
-            triggerFbEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('LIKEPRATFB_FOOTER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'FACEBOOK',
-                    SCREEN_NAME
-                });
-            },
-            triggerTwEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('LIKEPRATTW_FOOTER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'TWITTER',
-                    SCREEN_NAME
-                });
-            },
-            triggerGpEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('LIKEPRATGP_FOOTER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'GOOGLEPLUS',
-                    SCREEN_NAME
-                });
-            },
-            triggerLnEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('LIKEPRATLINKD_FOOTER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'LINKEDIN',
-                    SCREEN_NAME
-                });
-            },
-        }
+        triggerEvent() {
+            const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+            this.triggerAnanlyticsEvent('GETANDROID_FOOTER_GLOBAL', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                SCREEN_NAME
+            });
+            window.open('https://play.google.com/store/apps/details?id=com.pratilipi.mobile.android&utm_source=web_footer&utm_campaign=app_download')
+        },
+        triggerFbEvent() {
+            const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+            this.triggerAnanlyticsEvent('LIKEPRATFB_FOOTER_GLOBAL', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'FACEBOOK',
+                SCREEN_NAME
+            });
+        },
+        triggerTwEvent() {
+            const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+            this.triggerAnanlyticsEvent('LIKEPRATTW_FOOTER_GLOBAL', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'TWITTER',
+                SCREEN_NAME
+            });
+        },
+        triggerGpEvent() {
+            const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+            this.triggerAnanlyticsEvent('LIKEPRATGP_FOOTER_GLOBAL', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'GOOGLEPLUS',
+                SCREEN_NAME
+            });
+        },
+        triggerLnEvent() {
+            const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
+            this.triggerAnanlyticsEvent('LIKEPRATLINKD_FOOTER_GLOBAL', 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'LINKEDIN',
+                SCREEN_NAME
+            });
+        },
     }
+}
 </script>
 
 <style lang="scss" scoped>

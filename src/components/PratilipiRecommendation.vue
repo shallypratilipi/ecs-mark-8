@@ -2,7 +2,7 @@
     <div class="pratilipi-wrap">
         <div class="pratilipi">
             <router-link :to="redirectToReader ? pratilipiData.readPageUrl : pratilipiData.pageUrl" @click.native="triggerReadPratilipiEvent" :title="pratilipiData.title">
-                <div class="recommendation" :style="{ backgroundImage: 'url(' + pratilipiData.coverImageUrl + ')' }">
+                <div class="recommendation" v-lazy:background-image="pratilipiImageObject">
                     <span class="title">{{ pratilipiData.title }}</span>
                     <div class="stats-container">
                         <div class="icons"><i class="material-icons">star</i></div>
@@ -54,6 +54,9 @@ export default {
         screenLocation: {
             type: String,
             required: true
+        },
+        experimentId: {
+            type: String
         }
     },
     mixins: [
@@ -61,6 +64,10 @@ export default {
     ],
     data() {
         return {
+            pratilipiImageObject: {
+                src: this.getHighResolutionImage(this.pratilipiData.coverImageUrl),
+                loading: this.getLowResolutionImage(this.pratilipiData.coverImageUrl)
+             },
         }
     },
     computed: {
@@ -99,7 +106,7 @@ export default {
         triggerReadPratilipiEvent() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
             let action = this.redirectToReader && this.screenLocation === 'LIBRARY' ? 'READBOOK' : 'CLICKBOOK';
-            this.triggerAnanlyticsEvent(`${action}_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`${action}_${this.screenLocation}_${this.screenName}`, this.experimentId ? this.experimentId : 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId
             });

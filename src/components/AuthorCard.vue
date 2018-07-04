@@ -1,25 +1,25 @@
 <template>
     <div class="follow-wrap">
         <div class="follow">
-            <router-link :to="authorData.pageUrl || authorData.profilePageUrl" @click.native="triggerUserClick">
+            <router-link :to="authorData.pageUrl" @click.native="triggerUserClick">
                 <div class="follow-img" v-bind:style="{ backgroundImage: 'url(' + authorData.profileImageUrl + (authorData.profileImageUrl.endsWith('/author/image') ? '?' : '&')  + 'width=100)' }"></div>
-                <div v-if="authorData.name || authorData.name === ''" class="follow-name">{{ authorData.name }}</div>
-                <div v-else class="follow-name">{{ authorData.author.name }}</div>
+                <div v-if="authorData.displayName || authorData.displayName === ''" class="follow-name">{{ authorData.displayName }}</div>
+                <div v-else class="follow-name">{{ authorData.displayName }}</div>
             </router-link>
             <div class="follow-count">__("author_followers"): 
-                <span v-if="authorData.followCount !== undefined">{{ authorData.followCount}}</span>
-                <span v-else>{{ authorData.author.followCount }}</span>
+                <span v-if="authorData.followersCount !== undefined">{{ authorData.followersCount}}</span>
+                <span v-else>{{ authorData.followersCount }}</span>
             </div>
             
             <span class="button-container">
-                <span v-if="authorData.authorId === undefined && authorData.author.authorId !== getUserDetails.authorId">
+                <span v-if="authorData.authorId === undefined && authorData.authorId !== getUserDetails.authorId">
                     <button class="btn btn-light follow-link" 
-                        v-if="authorData.author.following === false"
-                        @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.authorId, following: false })">
+                        v-if="authorData.following === false"
+                        @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.authorId, following: false })">
                         <i class="material-icons">person_add</i>
                         __("author_follow")
                     </button>
-                    <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.author.authorId, following: true })" class="btn btn-light follow-link">
+                    <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.authorId, following: true })" class="btn btn-light follow-link">
                         <i class="material-icons">check</i>
                         __("author_following")
                     </button>
@@ -123,6 +123,14 @@ export default {
         
     },
     created() {
+        this.authorData.followCount = this.authorData.followCount || this.authorData.followersCount;
+        this.authorData.following = this.authorData.following || this.authorData.following;
+        this.authorData.pageUrl = this.authorData.pageUrl || this.authorData.author.pageUrl;
+        this.authorData.profileImageUrl = this.authorData.profileImageUrl || this.authorData.author.profileImageUrl;
+        this.authorData.displayName = this.authorData.name || this.authorData.author.displayName;
+        this.authorData.authorId = this.authorData.authorId || this.authorData.author.id;
+        this.authorData.userId = this.authorData.userId || this.authorData.user !== undefined ? this.authorData.user.id : null;
+        console.log("Author card authorID"+this.authorData)
     }
 }
 </script>

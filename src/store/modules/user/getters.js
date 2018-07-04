@@ -28,5 +28,4 @@ export default {
     getLoginLoadingState: state => state.loading_state,
     getForgotPasswordUpdateState: state => state.forgot_password_update_state,
     getFirebaseGrowthDBLoadingState: state => state.growth_db_initialized
-
 }

@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="profile-image">
-                                <img :src="getAuthorData.imageUrl + '?width=150'" alt="profile">
+                                <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" alt="profile">
                                 <button class="update-img" v-if="getUserDetails.userId === getAuthorData.user.userId" @click="uploadImage('profile-image')"><i class="material-icons">camera_alt</i></button>
                                 <input type="file" hidden name="profileimage" @change="triggerProfileImageUpload($event)" accept="image/*" id="profile_uploader">
                                 <div class="uploading" v-if="getProfileImageLoadingState === 'LOADING'">
@@ -65,9 +65,19 @@
                             </div>
 
                             <!-- Message Button -->
-                            <div class="message-btn" v-if="getAuthorData.user && getAuthorData.user.userId && getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
-                                <i class="material-icons">message</i> __("chat_message")
-                            </div>
+                            <MessageButton
+                                 v-if="getAuthorData.user && getAuthorData.user.userId && getUserDetails.userId !== getAuthorData.user.userId"
+                                :authorId="getAuthorData.authorId"
+                                :getRouteToMessageUserState="getRouteToMessageUserState"
+                                :triggerRouteToMessageUser="triggerRouteToMessageUser"
+                                :authorUserId="getAuthorData.user.userId"
+                                :profileImageUrl="getAuthorData.profileImageUrl"
+                                :fullName="getAuthorData.fullName"
+                                :pageUrl="getAuthorData.pageUrl"
+                                :className="'profile-page-msg'"
+                                :screenName="'USER'"
+                                :locationName="'USERM'"
+                                ></MessageButton>
                         </div>
                         <Spinner v-if="getAuthorDataLoadingState === 'LOADING'"></Spinner>
                         <div class="col-md-12 profile-bottom" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'">
@@ -75,7 +85,7 @@
                                 <a href="#" v-if="getUserDetails.userId === getAuthorData.user.userId" v-on:click="tabchange" class="active" data-tab="library">__("library")</a>
                                 <a href="#" id="menu-published" v-on:click="tabchange" data-tab="published"><span>{{ getAuthorData.contentPublished }}</span>__("author_published_contents")</a>
                                 <a href="#" v-on:click="tabchange" data-tab="followers"><span>{{ getAuthorData.followCount }}</span>__("author_followers")</a>
-                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }}</span>__("author_following")</a>
+                                <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }} </span>__("author_following")</a> 
                             </div>
                             <div class="bottom-contents">
                                 <div class="list published-contents" id="published">
@@ -119,7 +129,7 @@
                                 <div class="list followers" id="followers">
                                     <AuthorCard  v-for="each_follower in getAuthorFollowers"
                                         :authorData="each_follower"
-                                        :key="each_follower.userId"
+                                        :key="each_follower.user.id"
                                         :screenName=" getUserDetails.authorId === getAuthorData.authorId ? 'MYPROFILE' : 'USER'"
                                         :screenLocation="'FOLLOWERS'"
                                         :followOrUnfollowAuthor="followOrUnfollowFollowers"
@@ -131,7 +141,7 @@
                                 <div class="list following" id="following">
                                     <AuthorCard v-for="each_following in getAuthorFollowing"
                                         :authorData="each_following"
-                                        :key="each_following.userId"
+                                        :key="each_following.author.id"
                                         :screenName=" getUserDetails.authorId === getAuthorData.authorId ? 'MYPROFILE' : 'USER'"
                                         :screenLocation="'FOLLOWINGS'"
                                         :followOrUnfollowAuthor="followOrUnfollowFollowing"
@@ -154,6 +164,7 @@ import MainLayout from '@/layout/main-layout.vue';
 import PratilipiComponent from '@/components/Pratilipi.vue';
 import AuthorCard from '@/components/AuthorCard.vue';
 import Spinner from '@/components/Spinner.vue';
+import MessageButton from '@/components/MessageButton.vue';
 import mixins from '@/mixins';
 import { mapGetters, mapActions, mapState } from 'vuex'
 
@@ -191,7 +202,6 @@ export default {
             'getCoverImageLoadingState',
             'getLibraryListTotalCount',
             'getRouteToMessageUserState'
-
         ]),
         ...mapState({
             publishedContents: state => state.authorpage.published_contents.data,
@@ -221,7 +231,8 @@ export default {
         ]),
         ...mapActions([
             'setShareDetails',
-            'setAfterLoginAction'
+            'setAfterLoginAction',
+            'setInputModalSaveAction'
         ]),
         tabchange(event) {
             event.preventDefault();
@@ -365,7 +376,20 @@ export default {
             this.uploadProfileImage(formData);
         },
         editAuthorSummary() {
-            this.openInputModal();
+            this.setInputModalSaveAction({
+                action: `${this.$route.meta.store}/updateAuthorDetails`,
+                heading: 'author_about',
+                prefilled_value: this.getAuthorData.summary,
+                initial_value: this.getAuthorData.summary,
+                pratilipi_data: this.getAuthorData,
+                data: {
+                    authorData: { 
+                        authorId: this.getAuthorData.authorId,
+                        summary: this.getAuthorData.summary
+                    }
+                }
+            });
+            this.openInputModal();  
         },
         detectOverflow() {
             const element = $('.profile-summary p');
@@ -398,12 +422,14 @@ export default {
 
                 this.fetchInitialAuthorFollowingUsers({
                     userId: this.getAuthorData.user.userId,
-                    resultCount: 20
+                    resultCount: 20,
+                    cursor: 0
                 });
 
                 this.fetchInitialAuthorFollowerUsers({
                     authorId: newValue,
-                    resultCount: 20
+                    resultCount: 20,
+                    cursor: 0
                 });
 
                 if (this.getUserDetails.author.authorId === this.getAuthorData.authorId) {
@@ -417,21 +443,22 @@ export default {
         },
         'scrollPosition'(newScrollPosition){
             const nintyPercentOfList = ( 50 / 100 ) * $('.author-page').innerHeight();
+            var currentlyActiveTab = $(".profile-menu .active").attr('data-tab');
 
             if (newScrollPosition > nintyPercentOfList) {
-                if (this.publishedContentsLoadingState !== 'LOADING' && this.getPublishedContentsCursor) {
+                if (this.publishedContentsLoadingState !== 'LOADING' && this.getPublishedContentsCursor && currentlyActiveTab === 'published') {
                     this.fetchMorePublishedContents({
                         authorId: this.getAuthorData.authorId,
                         resultCount: 10
                     });
                 }
-                if (this.getAuthorFollowingLoadingState !== 'LOADING' && this.getAuthorFollowingCursor) {
+                if (this.getAuthorFollowingLoadingState !== 'LOADING' && this.getAuthorFollowingCursor && currentlyActiveTab === 'following' ) {
                     this.fetchMoreAuthorFollowingUsers({
                         userId: this.getAuthorData.user.userId,
                         resultCount: 5
                     });
                 }
-                if (this.getAuthorFollowersLoadingState !== 'LOADING' && this.getAuthorFollowersCursor) {
+                if (this.getAuthorFollowersLoadingState !== 'LOADING' && this.getAuthorFollowersCursor && currentlyActiveTab === 'followers' ) {
                     this.fetchMoreAuthorFollowerUsers({
                         authorId: this.getAuthorData.authorId,
                         resultCount: 5
@@ -477,7 +504,8 @@ export default {
         MainLayout,
         PratilipiComponent,
         AuthorCard,
-        Spinner
+        Spinner,
+        MessageButton
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
@@ -792,7 +820,7 @@ export default {
             display: inline-block;
             vertical-align: text-bottom;
 			.view_more_card {
-				width: 294px;
+				width: 260px;
 				background: #fff;
 				border: 1px solid #e9e9e9;
 				height: 233px;
@@ -800,10 +828,6 @@ export default {
 				color: #d0021b;
                 text-align: center;
                 display: inline-block;
-                @media screen and (max-width: 760px) {
-                width: 255px;
-
-                }
 				i {
 					height: 190px;
 					line-height: 190px;

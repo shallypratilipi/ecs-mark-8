@@ -15,7 +15,7 @@
                         <div class="col-md-12 d-block d-md-block d-lg-none" v-if="isMobile()"><!-- Android only -->
                             <div class="card install-app">
                                 <div class="card-content">
-                                <a @click.prevent="triggerEvent" href="#" target="_blank">
+                                <a @click.prevent="triggerEvent" href="#" target="_blank" rel="noopener">
                                     <p>Write your stories on Pratilipi App</p>
                                     <img src="https://www.ptlp.co/resource-all/image/google-play-badge.png" alt="">
                                 </a>
@@ -26,7 +26,7 @@
                             <div class="card">
                                 <div class="head-title">__("author_drafts")</div>
                                 <div class="card-content drafts" @scroll="updateScroll">
-
+                                    
                                     <div class="draft" v-for="each_draft in draftedContents" :key="each_draft.pratilipiId">
                                         <router-link :to="each_draft.pageUrl" @click.native="triggerEventClickDraft()">
                                             <div class="draft-img" v-bind:style="{ backgroundImage: 'url(' + each_draft.coverImageUrl + ')' }"></div>
@@ -132,10 +132,10 @@ export default {
             const width = $('.card-content.drafts').outerWidth();
             const newScrollLeft = $('.card-content.drafts').scrollLeft();
             const scrollWidth = $('.card-content.drafts').get(0).scrollWidth
-            if (scrollWidth - newScrollLeft == width &&
+            if (scrollWidth - newScrollLeft == width && 
                 this.draftedContentsLoadingState !== 'LOADING' &&
                 this.draftedContentsCursor) {
-                this.fetchMoreDraftedContents({
+                this.fetchMoreDraftedContents({ 
                     authorId: this.getUserDetails.authorId,
                     resultCount: 10
                 });
@@ -151,7 +151,7 @@ export default {
             } else {
                 this.openWritePratilipiModal();
             }
-
+            
         },
         triggerEvent() {
             this.triggerAnanlyticsEvent(`GETANDROID_APPBANNER_CREATE`, 'CONTROL', {
@@ -172,7 +172,7 @@ export default {
     },
     watch: {
         'getUserDetails.authorId'(newValue) {
-            this.fetchInitialDraftedContents({
+            this.fetchInitialDraftedContents({ 
                 authorId: newValue,
                 resultCount: 10
             });
@@ -188,7 +188,7 @@ export default {
             });
         });
 
-        this.fetchInitialDraftedContents({
+        this.fetchInitialDraftedContents({ 
             authorId: this.getUserDetails.authorId,
             resultCount: 10
         });
@@ -243,8 +243,6 @@ export default {
         .card-content {
             padding: 5px 10px 10px;
             text-align: left;
-            max-height: 150px;
-            overflow: hidden;
             p {
                 margin: 0;
                 text-align: left;

@@ -135,7 +135,7 @@ export default {
             const currentLocale = process.env.LANGUAGE;
             constants.LANGUAGES.forEach((eachLanguage) => {
                 if (eachLanguage.shortName === currentLocale) {
-                    this.fetchInitialSearchResult({
+                    this.fetchInitialSearchResult({ 
                         searchQuery: this.$route.query.q,
                         language: eachLanguage.fullName.toUpperCase(),
                     });
@@ -189,7 +189,7 @@ export default {
 <style lang="scss">
 	.back, .forward {
 		position: absolute;
-		top: 38%;
+		top: 45%;
 		z-index: 2;
 		background-color: #fff;
 		border-radius: 50%;

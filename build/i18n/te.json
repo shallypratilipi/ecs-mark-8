@@ -390,13 +390,15 @@
     "read_stories_without_internet": "ఇంటర్నెట్ లేకుండా మీకు ఇష్టమైన కథలు చదవండి",
     "android_download": "డౌన్ లోడ్ చేసుకోండి",
     "notification_settings": "నోటిఫికేషన్ సెట్టింగ్స్",
-    "email_frequency": "ఈమెయిల్ ఫ్రీక్వెన్సీ",
-    "newsletter_frequency": "ప్రతిలిపి మెయిల్స్ ఫ్రీక్వెన్సీ ",
+    "email_frequency": "అనుచరులు మరియు కామెంట్స్ కొరకు మెయిల్స్ ",
+    "newsletter_frequency": "కథల సేకరణ ",
     "newsletter_unsubscribe_heading": "అన్ సబ్స్క్రైబ్ ప్రతిలిపి మెయిల్స్ ",
     "newsletter_reason_too_many_emails": "చాలా మెయిల్స్ వస్తున్నాయి",
     "newsletter_reason_content_irrelevant": "నాకు సంబంధించిన రచనలు కాదు ",
     "newsletter_reason_no_time_to_read": "నాకు చదవడానికి సమయం లేదు",
     "newsletter_unsubscribe_button": "అన్ సబ్స్క్రయిబ్",
+    "newsletter_success_alert": "ప్రతిలిపి మెయిల్స్ ని విజయవంతంగా అన్ సబ్స్క్రైబ్ చేశారు.",
+    "newsletter_error_alert": "అన్ సబ్స్క్రైబ్ విఫలమైంది. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.",
     "email_frequency_immediate": "తక్షణము",
     "email_frequency_daily": "రోజు",
     "email_frequency_weekly": "వారం",
@@ -543,6 +545,7 @@
     "reader_read_in_app_helper_text": "యాప్ లో చడవండి",
     "read_popular_stories": "ప్రసిద్ధ కథలను చదవండి",
     "see_more_categories": "మరిన్ని వర్గాలను చూడండి",
+    "password_do_not_match": "పాస్‌వర్డులు రెండూ సరిపోవాలి",
 
     "chat_messages": "సందేశాలు",
     "chat_message": "సందేశం",
@@ -570,5 +573,18 @@
     "event_participate_finish":"ముగించు",
     "event_participate_confirm_submission":"సమర్పణను నిర్ధారించండి",
     "event_participate_cannot_change_drafts":"చివరి సమర్పణ తర్వాత మీ రచనను మీరు మార్చలేరు, మీరు ఖచ్చితంగా సమర్పించదలిచారా?",
-    "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి"
+    "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి",
+    
+    "chat_banner_send_messages": "సందేశాలను రచయితకు పంపండి",
+    "chat_banner_start_chatting": "చాటింగ్ ప్రారంభించండి",
+    
+    "message_capsule_conversation": "మీరు {{ initialUnreadConversations }} సంభాషణ ఇంకా చదవలేదు.",
+    "message_capsule_conversations": "మీరు {{ initialUnreadConversations }} సంభాషణలు ఇంకా చదవలేదు.",
+    "web_push_title": "దీనిని చదివినందుకు ఆనందించారా?",
+    "web_push_section_title": "కథలను పొందండి",
+    "web_push_message_1": "ఇలాంటి కథలను నోటిఫికేషన్ రూపంలో పంపడానికి ప్రతిలిపికి అనుమతి ఇవ్వగలరు",
+    "web_push_message_2": "నోటిఫికేషన్ ద్వారా మంచి కథలను పొందాలనుకుంటున్నారా?",
+    "web_push_message_3": "మంచి కథలను నోటిఫికేషన్ ద్వారా పంపడానికి ప్రతిలిపికి అనుమతి ఇవ్వగలరు...",
+    "web_push_allow": "అనుమతించు",
+    "web_push_cancel": "రద్దు చేయు"
 }

@@ -5,7 +5,6 @@
                 <div class="row" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                     <div class="book-details col-md-12 col-lg-5 p-0">
                         <div class="card">
-                            <button type="button" data-toggle="modal" @click="openShareModal" class="share-icon"><i class="material-icons">share</i></button>
                             <div class="book-image" v-bind:style="{ backgroundImage: 'url(' + getPratilipiData.coverImageUrl  + ')' }">
                                 <button class="update-img" v-if="getPratilipiData.hasAccessToUpdate" @click="uploadImage('pratilipi-image')"><i class="material-icons">camera_alt</i></button>
                                 <input type="file" hidden name="pratilipiimage" @change="triggerPratilipiImageUpload($event)" accept="image/*" id="pratilipiimage-uploader">
@@ -20,6 +19,20 @@
                               class="author-name">
                               <span>{{ getPratilipiData.author.name }}</span>
                             </router-link>
+                            <MessageButton
+                                 v-if="getAuthorDetails.user && getAuthorDetails.user.userId && getUserDetails.userId !== getAuthorDetails.user.userId"
+                                :authorId="getAuthorDetails.authorId"
+                                :getRouteToMessageUserState="getRouteToMessageUserState"
+                                :triggerRouteToMessageUser="triggerRouteToMessageUser"
+                                :authorUserId="getAuthorDetails.user.userId"
+                                :profileImageUrl="getAuthorDetails.profileImageUrl"
+                                :fullName="getAuthorDetails.fullName"
+                                :pageUrl="getAuthorDetails.pageUrl"
+                                :className="'message-icon'"
+                                :hideText="true"
+                                :screenName="'BOOK'"
+                                :locationName="'BOOKM'"
+                                ></MessageButton>
                             <div class="book-stats">
                                 <span class="avg-rating stars-green"><span class="rating-text">{{ getPratilipiData.averageRating | round(1) }}</span> <i class="material-icons">star_rate</i></span>
                                 <span class="review-count">{{ getPratilipiData.ratingCount }} __("rating_ratings")</span>
@@ -47,11 +60,19 @@
                                 </div>
                                 <span v-if="!getPratilipiData.hasAccessToUpdate">
                                     <button v-if="!getUserPratilipiData.addedToLib" class="library-btn" @click="addPratilipiToLibrary(getPratilipiData.pratilipiId)">
-                                        <span>+ __("library")</span>
+                                        <span>
+                                            <i class="material-icons">bookmark_border</i>
+                                            <i class="material-icons stacked white">add</i>
+                                        </span>
+                                        __("library")
                                     </button>
 
                                     <button v-if="getUserPratilipiData.addedToLib" class="library-btn" @click="removeFromLibraryAndTriggerAnalytics(getPratilipiData.pratilipiId)">
-                                        <span>- __("library")</span>
+                                        <span>
+                                            <i class="material-icons added-to-lib">bookmark</i>
+                                            <i class="material-icons stacked grey">check</i>
+                                        </span>
+                                        __("library")
                                     </button>
                                 </span>
 
@@ -69,6 +90,9 @@
                                   <span>__("read")</span>
                                 </router-link>
                             </div>
+                            <BookShareStrip
+                            :data="getPratilipiData"
+                            :type="'PRATILIPI'"></BookShareStrip>
                         </div>
                         <BookTags
                             v-if="getPratilipiData.hasAccessToUpdate"
@@ -115,6 +139,23 @@
                             </div>
 
                             <AboutAuthor :authorId="getPratilipiData.author.authorId" :pratilipiData="getPratilipiData"></AboutAuthor>
+
+                        </div>
+                        <div class="card webpush-strip-container" v-if="isWebPushStripEnabled">
+                            <div class="head-title">
+                                __("web_push_section_title")
+                                <button class="close" @click="closeWebPushStrip()">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </div>
+                            <WebPushStrip
+                                screenName="PRATILIPI"
+                                message="__('web_push_message_3')"
+                                :includeIcon=true
+                                :includeDisableButton=false
+                                :includeCloseButton=false
+                                v-on:WebPushEnabled="isWebPushStripEnabled=false">
+                            </WebPushStrip>
                         </div>
                         <div class="card">
                             <div class="head-title">__("review_heading")</div>
@@ -159,7 +200,14 @@
                 </div>
                 <Spinner v-if="getPratilipiLoadingState === 'LOADING'"></Spinner>
                 <ServerError :action="'pratilipipage/fetchPratilipiDetailsAndUserPratilipiData'" :data="$route.params.slug_id" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
+                <WebPushModal
+                    screenName="PRATILIPI"
+                    title="__('web_push_title')"
+                    message="__('web_push_message_2')"
+                    :includeDisableButton=true
+                    v-if="isWebPushModalEnabled"></WebPushModal>
             </div>
+            <ChatBanner></ChatBanner>
         </div>
     </MainLayout>
 </template>
@@ -170,10 +218,16 @@ import Recommendation from '@/components/Recommendation.vue';
 import AboutAuthor from '@/components/AboutAuthor.vue';
 import Spinner from '@/components/Spinner.vue';
 import Reviews from '@/components/Reviews.vue';
+import BookShareStrip from '@/components/BookShareStrip.vue';
 import ServerError from '@/components/ServerError.vue';
-// import BookTags from '@/components/BookTags.vue';
+import WebPushStrip from '@/components/WebPushStrip.vue';
+import WebPushModal from '@/components/WebPushModal.vue';
+import BookTags from '@/components/BookTags.vue';
+import ChatBanner from '@/components/ChatBanner.vue';
+import MessageButton from '@/components/MessageButton.vue';
 import mixins from '@/mixins';
 import constants from '@/constants'
+import WebPushUtil from '@/utils/WebPushUtil'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -188,7 +242,13 @@ export default {
             suggestedTags: [],
             newSuggestedTag: '',
             showShowMoreOfSummary: false,
-            hasLandedBeenTriggered: false
+            hasLandedBeenTriggered: false,
+            isCreated: null,
+            isWebPushStripEnabled: false,
+            isWebPushModalEnabled: false,
+            webPushModalTriggered: false,
+            scrollPosition: null,
+            percentScrolled: null
         }
     },
     mixins: [
@@ -203,7 +263,8 @@ export default {
             'getImageUploadLoadingState',
             'getSystemTags',
             'getSystemTagsLoadingState',
-            'getAuthorDetails'
+            'getAuthorDetails',
+            'getRouteToMessageUserState'
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -220,7 +281,8 @@ export default {
             'unpublishOrPublishBook',
             'removeTagsFromPratilipi',
             'addTagsToPratilipi',
-            'saveTypeAndCategories'
+            'saveTypeAndCategories',
+            'triggerRouteToMessageUser'
         ]),
         ...mapActions([
             'setShareDetails',
@@ -491,9 +553,19 @@ export default {
                 // your element doesn't have overflow
                 this.showShowMoreOfSummary = false;
             }
+        },
+        closeWebPushStrip() {
+            this.isWebPushStripEnabled = false
+            this.triggerAnanlyticsEvent(`CLOSED_WEBPUSHSTRIP_PRATILIPI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
+            WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
+        },
+        updateScroll() {
+            this.scrollPosition = window.scrollY
+            this.percentScrolled = ($(window).scrollTop()/($(document).height()-$(window).height()))*100
         }
     },
     created() {
+        this.isCreated = true;
         const slug_id = this.$route.params.slug_id;
         const pratilipiData = this.$route.params.pratilipiData;
         this.selectedPratilipiType = this.getPratilipiData.type;
@@ -508,9 +580,17 @@ export default {
         Recommendation,
         AboutAuthor,
         Spinner,
-        // BookTags,
+        BookTags,
         Reviews,
-        ServerError
+        ServerError,
+	WebPushStrip,
+	WebPushModal,
+        BookShareStrip,
+        ChatBanner,
+	MessageButton,
+    },
+    mounted() {
+        window.addEventListener('scroll', this.updateScroll);
     },
     watch: {
         '$route.params.slug_id' (slug_id) {
@@ -526,6 +606,15 @@ export default {
             this.selectedTags = this.getPratilipiData.tags ? [ ...this.getPratilipiData.tags ] : [];
             this.suggestedTags = this.getPratilipiData.suggestedTags;
             document.title = this.getPratilipiData.title;
+
+            // default value for webPushModalTriggered is false
+            this.webPushModalTriggered = false;
+
+            // setting isWebPushStripEnabled
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 50 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+
+            // setting isWebPushModalEnabled
+            this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 60 && (parseInt(this.getCookie('bucketId')) || 0) < 70;
         },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS' && !this.hasLandedBeenTriggered) {
@@ -543,7 +632,18 @@ export default {
             }
         },
         'getUserDetails.userId'() {
+            if(!this.isCreated) {
             this.fetchPratilipiDetailsAndUserPratilipiData(this.$route.params.slug_id);
+            }
+            else {
+            this.isCreated=false;                
+            }
+        },
+        'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            if (newPercentScrolled > 90 && !this.webPushModalTriggered) {
+                this.webPushModalTriggered = true
+                this.openWebPushModal()
+            }
         },
         selectedPratilipiType(newType) {
             if (newType === this.getPratilipiData.type) {
@@ -552,6 +652,9 @@ export default {
                 this.selectedTags = [];
             }
         }
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.updateScroll);
     }
 }
 </script>
@@ -776,10 +879,49 @@ export default {
                     }
                 }
                 .library-btn {
-                    background: #9E9E9E;
+                    background: #fff;
+                    color: #555;
+                    border: 1px solid #9e9e9e;
+                    &:hover {
+                        opacity: 1;
+                    }
+                    span {
+                        position: relative;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                    i {
+                        height: 40px;
+                        line-height: 40px;
+                        font-size: 30px;
+                        color: #555;
+                        vertical-align: middle;
+                        &.stacked {
+                            position: absolute;
+                            top: -1px;
+                            left: -1px;
+                            margin-left: 14px;
+                            font-size: 11px;
+                            color: #555;
+                            font-weight: bold;
+                            &.white {
+                                color: #555;
+                                margin-left: 10px;
+                                margin-top: 7px;
+                                left: 0;
+                            }
+                            &.grey {
+                                color: #9e9e9e;
+                                margin-left: 9px;
+                                margin-top: 8px;
+                                left: 0;
+                            }
+                        }
+                    }
                 }
                 .read-btn {
                     background: #d0021b;
+                    border: 1px solid #d0021b;
                 }
             }
         }
@@ -829,6 +971,26 @@ export default {
             }
             &.show {
                 bottom: 0;
+            }
+        }
+        .webpush-strip-container {
+            button.close {
+                position: absolute;
+                right: 8px;
+                i {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+</style>
+<style lang="scss">
+    .pratilipi-page {
+        .webpush-strip-container {
+            .webpush-strip {
+                .inner-container {
+                    padding: 8px !important;
+                }
             }
         }
     }

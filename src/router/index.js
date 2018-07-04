@@ -1,7 +1,6 @@
-import Vue    from 'vue'
+import Vue from 'vue'
 import Router from 'vue-router'
-
-import Home   from '@/pages/Home'
+import Home from '@/pages/Home'
 import SearchPageComponent from '@/pages/Search'
 import LoginPageComponent from '@/pages/Login.vue'
 import PratilipiPageComponent from '@/pages/Pratilipi.vue'
@@ -25,15 +24,14 @@ import MessagesComponent from '@/pages/Messages.vue'
 import MessageUserComponent from '@/pages/MessageUser.vue'
 import PasswordResetPageComponent from '@/pages/PasswordReset.vue'
 import EventParticipatePageComponent from '@/pages/EventParticipate.vue'
-
-
-import { getCookie } from '@/mixins/methods'
-
+import VideoseriesPageComponent from '@/pages/Videoseries.vue'
+import VideoPlayListPageComponent from '@/pages/VideoPlayList.vue'
+import VideoPlayPageComponent from '@/pages/Videoplay.vue'
+import {
+    getCookie
+} from '@/mixins/methods'
 import DataAccessor from '@/utils/DataAccessor'
-
 Vue.use(Router)
-
-
 // todo try using nested Urls
 // todo implement SEO
 // todo enable nested urls upto /comments
@@ -50,16 +48,53 @@ Vue.use(Router)
 // todo tinymc integration in this app
 // todo create page SEO
 // todo add login checks in route otherwise it will render login first then actual page
-
 var router = new Router({
     mode: 'history',
-    routes: [
-        {
+    routes: [{
             path: '/',
             name: 'Home',
             component: Home,
-             meta: {
-                'title': '__("home_page_title") | __("pratilipi")'
+            meta: {
+                'store': 'homepage',
+                'title': '__("seo_home_page") | __("pratilipi")',
+                metaTags: [{
+                        property: 'og:title',
+                        content: '__("seo_home_page") | __("pratilipi")'
+                    },
+                    {
+                        property: 'og:description',
+                        content: 'A platform to discover, read and share your favorite stories, poems and books in a language, device and format of your choice.'
+                    },
+                    {
+                        property: 'og:type',
+                        content: 'books.book'
+                    },
+                    {
+                        property: 'og:image',
+                        content: 'https://www.ptlp.co/resource-all/home-page/pratilipi-banner-compressed-mobile.jpg'
+                    },
+                    {
+                        property: 'og:url',
+                        content: window.location.protocol + '//' + window.location.host
+                    },
+                    {
+                        property: 'og:locale',
+                        content: process.env.LANGUAGE + '_IN'
+                    }
+                ]
+            },
+            beforeEnter: (to, from, next) => {
+                if (to.query.email && to.query.token && to.query.passwordReset) {
+                    next({
+                        path: '/reset-password',
+                        query: {
+                            email: to.query.email,
+                            token: to.query.token
+                        }
+                    });
+                } else {
+                    next();
+                }
             }
         }, {
             path: '/search',
@@ -69,7 +104,17 @@ var router = new Router({
                 'store': 'searchpage',
                 'title': '__("seo_search_page") | __("pratilipi")'
             }
-        }, {
+        },
+        {
+            path: '/videoseries',
+            name: 'Videoseries_Page',
+            component: VideoseriesPageComponent,
+            meta: {
+                'store': 'videoseries',
+                'title': '__("seo_search_page") | __("pratilipi")'
+            }
+        },
+        {
             path: '/login',
             name: 'Login_Page',
             component: LoginPageComponent,
@@ -88,7 +133,25 @@ var router = new Router({
         }, {
             path: '/story/:slug_id',
             name: 'Pratilipi',
-            component: PratilipiPageComponent,
+            component: () => {
+                if (process.env.REALM === 'PROD') {
+                    return new Promise((resolve, reject) => { resolve(PratilipiPageComponent); });
+                } else {
+                    const isTrue = true;
+                    if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
+                        return import ('@/pages/experiments/book_v1/Pratilipi.vue');
+                    } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
+                        return import ('@/pages/experiments/book_v2/Pratilipi.vue');
+                    } else if (getCookie('bucketId') >= 6 && getCookie('bucketId') < 8) {
+                        return import ('@/pages/experiments/book_v3/Pratilipi.vue');
+                    } else if (getCookie('bucketId') >= 8 && getCookie('bucketId') < 10) {
+                        return import ('@/pages/experiments/book_v4/Pratilipi.vue');
+                    } else {
+                        return import ('@/pages/Pratilipi.vue');
+                    }
+                }
+            },
+            // component: PratilipiPageComponent,
             meta: {
                 'store': 'pratilipipage',
                 'id_prop': 'slug_id'
@@ -136,6 +199,26 @@ var router = new Router({
                 'id_prop': 'event_slug'
             }
         }, {
+            path: '/videoseries/:videoseries_slug',
+            name: 'VideoPlayList_Page',
+            component: VideoPlayListPageComponent,
+            meta: {
+                'store': 'videoseries',
+                'title': '__("seo_home_page")',
+                'id_prop': 'videoseries_slug'
+            }
+        },
+        {
+            path: '/videos/:videos_slug',
+            name: 'Videos_Page',
+            component: VideoPlayPageComponent,
+            meta: {
+                'store': 'videoseries',
+                'title': '__("seo_home_page")',
+                'id_prop': 'videos_slug'
+            }
+        },
+        {
             path: '/blog',
             name: 'Blogs_Page',
             component: BlogsPageComponent,
@@ -144,7 +227,7 @@ var router = new Router({
                 'title': '__("seo_blog_page") | __("pratilipi")'
             }
         }, {
-            path: '/blog/:blog_id',
+            path: '/blog/:slug',
             name: 'Blog_Page',
             component: BlogPageComponent,
             meta: {
@@ -164,7 +247,23 @@ var router = new Router({
         }, {
             path: '/read',
             name: 'Reader_Page',
-            component: ReaderPageComponent,
+            component: () => {
+                if (process.env.REALM === 'PROD') {
+                    return new Promise((resolve, reject) => resolve(ReaderPageComponent));
+                } else {
+                    if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
+                        return import ('@/pages/experiments/reader_v5/Reader.vue');
+                    } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
+                        return import ('@/pages/experiments/reader_v6/Reader.vue');
+                    } else if (getCookie('bucketId') >= 6 && getCookie('bucketId') < 8) {
+                        return import ('@/pages/experiments/reader_v7/Reader.vue');
+                    } else if (getCookie('bucketId') >= 8 && getCookie('bucketId') < 10) {
+                        return import ('@/pages/experiments/reader_v8/Reader.vue');
+                    } else {
+                        return import ('@/pages/Reader.vue');
+                    }
+                }
+            },
             meta: {
                 'store': 'readerpage',
                 'title': '__("seo_home_page")'
@@ -177,7 +276,7 @@ var router = new Router({
         }, {
             path: '/notifications',
             beforeEnter: (to, from, next) => {
-                if(to.query.action && to.query.action === "settings" ) {
+                if (to.query.action && to.query.action === "settings") {
                     next('/settings?action=notification');
                 } else {
                     next();
@@ -205,7 +304,7 @@ var router = new Router({
                 'title': '__("seo_author_interview") | __("pratilipi")'
             }
         }, {
-            path: '/author-interviews/:interview_id',
+            path: '/author-interviews/:slug',
             name: 'Interview_Page',
             component: InterviewPageComponent,
             meta: {
@@ -294,7 +393,9 @@ var router = new Router({
         }, {
             path: '/messages/:channel_id',
             name: 'MessageUser_Page',
-            component: MessageUserComponent,
+            component: () => {
+                return import ('@/pages/MessageUser.vue');
+            },
             meta: {
                 'title': 'Messages | __("pratilipi")',
                 'store': 'messageuser'
@@ -326,7 +427,6 @@ var router = new Router({
             },
             beforeEnter: (to, from, next) => {
                 console.log(to);
-
                 const pathToGo = to.path;
                 DataAccessor.getPageType(pathToGo, (response) => {
                     if (response.status === 200) {
@@ -390,26 +490,45 @@ var router = new Router({
             }
         }
     ],
-    scrollBehavior: () => ({ y: 0 })
+    scrollBehavior: () => ({
+        y: 0
+    })
 });
-
-
-
+// This callback runs before every route change, including on page load.
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
-    console.log(ga);
+    // This goes through the matched routes from last to first, finding the closest route with a title.
+    // eg. if we have /some/deep/nested/route and /some, /deep, and /nested have titles, nested's will be chosen.
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+    // Find the nearest route element with meta tags.
+    const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+    const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+    // If a route with a title was found, set the document (page) title to that value.
+    if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
+    // Remove any stale meta tags from the document using the key attribute we set below.
+    Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
+    // Skip rendering meta tags if there are none.
+    if (!nearestWithMeta) return next();
+    // Turn the meta tag definitions into actual elements in the head.
+    nearestWithMeta.meta.metaTags.map(tagDef => {
+            const tag = document.createElement('meta');
+            Object.keys(tagDef).forEach(key => {
+                tag.setAttribute(key, tagDef[key]);
+            });
+            // We use this to track which meta tags we create, so we don't interfere with other ones.
+            tag.setAttribute('data-vue-router-controlled', '');
+            return tag;
+        })
+        // Add the meta tags to the document head.
+        .forEach(tag => document.head.appendChild(tag));
     next();
 });
-
-router.afterEach((to, from)=> {
-    console.log("after");
+router.afterEach((to, from) => {
     ga('set', 'page', to.path + window.location.search);
     // ga( 'set', 'dimension1', appViewModel.user.userId() == null ? 0 : appViewModel.user.userId() );
-    console.log(process.env.GA_WEBSITE + " - " +  process.env.GA_WEBSITE_MODE + " - " + process.env.GA_WEBSITE_VERSION + " + " + (to.path + window.location.search));
+    console.log(process.env.GA_WEBSITE + " - " + process.env.GA_WEBSITE_MODE + " - " + process.env.GA_WEBSITE_VERSION + " + " + (to.path + window.location.search));
     ga('set', 'dimension2', process.env.GA_WEBSITE);
     ga('set', 'dimension3', process.env.GA_WEBSITE_MODE);
     ga('set', 'dimension4', process.env.GA_WEBSITE_VERSION);
     ga('send', 'pageview');
 });
-
 export default router;

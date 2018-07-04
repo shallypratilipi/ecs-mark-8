@@ -5,7 +5,7 @@
                 <router-link
                     :to="{ path: each_banner.actionUrl }"
                      @click.native="triggerAnalyticsEvent(each_banner.bannerId)">
-                    <img :src="getHighResolutionImage(each_banner.imageUrl)" alt="">
+                    <img :src="getHighResolutionImage(each_banner.imageUrl)" alt="banner-image">
                 </router-link>
             </div>
         </slick>
@@ -49,6 +49,7 @@ export default {
                 draggable: true,
                 edgeFriction: 0.30,
                 swipe: true,
+                rows: 0,
                 autoplay: true,
                 autoplaySpeed: 4000,
                 prevArrow: '<div class="back"><i class="material-icons" aria-hidden="true">keyboard_arrow_left</i></div>',

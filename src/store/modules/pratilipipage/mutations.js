@@ -223,5 +223,9 @@ export default {
     },
     setUpdatedTypeAndCategoriesError(state) {
 
+    },
+    
+    setRouteToMessageUser(state, routeState) {
+        state.route_to_message_user = routeState;
     }
 }

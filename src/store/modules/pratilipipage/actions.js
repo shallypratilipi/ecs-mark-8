@@ -130,16 +130,11 @@ export default {
     fetchAuthorDetails({ commit, state }, authorId) {
         commit('setAuthorDetailsLoadingTrue');
         commit('setUserAuthorDataLoadingTrue');
-        DataAccessor.getAuthorById(authorId, true, function(authorData, userAuthorData) {
+        DataAccessor.getAuthorById(authorId, function(authorData) {
             if (authorData) {
                 commit('setAuthorDetailsLoadingSuccess', authorData);
             } else {
                 commit('setAuthorDetailsLoadingError');    
-            }
-            if (userAuthorData) {
-                commit('setUserAuthorDataLoadingSuccess', userAuthorData);
-            } else {
-                commit('setUserAuthorDataLoadingError');    
             }
         });
     },
@@ -162,7 +157,6 @@ export default {
             commit('setPratilipiSummaryUpdateError');
         });
     },
-
     saveOrUpdateTitle({ commit, state }, data) {
         data.title = data.value;
         data.titleEn = data.value_two;
@@ -214,5 +208,9 @@ export default {
         }, (error) => {
             commit('setUpdatedTypeAndCategoriesError');
         })
+    },
+    
+    triggerRouteToMessageUser({ commit, state }, routeState) {
+        commit('setRouteToMessageUser', routeState);
     }
 }

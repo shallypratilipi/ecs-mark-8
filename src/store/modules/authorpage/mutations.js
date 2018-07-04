@@ -18,7 +18,10 @@ export default {
     // setCheckoutStatus(state, status) {
     //     state.checkoutStatus = status
     // }
-
+  setUpdateAuthorLoadingSuccess(state, data) {
+        state.author.author_update_state = 'LOADING_SUCCESS';
+        state.author.data = data;
+    },
     setPublishedContentsLoadingTrue(state) {
         state.published_contents.loading_state = 'LOADING';
         state.published_contents.data = [];
@@ -79,7 +82,7 @@ export default {
 
     setInitialAuthorFollowingDataLoadingSuccess(state, data){
         state.following.loading_state = 'LOADING_SUCCESS';
-        state.following.data = data.authorList;
+        state.following.data = data.data;
         state.following.cursor = data.cursor;
         state.following.numberFound = data.numberFound;
     },
@@ -97,7 +100,7 @@ export default {
 
     setInitialAuthorFollowersDataSuccess(state, data){
         state.followers.loading_state = 'LOADING_SUCCESS';
-        state.followers.data = data.userList;
+        state.followers.data = data.data;
         state.followers.cursor = data.cursor;
         state.followers.numberFound = data.numberFound;
     },
@@ -112,8 +115,8 @@ export default {
     },
     setMoreAuthorFollowingDataLoadingSuccess(state, response) {
         state.following.loading_state = 'LOADING_SUCCESS';
-        if (response.authorList && response.authorList.length > 0) {
-            state.following.data = state.following.data.concat(response.authorList);
+        if (response.data && response.data.length > 0) {
+            state.following.data = state.following.data.concat(response.data);
             state.following.cursor = response.cursor;
         } else {
             state.following.cursor = null;
@@ -128,8 +131,8 @@ export default {
     },
     setMoreAuthorFollowersDataSuccess(state, response) {
         state.followers.loading_state = 'LOADING_SUCCESS';
-        if (response.userList && response.userList.length > 0) {
-            state.followers.data = state.followers.data.concat(response.userList);
+        if (response.data && response.data.length > 0) {
+            state.followers.data = state.followers.data.concat(response.data);
             state.followers.cursor = response.cursor;
         } else {
             state.followers.cursor = null;
@@ -209,7 +212,7 @@ export default {
 
     },
     setFollowUnfollowFollowingLoadingDataLoadingSuccess(state, data) {
-        const authorFollowedOrUnfollowed = state.following.data.find(eachAuthor => eachAuthor.authorId === data.authorId);
+        const authorFollowedOrUnfollowed = state.following.data.find(eachAuthor => eachAuthor.author.id == data.referenceId);
         authorFollowedOrUnfollowed.following = data.following;
         if (data.following) {
             authorFollowedOrUnfollowed.followCount++;
@@ -224,8 +227,8 @@ export default {
 
     },
     setFollowUnfollowFollowersLoadingDataLoadingSuccess(state, data) {
-        const authorFollowedOrUnfollowed = state.followers.data.find(eachAuthor => eachAuthor.author.authorId === data.authorId);
-        authorFollowedOrUnfollowed.author.following = data.following;
+        const authorFollowedOrUnfollowed = state.followers.data.find(eachAuthor => eachAuthor.author.id == data.referenceId);
+        authorFollowedOrUnfollowed.following = data.following;
         if (data.following) {
             authorFollowedOrUnfollowed.author.followCount++;
         } else {
@@ -260,5 +263,14 @@ export default {
 
     setRouteToMessageUser(state, routeState) {
         state.route_to_message_user = routeState;
-    }
+    },
+     setInputModalSaveAction(state, { action, data, prefilled_value, prefilled_value_two, initial_value, pratilipi_data }) {
+        state.action = action;
+        state.data = data;
+        state.prefilled_value = prefilled_value;
+        state.prefilled_value_two = prefilled_value_two;
+        state.initial_value = initial_value;
+        state.pratilipi_data = pratilipi_data;
+    },
+    
 }

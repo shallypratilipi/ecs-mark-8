@@ -10,6 +10,7 @@
 			// https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification
 			const options = {
 				badge: 'https://storage.googleapis.com/public.pratilipi.com/pratilipi-logo/png/ic_launcher.png',
+				requireInteraction: true, // Indicates that on devices with sufficiently large screens, a notification should remain active until the user clicks or dismisses it
 				body: pratilipi.summary,
 				icon: 'https://storage.googleapis.com/public.pratilipi.com/pratilipi-logo/png/Logo-2C-RGB-200px.png', 
 				// image: pratilipi.coverImageUrl,

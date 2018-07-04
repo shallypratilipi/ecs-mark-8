@@ -1,8 +1,7 @@
 import { httpUtil, formatParams } from './HttpUtil';
-// import Raven from 'raven-js';
 
 
-const API_PREFIX = (window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1 ? "https://gamma.pratilipi.com" : "/api";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
 
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";
@@ -39,13 +38,15 @@ const NAVIGATION_LIST_API = "/navigation/list";
 const USER_PRATILIPI_REVIEW_LIST_API = "/userpratilipi/review/list";
 const COMMENT_LIST_API = "/comment/list";
 const USER_PRATILIPI_REVIEW_API = "/userpratilipi/review";
-const USER_AUTHOR_FOLLOW_API = "/userauthor/follow?_apiVer=2";
+const USER_AUTHOR_FOLLOW_POST_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOW_GET_API = "/follows/v2.0/isFollowing";
 const USER_PRATILIPI_LIBRARY_API = "/userpratilipi/library";
 const COMMENT_API = "/comment";
 const VOTE_API = "/vote";
 const INIT_API = "/init?_apiVer=2";
 const INIT_BANNER_LIST_API = "/init/banner/list";
-const USER_AUTHOR_FOLLOW_LIST_API = "/userauthor/follow/list";
+const USER_AUTHOR_FOLLOWERS_LIST_API = "/follows/v2.0/authors";
+const USER_AUTHOR_FOLLOWING_LIST_API = "/follows/v2.0/users";
 const EVENT_API = "/event";
 const EVENTS_API = "/events/v2.0";
 const EVENT_LIST_API = "/event/list";
@@ -55,7 +56,8 @@ const CONTACT_API = "/contact";
 const TAGS_API = "/pratilipi/v2/categories/system";
 const USER_EMAIL_API = "/user/email";
 const TOP_AUTHORS_API = "/author/list/readcount";
-const USER_FCM_TOKEN_API = "/user/accesstoken/fcmtoken";
+const WEB_DEVICES_API = "/web-push/fcmToken";
+const MARKETING_API = "/marketing/v1.0/newsletter/unsubscribe";
 
 const EVENT_PARTICIPATE_PREFIX = '/event-participate';
 const EVENT_PARTICIPATE_PREFIX_ADMIN = '/event-participate/admin';
@@ -65,6 +67,17 @@ const EVENT_PARTICIPATE_CREATE = '/metadata';
 const EVENT_PARTICIPATE_UPDATE = '/metadata';
 const EVENT_PARTICIPATE_CONTENT = '/content';
 const EVENT_PARTICIPATE_PUBLISH = '/publish';
+
+const INIT_VIDEOSERIES_LIST_API = "/init/v2.0/videoseries";
+const INIT_VIDEOSERIES_PLAYLIST = "/init/v2.0/videos";
+const INIT_VIDEOSERIES_DETAILS = "/init/v2.0/videoseries/";
+const INIT_OTHER_VIDEOS = "/init/v2.0/videos/other";
+
+const BLOGS_API = "/oasis/blogs/v1.0";
+const BLOGS_LIST_API = "/oasis/blogs/v1.0/list";
+const AUTHOR_INTERVIEWS_API = "/oasis/author-interviews/v1.0";
+const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
+const READ_PERCENTAGE_API = "/api/user_pratilipi/v2.0/user_pratilipis";
 
 const request = function(name, api, params) {
     return {
@@ -87,9 +100,17 @@ const processRequests = function(requests) {
 
 const processGetResponse = function(response, status, aCallBack) {
     if (status !== 200 && status !== 404) {
-        /*Raven.captureMessage(response.message || 'GET call failed', {
-            level: 'error' // one of 'info', 'warning', or 'error'
-        });*/
+        import('raven-js').then((Raven) => {
+            Raven.captureMessage('Server Exception', {
+                level: 'error', // one of 'info', 'warning', or 'error'
+                extra: {
+                    language: process.env.LANGUAGE,
+                    status,
+                    response: response.message,
+                    method: 'GET'
+                }
+            });
+        });
     }
 
     if (aCallBack != null)
@@ -105,8 +126,20 @@ const processGetResponse = function(response, status, aCallBack) {
 const processPostResponse = function(response, status, successCallBack, errorCallBack) {
     if (status == 200 && successCallBack != null)
         successCallBack(response);
-    else if (status != 200 && errorCallBack != null)
+    else if (status != 200 && errorCallBack != null) {
+        import('raven-js').then((Raven) => {
+            Raven.captureMessage('Server Exception', {
+                level: 'error', // one of 'info', 'warning', or 'error'
+                extra: {
+                    language: process.env.LANGUAGE,
+                    status,
+                    response: response.message,
+                    method: 'POST'
+                }
+            });
+        });
         errorCallBack(response);
+    }
 };
 
 
@@ -140,7 +173,6 @@ export default {
     },
 
     getPratilipiBySlug: (slug, includeUserPratilipi, aCallBack) => {
-
         var requests = [];
         requests.push(new request("req1", PRATILIPI_NEW_API, { "slug": slug }));
 
@@ -202,7 +234,7 @@ export default {
         requests.push(new request("req2", AUTHOR_API, { "authorId": "$req1.primaryContentId" }));
 
         if (includeUserAuthor)
-            requests.push(new request("req3", USER_AUTHOR_FOLLOW_API, { "authorId": "$req1.primaryContentId" }));
+            requests.push(new request("req3", USER_AUTHOR_FOLLOW_GET_API, { "referenceId": "$req1.primaryContentId", "referenceType": "AUTHOR" }));
 
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
@@ -228,20 +260,16 @@ export default {
             });
     },
 
-    getAuthorById: (authorId, includeUserAuthor, aCallBack) => {
+    getAuthorById: (authorId, aCallBack) => {
 
         var requests = [];
         requests.push(new request("req1", AUTHOR_API, { "authorId": authorId }));
-
-        if (includeUserAuthor)
-            requests.push(new request("req2", USER_AUTHOR_FOLLOW_API, { "authorId": authorId }));
 
         httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
             function(response, status) {
                 if (aCallBack != null) {
                     var author = response.req1 && response.req1.status == 200 ? response.req1.response : null;
-                    var userauthor = includeUserAuthor && response.req2 && response.req2.status == 200 ? response.req2.response : null;
-                    aCallBack(author, userauthor);
+                    aCallBack(author);
                 }
             });
     },
@@ -288,61 +316,112 @@ export default {
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 
-    getBlogPostByUri: (pageUri, aCallBack) => {
-        var requests = [];
-        requests.push(new request("req1", PAGE_API, { "uri": pageUri }));
-        requests.push(new request("req2", BLOG_POST_API, { "blogPostId": "$req1.primaryContentId" }));
+    getVideoseriesList : ( language, aCallBack ) => {
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_LIST_API,
+            null,
+            { "language": language },
+            function( response, status ) { processGetResponse( response, status, aCallBack );
+            } );
+    },
 
-        httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
-            function(response, status) {
-                if (aCallBack != null) {
-                    var blogpost = response.req2.status == 200 ? response.req2.response : null;
-                    aCallBack(blogpost);
-                }
-            });
+    getOtherVideos : ( videos_slug, aCallBack ) => {
+    httpUtil.get( API_PREFIX + INIT_OTHER_VIDEOS,
+            null,
+            { "slug": videos_slug },
+            function( response, status ) { processGetResponse( response, status, aCallBack );
+            } );
+    },
+
+    getVideoPlayList : ( videoseries_slug , aCallBack ) => {
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST,
+            null,
+            { "slug": videoseries_slug },
+            function( response, status ) { processGetResponse( response, status, aCallBack );
+            } );
+    },
+
+     getVideoDetails : ( videoseries_slug, aCallBack ) => {
+        var params = {};
+        httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_DETAILS + videoseries_slug ,
+            null,
+            params,
+            function( response, status ) {
+             processGetResponse( response, status, aCallBack );
+            } );
+    },
+    getCurrentVideoPlay : ( videos_slug, aCallBack ) => {
+        var params = {};
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST + '/' + videos_slug ,
+            null,
+            params,
+            function( response, status ) {
+             processGetResponse( response, status, aCallBack );
+            } );
+    },
+    getLatestVideo : ( videoseries_slug_latest, aCallBack ) => {
+        var params = {};
+
+    httpUtil.get( API_PREFIX + INIT_VIDEOSERIES_PLAYLIST ,
+            null,
+            { "slug": videoseries_slug_latest },
+            function( response, status ) {
+             processGetResponse( response, status, aCallBack );
+            } );
+    },
+
+    getBlogPostByUri: (slug, aCallBack) => {
+	      var params = {
+		        "slug": slug
+	      }
+	      httpUtil.get(API_PREFIX + BLOGS_API, null, params, function (response, status) {
+    			  var blogpost = status == 200 ? response : null;
+			      aCallBack(blogpost);
+        });
     },
 
     getBlogPostListByUri: (language, state, cursor, resultCount, aCallBack) => {
-        var requests = [];
-        requests.push(new request("req1", PAGE_API, { "uri": '/blog' }));
-
         var params = {
-            "blogId": "$req1.primaryContentId",
             "language": language
-        };
+        }
         params["state"] = state != null ? state : "PUBLISHED";
         if (cursor != null) params["cursor"] = cursor;
         if (resultCount != null) params["resultCount"] = resultCount;
-
-        requests.push(new request("req2", BLOG_POST_LIST_API, params));
-        httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
+	httpUtil.get(API_PREFIX + BLOGS_LIST_API,
+            null,
+            params,
             function(response, status) {
-                if (aCallBack != null) {
-                    var blogpost = response.req2.status == 200 ? response.req2.response : null;
-                    aCallBack(blogpost);
-                }
-            });
+		var blogpost = status == 200 ? response : null;
+                aCallBack(blogpost);
+	    });
+    },
+
+    getAuthorInterviewByUri: (slug, aCallBack) => {
+        var params = {
+                "slug": slug
+        }
+        httpUtil.get(API_PREFIX + AUTHOR_INTERVIEWS_API,
+                null,
+                params,
+                function (response, status) {
+                        var blogpost = status == 200 ? response : null;
+                        aCallBack(blogpost);
+                });
     },
 
     getAuthorInterviewListByUri: (language, state, cursor, resultCount, aCallBack) => {
-        var requests = [];
-        requests.push(new request("req1", PAGE_API, { "uri": '/author-interviews' }));
-
         var params = {
-            "blogId": "$req1.primaryContentId",
             "language": language
         };
         params["state"] = state != null ? state : "PUBLISHED";
         if (cursor != null) params["cursor"] = cursor;
         if (resultCount != null) params["resultCount"] = resultCount;
 
-        requests.push(new request("req2", BLOG_POST_LIST_API, params));
-        httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
+	      httpUtil.get(API_PREFIX + AUTHOR_INTERVIEWS_LIST_API,
+            null,
+            params,
             function(response, status) {
-                if (aCallBack != null) {
-                    var blogpost = response.req2.status == 200 ? response.req2.response : null;
-                    aCallBack(blogpost);
-                }
+                var blogpost = status == 200 ? response : null;
+                aCallBack(blogpost);
             });
     },
 
@@ -476,7 +555,7 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (offset != null) params["offset"] = offset;
         if (resultCount != null) params["resultCount"] = resultCount;
-        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOW_LIST_API,
+        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOWERS_LIST_API + '/' + authorId + '/followers',
             null,
             params,
             function(response, status) { processGetResponse(response, status, aCallBack) });
@@ -488,7 +567,7 @@ export default {
         if (cursor != null) params["cursor"] = cursor;
         if (offset != null) params["offset"] = offset;
         if (resultCount != null) params["resultCount"] = resultCount;
-        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOW_LIST_API,
+        httpUtil.get(API_PREFIX + USER_AUTHOR_FOLLOWING_LIST_API + '/' + userId + '/following',
             null,
             params,
             function(response, status) { processGetResponse(response, status, aCallBack) });
@@ -531,15 +610,14 @@ export default {
 
     createOrUpdateAuthor: (author, successCallBack, errorCallBack) => {
         if (author == null || author.authorId == null) return;
-
-        // const authorDataToSend = ...author;
-        const dateObj = new Date(author.dateOfBirth);
-        let date = dateObj.getDate();
-        let month = dateObj.getMonth();
-        month++;
-        let year = dateObj.getFullYear();
-        author.dateOfBirth = date + "-" + month + "-" + year;
-
+        if (author.dateOfBirth) {
+            const dateObj = new Date(author.dateOfBirth);
+            let date = dateObj.getDate();
+            let month = dateObj.getMonth();
+            month++;
+            let year = dateObj.getFullYear();
+            author.dateOfBirth = date + "-" + month + "-" + year;
+        }
         httpUtil.post(API_PREFIX + AUTHOR_API,
             null,
             author,
@@ -577,7 +655,7 @@ export default {
 
     followOrUnfollowAuthor: (authorId, following, successCallBack, errorCallBack) => {
         if (authorId == null || following == null) return;
-        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_API,
+        httpUtil.post(API_PREFIX + USER_AUTHOR_FOLLOW_POST_API + '/' + authorId,
             null, { "authorId": authorId, "state": following ? "FOLLOWING" : "UNFOLLOWED" },
             function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
     },
@@ -737,17 +815,7 @@ export default {
             null, { "language": language, "resultCount": resultCount || 20 },
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
-
-    updateFCMToken: (fcmToken, aCallBack) => {
-        if (fcmToken == null) return;
-        httpUtil.post(API_PREFIX + USER_FCM_TOKEN_API,
-            null, { "fcmToken": fcmToken },
-            function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
-    },
-
     uploadCoverImage: (formData, authorId, successCallBack, errorCallBack) => {
-        console.log(formData);
-        console.log(authorId);
         if (formData == null) return;
         if (authorId == null) return;
 
@@ -758,8 +826,6 @@ export default {
     },
 
     uploadProfileImage: (formData, authorId, successCallBack, errorCallBack) => {
-        console.log(formData);
-        console.log(authorId);
         if (formData == null) return;
         if (authorId == null) return;
 
@@ -770,8 +836,6 @@ export default {
     },
 
     uploadPratilipiImage: (formData, pratilipiId, successCallBack, errorCallBack) => {
-        console.log(formData);
-        console.log(pratilipiId);
         if (formData == null) return;
         if (pratilipiId == null) return;
 
@@ -799,6 +863,7 @@ export default {
     },
 
     getInitialSearchResults: function( searchQuery, language, aCallBack ) {
+
         if( searchQuery == null ) return;
         httpUtil.get( API_PREFIX +  SEARCH_PREFIX + SEARCH_CORE_API,
             null,
@@ -928,6 +993,36 @@ export default {
             null,
             data,
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
-    }
+    },
+
+    createOrUpdateFCMToken: (fcmToken, language, successCallBack, errorCallBack) => {
+        httpUtil.post( API_PREFIX + WEB_DEVICES_API,
+            null,
+            { fcmToken: JSON.stringify(fcmToken), language },
+            function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
+    },
+
+    postMarketingNewsletterUnsubscribe: (uuid, newsletterFrequency, newsletterUnsubscribeReason, successCallBack, errorCallBack) => {
+        httpUtil.post( API_PREFIX + MARKETING_API,
+            null,
+            { uuid, newsletterFrequency, newsletterUnsubscribeReason },
+            function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
+    },
+
+    postReadingPercent: (pratilipiId, chapterNo, percentageScrolled, index, successCallBack, errorCallBack) => {
+        let params = {
+            "pratilipiId": pratilipiId,
+            "chapterNo": chapterNo,
+            "percentageScrolled": percentageScrolled,
+            "index": JSON.stringify(index),
+            "agent": "Web"
+        };
+        httpUtil.post(API_PREFIX + READ_PERCENTAGE_API,
+            null,
+            params,
+            function (response, status) {
+                processPostResponse(response, status, successCallBack, errorCallBack)
+            });
+    },
 
 };

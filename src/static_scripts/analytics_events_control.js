@@ -91,6 +91,22 @@ export default {
         "LOCATION": "TOPICS",
         "ACTION": "LANDED"
     },
+    "VIEWED_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "VIEWED"
+    },
+    "ALLOW_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "ALLOW"
+    },
+    "DISALLOW_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "DISALLOW"
+    },
+    "CLOSE_BROWSERWEBPUSH_GLOBAL": {
+        "LOCATION": "BROWSERWEBPUSH",
+        "ACTION": "CLOSE"
+    },
     "CREATEAUTHOR_AUTHORS_ADMIN": {
         "SCREEN_NAME": "ADMIN",
         "LOCATION": "AUTHORS",
@@ -611,6 +627,46 @@ export default {
         "LOCATION": "HOMEM",
         "ACTION": "LANDED"
     },
+    "VIEWED_WEBPUSHSTRIP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHSTRIP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHSTRIP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHSTRIP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "CLOSED"
+    },
+    "VIEWED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHPOPUP_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "CLOSED"
+    },
     "CLICKSHRBOOK_LIBRARYM_LIBRARY": {
         "SCREEN_NAME": "LIBRARY",
         "LOCATION": "LIBRARYM",
@@ -1118,6 +1174,81 @@ export default {
         "SCREEN_NAME": "READER",
         "LOCATION": "SETTINGS",
         "ACTION": "READERGAP"
+    },
+    "VIEWED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHSTRIP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "CLOSED"
+    },
+    "VIEWED_WEBPUSHSTRIP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHSTRIP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "ENABLED"
+    },
+    "CLOSED_WEBPUSHSTRIP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHSTRIP",
+        "ACTION": "CLOSED"
+    },
+    "VIEWED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHPOPUP_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "CLOSED"
+    },
+    "VIEWED_WEBPUSHPOPUP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "VIEWED"
+    },
+    "ENABLED_WEBPUSHPOPUP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "ENABLED"
+    },
+    "DISABLED_WEBPUSHPOPUP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "DISABLED"
+    },
+    "CLOSED_WEBPUSHPOPUP_PRATILIPI": {
+        "SCREEN_NAME": "PRATILIPI",
+        "LOCATION": "WEBPUSHPOPUP",
+        "ACTION": "CLOSED"
     },
     "TYPELOGINFIELD_CONFIRMPASS_REGISTER": {
         "SCREEN_NAME": "REGISTER",
@@ -1973,5 +2104,29 @@ export default {
         "SCREEN_NAME": "NOTIFS",
         "LOCATION": "NEWCHATS",
         "ACTION": "LANDED"
+    },
+    "STARTCHAT_AUTHORDETAIL_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "AUTHORDETAIL",
+        "ACTION": "STARTCHAT"
+    },
+    "DISMISS_CHATBANNER_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "CHATBANNER",
+        "ACTION": "DISMISS"
+    },
+    "CHECK_CHATBANNER_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "CHATBANNER",
+        "ACTION": "CHECK"
+    },
+    "STARTCHAT_BOOKM_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "BOOKM",
+        "ACTION": "STARTCHAT"
+    },
+    "GOMESSAGESPAGE_HEADER_GLOBAL": {
+        "LOCATION": "HEADER",
+        "ACTION": "GOMESSAGESPAGE"
     }
 };

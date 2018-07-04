@@ -7,6 +7,7 @@
             v-if="getRecommendationLoadingState === 'LOADING_SUCCESS' && getRecommendationList.length > 0"
             :screenName="screenName"
             :screenLocation="screenLocation"
+            :experimentId="experimentId"
             :redirectToReader="true"
         ></PratilipiListComponent>
     </div>
@@ -28,6 +29,9 @@ export default {
         contextId: {
             type: Number,
             required: true
+        },
+        experimentId: {
+            String
         },
         context: {
             type: String,
@@ -84,7 +88,7 @@ export default {
     watch: {
         'inViewport.now': function(visible) {
             if (visible) {
-                this.triggerAnanlyticsEvent(`VIEWED_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`VIEWED_${this.screenLocation}_${this.screenName}`, this.experimentId ? this.experimentId : 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId
                 });
                 

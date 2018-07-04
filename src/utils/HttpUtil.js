@@ -13,7 +13,8 @@ const httpUtil = {
         /**
         Need to look for an alternative
         **/
-        if ((window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1) {
+
+        if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
         }
@@ -44,7 +45,7 @@ const httpUtil = {
         /**
         Need to look for an alternative
         **/
-        if ((window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1) {
+        if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
         }
@@ -74,7 +75,7 @@ const httpUtil = {
         /**
         Need to look for an alternative
         **/
-        if ((window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1) {
+        if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
         }
@@ -105,7 +106,7 @@ const httpUtil = {
         /*
         Need to look for an alternative
         */
-        if ((window.location.origin.indexOf("localhost") || window.location.origin.indexOf("herokuapp")) > -1) {
+        if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
         }

@@ -8,7 +8,7 @@
                         <div class="page-content blog-section">
                             <ul>
                                 <li v-for="eachBlog in getBlogsData" :key="eachBlog.eventId" class="card">
-                                    <router-link :to="{ name: 'Blog_Page', params: { blog_id: eachBlog.pageUrl.split('/').pop() } }">
+                                    <router-link :to="{ name: 'Blog_Page', params: { slug: eachBlog.slug.split('/').pop() } }">
                                         <div class="head-title">{{ eachBlog.title }}</div>
                                         <div class="date-published">{{ eachBlog.creationDateMillis | convertDate }}</div>
                                         <div class="blog-summary">{{ eachBlog.content }}</div>

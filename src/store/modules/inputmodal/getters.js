@@ -14,6 +14,8 @@ export default {
                 return '__("pratilipi_delete_content")';
             case 'event_participate_confirm_submission':
                 return '__("event_participate_confirm_submission")';
+            case 'author_about':
+                return '__("author_about")';
         }
     },
 
@@ -25,6 +27,8 @@ export default {
             	return ['__("write_summary")'];
             case 'edit_pratilipi_title':
             	return ['__("writer_input_title")', '__("writer_input_title_en")'];
+            case 'confirm_submission_message':
+                return ['After final submission you wont be able to change the content'];
             default:
             	return []
         }

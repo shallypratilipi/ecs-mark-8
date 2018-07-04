@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Reader Options Modal -->
             <div class="modal fade" id="readerOptions" tabindex="-1" role="dialog" aria-labelledby="readerOptionsLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -66,13 +66,13 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Report Modal -->
-            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="reportModalLabel">__("report_title")</h5>
+                            <h5 class="modal-title">__("report_title")</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <i class="material-icons">close</i>
                             </button>
@@ -90,22 +90,22 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="book-content">
                 <div class="container">
                     <div class="row">
                         <div class="col-12 p-0" v-if="getPratilipiContent.length > 0 && getPratilipiData.pratilipiId == $route.query.id">
                             <h2
                                 class="chapter-title p-lr-15"
-                                v-for="eachIndex in getIndexData"
+                                v-for="eachIndex in getIndexData" 
                                 :key="eachIndex.chapterId"
                                 v-if="eachIndex.chapterNo == selectedChapter">
                                     {{ eachIndex.title || eachIndex.chapterNo }}
                             </h2>
-                            <div class="content-section lh-md p-lr-15"
-                                :class="fontStyleObject"
+                            <div class="content-section lh-md p-lr-15" 
+                                :class="fontStyleObject" 
                                 v-for="eachChapter in getPratilipiContent"
-                                v-if="eachChapter.chapterNo == selectedChapter"
+                                v-if="eachChapter.chapterNo == selectedChapter" 
                                 :key="eachChapter.chapterNo"
                                 v-html="eachChapter.content">
                             </div>
@@ -115,11 +115,11 @@
                                 <div class="next" v-if="selectedChapter != getIndexData.length" @click="goToNextChapter">__("reader_next_chapter")</div>
                             </div>
 
-                          <!-- <ShareStrip
+                           <ShareStrip
                                 v-if="selectedChapter == getIndexData.length"
                                 :data="getPratilipiData"
                                 :type="'PRATILIPI'">
-                            </ShareStrip>-->
+                            </ShareStrip>
 
                             <div class="book-bottom-ratings p-lr-15">
                                 <Reviews
@@ -134,6 +134,19 @@
                                 </Reviews>
                             </div>
 
+                            <div class="book-bottom-webpush-subscribe">
+                                   <div class="webpush-container">
+                                    <div class="webpush-inner-container">
+                                       <WebPushStrip
+                                            screenName="READER"
+                                            title="__('web_push_title')"
+                                            message="__('web_push_message_3')"
+                                            v-if="selectedChapter == getIndexData.length && isWebPushStripEnabled">
+                                        </WebPushStrip>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
@@ -144,11 +157,17 @@
                                 </Recommendation>
                             </div>
 
+                            <WebPushModal
+                                title="__('web_push_title')"    
+                                message="__('web_push_message_2')"                                screenName="READER"
+                                :includeDisableButton=true
+                                v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
+
                         </div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="footer-section">
                 <div class="container">
                     <div class="row">
@@ -176,7 +195,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <nav id="sidebar" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                 <div id="dismiss" @click="closeSidebar">
                     <i class="material-icons">close</i>
@@ -198,8 +217,8 @@
                 </div>
                 <div class="book-index">
                     <ul>
-                        <li
-                            v-for="eachIndex in getIndexData"
+                        <li 
+                            v-for="eachIndex in getIndexData" 
                             :key="eachIndex.chapterId"
                             :class="{ isActive: eachIndex.chapterNo === selectedChapter }">
                                 <router-link
@@ -211,14 +230,14 @@
                     </ul>
                 </div>
             </nav>
-
+            
             <div class="container">
                 <div class="row">
                     <div class="review-popout reader-review-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeReviewModal"><i class="material-icons">close</i></button>
-                        <Reviews
-                            :pratilipiId="getPratilipiData.pratilipiId"
-                            :authorId="getPratilipiData.author.authorId"
+                        <Reviews 
+                            :pratilipiId="getPratilipiData.pratilipiId" 
+                            :authorId="getPratilipiData.author.authorId" 
                             :haveInfiniteScroll="true"
                             screenName="READER"
                             screenLocation="RATEREV"
@@ -227,12 +246,12 @@
                             :userPratilipiData='getUserPratilipiData'>
                         </Reviews>
                     </div>
-
+                    
                     <div class="rating-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeRatingModal"><i class="material-icons">close</i></button>
-                        <Reviews
-                            :pratilipiId="getPratilipiData.pratilipiId"
-                            :authorId="getPratilipiData.author.authorId"
+                        <Reviews 
+                            :pratilipiId="getPratilipiData.pratilipiId" 
+                            :authorId="getPratilipiData.author.authorId" 
                             :haveInfiniteScroll="false"
                             screenName="READER"
                             screenLocation="READERM"
@@ -243,7 +262,7 @@
                     </div>
                 </div>
             </div>
-            <!--<OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>-->
+            <OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
             <div class="overlay" @click="closeSidebar"></div>
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
@@ -264,9 +283,12 @@ import 'vue-awesome/icons/google-plus'
 import 'vue-awesome/icons/whatsapp'
 import 'vue-awesome/icons/link'
 import Reviews from '@/components/Reviews.vue';
+import WebPushStrip from '@/components/WebPushStrip.vue';
+import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
-// import OpenInApp from '@/components/OpenInApp.vue';
-// import ShareStrip from '@/components/ShareStrip.vue';
+import OpenInApp from '@/components/OpenInApp.vue';
+import ShareStrip from '@/components/ShareStrip.vue';
+import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -274,9 +296,11 @@ export default {
         ReadLayout,
         Spinner,
         Reviews,
+        WebPushStrip,
+        WebPushModal,
         Recommendation,
-        // ShareStrip,
-        // OpenInApp
+        ShareStrip,
+        OpenInApp
     },
     mixins: [
         mixins
@@ -287,11 +311,18 @@ export default {
             selectedChapter: 1,
             scrollPosition: null,
             scrollDirection: null,
+            percentScrolled: null,
             counter: 0,
             openRateRev: false,
             openRateReaderm: false,
             rateRev: 'RATEREV',
-            shouldShowOpenInAppStrip: true
+            shouldShowOpenInAppStrip: true,
+            webPushModalTriggered: false,
+            isWebPushStripEnabled: false,
+            isWebPushModalEnabled: false,
+            maxRead: 0,
+            chapterCount: 0,
+            recordTime: null
         }
     },
     methods: {
@@ -303,12 +334,25 @@ export default {
             'removeFromLibrary',
             'fetchPratilipiContentForIMAGE',
             'fetchAuthorDetails',
-            'followOrUnfollowAuthor'
+            'followOrUnfollowAuthor',
+            'postReadingPercentage'
         ]),
         ...mapActions([
             'setShareDetails',
             'setAfterLoginAction'
         ]),
+        recordMaxRead(maxRead) {
+            if (this.$route.query.chapterNo) {
+                this.chapterCount = Number(this.$route.query.chapterNo);
+            }
+            else {
+                this.chapterCount = 1;
+            }
+            let chapterCount = this.chapterCount;
+            let indexData = this.getIndexData;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
+        },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent(`LIBRARYADD_READERM_READER`, 'CONTROL', {
@@ -361,7 +405,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-
+            
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter - 1 } });
         },
         goToNextChapter() {
@@ -371,7 +415,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-
+            
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter + 1 } });
         },
         increaseFont() {
@@ -429,16 +473,15 @@ export default {
         themeWhite() {
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-white");
-
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-white");
-
+            
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
-
-
+            $(".book-bottom-webpush-subscribe").removeClass("bg-black");
+            $(".book-bottom-webpush-subscribe").addClass("bg-grey");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -449,16 +492,14 @@ export default {
         themeBlack() {
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-black");
-
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-black");
-
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
-
-
+            $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
+            $(".book-bottom-webpush-subscribe").addClass("bg-black");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -469,18 +510,14 @@ export default {
         themeYellow() {
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-yellow");
-
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-yellow");
-
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-yellow");
-
             $(".container-fluid").css({"background-color": "#F4ECD8",});
             $(".comment-box").css({"background-color": "#f8f8f8",});
-
-
-
+            $(".book-bottom-webpush-subscribe").removeClass("bg-black");
+-           $(".book-bottom-webpush-subscribe").addClass("bg-grey");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -534,7 +571,6 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': data
             });
-
             $('#sidebar').removeClass('active');
             $('.overlay').fadeOut();
         },
@@ -549,7 +585,9 @@ export default {
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
-        }
+            let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
+            this.percentScrolled = (wintop / (docheight - winheight)) * 100;
+        },
     },
     computed: {
         fontStyleObject() {
@@ -574,11 +612,11 @@ export default {
         ])
     },
     created() {
+        this.recordTime = new Date();
         this.fetchPratilipiDetails(this.$route.query.id);
         if (this.getPratilipiData && this.getPratilipiData.author) {
             this.fetchAuthorDetails();
         }
-
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
@@ -586,15 +624,27 @@ export default {
     mounted() {
         $('.read-page').bind("contextmenu",function(e){
             e.preventDefault();
-        }),
-        $(window).scroll(function() {
-            var wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height();
-            var totalScroll = (wintop/(docheight-winheight))*100;
-            $(".reader-progress .progress-bar").css("width",totalScroll+"%");
-        }),
+        });
         window.addEventListener('scroll', this.updateScroll);
+        let that = this;
+        setTimeout(function () {
+            let docheight = $('.book-content').height();
+            let winheight = $(window).height();
+            that.maxRead = ((winheight / docheight) * 100);
+            that.recordMaxRead(that.maxRead);
+        }, 1000);
     },
+
     watch: {
+        '$route' (newValue) {
+            let that = this;
+            setTimeout(function(){
+            let docheight = $('.book-content').height();
+            let winheight = $(window).height();
+            that.maxRead = ((winheight/docheight)*100);
+            that.recordMaxRead(that.maxRead);
+        }, 1000);
+    },
         '$route.query.id'(newValue) {
             this.fetchPratilipiDetails(newValue);
         },
@@ -607,7 +657,6 @@ export default {
                 this.fetchPratilipiContentForHTML({ pratilipiId: this.getPratilipiData.pratilipiId, chapterNo: Number(newValue) });
                 this.selectedChapter = newValue;
             }
-
             if (this.getPratilipiData.contentType === 'IMAGE') {
                 if (this.getPratilipiData.pratilipiId != this.$route.query.id) {
                     this.fetchPratilipiContentForIMAGE({ pratilipiId: this.getPratilipiData.pratilipiId, chapterNo: Number(newValue) });
@@ -624,6 +673,11 @@ export default {
                 this.fetchPratilipiContentForIMAGE({ pratilipiId: newId, chapterNo: this.$route.query.chapterNo ? Number(this.$route.query.chapterNo) : 1 });
             }
             this.fetchAuthorDetails();
+            // default value for webPushModalTriggered is false
+            this.webPushModalTriggered = false;
+            // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 40;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.getCookie('bucketId')) || 0) >= 40 && (parseInt(this.getCookie('bucketId')) || 0) < 50;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -636,25 +690,35 @@ export default {
                 $('.header-section').removeClass('nav-up');
                 $('.reader-progress').removeClass('progress-up');
             }
-
             if (newScrollPosition < prevScrollPosition) {
                 this.counter++;
                 this.scrollDirection = 'UP';
             } else {
                 this.scrollDirection = 'DOWN';
             }
-
             if (this.counter > 5) {
                 $('.header-section').removeClass('nav-up');
                 $('.reader-progress').removeClass('progress-up');
                 this.counter = 0;
             }
-
-
             if ($(window).height() + newScrollPosition > $('.content-section').height()) {
                 this.shouldShowOpenInAppStrip = false;
             } else {
                 this.shouldShowOpenInAppStrip = true;
+            }
+        },
+        'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
+            if (this.maxRead < newPercentScrolled) {
+                this.maxRead = newPercentScrolled;
+                if (new Date() - this.recordTime > 1000) {
+                    this.recordMaxRead(this.maxRead);
+                    this.recordTime = new Date();
+                }
+            }
+            $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
+            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
+                this.webPushModalTriggered = true
+                this.openWebPushModal()
             }
         },
         'getPratilipiLoadingState'(status) {
@@ -760,7 +824,6 @@ export default {
         left:0;
         width: 100%;
         height: 2px;
-      
         margin-bottom: 0px;
         position: fixed;
         top: 47px;
@@ -792,7 +855,6 @@ export default {
         font-size: 16px;
         padding: 0;
         text-align: justify;
-
         -moz-user-select: -moz-none;
         -moz-user-select: none;
         -o-user-select: none;
@@ -1210,7 +1272,6 @@ export default {
     .reader-progress {
         background: #000;
     }
-
 }
 .theme-yellow {
     background: #F4ECD8 !important;
@@ -1249,8 +1310,34 @@ export default {
         .write-review-btn, .all-reviews, .comments-list li, .show-more {
             display: none !important;
         }
+        .comments-list {
+            padding-left: 0;
+        }
         .comments-list li.ownReview  {
             display: block !important;
+        }
+    }
+    .book-bottom-webpush-subscribe {
+        position: relative;
+        margin: 10px 0;
+        padding: 0 15px;
+         .webpush-container {
+            max-width: 700px;
+            margin: auto;
+            .webpush-inner-container {
+                margin: 0 5px;
+                background: #f8f8f8;
+            }
+        }
+    }
+    .book-bottom-webpush-subscribe.bg-grey {
+        .webpush-container .webpush-inner-container {
+            background: #f8f8f8;
+        }
+    }
+   .book-bottom-webpush-subscribe.bg-black {
+       .webpush-container .webpush-inner-container {
+           background: black;
         }
     }
 }

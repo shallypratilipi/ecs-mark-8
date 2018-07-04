@@ -58,7 +58,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6 col-sm-12">
                                             <label for="pratilipi-settings-summary">__('edit_author_summary')</label>
-                                            <textarea class="form-control" id="pratilipi-settings-summary" v-model="authorData.summary" rows="3"></textarea>
+                                             <TranslatingInputTextArea  :value="authorData.summary" :oninput="updateSummary"  ></TranslatingInputTextArea>
                                         </div>
                                     </div>
                                     <div class="section-title">Private Information</div>
@@ -181,13 +181,15 @@ import TranslatingInput from '@/components/TranslatingInput.vue';
 import Spinner from '@/components/Spinner.vue';
 import constants from '@/constants';
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import TranslatingInputTextArea from '@/components/TranslatingInputTextArea.vue';
 
 export default {
     components: {
         MainLayout,
         TranslatingInput,
-        Spinner
+        Spinner,
+        TranslatingInputTextArea
     },
     data() {
         return {
@@ -257,6 +259,9 @@ export default {
         ]),
         updateFirstName(value) {
             this.authorData.firstName = value;
+        },
+        updateSummary(value) {
+            this.authorData.summary = value;
         },
         updateLastName(value) {
             this.authorData.lastName = value;
@@ -585,33 +590,37 @@ export default {
         this.triggerAnanlyticsEvent('LANDED_SETTINGSM_SETTINGS', 'CONTROL', {
             'USER_ID': this.getUserDetails.userId
         });
-
-        const that = this;
-        import('firebase').then((firebase) => {
-            if (firebase.apps.length === 0) {
-                const config = {
-                    apiKey: process.env.FIREBASE_API_KEY,
-                    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-                    databaseURL: process.env.FIREBASE_DATABASE_URL,
-                    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-                };
-                firebase.initializeApp(config);
-            }
-            const that = this;
-            const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
-            userPreferencesNode.on( 'value', function( snapshot ) {
-                const userPreferences = snapshot.val();
-                console.log(userPreferences);
-                if(userPreferences) {
-                    that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
-                    that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
-                    if(userPreferences.notificationSubscriptions) {
-                        that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
+        
+        if(this.getUserDetails.userId != undefined)
+        {
+                const that = this;
+                import('firebase').then((firebase) => {
+                    if (firebase.apps.length === 0) {
+                        const config = {
+                            apiKey: process.env.FIREBASE_API_KEY,
+                            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                            databaseURL: process.env.FIREBASE_DATABASE_URL,
+                            storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                        };
+                        firebase.initializeApp(config);
                     }
-                }
-            });
-        });
-    }
+                    const that = this;
+                    const userPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( this.getUserDetails.userId );
+                    userPreferencesNode.on( 'value', function( snapshot ) {
+                        const userPreferences = snapshot.val();
+                        if(userPreferences) {
+                            that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
+                            that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                            if(userPreferences.notificationSubscriptions) {
+                                that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
+                            }
+                        }
+                    });
+                    
+                });
+        }
+    },
+       
 }
 </script>
 
