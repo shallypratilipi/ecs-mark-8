@@ -48,6 +48,112 @@ Vue.use(Router)
 // todo tinymc integration in this app
 // todo create page SEO
 // todo add login checks in route otherwise it will render login first then actual page
+
+const defaultMetaTags = [{
+        property: 'og:type',
+        content: 'books.book'
+    },
+    {
+        property: 'og:image',
+        content: 'https://www.ptlp.co/resource-all/home-page/pratilipi-banner-compressed-mobile.jpg'
+    },
+    {
+        property: 'og:url',
+        content: window.location.protocol + '//' + window.location.host
+    }
+]
+
+function _getDefaultPageOGTags(pageStoreName) {
+    switch (pageStoreName) {
+        case 'homepage':
+            return [{
+                    property: 'og:title',
+                    content: '__("seo_home_page") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        case 'searchpage':
+            return [{
+                    property: 'og:title',
+                    content: '__("seo_search_page") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        case 'login':
+            return [{
+                    property: 'og:title',
+                    content: '__("seo_login_page") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        case 'login':
+            return [{
+                    property: 'og:title',
+                    content: '__("seo_register_page") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        case 'discover':
+            return [{
+                    property: 'og:title',
+                    content: '__("seo_navigation_page") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        case 'writepage':
+            return [{
+                    property: 'og:title',
+                    content: '__("write") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        case 'pratilipipage':
+            return [{
+                    property: 'og:title',
+                    content: '__("seo_home_page") | __("pratilipi")'
+                },
+                {
+                    property: 'og:description',
+                    content: '__("home_page_title")'
+                },
+                ...defaultMetaTags
+            ];
+            break;
+        default:
+
+    }
+}
+
 var router = new Router({
     mode: 'history',
     routes: [{
@@ -57,31 +163,7 @@ var router = new Router({
             meta: {
                 'store': 'homepage',
                 'title': '__("seo_home_page") | __("pratilipi")',
-                metaTags: [{
-                        property: 'og:title',
-                        content: '__("seo_home_page") | __("pratilipi")'
-                    },
-                    {
-                        property: 'og:description',
-                        content: 'A platform to discover, read and share your favorite stories, poems and books in a language, device and format of your choice.'
-                    },
-                    {
-                        property: 'og:type',
-                        content: 'books.book'
-                    },
-                    {
-                        property: 'og:image',
-                        content: 'https://www.ptlp.co/resource-all/home-page/pratilipi-banner-compressed-mobile.jpg'
-                    },
-                    {
-                        property: 'og:url',
-                        content: window.location.protocol + '//' + window.location.host
-                    },
-                    {
-                        property: 'og:locale',
-                        content: process.env.LANGUAGE + '_IN'
-                    }
-                ]
+                metaTags: _getDefaultPageOGTags('homepage')
             },
             beforeEnter: (to, from, next) => {
                 if (to.query.email && to.query.token && to.query.passwordReset) {
@@ -102,7 +184,8 @@ var router = new Router({
             component: SearchPageComponent,
             meta: {
                 'store': 'searchpage',
-                'title': '__("seo_search_page") | __("pratilipi")'
+                'title': '__("seo_search_page") | __("pratilipi")',
+                metaTags: _getDefaultPageOGTags('searchpage')
             }
         },
         {
@@ -120,7 +203,8 @@ var router = new Router({
             component: LoginPageComponent,
             meta: {
                 'title': '__("seo_login_page") | __("pratilipi")',
-                'store': 'login'
+                'store': 'login',
+                metaTags: _getDefaultPageOGTags('login')
             }
         }, {
             path: '/signup',
@@ -128,14 +212,17 @@ var router = new Router({
             component: LoginPageComponent,
             meta: {
                 'title': '__("seo_register_page") | __("pratilipi")',
-                'store': 'register'
+                'store': 'register',
+                metaTags: _getDefaultPageOGTags('register')
             }
         }, {
             path: '/story/:slug_id',
             name: 'Pratilipi',
             component: () => {
                 if (process.env.REALM === 'PROD') {
-                    return new Promise((resolve, reject) => { resolve(PratilipiPageComponent); });
+                    return new Promise((resolve, reject) => {
+                        resolve(PratilipiPageComponent);
+                    });
                 } else {
                     const isTrue = true;
                     if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
@@ -154,7 +241,8 @@ var router = new Router({
             // component: PratilipiPageComponent,
             meta: {
                 'store': 'pratilipipage',
-                'id_prop': 'slug_id'
+                'id_prop': 'slug_id',
+                metaTags: _getDefaultPageOGTags('pratilipipage')
             }
         }, {
             path: '/user/:user_slug',
@@ -171,7 +259,8 @@ var router = new Router({
             component: DiscoveryPageComponent,
             meta: {
                 'title': '__("seo_navigation_page") | __("pratilipi")',
-                'store': 'discover'
+                'store': 'discover',
+                metaTags: _getDefaultPageOGTags('discover')
             }
         }, {
             path: '/create',
@@ -179,7 +268,8 @@ var router = new Router({
             component: WritePageComponent,
             meta: {
                 'store': 'writepage',
-                'title': '__("write") | __("pratilipi")'
+                'title': '__("write") | __("pratilipi")',
+                metaTags: _getDefaultPageOGTags('writepage')
             }
         }, {
             path: '/event',

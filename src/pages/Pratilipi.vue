@@ -562,6 +562,11 @@ export default {
         updateScroll() {
             this.scrollPosition = window.scrollY
             this.percentScrolled = ($(window).scrollTop()/($(document).height()-$(window).height()))*100
+        },
+        setPratilipiPageOgTags( pratilipiData ) {
+            document.head.querySelector('meta[property="og:title"]').content = `${pratilipiData.title} « ${pratilipiData.author.fullName}`;
+            document.head.querySelector('meta[property="og:description"]').content = pratilipiData.summary + ' « ' + pratilipiData.author.fullName;
+            document.head.querySelector('meta[property="og:image"]').content = pratilipiData.coverImageUrl;
         }
     },
     created() {
@@ -583,11 +588,11 @@ export default {
         BookTags,
         Reviews,
         ServerError,
-	WebPushStrip,
-	WebPushModal,
+	    WebPushStrip,
+	    WebPushModal,
         BookShareStrip,
         ChatBanner,
-	MessageButton,
+	    MessageButton
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
@@ -606,6 +611,7 @@ export default {
             this.selectedTags = this.getPratilipiData.tags ? [ ...this.getPratilipiData.tags ] : [];
             this.suggestedTags = this.getPratilipiData.suggestedTags;
             document.title = this.getPratilipiData.title;
+            this.setPratilipiPageOgTags(this.getPratilipiData);
 
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
@@ -636,7 +642,7 @@ export default {
             this.fetchPratilipiDetailsAndUserPratilipiData(this.$route.params.slug_id);
             }
             else {
-            this.isCreated=false;                
+            this.isCreated=false;
             }
         },
         'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
