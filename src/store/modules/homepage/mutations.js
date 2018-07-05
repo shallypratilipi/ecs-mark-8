@@ -75,6 +75,15 @@ export default {
         state.banners.loading_state = 'LOADING_SUCCESS';
         state.banners.data = data.bannerList;
     },
+    setJokeOfTheDay(state, data) {
+        state.joke.loading_state = 'LOADING_SUCCESS';
+        state.joke.data = data.response.joke;
+        console.log("I am from Mutator and my joke is: ", state.joke.data);
+    },
+    setQuoteOfTheDay(state, data) {
+        state.quote.loading_state = 'LOADING_SUCCESS';
+        state.quote.data = data.response.quote;
+    },
     setHomePageBannerLoadingError(state){
         state.banners.loading_state = 'LOADING_ERROR';
         state.banners.data = [];

@@ -6,6 +6,16 @@ export default {
 
     banners: {
     	loading_state: 'LOADING',
-        data: []	
+        data: []
+    },
+
+    joke: {
+        loading_state: 'LOADING',
+        data: ""
+    },
+
+    quote: {
+        loading_state: 'LOADING',
+        data: ""
     }
 }

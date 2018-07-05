@@ -580,6 +580,9 @@
     "web_push_message_2": "प्रतिलिपि की और से कहानियाँ पाने के लिए नोटिफिकेशन प्राप्त करें",
     "web_push_message_3": "एक से बढ़कर एक कहानियाँ अब पाइए नोटिफिकेशन में",
     "web_push_allow": "अनुमति दें",
-    "web_push_cancel": "रद करें"
+    "web_push_cancel": "रद करें",
+    "thought_of_the_day": "आज का सुविचार",
+    "click_here_to_know_more": "जानने के लिए यहाँ क्लिक करें",
+    "get_notofication": "नोटिफिकेशन पाइए"
 
 }

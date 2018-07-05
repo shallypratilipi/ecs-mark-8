@@ -21,5 +21,7 @@ export default {
     getHomePageSections: state => state.sections.data,
     getHomePageLoadingState: state => state.sections.loading_state,
     getHomePageBanners: state => state.banners.data,
-    getHomePageBannersLoadingState: state => state.banners.loading_state
+    getHomePageBannersLoadingState: state => state.banners.loading_state,
+    getJokeOfTheDay: state => state.joke.data,
+    getQuoteOfTheDay: state => state.quote.data,
 }

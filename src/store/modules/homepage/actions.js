@@ -75,5 +75,34 @@ export default {
                 commit('setHomePageBannerLoadingError');
             }
         })
+    },
+
+    fetchJokeOfTheDay({commit, state}, language) {
+        console.log("Language from Actions: " + language);
+        DataAccessor.getJokeOfTheDay(language, (data) => {
+            if (data.status === 200) {
+                console.log("I am inside ACTIONS");
+                commit('setJokeOfTheDay', data)
+                // commit('setHomePageBannerLoadingSuccess', data.response);
+            } else {
+                // commit('setHomePageBannerLoadingError');
+                console.log("Error in getJokeOfDayAPI");
+
+            }
+        })
+    },
+
+    fetchQuoteOfTheDay({commit, state}, language) {
+        console.log("Language from Actions: " + language);
+        DataAccessor.getQuoteOfTheDay(language, (data) => {
+            if (data.status === 200) {
+                console.log("I am inside ACTIONS");
+                commit('setQuoteOfTheDay', data)
+                // commit('setHomePageBannerLoadingSuccess', data.response);
+            } else {
+                // commit('setHomePageBannerLoadingError');
+                console.log("Error in getQuoteOfTheDay");
+            }
+        })
     }
 }

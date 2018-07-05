@@ -563,7 +563,7 @@
     "chat_no_unread_msgs": "આપની પાસે ન-વંચાયેલા કોઈ મેસેજ નથી",
     "chat_yesterday": "કાલે",
     "chat_today": "આજે",
-    
+
     "event_participate":"ભાગ લો ",
     "event_participate_your_drafts":"તમારા ડ્રાફ્ટ ",
     "event_participate_your_submissions":"તમારી સબમિટ થયેલી રચનાઓ ",
@@ -581,6 +581,10 @@
     "web_push_message_2": "નોટીફિકેશન દ્વારા ઉત્તમ વાર્તાઓ મેળવવા ઈચ્છો છો?",
     "web_push_message_3": "નોટીફિકેશન દ્વારા વાર્તાઓ મોકલવા માટે પ્રતિલિપિને અનુમતિ આપો..",
     "web_push_allow": "અનુમતિ આપો",
-    "web_push_cancel": "રદ કરો"
+    "web_push_cancel": "રદ કરો",
+    "joke_of_the_day": "કવિની કલ્પનામાં આજે",
+    "click_here_to_know_more": "જાણવા માટે અહીં ક્લિક કરો",
+    "get_notofication": "નોટિફિકેશન મેળવો"
+
 
 }

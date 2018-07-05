@@ -4,9 +4,11 @@
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
                      :banners="getHomePageBanners"
             ></Banners>
+
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>
+            <Vapasi></Vapasi>
             <div v-if="getHomePageLoadingState === 'LOADING_SUCCESS'" v-for="(eachSection, index) in getHomePageSections" v-bind:key="eachSection.listPageUrl">
-                <PratilipiListComponent  
+                <PratilipiListComponent
                         :pratilipiList="eachSection.pratilipiList"
                         :title="eachSection.title"
                         :listPageUrl="eachSection.listPageUrl"
@@ -50,6 +52,7 @@
     import PratilipiListComponent from '@/components/PratilipiList.vue';
     import MainLayout from '@/layout/main-layout.vue';
     import Banners from '@/components/Banners.vue';
+    import Vapasi from '@/components/Vapasi.vue';
     import ServerError from '@/components/ServerError.vue';
     import WebPushStrip from '@/components/WebPushStrip.vue';
     import WebPushModal from '@/components/WebPushModal.vue';
@@ -112,7 +115,8 @@
             ServerError,
             DummyLoader,
             WebPushStrip,
-            WebPushModal
+            WebPushModal,
+            Vapasi
         },
         created() {
             this.fetchBanners(this.getCurrentLanguage().fullName.toUpperCase());
