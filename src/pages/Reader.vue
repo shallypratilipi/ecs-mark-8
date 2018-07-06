@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Reader Options Modal -->
             <div class="modal fade" id="readerOptions" tabindex="-1" role="dialog" aria-labelledby="readerOptionsLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Report Modal -->
             <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -78,36 +78,34 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
                                     <textarea class="form-control" id="reportModalTextarea" rows="3" placeholder="__('report_issue')"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
+                                <button type="button" class="btn btn-primary btn-submit" @click="submitReport">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="book-content">
                 <div class="container">
                     <div class="row">
                         <div class="col-12 p-0" v-if="getPratilipiContent.length > 0 && getPratilipiData.pratilipiId == $route.query.id">
                             <h2
                                 class="chapter-title p-lr-15"
-                                v-for="eachIndex in getIndexData" 
+                                v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
                                 v-if="eachIndex.chapterNo == selectedChapter">
                                     {{ eachIndex.title || eachIndex.chapterNo }}
                             </h2>
-                            <div class="content-section lh-md p-lr-15" 
-                                :class="fontStyleObject" 
-                                v-for="eachChapter in getPratilipiContent"
-                                v-if="eachChapter.chapterNo == selectedChapter" 
-                                :key="eachChapter.chapterNo"
-                                v-html="eachChapter.content">
+                            <div class="content-section lh-md p-lr-15"
+                                 :class="fontStyleObject"
+                                 v-for="eachChapter in getPratilipiContent"
+                                 v-if="eachChapter.chapterNo == selectedChapter"
+                                 :key="eachChapter.chapterNo"
+                                 v-html="eachChapter.content">
                             </div>
                             <Spinner v-if="getPratilipiContentLoadingState !== 'LOADING_SUCCESS'"></Spinner>
                             <div class="book-navigation p-lr-15" v-if="getPratilipiContentLoadingState === 'LOADING_SUCCESS'">
@@ -168,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-section">
                 <div class="container">
                     <div class="row">
@@ -196,7 +194,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <nav id="sidebar" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                 <div id="dismiss" @click="closeSidebar">
                     <i class="material-icons">close</i>
@@ -218,8 +216,8 @@
                 </div>
                 <div class="book-index">
                     <ul>
-                        <li 
-                            v-for="eachIndex in getIndexData" 
+                        <li
+                            v-for="eachIndex in getIndexData"
                             :key="eachIndex.chapterId"
                             :class="{ isActive: eachIndex.chapterNo === selectedChapter }">
                                 <router-link
@@ -231,14 +229,14 @@
                     </ul>
                 </div>
             </nav>
-            
+
             <div class="container">
                 <div class="row">
                     <div class="review-popout reader-review-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeReviewModal"><i class="material-icons">close</i></button>
-                        <Reviews 
-                            :pratilipiId="getPratilipiData.pratilipiId" 
-                            :authorId="getPratilipiData.author.authorId" 
+                        <Reviews
+                            :pratilipiId="getPratilipiData.pratilipiId"
+                            :authorId="getPratilipiData.author.authorId"
                             :haveInfiniteScroll="true"
                             screenName="READER"
                             screenLocation="RATEREV"
@@ -247,12 +245,12 @@
                             :userPratilipiData='getUserPratilipiData'>
                         </Reviews>
                     </div>
-                    
+
                     <div class="rating-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeRatingModal"><i class="material-icons">close</i></button>
-                        <Reviews 
-                            :pratilipiId="getPratilipiData.pratilipiId" 
-                            :authorId="getPratilipiData.author.authorId" 
+                        <Reviews
+                            :pratilipiId="getPratilipiData.pratilipiId"
+                            :authorId="getPratilipiData.author.authorId"
                             :haveInfiniteScroll="false"
                             screenName="READER"
                             screenLocation="READERM"
@@ -290,7 +288,9 @@ import Recommendation from '@/components/Recommendation.vue';
 import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import constants from '@/constants';
+
 
 export default {
     components: {
@@ -323,7 +323,8 @@ export default {
             isWebPushModalEnabled: false,
             maxRead: 0,
             chapterCount: 0,
-            recordTime: null
+            recordTime: null,
+            language: ''
         }
     },
     methods: {
@@ -336,14 +337,18 @@ export default {
             'fetchPratilipiContentForIMAGE',
             'fetchAuthorDetails',
             'followOrUnfollowAuthor',
+            'submitPrailipiReport',
             'postReadingPercentage'
+        ]),
+        ...mapActions('alert', [
+            'triggerAlert'
         ]),
         ...mapActions([
             'setShareDetails',
             'setAfterLoginAction'
         ]),
         recordMaxRead(maxRead) {
-            if(!this.getUserDetails.isGuest) {
+            if (!this.getUserDetails.isGuest && !isNaN(maxRead)) {
                 if (this.$route.query.chapterNo) {
                     this.chapterCount = Number(this.$route.query.chapterNo);
                 }
@@ -355,6 +360,18 @@ export default {
                 let pratilipiId = this.getPratilipiData.pratilipiId;
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
+        },
+        submitReport() {
+            let user = this.getUserDetails;
+            let message = $('#reportModalTextarea').val().toString();
+            let name = user.displayName;
+            let email = user.email;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            let language = this.language;
+            this.submitPrailipiReport({name ,email,message, pratilipiId, language});
+            $('#reportModal').modal('hide');
+            this.triggerAlert({ message: '__("success_generic_message")', timer: 3000 });
+            $("#reportModalTextarea").val("");
         },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -408,7 +425,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-            
+
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter - 1 } });
         },
         goToNextChapter() {
@@ -418,7 +435,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-            
+
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter + 1 } });
         },
         increaseFont() {
@@ -478,7 +495,7 @@ export default {
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-white");
-            
+
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
@@ -623,6 +640,12 @@ export default {
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
+         const currentLocale = process.env.LANGUAGE;
+        constants.LANGUAGES.forEach((eachLanguage) => {
+            if (eachLanguage.shortName === currentLocale) {
+                this.language = eachLanguage.fullName.toUpperCase();
+            }
+        });
     },
     mounted() {
         $('.read-page').bind("contextmenu",function(e){

@@ -790,15 +790,16 @@ export default {
             function(response, status) { processPostResponse(response, status, successCallBack, errorCallBack) });
     },
 
-    reportContent: (name, email, phone, message, dataType, dataId, successCallBack, errorCallBack) => {
+    reportContent: (name, email, phone, message, dataType, dataId, language, successCallBack, errorCallBack) => {
         if (name == null || name.trim() == "") return;
         if ((email == null || email.trim() == "") && (phone == null || phone.trim() == "")) return;
         if (message == null || message.trim() == "") return;
+        let team = "AEE_" + language;
         var body = {
             "name": name,
-            "team": "AEE_${ language }",
+            "team": team,
             "message": message,
-            "language": "${ language }"
+            "language": language
         };
         if (email != null) body["email"] = email;
         if (phone != null) body["phone"] = phone;

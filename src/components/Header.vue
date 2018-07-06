@@ -249,7 +249,7 @@ export default {
                 SCREEN_NAME
             });
             this.$router.push('/notifications');
-            this.resetNotificationCount;
+            this.resetNotificationCount();
         },
         ...mapActions([
             'resetNotificationCount'
