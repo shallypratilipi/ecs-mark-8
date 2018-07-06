@@ -18,14 +18,14 @@ COPY config config
 COPY static static
 COPY src src
 
-RUN LANGUAGE=bn npm run build
-RUN LANGUAGE=gu npm run build
-RUN LANGUAGE=hi npm run build
-RUN LANGUAGE=kn npm run build
-RUN LANGUAGE=ml npm run build
-RUN LANGUAGE=mr npm run build
-RUN LANGUAGE=ta npm run build
-RUN LANGUAGE=te npm run build
+RUN REALM=growth LANGUAGE=bn npm run build
+RUN REALM=growth LANGUAGE=gu npm run build
+RUN REALM=growth LANGUAGE=hi npm run build
+RUN REALM=growth LANGUAGE=kn npm run build
+RUN REALM=growth LANGUAGE=ml npm run build
+RUN REALM=growth LANGUAGE=mr npm run build
+RUN REALM=growth LANGUAGE=ta npm run build
+RUN REALM=growth LANGUAGE=te npm run build
 
 COPY old_build old_build
 COPY server.js .
