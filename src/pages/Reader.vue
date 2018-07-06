@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Reader Options Modal -->
             <div class="modal fade" id="readerOptions" tabindex="-1" role="dialog" aria-labelledby="readerOptionsLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Report Modal -->
             <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -88,24 +88,24 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="book-content">
                 <div class="container">
                     <div class="row">
                         <div class="col-12 p-0" v-if="getPratilipiContent.length > 0 && getPratilipiData.pratilipiId == $route.query.id">
                             <h2
                                 class="chapter-title p-lr-15"
-                                v-for="eachIndex in getIndexData" 
+                                v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
                                 v-if="eachIndex.chapterNo == selectedChapter">
                                     {{ eachIndex.title || eachIndex.chapterNo }}
                             </h2>
-                            <div class="content-section lh-md p-lr-15" 
-                                :class="fontStyleObject" 
-                                v-for="eachChapter in getPratilipiContent"
-                                v-if="eachChapter.chapterNo == selectedChapter" 
-                                :key="eachChapter.chapterNo"
-                                v-html="eachChapter.content">
+                            <div class="content-section lh-md p-lr-15"
+                                 :class="fontStyleObject"
+                                 v-for="eachChapter in getPratilipiContent"
+                                 v-if="eachChapter.chapterNo == selectedChapter"
+                                 :key="eachChapter.chapterNo"
+                                 v-html="eachChapter.content">
                             </div>
                             <Spinner v-if="getPratilipiContentLoadingState !== 'LOADING_SUCCESS'"></Spinner>
                             <div class="book-navigation p-lr-15" v-if="getPratilipiContentLoadingState === 'LOADING_SUCCESS'">
@@ -166,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-section">
                 <div class="container">
                     <div class="row">
@@ -194,7 +194,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <nav id="sidebar" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                 <div id="dismiss" @click="closeSidebar">
                     <i class="material-icons">close</i>
@@ -216,8 +216,8 @@
                 </div>
                 <div class="book-index">
                     <ul>
-                        <li 
-                            v-for="eachIndex in getIndexData" 
+                        <li
+                            v-for="eachIndex in getIndexData"
                             :key="eachIndex.chapterId"
                             :class="{ isActive: eachIndex.chapterNo === selectedChapter }">
                                 <router-link
@@ -229,14 +229,14 @@
                     </ul>
                 </div>
             </nav>
-            
+
             <div class="container">
                 <div class="row">
                     <div class="review-popout reader-review-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeReviewModal"><i class="material-icons">close</i></button>
-                        <Reviews 
-                            :pratilipiId="getPratilipiData.pratilipiId" 
-                            :authorId="getPratilipiData.author.authorId" 
+                        <Reviews
+                            :pratilipiId="getPratilipiData.pratilipiId"
+                            :authorId="getPratilipiData.author.authorId"
                             :haveInfiniteScroll="true"
                             screenName="READER"
                             screenLocation="RATEREV"
@@ -245,12 +245,12 @@
                             :userPratilipiData='getUserPratilipiData'>
                         </Reviews>
                     </div>
-                    
+
                     <div class="rating-popout" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                         <button type="button" class="close-review" name="button" @click="closeRatingModal"><i class="material-icons">close</i></button>
-                        <Reviews 
-                            :pratilipiId="getPratilipiData.pratilipiId" 
-                            :authorId="getPratilipiData.author.authorId" 
+                        <Reviews
+                            :pratilipiId="getPratilipiData.pratilipiId"
+                            :authorId="getPratilipiData.author.authorId"
                             :haveInfiniteScroll="false"
                             screenName="READER"
                             screenLocation="READERM"
@@ -348,7 +348,7 @@ export default {
             'setAfterLoginAction'
         ]),
         recordMaxRead(maxRead) {
-            if(!this.getUserDetails.isGuest) {
+            if (!this.getUserDetails.isGuest && !isNaN(maxRead)) {
                 if (this.$route.query.chapterNo) {
                     this.chapterCount = Number(this.$route.query.chapterNo);
                 }
@@ -425,7 +425,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-            
+
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter - 1 } });
         },
         goToNextChapter() {
@@ -435,7 +435,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
-            
+
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter + 1 } });
         },
         increaseFont() {
@@ -495,7 +495,7 @@ export default {
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-white");
-            
+
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
