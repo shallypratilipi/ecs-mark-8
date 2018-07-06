@@ -78,14 +78,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
                                     <textarea class="form-control" id="reportModalTextarea" rows="3" placeholder="__('report_issue')"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
+                                <button type="button" class="btn btn-primary btn-submit" @click="submitReport">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -290,7 +288,9 @@ import Recommendation from '@/components/Recommendation.vue';
 import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import constants from '@/constants';
+
 
 export default {
     components: {
@@ -323,7 +323,8 @@ export default {
             isWebPushModalEnabled: false,
             maxRead: 0,
             chapterCount: 0,
-            recordTime: null
+            recordTime: null,
+            language: ''
         }
     },
     methods: {
@@ -336,7 +337,11 @@ export default {
             'fetchPratilipiContentForIMAGE',
             'fetchAuthorDetails',
             'followOrUnfollowAuthor',
+            'submitPrailipiReport',
             'postReadingPercentage'
+        ]),
+        ...mapActions('alert', [
+            'triggerAlert'
         ]),
         ...mapActions([
             'setShareDetails',
@@ -355,6 +360,18 @@ export default {
                 let pratilipiId = this.getPratilipiData.pratilipiId;
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
+        },
+        submitReport() {
+            let user = this.getUserDetails;
+            let message = $('#reportModalTextarea').val().toString();
+            let name = user.displayName;
+            let email = user.email;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            let language = this.language;
+            this.submitPrailipiReport({name ,email,message, pratilipiId, language});
+            $('#reportModal').modal('hide');
+            this.triggerAlert({ message: '__("success_generic_message")', timer: 3000 });
+            $("#reportModalTextarea").val("");
         },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -623,6 +640,12 @@ export default {
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
+         const currentLocale = process.env.LANGUAGE;
+        constants.LANGUAGES.forEach((eachLanguage) => {
+            if (eachLanguage.shortName === currentLocale) {
+                this.language = eachLanguage.fullName.toUpperCase();
+            }
+        });
     },
     mounted() {
         $('.read-page').bind("contextmenu",function(e){
