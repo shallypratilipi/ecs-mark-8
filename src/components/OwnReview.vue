@@ -248,7 +248,6 @@ li {
         }
     }
     .comment-box {
-        background: rgba(40, 167, 69,0.2);
         margin-top: -50px;
         padding: 40px 5px 10px;
         overflow: hidden;
