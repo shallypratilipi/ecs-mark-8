@@ -20,7 +20,7 @@
             </div>
             <p class="help-text" v-if="getReaderLevel < 3"><b>{{( Number(getReadStats.read_count) - readLevelThreshold[getReaderLevel - 1] ) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100 }}%</b>
                 Read {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} more books to unlock <b>Level {{ getReaderLevel + 1 }}</b>.</p>
-            <p class="help-text">More levels coming soon. Happy reading!</p>
+            <p v-else class="help-text">More levels coming soon. Happy reading!</p>
             <router-link :to="'/'" class="explore-books">Explore books</router-link>
         </div>
     </div>
