@@ -4,9 +4,9 @@
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
                      :banners="getHomePageBanners"
             ></Banners>
-
+            <Vapasi v-if="this.isMobile()"></Vapasi>
+            <VapasiHoroscope v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>
-            <Vapasi></Vapasi>
             <div v-if="getHomePageLoadingState === 'LOADING_SUCCESS'" v-for="(eachSection, index) in getHomePageSections" v-bind:key="eachSection.listPageUrl">
                 <PratilipiListComponent
                         :pratilipiList="eachSection.pratilipiList"
@@ -53,6 +53,8 @@
     import MainLayout from '@/layout/main-layout.vue';
     import Banners from '@/components/Banners.vue';
     import Vapasi from '@/components/Vapasi.vue';
+    import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
+
     import ServerError from '@/components/ServerError.vue';
     import WebPushStrip from '@/components/WebPushStrip.vue';
     import WebPushModal from '@/components/WebPushModal.vue';
@@ -116,7 +118,8 @@
             DummyLoader,
             WebPushStrip,
             WebPushModal,
-            Vapasi
+            Vapasi,
+            VapasiHoroscope
         },
         created() {
             this.fetchBanners(this.getCurrentLanguage().fullName.toUpperCase());
@@ -128,6 +131,7 @@
                 'USER_ID': this.getUserDetails.userId
             });
             window.addEventListener('scroll', this.updateScroll);
+
         },
         watch: {
             'percentScrolled'(newPercentScrolled, prevPercentScrolled) {

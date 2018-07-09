@@ -78,12 +78,23 @@ export default {
     setJokeOfTheDay(state, data) {
         state.joke.loading_state = 'LOADING_SUCCESS';
         state.joke.data = data.response.joke;
-        console.log("I am from Mutator and my joke is: ", state.joke.data);
+        state.joke.imageUrl = data.response.imageUrl;
+        console.log("I am from Mutator and my joke is: ", state.joke.imageUrl);
     },
     setQuoteOfTheDay(state, data) {
         state.quote.loading_state = 'LOADING_SUCCESS';
         state.quote.data = data.response.quote;
+        state.quote.imageUrl = data.response.imageUrl;
     },
+    setHoroscopeOfTheDay(state, data) {
+        state.horoscope.loading_state = 'LOADING_SUCCESS';
+        state.horoscope.data = data.horoscope;
+        state.horoscope.imageUrl = data.imageUrl;
+    },
+
+
+
+
     setHomePageBannerLoadingError(state){
         state.banners.loading_state = 'LOADING_ERROR';
         state.banners.data = [];

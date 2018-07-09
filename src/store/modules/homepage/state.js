@@ -11,11 +11,19 @@ export default {
 
     joke: {
         loading_state: 'LOADING',
-        data: ""
+        data: "",
+        imageUrl: ""
     },
 
     quote: {
         loading_state: 'LOADING',
-        data: ""
+        data: "",
+        imageUrl: ""
+    },
+
+    horoscope: {
+        loading_state: 'LOADING',
+        data: "",
+        imageUrl: ""
     }
 }

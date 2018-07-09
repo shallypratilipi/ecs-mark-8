@@ -2018,22 +2018,22 @@ export default {
     "GETANDROID_OPENAPP_READER": {
         "SCREEN_NAME": "READER",
         "LOCATION": "OPENAPP",
-        "ACTION": "GETANDROID"  
+        "ACTION": "GETANDROID"
     },
     "DISMISS_OPENAPP_READER": {
         "SCREEN_NAME": "READER",
         "LOCATION": "OPENAPP",
-        "ACTION": "DISMISS"  
+        "ACTION": "DISMISS"
     },
     "VIEWANDROID_OPENAPP_READER": {
         "SCREEN_NAME": "READER",
         "LOCATION": "OPENAPP",
-        "ACTION": "VIEWANDROID"  
+        "ACTION": "VIEWANDROID"
     },
     "CLICKCATEGORY_TOPICS_DISCOVER": {
         "SCREEN_NAME": "DISCOVER",
         "LOCATION": "TOPICS",
-        "ACTION": "CLICKCATEGORY"  
+        "ACTION": "CLICKCATEGORY"
     },
     "STARTCHAT_USERM_USER": {
         "SCREEN_NAME": "USER",
@@ -2104,5 +2104,77 @@ export default {
         "SCREEN_NAME": "NOTIFS",
         "LOCATION": "NEWCHATS",
         "ACTION": "LANDED"
-    }
+    },
+
+    "CLICKEVENT_VAPASI_QUOTE": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_QUOTE",
+        "ACTION": "CLICKEDQUOTE"
+    },
+    "CLICKEVENT_VAPASI_JOKE": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_JOKE",
+        "ACTION": "CLICKEDJOKE"
+    },
+    "CLICKEVENT_VAPASI_HOROSCOPE_LIST": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "HOROSCOPE_LIST",
+        "ACTION": "CLICKEDHOROSCOPELIST"
+    },
+    "CLICKEVENT_VAPASI_HOROSCOPE_LIST": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "HOROSCOPE_LIST",
+        "ACTION": "CLICKEDHOROSCOPELIST"
+    },
+    "CLICKEVENT_VAPASI_HOROSCOPE_DETAILS": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "HOROSCOPE_DETAIL",
+        "ACTION": "CLICKEDHOROSCOPEDETAIL"
+    },
+    "VIEWED_VAPASIQUOTE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_QUOTE",
+        "ACTION": "VIEWEDQUOTE"
+    },
+    "VIEWED_VAPASIHOROSCOPE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_QUOTE",
+        "ACTION": "VIEWEDHOROSCOPE"
+    },
+    "VIEWED_VAPASIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_JOKE",
+        "ACTION": "VIEWEDJOKE"
+    },
+    "SHARE_VAPASI_QUOTE_FACEBOOK": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_QUOTE",
+        "ACTION": "SHAREQUOTEFB"
+    },
+    "SHARE_VAPASI_JOKE_FACEBOOK": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_JOKE",
+        "ACTION": "SHAREJOKEFB"
+    },
+    "SHARE_VAPASI_HOROSCOPE_FACEBOOK": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_HOROSCOPE",
+        "ACTION": "SHAREHOROSCOPEFB"
+    },
+    "SHARE_VAPASI_QUOTE_WHATSAPP": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_QUOTE",
+        "ACTION": "SHAREQUOTEWA"
+    },
+    "SHARE_VAPASI_HOROSCOPE_WHATSAPP": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_HOROSCOPE",
+        "ACTION": "SHAREHOROSCOPEWA"
+    },
+    "SHARE_VAPASI_JOKE_WHATSAPP": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPASI_JOKE",
+        "ACTION": "SHAREJOKEWA"
+    },
+
 };

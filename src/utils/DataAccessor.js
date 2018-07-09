@@ -1016,7 +1016,6 @@ export default {
     },
 
     getJokeOfTheDay: (language, aCallBack) => {
-        console.log("From DataAccessor");
         httpUtil.get(API_PREFIX + INIT_API_VAPSI,
             null,
             {
@@ -1025,12 +1024,10 @@ export default {
             },
             function (response, status) {
                 processGetResponse(response, status, aCallBack);
-                console.log("API RESPONSE IS: " + response.joke);
             });
     },
 
     getQuoteOfTheDay: (language, aCallBack) => {
-        console.log("From DataAccessor");
         httpUtil.get(API_PREFIX + INIT_API_VAPSI,
             null,
             {
@@ -1039,7 +1036,18 @@ export default {
             },
             function (response, status) {
                 processGetResponse(response, status, aCallBack);
-                console.log("API RESPONSE IS: " + response.quote);
+            });
+    },
+
+    getHoroscopeOfTheDay: (aCallBack) => {
+        httpUtil.get(API_PREFIX + INIT_API_VAPSI,
+            null,
+            {
+                "language": "MARATHI",
+                "vapsiType": "HOROSCOPE"
+            },
+            function (response, status) {
+                processGetResponse(response, status, aCallBack);
             });
     }
 };
