@@ -3,6 +3,7 @@ import { httpUtil, formatParams } from './HttpUtil';
 
 const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
 
+
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";
 const SEARCH_TRENDING_API = "/trending_search";
@@ -78,6 +79,8 @@ const BLOGS_LIST_API = "/oasis/blogs/v1.0/list";
 const AUTHOR_INTERVIEWS_API = "/oasis/author-interviews/v1.0";
 const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
 const READ_PERCENTAGE_API = "/user_pratilipi/v2.0/user_pratilipis";
+
+const INIT_API_VAPSI = "/init/v2.0/vapsi";
 
 const request = function(name, api, params) {
     return {
@@ -1016,6 +1019,9 @@ export default {
     },
 
     postReadingPercent: (pratilipiId, chapterNo, percentageScrolled, index, successCallBack, errorCallBack) => {
+        for (var key in index) {
+            delete index[key].title;
+        }
         let params = {
             "pratilipiId": pratilipiId,
             "chapterNo": chapterNo,
@@ -1031,4 +1037,39 @@ export default {
             });
     },
 
+    getJokeOfTheDay: (language, aCallBack) => {
+        httpUtil.get(API_PREFIX + INIT_API_VAPSI,
+            null,
+            {
+                "language": language,
+                "vapsiType": "JOKE"
+            },
+            function (response, status) {
+                processGetResponse(response, status, aCallBack);
+            });
+    },
+
+    getQuoteOfTheDay: (language, aCallBack) => {
+        httpUtil.get(API_PREFIX + INIT_API_VAPSI,
+            null,
+            {
+                "language": language,
+                "vapsiType": "QUOTE"
+            },
+            function (response, status) {
+                processGetResponse(response, status, aCallBack);
+            });
+    },
+
+    getHoroscopeOfTheDay: (aCallBack) => {
+        httpUtil.get(API_PREFIX + INIT_API_VAPSI,
+            null,
+            {
+                "language": "MARATHI",
+                "vapsiType": "HOROSCOPE"
+            },
+            function (response, status) {
+                processGetResponse(response, status, aCallBack);
+            });
+    }
 };

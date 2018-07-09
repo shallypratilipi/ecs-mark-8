@@ -75,5 +75,42 @@ export default {
                 commit('setHomePageBannerLoadingError');
             }
         })
-    }
+    },
+
+    fetchJokeOfTheDay({commit, state}, language) {
+        DataAccessor.getJokeOfTheDay(language, (data) => {
+            if (data.status === 200) {
+                commit('setJokeOfTheDay', data)
+                // commit('setHomePageBannerLoadingSuccess', data.response);
+            } else {
+                // commit('setHomePageBannerLoadingError');
+                console.log("Error in getJokeOfDayAPI");
+
+            }
+        })
+    },
+
+    fetchQuoteOfTheDay({commit, state}, language) {
+        DataAccessor.getQuoteOfTheDay(language, (data) => {
+            if (data.status === 200) {
+                commit('setQuoteOfTheDay', data)
+                // commit('setHomePageBannerLoadingSuccess', data.response);
+            } else {
+                // commit('setHomePageBannerLoadingError');
+                console.log("Error in getQuoteOfTheDay");
+            }
+        })
+    },
+
+    fetchHoroscope({commit, state}, horoscope) {
+        DataAccessor.getHoroscopeOfTheDay((data) => {
+            if (data.status === 200) {
+                commit('setHoroscopeOfTheDay', data.response[horoscope]);
+                // commit('setHomePageBannerLoadingSuccess', data.response);
+            } else {
+                // commit('setHomePageBannerLoadingError');
+                console.log("Error in getQuoteOfTheDay");
+            }
+        })
+    },
 }
