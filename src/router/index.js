@@ -27,6 +27,9 @@ import EventParticipatePageComponent from '@/pages/EventParticipate.vue'
 import VideoseriesPageComponent from '@/pages/Videoseries.vue'
 import VideoPlayListPageComponent from '@/pages/VideoPlayList.vue'
 import VideoPlayPageComponent from '@/pages/Videoplay.vue'
+import AdminEventSubmissions from '@/pages/AdminEventSubmissions'
+import AdminEventSubmission from '@/pages/AdminEventSubmission'
+
 import {
     getCookie
 } from '@/mixins/methods'
@@ -507,6 +510,20 @@ var router = new Router({
                 'store': 'eventparticipate'
             },
             component: EventParticipatePageComponent
+        }, {
+            path: '/submissions',
+            meta: {
+                'title': '__("seo_home_page")',
+                'store': 'admineventsubmissions'
+            },
+            component: AdminEventSubmissions
+        }, {
+            path: '/submissions/:eventPratilipiId',
+            meta: {
+                'title': '__("seo_home_page")',
+                'store': 'admineventsubmissions'
+            },
+            component: AdminEventSubmission
         }, {
             path: '/:list_page_url',
             name: 'List_Page',
