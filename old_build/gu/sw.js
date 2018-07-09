@@ -1,20 +1,11 @@
 var serviceWorkerOption = {
   "assets": [
-    "/static/js/0.d79de393307b3892a7a2.js",
-    "/static/js/1.e8a288f5aac61bf4f018.js",
-    "/static/js/2.888e9a9579504e0256ff.js",
-    "/static/js/3.15c56b0d66afe33f9a21.js",
-    "/static/js/4.30fa76e15e8fae0420cd.js",
-    "/static/js/5.94b087a06e65de3ba858.js",
-    "/static/js/6.0f7a96491505ed8edb3b.js",
-    "/static/js/7.a43d330608d8fd42aba0.js",
-    "/static/js/8.18a376b966aba176341b.js",
-    "/static/js/9.e599ad0de644157ce38e.js",
-    "/static/js/10.ab4b5be0fe3603208a93.js",
-    "/static/js/app.3caf1c48ae41dffc59d4.js",
-    "/static/js/vendor.b36e4d2ff74f983628be.js",
-    "/static/js/manifest.b480e57cf0835d5329d7.js",
-    "/static/css/app.bb8e78264c601108eec9e25167861ceb.css"
+    "/static/js/0.13bb7cc375f31a0a78ed.js",
+    "/static/js/1.08b2a8ab45e15049073e.js",
+    "/static/js/app.fbb7c1f8dcbbfffafb47.js",
+    "/static/js/vendor.f23e3d0c8d45a0ca34e2.js",
+    "/static/js/manifest.e2e6248dd6f41f377f7b.js",
+    "/static/css/app.4f0854fffce1160f5228c4b580401658.css"
   ]
 };
         

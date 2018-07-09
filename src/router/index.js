@@ -62,7 +62,7 @@ const defaultMetaTags = [{
     },
     {
         property: 'og:url',
-        content: window.location.protocol + '//' + window.location.host
+        content: window.location.href
     }
 ]
 
