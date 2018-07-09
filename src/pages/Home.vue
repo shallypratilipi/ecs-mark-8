@@ -127,11 +127,6 @@ import { mapGetters, mapActions } from 'vuex'
             if (this.$route.query.utm_image) {
                 document.head.querySelector('meta[property="og:image"]').content = this.$route.query.utm_image;
             }
-            // if($route.params.utm_source == "vapsi") {
-            //     console.log("I am entering VAPASI");
-            // }
-
-
         },
         mounted() {
             this.triggerAnanlyticsEvent('LANDED_HOMEM_HOME', 'CONTROL', {
