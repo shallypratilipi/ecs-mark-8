@@ -2,14 +2,14 @@ git clone https://github.com/Pratilipi-Growth/ecs-mark-8.git
 cd ecs-mark-8
 npm install
 
-REALM=PROD LANGUAGE=hi npm run build
-REALM=PROD LANGUAGE=bn npm run build
-REALM=PROD LANGUAGE=kn npm run build
-REALM=PROD LANGUAGE=ta npm run build
-REALM=PROD LANGUAGE=te npm run build
-REALM=PROD LANGUAGE=mr npm run build
-REALM=PROD LANGUAGE=ml npm run build
-REALM=PROD LANGUAGE=gu npm run build
+REALM=PROD_BRIDGE LANGUAGE=hi npm run build
+REALM=PROD_BRIDGE LANGUAGE=bn npm run build
+REALM=PROD_BRIDGE LANGUAGE=kn npm run build
+REALM=PROD_BRIDGE LANGUAGE=ta npm run build
+REALM=PROD_BRIDGE LANGUAGE=te npm run build
+REALM=PROD_BRIDGE LANGUAGE=mr npm run build
+REALM=PROD_BRIDGE LANGUAGE=ml npm run build
+REALM=PROD_BRIDGE LANGUAGE=gu npm run build
 
 cp -Rv ./dist/hi ./../old_build/
 cp -Rv ./dist/bn ./../old_build/

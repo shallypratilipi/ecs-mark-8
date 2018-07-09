@@ -219,7 +219,7 @@ var router = new Router({
             path: '/story/:slug_id',
             name: 'Pratilipi',
             component: () => {
-                if (process.env.REALM === 'PROD') {
+                if (process.env.REALM === 'PROD' || process.env.REALM === 'PROD_BRIDGE') {
                     return new Promise((resolve, reject) => {
                         resolve(PratilipiPageComponent);
                     });
@@ -338,7 +338,7 @@ var router = new Router({
             path: '/read',
             name: 'Reader_Page',
             component: () => {
-                if (process.env.REALM === 'PROD') {
+                if (process.env.REALM === 'PROD' || process.env.REALM === 'PROD_BRIDGE') {
                     return new Promise((resolve, reject) => resolve(ReaderPageComponent));
                 } else {
                     // return import('@/pages/experiments/reader_progress_v1/Reader.vue');

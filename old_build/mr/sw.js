@@ -1,9 +1,20 @@
 var serviceWorkerOption = {
   "assets": [
-    "/static/js/app.bdea4ef0b1ea84ee1525.js",
-    "/static/js/vendor.583954d9372254872d6a.js",
-    "/static/js/manifest.2ae2e69a05c33dfc65f8.js",
-    "/static/css/app.be3a744aaf452a1ba2b577e0da002954.css"
+    "/static/js/0.f3be2f16a0e86e3cd33d.js",
+    "/static/js/1.e8a288f5aac61bf4f018.js",
+    "/static/js/2.7873730671e825a617ec.js",
+    "/static/js/3.309c20a409f312f9807f.js",
+    "/static/js/4.5eedd0281d7ea343d76e.js",
+    "/static/js/5.8c9ae1965d2c630ab872.js",
+    "/static/js/6.963b7baba5673ee44ad1.js",
+    "/static/js/7.5df539fa280f2189e59c.js",
+    "/static/js/8.a3933696162f2d05aabe.js",
+    "/static/js/9.df0d05684fd3c1b93eaa.js",
+    "/static/js/10.ab4b5be0fe3603208a93.js",
+    "/static/js/app.34133ac0d42fc01da905.js",
+    "/static/js/vendor.07dae4973167196fad54.js",
+    "/static/js/manifest.f6f24c2a9404fdaa1c58.js",
+    "/static/css/app.171c61196b4daf785bdd43b1a34e4d6c.css"
   ]
 };
         
