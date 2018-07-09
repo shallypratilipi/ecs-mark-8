@@ -4,7 +4,7 @@
             <div v-if="showCongratulationMessage" class="congratulations" style="display: block;">
                 <h3>__('reader_gamify_congratulations')</h3>
                 <h2>__('reader_gamify_you_reached_level')</h2>
-                <div class="hexagon"><icon class="bronze" name="trophy"></icon></div>
+                <div class="hexagon"><icon :class="getCurrentBadge()" name="trophy"></icon></div>
                 <p v-if="getUserDetails.isGuest && getReaderLevel === 3">__('reader_gamify_login_to_save_your_progress')</p>
                 <button v-if="getUserDetails.isGuest && getReaderLevel === 3" @click="saveReadProgress" data-target="#login_modal" class="btn-login">__("user_sign_in") / __("user_sign_up")</button>
             </div>
@@ -14,11 +14,11 @@
             <h2>__('reader_gamify_level')</h2>
             <!-- <div class="level level-name-left bronze">Level 0</div>
             <div class="level level-name-right silver">Level 1</div> -->
-            <div class="hexagon"><icon class="bronze" name="trophy"></icon></div>
+            <div class="hexagon"><icon :class="getNextBadge()" name="trophy"></icon></div>
             <div class="progress">
                 <div class="progress-bar" :style="{ width: (getReadStats.read_count - readLevelThreshold[getReaderLevel - 1]) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100 + '%'}"></div>
             </div>
-            <p class="help-text" v-if="getReaderLevel < 3"><b>{{(( Number(getReadStats.read_count) - readLevelThreshold[getReaderLevel - 1] ) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100).toFixed(2) }}%</b>
+            <p class="help-text" v-if="getReaderLevel < 3"><b>{{ Math.round((Number(getReadStats.read_count) - readLevelThreshold[getReaderLevel - 1] ) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100) }}%</b>
                 __('reader_gamify_read_count_to_reach_level')</p>
             <p v-else class="help-text">__('reader_gamify_more_levels_coming_soon')</p>
             <router-link :to="'/'" @click.native="triggerAnanlyticsEventAndGoToCategories" class="explore-books">__('reader_gamify_explore_contents')</router-link>
@@ -63,6 +63,24 @@ export default {
         ])
     },
     methods: {
+        getCurrentBadge() {
+            if (this.getReaderLevel === 1) {
+                return 'bronze';
+            } else if (this.getReaderLevel === 2) {
+                return 'silver';
+            } else {
+                return 'gold';
+            }
+        },
+        getNextBadge() {
+            if (this.getReaderLevel === 0) {
+                return 'bronze';
+            } else if (this.getReaderLevel === 1) {
+                return 'silver';
+            } else {
+                return 'gold';
+            }
+        },
         ...mapActions([
             'setAfterLoginAction',
             'setReadCount'
