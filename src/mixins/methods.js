@@ -539,7 +539,9 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
                 } catch (e) {}
             }, 15000);
         } else {
-            FB.AppEvents.logEvent(eventName, null, eventProperty)
+            try {
+                FB.AppEvents.logEvent(eventName, null, eventProperty)
+            } catch (e) {}
         }
 
     } else {
