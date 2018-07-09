@@ -28,6 +28,7 @@ import bookv1AnalyticsEvents from '@/static_scripts/experiment_events/book_v1'
 import bookv2AnalyticsEvents from '@/static_scripts/experiment_events/book_v2'
 import bookv3AnalyticsEvents from '@/static_scripts/experiment_events/book_v3'
 import bookv4AnalyticsEvents from '@/static_scripts/experiment_events/book_v4'
+import readerProgressV1AnalyticsEvents from '@/static_scripts/experiment_events/reader_progress_v1'
 
 const rating_v1 = ['WGEN001'];
 const rating_v2 = ['WGEN002'];
@@ -57,7 +58,7 @@ const book_v1 = ['WGEN021'];
 const book_v2 = ['WGEN022'];
 const book_v3 = ['WGEN023'];
 const book_v4 = ['WGEN024'];
-
+const reader_progress_v1 = [ 'WGEN025' ];
 
 let REFERRER_EVENT;
 let REFERRER_EXPERIMENTID;
@@ -461,6 +462,9 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             break;
         case (book_v4.indexOf(experimentType) > -1):
             eventProps = { ...bookv4AnalyticsEvents[eventName] };
+            break;
+        case (reader_progress_v1.indexOf(experimentType) > -1):
+            eventProps = { ...readerProgressV1AnalyticsEvents[eventName] };
             break;
     }
 

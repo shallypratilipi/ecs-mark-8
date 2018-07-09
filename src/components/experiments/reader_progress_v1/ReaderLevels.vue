@@ -72,7 +72,7 @@ export default {
         },
         triggerAnanlyticsEventAndGoToCategories() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-            this.triggerAnanlyticsEvent(`CLICKCATEGORY_PROGRESS_READER`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`CLICKCATEGORY_PROGRESS_READER`, 'WGEN025', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': localStorage.readCount
@@ -138,7 +138,7 @@ export default {
         'getReaderLevel'(newLevel) {
             this.showCongratulationMessage = true;
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-            this.triggerAnanlyticsEvent(`VIEWED_CONGRATULATE_READER`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`VIEWED_CONGRATULATE_READER`, 'WGEN025', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': newLevel
@@ -161,7 +161,7 @@ export default {
             console.log('LEVEL VISIBILITY: ', visible);
             if (visible) {
                 const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-                this.triggerAnanlyticsEvent(`VIEWED_PROGRESS_READER`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`VIEWED_PROGRESS_READER`, 'WGEN025', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': localStorage.readCount
