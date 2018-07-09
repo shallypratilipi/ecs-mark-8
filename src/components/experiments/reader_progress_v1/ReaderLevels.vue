@@ -18,7 +18,7 @@
             <div class="progress">
                 <div class="progress-bar" :style="{ width: (getReadStats.read_count - readLevelThreshold[getReaderLevel - 1]) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100 + '%'}"></div>
             </div>
-            <p class="help-text" v-if="getReaderLevel < 3"><b>{{( Number(getReadStats.read_count) - readLevelThreshold[getReaderLevel - 1] ) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100 }}%</b>
+            <p class="help-text" v-if="getReaderLevel < 3"><b>{{(( Number(getReadStats.read_count) - readLevelThreshold[getReaderLevel - 1] ) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100).toFixed(2) }}%</b>
                 Read {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} more books to unlock <b>Level {{ getReaderLevel + 1 }}</b>.</p>
             <p v-else class="help-text">More levels coming soon. Happy reading!</p>
             <router-link :to="'/'" class="explore-books">Explore books</router-link>

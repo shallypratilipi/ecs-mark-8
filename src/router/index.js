@@ -341,18 +341,18 @@ var router = new Router({
                 if (process.env.REALM === 'PROD' || process.env.REALM === 'PROD_BRIDGE') {
                     return new Promise((resolve, reject) => resolve(ReaderPageComponent));
                 } else {
-                    // return import('@/pages/experiments/reader_progress_v1/Reader.vue');
-                    if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
-                        return import ('@/pages/experiments/reader_v5/Reader.vue');
-                    } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
-                        return import ('@/pages/experiments/reader_v6/Reader.vue');
-                    } else if (getCookie('bucketId') >= 6 && getCookie('bucketId') < 8) {
-                        return import ('@/pages/experiments/reader_v7/Reader.vue');
-                    } else if (getCookie('bucketId') >= 8 && getCookie('bucketId') < 10) {
-                        return import ('@/pages/experiments/reader_v8/Reader.vue');
-                    } else {
-                        return import ('@/pages/Reader.vue');
-                    }
+                    return import('@/pages/experiments/reader_progress_v1/Reader.vue');
+                    // if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
+                    //     return import ('@/pages/experiments/reader_v5/Reader.vue');
+                    // } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
+                    //     return import ('@/pages/experiments/reader_v6/Reader.vue');
+                    // } else if (getCookie('bucketId') >= 6 && getCookie('bucketId') < 8) {
+                    //     return import ('@/pages/experiments/reader_v7/Reader.vue');
+                    // } else if (getCookie('bucketId') >= 8 && getCookie('bucketId') < 10) {
+                    //     return import ('@/pages/experiments/reader_v8/Reader.vue');
+                    // } else {
+                    //     return import ('@/pages/Reader.vue');
+                    // }
                 }
             },
             meta: {
