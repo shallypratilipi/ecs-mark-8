@@ -39,7 +39,8 @@ export default {
                 '-1': 0,
                 0: 3,
                 1: 8,
-                2: 16
+                2: 16,
+                3: 17
             },
             showCongratulationMessage: false
         }
