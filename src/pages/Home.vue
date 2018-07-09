@@ -124,6 +124,13 @@ import { mapGetters, mapActions } from 'vuex'
         created() {
             this.fetchBanners(this.getCurrentLanguage().fullName.toUpperCase());
             this.getListOfSections(this.getCurrentLanguage().fullName.toUpperCase());
+            if (this.$route.query.utm_image) {
+                document.head.querySelector('meta[property="og:image"]').content = this.$route.query.utm_image;
+            }
+            // if($route.params.utm_source == "vapsi") {
+            //     console.log("I am entering VAPASI");
+            // }
+
 
         },
         mounted() {
