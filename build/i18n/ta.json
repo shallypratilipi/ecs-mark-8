@@ -564,20 +564,20 @@
     "chat_yesterday": "நேற்று",
     "chat_today": "இன்று",
 
-    "event_participate":"பங்கேற்க",
-    "event_participate_your_drafts":"உங்களது வரைவுகள்",
-    "event_participate_your_submissions":"நீங்கள் சமர்ப்பித்த படைப்புகள்",
-    "event_participate_accepted_message":"உங்களது படைப்பு போட்டிக்கு ஏற்றுக்கொள்ளப்பட்டது. கடைசித் தேதி முடிந்ததும் படைப்பு பதிப்பிக்கப்படும்.",
-    "event_participate_drafted_item_edit":"கீழே இருக்கும் படைப்புகள் ஏற்கனவே உங்களது வரைவுகளில் உள்ளது. அதனை எடிட் செய்ய அதன் மேல் சொடுக்கவும் அல்லது புதிய படைப்பை உருவாக்க கீழே சொடுக்கவும். ",
-    "event_participate_last_edited_on":"கடைசியாக திருத்தப்பட்டது",
-    "event_participate_finish":"முடிக்க",
-    "event_participate_confirm_submission":"சமர்பித்தலை உறுதிப்படுத்தவும்",
-    "event_participate_cannot_change_drafts":"இறுதி சமர்ப்பிப்பிற்கு பிறகு உங்களது படைப்பை திருத்த முடியாது. உறுதியாக படைப்பை சமர்ப்பிக்க வேண்டுமா?",
-    "event_participate_check_your_entry_here":"நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்",
-    
+    "event_participate": "பங்கேற்க",
+    "event_participate_your_drafts": "உங்களது வரைவுகள்",
+    "event_participate_your_submissions": "நீங்கள் சமர்ப்பித்த படைப்புகள்",
+    "event_participate_accepted_message": "உங்களது படைப்பு போட்டிக்கு ஏற்றுக்கொள்ளப்பட்டது. கடைசித் தேதி முடிந்ததும் படைப்பு பதிப்பிக்கப்படும்.",
+    "event_participate_drafted_item_edit": "கீழே இருக்கும் படைப்புகள் ஏற்கனவே உங்களது வரைவுகளில் உள்ளது. அதனை எடிட் செய்ய அதன் மேல் சொடுக்கவும் அல்லது புதிய படைப்பை உருவாக்க கீழே சொடுக்கவும். ",
+    "event_participate_last_edited_on": "கடைசியாக திருத்தப்பட்டது",
+    "event_participate_finish": "முடிக்க",
+    "event_participate_confirm_submission": "சமர்பித்தலை உறுதிப்படுத்தவும்",
+    "event_participate_cannot_change_drafts": "இறுதி சமர்ப்பிப்பிற்கு பிறகு உங்களது படைப்பை திருத்த முடியாது. உறுதியாக படைப்பை சமர்ப்பிக்க வேண்டுமா?",
+    "event_participate_check_your_entry_here": "நீங்கள் சமர்ப்பித்த படைப்புகளை இங்கே பார்க்கவும்",
+
     "chat_banner_send_messages": "எழுத்தாளரிடம் பேசுங்கள்",
     "chat_banner_start_chatting": "குறுஞ்செய்தி அனுப்புங்கள்",
-    
+
     "message_capsule_conversation": "உங்கள் பக்கத்தில் {{ initialUnreadConversations }} படிக்கப்படாத குறுஞ்செய்தி உள்ளது",
     "message_capsule_conversations": "உங்கள் பக்கத்தில் {{ initialUnreadConversations }} படிக்கப்படாத குறுஞ்செய்திகள் உள்ளன",
     "web_push_title": "வாசித்தது பிடித்திருந்ததா?",
@@ -586,6 +586,16 @@
     "web_push_message_2": "நல்ல கதைகளை நோட்டிஃபிகேஷனில் பெற விருப்பமா?",
     "web_push_message_3": "நல்ல கதைகளை நோட்டிஃபிகேஷனில் அனுப்ப பிரதிலிபிக்கு அனுமதி கொடுக்கவும்",
     "web_push_allow": "சரி",
-    "web_push_cancel": "வேண்டாம்"
+    "web_push_cancel": "வேண்டாம்",
+
+    "reader_gamify_level": "படிநிலை {{ getReaderLevel }}",
+    "reader_gamify_read_count_to_reach_level": "<b>படிநிலை {{ getReaderLevel + 1 }} -க்கு</b> செல்ல இன்னும் {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} புத்தகங்கள் படிக்கவேண்டும்",
+    "reader_gamify_explore_contents": "படைப்புகளைக் கண்டடையுங்கள்",
+    "reader_gamify_read_levels": "வாசிப்புப் படிநிலைகள்",
+    "reader_gamify_more_levels_coming_soon": "இன்னும் நிறைய படிநிலைகள் வரவிருக்கின்றன. தொடர்ந்து வாசியுங்கள்!",
+    "reader_gamify_congratulations": "வாழ்த்துக்கள்!",
+    "reader_gamify_you_reached_level": "நீங்கள் படிநிலை {{ getReaderLevel }}-ஐ அடைந்துவிட்டீர்கள்",
+    "reader_gamify_keep_reading": "தொடர்ந்து வாசியுங்கள்!",
+    "reader_gamify_login_to_save_your_progress": "உங்களது படிநிலைகளை சேமிக்க லாக்-இன் செய்யவும்"
 
 }

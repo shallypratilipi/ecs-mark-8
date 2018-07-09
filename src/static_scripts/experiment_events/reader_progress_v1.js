@@ -14,4 +14,9 @@ export default {
         "LOCATION": "CONGRATULATE",
         "ACTION": "CLICKCATEGORY"
     },
+    "CLICKLOGIN_CONGRATULATE_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "CONGRATULATE",
+        "ACTION": "CLICKLOGIN"
+    }
 }
