@@ -15,14 +15,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/cinema",
-                    "title": "சினிமா",
-                    "analyticsCategoryName": "cinema",
-                    "imageFileName": "movies.jpg",
+                    "categoryUrl": "/novels",
+                    "title": "நாவல்கள்",
+                    "analyticsCategoryName": "books",
+                    "imageFileName": "novels.jpg",
                     "pratilipiListData": {
                         "language": "TAMIL",
                         "state": "PUBLISHED",
-                        "listName": "cinema"
+                        "listName": "novels"
                     }
                 },
                 {
@@ -48,6 +48,28 @@
                     }
                 },
                 {
+                    "categoryUrl": "/stories",
+                    "title": "மற்ற கதைகள்",
+                    "analyticsCategoryName": "other-stories",
+                    "imageFileName": "event_generic3.jpg",
+                    "pratilipiListData": {
+                        "language": "TAMIL",
+                        "state": "PUBLISHED",
+                        "listName": "stories"
+                    }
+                },
+                {
+                    "categoryUrl": "/cinema",
+                    "title": "சினிமா",
+                    "analyticsCategoryName": "cinema",
+                    "imageFileName": "movies.jpg",
+                    "pratilipiListData": {
+                        "language": "TAMIL",
+                        "state": "PUBLISHED",
+                        "listName": "cinema"
+                    }
+                },
+                {
                     "categoryUrl": "/bookreview",
                     "title": "புத்தக விமர்சனம்",
                     "analyticsCategoryName": "bookreview",
@@ -67,17 +89,6 @@
                         "language": "TAMIL",
                         "state": "PUBLISHED",
                         "listName": "society"
-                    }
-                },
-                {
-                    "categoryUrl": "/stories",
-                    "title": "மற்ற கதைகள்",
-                    "analyticsCategoryName": "other-stories",
-                    "imageFileName": "event_generic3.jpg",
-                    "pratilipiListData": {
-                        "language": "TAMIL",
-                        "state": "PUBLISHED",
-                        "listName": "stories"
                     }
                 },
                 {
