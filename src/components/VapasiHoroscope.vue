@@ -2,9 +2,9 @@
    <div class="vapasi">
       <div class="horoscope-banner" @click="showModal()">
          <div class="horoscope-text" >
-            __("today_horoscope") 
+            __("today_horoscope")
             <br class="vapasi-break">
-            __("click_here_to_know_more") 
+            __("click_here_to_know_more")
          </div>
          <div class="horoscope-image">
             <img v-bind:src="mockImage"  height="50" width="50">
@@ -16,7 +16,9 @@
             <p class="horoscope-heading"> __("select_zodiac_sign")</p>
             <div class="modal-message">
                <div class="modal-buttons">
-                  <button  class="btn btn-default horoscope-button" v-for="eachSign in zodiacSigns" @click="setHoroscopeValue(eachSign)">{{eachSign}}</button>
+                   <button class="btn btn-default horoscope-button" v-for="eachSign in zodiacSigns"
+                           @click="setHoroscopeValue(eachSign)"> {{eachSign}}
+                   </button>
                </div>
                <br><br>
             </div>
@@ -114,9 +116,9 @@ export default {
             FB.ui({
                 display: 'popup',
                 method: 'share',
-                href: this.fbShareUrl,
+                href: fbShareUrl,
             }, function(response) {
-                console.log(response);
+                console.log("FB share url is: " + fbShareUrl);
             });
             this.triggerAnanlyticsEvent(`SHARE_VAPASI_HOROSCOPE_FACEBOOK`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -127,8 +129,10 @@ export default {
 
         triggerWhatsappShareAnalytics() {
 
-            let waLink = "https://api.whatsapp.com/send?text='" + this.getHoroscopeImage + "'";
-            console.log(this.getHoroscopeImage);
+            let utmParameters = `utm_source=vapsi&utm_image=${this.getHoroscopeImage}`;
+            let urlShareLink = `//${window.location.host}?${encodeURIComponent(utmParameters)}`;
+            let waLink = "https://api.whatsapp.com/send?text=" + urlShareLink;
+            console.log(urlShareLink);
             window.open(waLink);
 
             let pratilipiAnalyticsData = {};
@@ -141,8 +145,6 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
             });
-
-
         },
 
         getPhotoHd() {
