@@ -21,7 +21,7 @@
             <p class="help-text" v-if="getReaderLevel < 3"><b>{{(( Number(getReadStats.read_count) - readLevelThreshold[getReaderLevel - 1] ) / (readLevelThreshold[getReaderLevel] - readLevelThreshold[getReaderLevel -1]) * 100).toFixed(2) }}%</b>
                 Read {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} more books to unlock <b>Level {{ getReaderLevel + 1 }}</b>.</p>
             <p v-else class="help-text">More levels coming soon. Happy reading!</p>
-            <router-link :to="'/'" class="explore-books">Explore books</router-link>
+            <router-link :to="'/'" @click.native="triggerAnanlyticsEventAndGoToCategories" class="explore-books">Explore books</router-link>
         </div>
     </div>
 </template>
@@ -29,6 +29,7 @@
 <script>
 import 'vue-awesome/icons/trophy'
 import { mapGetters, mapActions } from 'vuex';
+import inViewport from 'vue-in-viewport-mixin';
 import mixins from '@/mixins'
 
 export default {
@@ -41,6 +42,15 @@ export default {
                 2: 16
             },
             showCongratulationMessage: false
+        }
+    },
+    props: {
+        pratilipiData: {
+            required: true,
+            type: Object
+        },
+        'in-viewport-once': {
+            default: true
         }
     },
     computed: {
@@ -59,6 +69,14 @@ export default {
         saveReadProgress() {
             this.setAfterLoginAction({ action: `setReadCount`, data: localStorage.readCount });
             this.openLoginModal();
+        },
+        triggerAnanlyticsEventAndGoToCategories() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+            this.triggerAnanlyticsEvent(`CLICKCATEGORY_PROGRESS_READER`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': localStorage.readCount
+            });
         },
         updateReadPratilipisInFirebase() {
             const that = this;
@@ -107,7 +125,8 @@ export default {
         this.showCongratulationMessage = false;
     },
     mixins: [
-        mixins
+        mixins,
+        inViewport
     ],
     watch: {
         'getReadStats.read_count'(newCount) {
@@ -118,6 +137,12 @@ export default {
         },
         'getReaderLevel'(newLevel) {
             this.showCongratulationMessage = true;
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+            this.triggerAnanlyticsEvent(`VIEWED_CONGRATULATE_READER`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': newLevel
+            });
             // setTimeout(() => {
             //     this.showCongratulationMessage = false;
             // }, 5000);
@@ -130,6 +155,17 @@ export default {
         'getFirebaseGrowthDBLoadingState'(loaded) {
             if (loaded) {
                 this.updateReadPratilipisInFirebase();
+            }
+        },
+        'inViewport.now': function(visible) {
+            console.log('LEVEL VISIBILITY: ', visible);
+            if (visible) {
+                const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+                this.triggerAnanlyticsEvent(`VIEWED_PROGRESS_READER`, 'CONTROL', {
+                    ...pratilipiAnalyticsData,
+                    'USER_ID': this.getUserDetails.userId,
+                    'ENTITY_VALUE': localStorage.readCount
+                });
             }
         }
     }

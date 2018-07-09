@@ -115,7 +115,7 @@
                                 <div class="next" v-if="selectedChapter != getIndexData.length" @click="goToNextChapter">__("reader_next_chapter")</div>
                             </div>
 
-                            <ReaderLevels v-if="selectedChapter === getIndexData.length"></ReaderLevels>
+                            <ReaderLevels v-if="selectedChapter === getIndexData.length" :pratilipiData="getPratilipiData"></ReaderLevels>
 
                            <ShareStrip
                                 v-if="selectedChapter == getIndexData.length"
