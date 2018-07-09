@@ -574,7 +574,12 @@
     "event_participate_confirm_submission":"సమర్పణను నిర్ధారించండి",
     "event_participate_cannot_change_drafts":"చివరి సమర్పణ తర్వాత మీ రచనను మీరు మార్చలేరు, మీరు ఖచ్చితంగా సమర్పించదలిచారా?",
     "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి",
-
+    
+    "chat_banner_send_messages": "సందేశాలను రచయితకు పంపండి",
+    "chat_banner_start_chatting": "చాటింగ్ ప్రారంభించండి",
+    
+    "message_capsule_conversation": "మీరు {{ initialUnreadConversations }} సంభాషణ ఇంకా చదవలేదు.",
+    "message_capsule_conversations": "మీరు {{ initialUnreadConversations }} సంభాషణలు ఇంకా చదవలేదు.",
     "web_push_title": "దీనిని చదివినందుకు ఆనందించారా?",
     "web_push_section_title": "కథలను పొందండి",
     "web_push_message_1": "ఇలాంటి కథలను నోటిఫికేషన్ రూపంలో పంపడానికి ప్రతిలిపికి అనుమతి ఇవ్వగలరు",
@@ -582,5 +587,4 @@
     "web_push_message_3": "మంచి కథలను నోటిఫికేషన్ ద్వారా పంపడానికి ప్రతిలిపికి అనుమతి ఇవ్వగలరు...",
     "web_push_allow": "అనుమతించు",
     "web_push_cancel": "రద్దు చేయు"
-
 }

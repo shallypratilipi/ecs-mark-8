@@ -6,11 +6,25 @@
                 :to="getAuthorDetails.pageUrl"
                 @click.native="triggerClickAuthorEvent"
                 class="author-link">
-                <img :src="getAuthorDetails.profileImageUrl" alt="author" class="auth-img" >
+                <img :src="getLowResolutionImage(getAuthorDetails.profileImageUrl)" alt="author" class="auth-img" >
                 <div class="auth-name">{{ getAuthorDetails.name }}</div>
             </router-link>
-            <button class="btn btn-light follow-link" @click="checkUserAndFollowAuthor" v-if="!getAuthorDetails.following && getUserDetails.authorId !== getAuthorDetails.authorId"><i class="material-icons">person_add</i> __("author_follow")</button>
-            <button class="btn btn-light follow-link following" @click="checkUserAndFollowAuthor" v-if="getAuthorDetails.following && getUserDetails.authorId !== getAuthorDetails.authorId">__("author_unfollow")</button>
+            <div class="author-actions">
+                <button class="btn btn-light follow-link" @click="checkUserAndFollowAuthor" v-if="!getAuthorDetails.following && getUserDetails.authorId !== getAuthorDetails.authorId"><i class="material-icons">person_add</i> __("author_follow") <span class="follow-count">({{getAuthorDetails.followCount | showThousandsInK(1)}})</span></button>
+                <button class="btn btn-light follow-link following" @click="checkUserAndFollowAuthor" v-if="getAuthorDetails.following && getUserDetails.authorId !== getAuthorDetails.authorId">__("author_unfollow")</button>
+                <MessageButton
+                     v-if="getAuthorDetails.user && getAuthorDetails.user.userId && getUserDetails.userId !== getAuthorDetails.user.userId"
+                    :authorId="getAuthorDetails.authorId"
+                    :getRouteToMessageUserState="getRouteToMessageUserState"
+                    :triggerRouteToMessageUser="triggerRouteToMessageUser"
+                    :authorUserId="getAuthorDetails.user.userId"
+                    :profileImageUrl="getAuthorDetails.profileImageUrl"
+                    :fullName="getAuthorDetails.fullName"
+                    :pageUrl="getAuthorDetails.pageUrl"
+                    :screenName="'BOOK'"
+                    :locationName="'AUTHORDETAIL'"
+                    ></MessageButton>
+            </div>
             <p class="auth-desc show-more-height">{{ getAuthorDetails.summary }}</p>
             <button type="button" v-if="showShowMoreOfSummary" class="show_more_auth_desc" name="button" data-toggle="modal" data-target="#auth_summary_modal">__("view_more")</button>
             <!-- SUMMARY MODAL -->
@@ -37,6 +51,7 @@
 
 import { mapGetters, mapActions } from 'vuex'
 import inViewport from 'vue-in-viewport-mixin';
+import MessageButton from '@/components/MessageButton.vue';
 import mixins from '@/mixins';
 
 export default {
@@ -72,13 +87,15 @@ export default {
         ]),
         ...mapGetters('pratilipipage', [
             'getAuthorDetails',
-            'getAuthorDetailsLoadingState'
+            'getAuthorDetailsLoadingState',
+            'getRouteToMessageUserState'
         ])
     },
     methods: {
         ...mapActions('pratilipipage', [
             'fetchAuthorDetails',
-            'followOrUnfollowAuthor'
+            'followOrUnfollowAuthor',
+            'triggerRouteToMessageUser'
         ]),
         ...mapActions([
             'setAfterLoginAction'
@@ -123,7 +140,7 @@ export default {
         }
     },
     components: {
-        
+        MessageButton
     },
     watch: {
         'getAuthorDetailsLoadingState'( state ) {
@@ -172,6 +189,7 @@ export default {
     }
     .author-link {
         color: #d0021b;
+        float: left;
         .auth-img {
             border-radius: 50%;
             width: 50px;
@@ -185,26 +203,34 @@ export default {
             margin: 0 10px;
             font-size: 14px;
             vertical-align: middle;
-            @media screen and (max-width: 992px ) {
-                max-width: 110px;
-            }
             @media screen and (max-width: 768px ) {
-                max-width: 70px;
+                max-width: 200px;
             }
         }
         &:hover {
             text-decoration: none;
         }
     }
-    .follow-link {
-        color: #d0021b;
+    .author-actions {
         float: right;
-        margin: 4px 10px 0 0;
-        font-size: 14px;
-        i {
-            vertical-align: middle;
-            padding-right: 5px;
-            font-size: 18px;
+        @media screen and (max-width: 768px ) {
+            float: left;
+        }
+        .follow-link {
+            color: #d0021b;
+            float: left;
+            margin: 5px 0 10px 10px;
+            font-size: 14px;
+            border-color: #d0021b;
+            i {
+                vertical-align: middle;
+                padding-right: 5px;
+                font-size: 18px;
+            }
+            span.follow-count {
+                font-size: 10px;
+                vertical-align: text-bottom;
+            }
         }
     }
     .auth-desc {

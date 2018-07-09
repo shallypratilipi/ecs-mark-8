@@ -6,9 +6,9 @@ import {
     openConfirmationModal,
     openForgotPasswordModal,
     openWritePratilipiModal,
-    openWebPushModal,
     getCurrentLanguage,
     getLowResolutionImage,
+    getMediumResolutionImage,
     getHighResolutionImage,
     isMobile,
     isAndroid,
@@ -24,14 +24,14 @@ import {
     openInNewTab,
     openPratilipiModal,
     getCookie,
+    openPrimaryConfirmationModal,
     setCookie,
     isCurrentEvent,
-    openPrimaryConfirmationModal,
     validateFirstAndSecondPassword,
-    isTestEnvironment
-} from './methods'
-import { defaultAuthorImage } from './data'
-
+    isTestEnvironment,
+    openWebPushModal,
+} from '@/mixins/methods'
+import { defaultAuthorImage } from '@/mixins/data'
 export default {
     data() {
         return {
@@ -49,6 +49,7 @@ export default {
         openWebPushModal,
         getCurrentLanguage,
         getLowResolutionImage,
+        getMediumResolutionImage,
         getHighResolutionImage,
         isMobile,
         isAndroid,

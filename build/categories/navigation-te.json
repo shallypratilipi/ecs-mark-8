@@ -15,6 +15,39 @@
                     }
                 },
                 {
+                    "categoryUrl": "/horror",
+                    "title": "సస్పెన్స్ - హార్రర్",
+                    "analyticsCategoryName": "horror",
+                    "imageFileName": "horror.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "horror"
+                    }
+                },
+                {
+                    "categoryUrl": "/suspense",
+                    "title": "సస్పెన్స్",
+                    "analyticsCategoryName": "suspense",
+                    "imageFileName": "suspence.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "suspense"
+                    }
+                },
+                {
+                    "categoryUrl": "/stories",
+                    "title": "కథలు",
+                    "analyticsCategoryName": "stories",
+                    "imageFileName": "event_generic3.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "stories"
+                    }
+                },
+                {
                     "categoryUrl": "/ministories",
                     "title": "మినీకథలు",
                     "analyticsCategoryName": "two-min",
@@ -81,14 +114,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/horror",
-                    "title": "సస్పెన్స్ - హార్రర్",
-                    "analyticsCategoryName": "horror",
-                    "imageFileName": "horror.jpg",
+                    "categoryUrl": "/childwritten",
+                    "title": "బాలలవనం",
+                    "analyticsCategoryName": "childwritten",
+                    "imageFileName": "event_children.jpg",
                     "pratilipiListData": {
                         "language": "TELUGU",
                         "state": "PUBLISHED",
-                        "listName": "horror"
+                        "listName": "childwritten"
                     }
                 },
                 {
@@ -111,17 +144,6 @@
                         "language": "TELUGU",
                         "state": "PUBLISHED",
                         "listName": "spiritual"
-                    }
-                },
-                {
-                    "categoryUrl": "/stories",
-                    "title": "కథలు",
-                    "analyticsCategoryName": "stories",
-                    "imageFileName": "event_generic3.jpg",
-                    "pratilipiListData": {
-                        "language": "TELUGU",
-                        "state": "PUBLISHED",
-                        "listName": "stories"
                     }
                 },
                 {
@@ -167,12 +189,19 @@
                         "state": "PUBLISHED",
                         "listName": "cooking"
                     }
+                },
+                {
+                    "categoryUrl": "/yangistan",
+                    "title": "యంగిస్థాన్",
+                    "analyticsCategoryName": "yangistan",
+                    "imageFileName": "youth.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "yangistan"
+                    }
                 }
             ]
-        },
-        {
-            "title": "",
-            "categories": []
         },
         {
             "title": "విషయసూచిక",

@@ -28,25 +28,19 @@
                 </div>
                 <div class="stats">
                     <div class="rating">
-                        <div class="icons">
-                            <i class="material-icons">star</i>
-                        </div>
+                        <i class="material-icons">star</i>
                         <span>
                             {{ pratilipiData.averageRating | round(1) }}
                         </span>
                     </div>
                     <div class="read-count">
-                        <div class="icons">
-                            <i class="material-icons">remove_red_eye</i>
-                        </div>
+                        <i class="material-icons">remove_red_eye</i>
                         <span>
-                            {{ pratilipiData.readCount | round(1) }}
+                            {{ pratilipiData.readCount | round(1) }}    
                         </span>
                     </div>
                     <div class="read-time">
-                        <div class="icons">
-                            <i class="material-icons">access_time</i>
-                        </div>
+                        <i class="material-icons">access_time</i>
                         <span>
                             {{ pratilipiData.readingTime | showInMinutesOrHours }}
                         </span>
@@ -58,114 +52,114 @@
 </template>
 
 <script>
-    import mixins from '@/mixins';
-    import PratilipiImage from '@/components/PratilipiImage';
-    import { mapActions, mapGetters } from 'vuex'
+import mixins from '@/mixins';
+import PratilipiImage from '@/components/PratilipiImage';
+import { mapActions, mapGetters } from 'vuex'
 
-    export default {
-        name: 'Pratilipi',
-        props: {
-            pratilipiData: {
-                type: Object,
-                required: true
-            },
-            addToLibrary: {
-                type: Function
-            },
-            removeFromLibrary: {
-                type: Function
-            },
-            hideAddToLibrary: {
-                type: Boolean
-            },
-            hideAuthorName: {
-                type: Boolean
-            },
-            redirectToReader: {
-                type: Boolean,
-                required: false,
-                default: false
-            },
-            screenName: {
-                type: String,
-                required: true
-            },
-            screenLocation: {
-                type: String,
-                required: true
-            }
+export default {
+    name: 'Pratilipi',
+    props: {
+        pratilipiData: {
+            type: Object,
+            required: true
         },
-        mixins: [
-            mixins
-        ],
-        data() {
-            return {
-            }
+        addToLibrary: {
+            type: Function
         },
-        computed: {
-            ...mapGetters([
-                'getUserDetails'
-            ])
+        removeFromLibrary: {
+            type: Function
         },
-        methods: {
-            ...mapActions([
-                'setShareDetails',
-                'setAfterLoginAction'
-            ]),
-            ...mapActions('pratilipimodal', [
-                'setPratilipiModalData',
-                'fetchPratilipiData'
-            ]),
-            setModalDataAndOpenPratilipiModal() {
-                this.setPratilipiModalData(this.pratilipiData);
-                this.fetchPratilipiData(this.pratilipiData.pratilipiId);
-                this.openPratilipiModal();
-            },
-            addPratilipiToLibrary(pratilipiId) {
-                const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-                this.triggerAnanlyticsEvent(`LIBRARYADD_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId
-                });
-                if (this.getUserDetails.isGuest) {
-                    // throw popup modal
-                    console.log(this.$route);
-                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/addToLibrary`, data: pratilipiId });
-                    this.openLoginModal(this.$route.meta.store, 'LIBRARYADD', this.screenLocation);
-                } else {
-                    this.addToLibrary(pratilipiId);
-                }
-            },
-            triggerAnalyticsAndRemovePratilipiFromLibrary(pratilipiId) {
-                const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-                this.triggerAnanlyticsEvent(`LIBRARYREMOVE_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId
-                });
-                this.removeFromLibrary(pratilipiId);
-            },
-            triggerReadPratilipiEvent() {
-                const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-                let action = this.redirectToReader && this.screenLocation === 'LIBRARY' ? 'READBOOK' : 'CLICKBOOK';
-                this.triggerAnanlyticsEvent(`${action}_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId
-                });
-            },
-            openShareModal() {
-                const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-                this.triggerAnanlyticsEvent(`CLICKSHRBOOK_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId
-                });
-                this.setShareDetails({ data: this.pratilipiData, type: 'PRATILIPI', screen_name: this.screenName, screen_location: this.screenLocation });
-                $('#share_modal').modal('show');
-            }
+        hideAddToLibrary: {
+            type: Boolean
         },
-        components: {
-            PratilipiImage
+        hideAuthorName: {
+            type: Boolean
+        },
+        redirectToReader: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        screenName: {
+            type: String,
+            required: true
+        },
+        screenLocation: {
+            type: String,
+            required: true
         }
+    },
+    mixins: [
+        mixins
+    ],
+    data() {
+        return {
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'getUserDetails'
+        ])
+    },
+    methods: {
+        ...mapActions([
+            'setShareDetails',
+            'setAfterLoginAction'
+        ]),
+        ...mapActions('pratilipimodal', [
+            'setPratilipiModalData',
+            'fetchPratilipiData'
+        ]),
+        setModalDataAndOpenPratilipiModal() {
+            this.setPratilipiModalData(this.pratilipiData);
+            this.fetchPratilipiData(this.pratilipiData.pratilipiId);
+            this.openPratilipiModal();
+        },
+        addPratilipiToLibrary(pratilipiId) {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+            this.triggerAnanlyticsEvent(`LIBRARYADD_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId
+            });
+            if (this.getUserDetails.isGuest) {
+                // throw popup modal
+                console.log(this.$route);
+                this.setAfterLoginAction({ action: `${this.$route.meta.store}/addToLibrary`, data: pratilipiId });
+                this.openLoginModal(this.$route.meta.store, 'LIBRARYADD', this.screenLocation);
+            } else {
+                this.addToLibrary(pratilipiId);
+            }
+        },
+        triggerAnalyticsAndRemovePratilipiFromLibrary(pratilipiId) {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+            this.triggerAnanlyticsEvent(`LIBRARYREMOVE_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId
+            });
+            this.removeFromLibrary(pratilipiId);
+        },
+        triggerReadPratilipiEvent() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+            let action = this.redirectToReader && this.screenLocation === 'LIBRARY' ? 'READBOOK' : 'CLICKBOOK';
+            this.triggerAnanlyticsEvent(`${action}_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId
+            });
+        },
+        openShareModal() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
+            this.triggerAnanlyticsEvent(`CLICKSHRBOOK_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId
+            });
+            this.setShareDetails({ data: this.pratilipiData, type: 'PRATILIPI', screen_name: this.screenName, screen_location: this.screenLocation });
+            $('#share_modal').modal('show');
+        }
+    },
+    components: {
+        PratilipiImage
     }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -316,7 +310,7 @@
         &:hover .image-mask {
             opacity: 1;
         }
-
+        
         .pratilipi-details {
             text-align: left;
             padding: 0 10px;
@@ -349,19 +343,22 @@
             margin-top: 5px;
             overflow: hidden;
             text-align: center;
+            display: flex;
+            flex-wrap: wrap;
             .rating, .read-count, .read-time {
-                float: left;
-                width: 32%;
+                flex-grow: 1;
+                flex-basis: 33%;
                 padding: 10px 2px;
                 font-size: 12px;
                 color: #212121;
-                .icons {
+                i {
+                    font-size: 13px;
                     display: inline-block;
                     vertical-align: middle;
                     padding-right: 4px;
-                    i {
-                        font-size: 13px;
-                    }
+                }
+                span {
+                    vertical-align: middle;
                 }
             }
             .read-count, .read-time {

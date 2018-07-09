@@ -94,7 +94,7 @@ export default {
             canParticipate: false
         }
     },
-    mixins: [ 
+    mixins: [
         mixins
     ],
     computed: {

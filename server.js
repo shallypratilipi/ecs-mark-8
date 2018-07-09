@@ -5,9 +5,14 @@ const compression = require( 'compression' );
 const morgan = require('morgan');
 const request = require('request');
 const parse = require('url-parse');
-var cookieParser = require('cookie-parser');
 
 var fs = require( 'fs' );
+
+var http = require( 'http' );
+var https = require( 'https' );
+
+var httpAgent = new http.Agent({ keepAlive : true });
+var httpsAgent = new https.Agent({ keepAlive : true });
 
 // Constants
 const PORT = 80;
@@ -137,18 +142,7 @@ var Website = defineEnum({
     DEVO_TELUGU_GR:      { hostName: "telugu-devo-gr.ptlp.co",    mobileHostName: "te-devo-gr.ptlp.co", displayLanguage: Language.TELUGU,   filterLanguage: Language.TELUGU },
     DEVO_KANNADA_GR:     { hostName: "kannada-devo-gr.ptlp.co",   mobileHostName: "kn-devo-gr.ptlp.co", displayLanguage: Language.KANNADA,  filterLanguage: Language.KANNADA },
 
-    ALPHA:  { hostName: "localhost", mobileHostName: "localhost", displayLanguage: Language.HINDI, filterLanguage: Language.HINDI,  },
-
-    DELTA_ALL_LANGUAGE: { hostName: "www-delta.pratilipi.com",          mobileHostName: "m-delta.pratilipi.com",  displayLanguage: Language.ENGLISH,    filterLanguage: null },
-    DELTA_HINDI:        { hostName: "hindi-delta.pratilipi.com",        mobileHostName: "hi-delta.pratilipi.com", displayLanguage: Language.HINDI,      filterLanguage: Language.HINDI },
-    DELTA_GUJARATI:     { hostName: "gujarati-delta.pratilipi.com",     mobileHostName: "gu-delta.pratilipi.com", displayLanguage: Language.GUJARATI,   filterLanguage: Language.GUJARATI },
-    DELTA_TAMIL:        { hostName: "tamil-delta.pratilipi.com",        mobileHostName: "ta-delta.pratilipi.com", displayLanguage: Language.TAMIL,      filterLanguage: Language.TAMIL },
-    DELTA_MARATHI:      { hostName: "marathi-delta.pratilipi.com",      mobileHostName: "mr-delta.pratilipi.com", displayLanguage: Language.MARATHI,    filterLanguage: Language.MARATHI },
-    DELTA_MALAYALAM:    { hostName: "malayalam-delta.pratilipi.com",    mobileHostName: "ml-delta.pratilipi.com", displayLanguage: Language.MALAYALAM,  filterLanguage: Language.MALAYALAM },
-    DELTA_BENGALI:      { hostName: "bengali-delta.pratilipi.com",      mobileHostName: "bn-delta.pratilipi.com", displayLanguage: Language.BENGALI,    filterLanguage: Language.BENGALI },
-    DELTA_KANNADA:      { hostName: "kannada-delta.pratilipi.com",      mobileHostName: "kn-delta.pratilipi.com", displayLanguage: Language.KANNADA,    filterLanguage: Language.KANNADA },
-    DELTA_TELUGU:       { hostName: "telugu-delta.pratilipi.com",       mobileHostName: "te-delta.pratilipi.com", displayLanguage: Language.TELUGU,     filterLanguage: Language.TELUGU },
-
+    ALPHA:  { hostName: "localhost:8080", mobileHostName: "localhost:8081", displayLanguage: Language.HINDI, displayLanguage: Language.HINDI,  }
 
 });
 
@@ -179,16 +173,26 @@ const app = express();
 // gzip all responses
 app.use( compression({ level: 9 }) );
 app.use( morgan('short') );
-app.use(cookieParser());
-
 
 // Health
 app.get( '/health', (req, res, next) => {
     res.send( Date.now() + "" );
 });
 
+
+
+
+// Serving PWA files
 // Serving PWA files
 app.get( '/*', (req, res, next) => {
+
+    var bucketId = Number(req.headers["bucket-id"] || 0) + 1;
+
+    console.log('BUCKET ID: ', bucketId);
+    if (process.env.REALM != 'product' && Number(bucketId) > 10) {
+        next();
+        return
+    }
 
     var website = _getWebsite( req.headers.host );
     if (fs.existsSync(__dirname + `/dist/${website.displayLanguage.code}${req.path}`)) {
@@ -198,48 +202,13 @@ app.get( '/*', (req, res, next) => {
     }
 });
 
+
 app.get('/*', (req, res, next) => {
     var website = _getWebsite( req.headers.host );
-    var variation = 'old_build/prod-variation-2/';
-
-    if (req.query.customVariation && fs.existsSync('old_build/' + req.query.customVariation)) {
-        variation = 'old_build/' + req.query.customVariation + '/';
-    }
-    const parsedUrl = parse(req.header('Referer'), true);
-    if (parsedUrl.query && fs.existsSync('old_build/' + parsedUrl.query.customVariation)) {
-        variation = 'old_build/' + parsedUrl.query.customVariation + '/';
-    }
-
-    if( req.path === '/pwa-stylesheets/css/style.css' ) {
-        fs.readFile( variation + 'src/pwa-stylesheets/style.css', { 'encoding': 'utf8' }, (err, data) => {
-            if(err) throw err;
-            res.set( 'Content-Type', 'text/css' ).send(data);
-        });
-    } else if( req.path === '/pwa-sw-' + website.__name__ + '.js' ) {
-        fs.readFile( variation + 'src/pwa-service-worker' + req.path, { 'encoding': 'utf8' }, (err, data) => {
-            if(err) throw err;
-            res.set( 'Content-Type', 'text/javascript' ).send(data);
-        });
-    } else if( req.path === '/favicon.ico' || req.path === '/favicon.png' ) {
-        res.sendfile( variation + 'src/favicon.ico' );
-    } else if( req.path.indexOf( '/pwa-images/' ) === 0 ) {
-        res.sendfile( variation + 'src' + req.path );
-    } else if( req.path.indexOf( '/resources/' ) === 0 || req.path.indexOf( '/stylesheets/' ) === 0 ) {
-        res.set( 'Content-Type', 'text/plain' ).send( "" );
-    } else if( req.path === "/pwa-manifest-" + website.__name__ + ".json" ) {
-        fs.readFile( variation + 'src/pwa-manifest' + '/pwa-manifest-' + website.__name__ + '.json', { 'encoding': 'utf8' }, (err, data) => {
-            if(err) throw err;
-            res.set( 'Content-Type', 'application/json' ).send(data);
-        });
-    } else if( req.path === '/pratilipi-logo-144px.png' ) {
-        res.sendfile( variation + 'src' + req.path );
+    if (fs.existsSync(__dirname + `/old_build/${website.displayLanguage.code}${req.path}`)) {
+        res.sendFile(__dirname + `/old_build/${website.displayLanguage.code}${req.path}`)
     } else {
-        // https://github.com/expressjs/express/issues/3127
-        console.log( "Serving html file to url :: ",  req.url );
-        fs.readFile( variation + 'src/pwa-markup/PWA-' + website.__name__ + '.html', { 'encoding': 'utf8' }, (err, data) => {
-            if(err) throw err;
-            res.set( 'Content-Type', 'text/html' ).send(data);
-        });
+        res.sendFile(__dirname + `/old_build/${website.displayLanguage.code}/index.html`)
     }
 });
 

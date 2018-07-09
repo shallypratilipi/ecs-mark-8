@@ -2,7 +2,7 @@
     <MainLayout>
         <div class="home-page page-wrap">
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
-                     :banners="getHomePageBanners"
+                :banners="getHomePageBanners"
             ></Banners>
             <Vapasi v-if="this.isMobile()"></Vapasi>
             <VapasiHoroscope v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
@@ -63,7 +63,7 @@
     import WebPushUtil from '@/utils/WebPushUtil'
 
 
-    import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
     export default {
         name: 'Home',

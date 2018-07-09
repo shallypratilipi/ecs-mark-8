@@ -2177,4 +2177,28 @@ export default {
         "ACTION": "SHAREJOKEWA"
     },
 
+    "STARTCHAT_AUTHORDETAIL_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "AUTHORDETAIL",
+        "ACTION": "STARTCHAT"
+    },
+    "DISMISS_CHATBANNER_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "CHATBANNER",
+        "ACTION": "DISMISS"
+    },
+    "CHECK_CHATBANNER_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "CHATBANNER",
+        "ACTION": "CHECK"
+    },
+    "STARTCHAT_BOOKM_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "BOOKM",
+        "ACTION": "STARTCHAT"
+    },
+    "GOMESSAGESPAGE_HEADER_GLOBAL": {
+        "LOCATION": "HEADER",
+        "ACTION": "GOMESSAGESPAGE"
+    }
 };

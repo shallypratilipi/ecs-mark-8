@@ -573,7 +573,13 @@
     "event_participate_confirm_submission":"कृपया सबमिशन प्रमाणित करें ",
     "event_participate_cannot_change_drafts":"फाइनल सबमिशन के बाद आप किसी प्रकार का बदलाव नहीं कर पायेंगे। क्या आप इसे सबमिट करने के लिए निश्चित हैं?",
     "event_participate_check_your_entry_here":"अपनी रचना यहाँ देखें ",
-
+    
+    "chat_banner_send_messages": "लेखक को संदेश भेजें",
+    "chat_banner_start_chatting": "बात करना शुरू करें",
+    
+    "message_capsule_conversation": "आपके {{ initialUnreadConversations }} अपठित संदेश है",
+    "message_capsule_conversations": "आपके {{ initialUnreadConversations }} अपठित संदेश है",
+    
     "web_push_title": "रचना पसंद आयी?",
     "web_push_section_title": "मजेदार कहानियाँ पाइए",
     "web_push_message_1": "पाइए आपकी मनपसंद कहानियाँ अब नोटिफिकेशन में",

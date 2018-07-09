@@ -1,54 +1,49 @@
 <template>
-    <div
-        class="pratilipi-image blur"
-        :style="{ 'background-image': 'url(' + getLowResolutionImage( coverImageUrl ) + ')' }">
+    <div 
+        class="pratilipi-image" v-lazy:background-image="pratilipiImageObject">
     </div>
 </template>
 
 <script>
-    import mixins from '@/mixins';
+import mixins from '@/mixins';
 
-    export default {
-        name: 'Pratilipi',
-        props: {
-            coverImageUrl: {
-                type: String,
-                required: true
-            }
-        },
-        data() {
-            return {
-            }
-        },
-        mixins: [
-            mixins
-        ],
-        methods: {
-
-        },
-        beforeMount() {
-            const that = this;
-            $('<img/>').attr('src', that.getHighResolutionImage(that.coverImageUrl)).on('load', function() {
-                $(this).remove(); // prevent memory leaks as @benweet suggested
-                $(that.$el).css('background-image', `url(${that.getHighResolutionImage(that.coverImageUrl)})`);
-                $(that.$el).removeClass('blur');
-            });
+export default {
+    name: 'Pratilipi',
+    props: {
+        coverImageUrl: {
+            type: String,
+            required: true
         }
+    },
+    data() {
+        return {
+            pratilipiImageObject: {
+                src: this.getHighResolutionImage(this.coverImageUrl),
+                loading: this.getLowResolutionImage(this.coverImageUrl)
+             },
+        }
+    },
+    mixins: [
+        mixins
+    ],
+    methods: {
+        
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    .pratilipi-image {
-        margin: 5px;
-        height: 150px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.5s;
-        &.blur {
-            filter: blur(5px);
-            padding: 5px;
-        }
+.pratilipi-image {
+    margin: 5px;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s;
+    &[lazy=loading] {
+        filter: blur(5px);
+        padding: 5px;
     }
+}
 </style>

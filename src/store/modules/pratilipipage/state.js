@@ -19,5 +19,6 @@ export default {
     system_tags: {
         loading_state: 'LOADING',
         data: {}
-    }
+    },
+    route_to_message_user: false
 }

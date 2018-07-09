@@ -9,19 +9,19 @@
             </button>
           </div>
           <div class="modal-body social">
-              <a :href="getFacebookShareUrl" @click="triggerFbShareEvent" class="fb" target="_blank">
+              <a :href="getFacebookShareUrl" @click="triggerFbShareEvent" class="fb" target="_blank" rel="noopener">
                   <span class="social-icon"><icon name="facebook-f"></icon></span>
                   __("facebook")
               </a>
-              <a :href="getTwitterUrl" @click="triggerTwShareEvent" class="twitter" target="_blank">
+              <a :href="getTwitterUrl" @click="triggerTwShareEvent" class="twitter" target="_blank" rel="noopener">
                  <span class="social-icon"><icon name="twitter"></icon></span>
                  __("twitter")
               </a>
-              <a :href="getGooglePlusUrl" @click="triggerGpShareEvent" class="google" target="_blank">
+              <a :href="getGooglePlusUrl" @click="triggerGpShareEvent" class="google" target="_blank" rel="noopener">
                   <span class="social-icon"><icon name="google-plus"></icon></span>
                   __("google_plus")
               </a>
-              <a :href="getWhatsAppUri" @click="triggerWaShareEvent" class="whatsapp" target="_blank">
+              <a :href="getWhatsAppUri" @click="triggerWaShareEvent" class="whatsapp" target="_blank" rel="noopener">
                   <span class="social-icon"><icon name="whatsapp"></icon></span>
                   __("whatsapp")
               </a>

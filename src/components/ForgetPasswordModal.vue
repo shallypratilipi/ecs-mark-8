@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="spinner-overlay" v-if="getForgotPasswordUpdateState === 'LOADING'">
-                    <Spinner></Spinner>
+                    <Spinner></Spinner> 
                 </div>
             </div>
         </div>
@@ -29,7 +29,9 @@
 <script>
 import mixins from '@/mixins';
 import Spinner from '@/components/Spinner.vue';
+
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
     mixins: [
         mixins
@@ -60,10 +62,10 @@ export default {
         ])
     },
     created() {
-
+        
     },
     mounted() {
-
+        
     }
 }
 </script>

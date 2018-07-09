@@ -83,7 +83,7 @@ export default {
                     idToken: this.$route.query.token, 
                     newPassword
                 });
-        }
+            }
         }
     }
 }

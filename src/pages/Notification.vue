@@ -135,7 +135,7 @@ export default {
             $(event.currentTarget).addClass("active");
             $(".tab-content").hide();
             $("#" + tab_id).show();
-            
+
             if (tab_id === 'messages') {
                 this.triggerAnanlyticsEvent('LANDED_NEWCHATS_NOTIFS', 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId

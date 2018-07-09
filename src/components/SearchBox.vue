@@ -58,6 +58,8 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': trendingWord
             });
+            $("#search-box-small .search-dropdown").hide();
+            $("#search-box-big .search-dropdown").hide();
         }
     },
 }

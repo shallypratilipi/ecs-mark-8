@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="profile-image">
-                                <img :src="getAuthorData.imageUrl + '?width=150'" alt="profile">
+                                <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" alt="profile">
                                 <button class="update-img" v-if="getUserDetails.userId === getAuthorData.user.userId" @click="uploadImage('profile-image')"><i class="material-icons">camera_alt</i></button>
                                 <input type="file" hidden name="profileimage" @change="triggerProfileImageUpload($event)" accept="image/*" id="profile_uploader">
                                 <div class="uploading" v-if="getProfileImageLoadingState === 'LOADING'">
@@ -65,9 +65,19 @@
                             </div>
 
                             <!-- Message Button -->
-                            <div class="message-btn" v-if="getAuthorData.user && getAuthorData.user.userId && getUserDetails.userId !== getAuthorData.user.userId" @click="messageUser">
-                                <i class="material-icons">message</i> __("chat_message")
-                            </div>
+                            <MessageButton
+                                 v-if="getAuthorData.user && getAuthorData.user.userId && getUserDetails.userId !== getAuthorData.user.userId"
+                                :authorId="getAuthorData.authorId"
+                                :getRouteToMessageUserState="getRouteToMessageUserState"
+                                :triggerRouteToMessageUser="triggerRouteToMessageUser"
+                                :authorUserId="getAuthorData.user.userId"
+                                :profileImageUrl="getAuthorData.profileImageUrl"
+                                :fullName="getAuthorData.fullName"
+                                :pageUrl="getAuthorData.pageUrl"
+                                :className="'profile-page-msg'"
+                                :screenName="'USER'"
+                                :locationName="'USERM'"
+                                ></MessageButton>
                         </div>
                         <Spinner v-if="getAuthorDataLoadingState === 'LOADING'"></Spinner>
                         <div class="col-md-12 profile-bottom" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'">
@@ -154,6 +164,7 @@ import MainLayout from '@/layout/main-layout.vue';
 import PratilipiComponent from '@/components/Pratilipi.vue';
 import AuthorCard from '@/components/AuthorCard.vue';
 import Spinner from '@/components/Spinner.vue';
+import MessageButton from '@/components/MessageButton.vue';
 import mixins from '@/mixins';
 import { mapGetters, mapActions, mapState } from 'vuex'
 
@@ -191,7 +202,6 @@ export default {
             'getCoverImageLoadingState',
             'getLibraryListTotalCount',
             'getRouteToMessageUserState'
-
         ]),
         ...mapState({
             publishedContents: state => state.authorpage.published_contents.data,
@@ -217,7 +227,7 @@ export default {
             'uploadProfileImage',
             'removeFromLibraryPublished',
             'addToLibraryPublished',
-            'triggerRouteToMessageUser',
+            'triggerRouteToMessageUser'
         ]),
         ...mapActions([
             'setShareDetails',
@@ -494,7 +504,8 @@ export default {
         MainLayout,
         PratilipiComponent,
         AuthorCard,
-        Spinner
+        Spinner,
+        MessageButton
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
@@ -809,7 +820,7 @@ export default {
             display: inline-block;
             vertical-align: text-bottom;
 			.view_more_card {
-				width: 294px;
+				width: 260px;
 				background: #fff;
 				border: 1px solid #e9e9e9;
 				height: 233px;
@@ -817,10 +828,6 @@ export default {
 				color: #d0021b;
                 text-align: center;
                 display: inline-block;
-                @media screen and (max-width: 760px) {
-                width: 255px;
-
-                }
 				i {
 					height: 190px;
 					line-height: 190px;

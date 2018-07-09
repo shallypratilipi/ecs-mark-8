@@ -68,25 +68,22 @@
             </div>
 
             <!-- Report Modal -->
-            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="reportModalLabel">__("report_title")</h5>
+                            <h5 class="modal-title">__("report_title")</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <i class="material-icons">close</i>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
                                 <div class="form-group">
                                     <label for="reportModalTextarea">__("report_issue")</label>
-                                    <textarea class="form-control" id="reportModalTextarea" rows="3"
-                                              placeholder="__('report_issue')"></textarea>
+                                    <textarea class="form-control" id="reportModalTextarea" rows="3" placeholder="__('report_issue')"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-submit">__("submit")</button>
+                                <button type="button" class="btn btn-primary btn-submit" @click="submitReport">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -104,11 +101,11 @@
                                     {{ eachIndex.title || eachIndex.chapterNo }}
                             </h2>
                             <div class="content-section lh-md p-lr-15"
-                                :class="fontStyleObject"
-                                v-for="eachChapter in getPratilipiContent"
-                                v-if="eachChapter.chapterNo == selectedChapter"
-                                :key="eachChapter.chapterNo"
-                                v-html="eachChapter.content">
+                                 :class="fontStyleObject"
+                                 v-for="eachChapter in getPratilipiContent"
+                                 v-if="eachChapter.chapterNo == selectedChapter"
+                                 :key="eachChapter.chapterNo"
+                                 v-html="eachChapter.content">
                             </div>
                             <Spinner v-if="getPratilipiContentLoadingState !== 'LOADING_SUCCESS'"></Spinner>
                             <div class="book-navigation p-lr-15" v-if="getPratilipiContentLoadingState === 'LOADING_SUCCESS'">
@@ -116,11 +113,11 @@
                                 <div class="next" v-if="selectedChapter != getIndexData.length" @click="goToNextChapter">__("reader_next_chapter")</div>
                             </div>
 
-                          <!-- <ShareStrip
+                           <ShareStrip
                                 v-if="selectedChapter == getIndexData.length"
                                 :data="getPratilipiData"
                                 :type="'PRATILIPI'">
-                            </ShareStrip>-->
+                            </ShareStrip>
 
                             <div class="book-bottom-ratings p-lr-15">
                                 <Reviews
@@ -264,7 +261,7 @@
                     </div>
                 </div>
             </div>
-            <!--<OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>-->
+            <OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
             <div class="overlay" @click="closeSidebar"></div>
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
@@ -288,10 +285,13 @@ import Reviews from '@/components/Reviews.vue';
 import WebPushStrip from '@/components/WebPushStrip.vue';
 import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
-// import OpenInApp from '@/components/OpenInApp.vue';
-// import ShareStrip from '@/components/ShareStrip.vue';
+import OpenInApp from '@/components/OpenInApp.vue';
+import ShareStrip from '@/components/ShareStrip.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import constants from '@/constants';
+
+
 export default {
     components: {
         ReadLayout,
@@ -300,8 +300,8 @@ export default {
         WebPushStrip,
         WebPushModal,
         Recommendation,
-        // ShareStrip,
-        // OpenInApp
+        ShareStrip,
+        OpenInApp
     },
     mixins: [
         mixins
@@ -323,7 +323,8 @@ export default {
             isWebPushModalEnabled: false,
             maxRead: 0,
             chapterCount: 0,
-            recordTime: null
+            recordTime: null,
+            language: ''
         }
     },
     methods: {
@@ -336,14 +337,18 @@ export default {
             'fetchPratilipiContentForIMAGE',
             'fetchAuthorDetails',
             'followOrUnfollowAuthor',
+            'submitPrailipiReport',
             'postReadingPercentage'
+        ]),
+        ...mapActions('alert', [
+            'triggerAlert'
         ]),
         ...mapActions([
             'setShareDetails',
             'setAfterLoginAction'
         ]),
         recordMaxRead(maxRead) {
-            if(!this.getUserDetails.isGuest) {
+            if (!this.getUserDetails.isGuest && !isNaN(maxRead)) {
                 if (this.$route.query.chapterNo) {
                     this.chapterCount = Number(this.$route.query.chapterNo);
                 }
@@ -355,6 +360,18 @@ export default {
                 let indexData = this.getIndexData;
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
+        },
+        submitReport() {
+            let user = this.getUserDetails;
+            let message = $('#reportModalTextarea').val().toString();
+            let name = user.displayName;
+            let email = user.email;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            let language = this.language;
+            this.submitPrailipiReport({name ,email,message, pratilipiId, language});
+            $('#reportModal').modal('hide');
+            this.triggerAlert({ message: '__("success_generic_message")', timer: 3000 });
+            $("#reportModalTextarea").val("");
         },
         addPratilipiToLibrary(pratilipiId) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -408,6 +425,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
+
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter - 1 } });
         },
         goToNextChapter() {
@@ -417,6 +435,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.selectedChapter
             });
+
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.pratilipiId), chapterNo: this.selectedChapter + 1 } });
         },
         increaseFont() {
@@ -476,6 +495,7 @@ export default {
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-white");
+
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-white");
             $(".container-fluid").css({"background-color": "white",});
@@ -620,6 +640,12 @@ export default {
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
+         const currentLocale = process.env.LANGUAGE;
+        constants.LANGUAGES.forEach((eachLanguage) => {
+            if (eachLanguage.shortName === currentLocale) {
+                this.language = eachLanguage.fullName.toUpperCase();
+            }
+        });
     },
     mounted() {
         $('.read-page').bind("contextmenu",function(e){
