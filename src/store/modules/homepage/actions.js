@@ -81,11 +81,6 @@ export default {
         DataAccessor.getJokeOfTheDay(language, (data) => {
             if (data.status === 200) {
                 commit('setJokeOfTheDay', data)
-                // commit('setHomePageBannerLoadingSuccess', data.response);
-            } else {
-                // commit('setHomePageBannerLoadingError');
-                console.log("Error in getJokeOfDayAPI");
-
             }
         })
     },
@@ -94,22 +89,14 @@ export default {
         DataAccessor.getQuoteOfTheDay(language, (data) => {
             if (data.status === 200) {
                 commit('setQuoteOfTheDay', data)
-                // commit('setHomePageBannerLoadingSuccess', data.response);
-            } else {
-                // commit('setHomePageBannerLoadingError');
-                console.log("Error in getQuoteOfTheDay");
             }
         })
     },
 
-    fetchHoroscope({commit, state}, horoscope) {
-        DataAccessor.getHoroscopeOfTheDay((data) => {
+    fetchHoroscope({commit, state}, {horoscope, language}) {
+        DataAccessor.getHoroscopeOfTheDay(language, (data) => {
             if (data.status === 200) {
                 commit('setHoroscopeOfTheDay', data.response[horoscope]);
-                // commit('setHomePageBannerLoadingSuccess', data.response);
-            } else {
-                // commit('setHomePageBannerLoadingError');
-                console.log("Error in getQuoteOfTheDay");
             }
         })
     },

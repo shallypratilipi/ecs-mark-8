@@ -155,16 +155,21 @@ export default {
 
         },
         triggerFacebookShareAnalytics() {
-            let fbShareUrl = this.getHoroscopeImage;
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             FB.ui({
-                display: 'popup',
-                method: 'share',
-                href: fbShareUrl,
-            }, function(response) {
+                method: 'share_open_graph',
+                action_type: 'og.shares',
+                action_properties: JSON.stringify({
+                    object: {
+                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
+                        'og:title': '__("your_today_horoscope")',
+                        'og:description': this.getHoroscope,
+                        'og:image': this.getHoroscopeImage
+                    }
+                })
             });
             this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -219,14 +224,8 @@ export default {
         },
         triggerWhatsappShareAnalytics() {
 
-            // let utmParameters = `utm_source=vapsi&utm_image=${this.getHoroscopeImage}`;
-            // let urlShareLink = `${window.location.host}/?${encodeURIComponent(utmParameters)}`;
-            // let waLink = "https://api.whatsapp.com/send?text=" + urlShareLink;
-            // console.log(urlShareLink);
-            // window.open(waLink);
-
-            let waLink = "https://api.whatsapp.com/send?text=" + this.getHoroscopeImage;
-            window.open(waLink);
+            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
 
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
@@ -245,8 +244,9 @@ export default {
             }
             if (this.flag) {
                 this.goToDetails = true;
-                this.fetchHoroscope(this.valueOfHoroscope);
-                console.log("Val of horoscope: " + this.valueOfHoroscope);
+
+                this.fetchHoroscope({horoscope: this.valueOfHoroscope, language: this.language});
+
                 let pratilipiAnalyticsData = {};
                 if (this.getPratilipiData) {
                     pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);

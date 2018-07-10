@@ -198,12 +198,17 @@ export default {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             if (this.language == "HINDI") {
-                let fbShareUrl = this.getQuoteImage;
                 FB.ui({
-                    display: 'popup',
-                    method: 'share',
-                    href: fbShareUrl,
-                }, function(response) {
+                    method: 'share_open_graph',
+                    action_type: 'og.shares',
+                    action_properties: JSON.stringify({
+                        object: {
+                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
+                            'og:title': '__("thought_of_the_day")',
+                            'og:description': this.getQuoteOfTheDay,
+                            'og:image': this.getQuoteImage
+                        }
+                    })
                 });
                 this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
@@ -211,13 +216,17 @@ export default {
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
             } else if (this.language == "GUJARATI") {
-                let fbShareUrl = this.getJokeImage;
                 FB.ui({
-                    display: 'popup',
-                    method: 'share',
-                    href: fbShareUrl,
-                }, function(response) {
-                    console.log(fbShareUrl);
+                    method: 'share_open_graph',
+                    action_type: 'og.shares',
+                    action_properties: JSON.stringify({
+                        object: {
+                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
+                            'og:title': '__("joke_of_the_day")',
+                            'og:description': this.getJokeOfTheDay,
+                            'og:image': this.getJokeImage
+                        }
+                    })
                 });
                 this.triggerAnanlyticsEvent(`SHARE_JOKEFB_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
@@ -237,16 +246,20 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
-                let waLink = "https://api.whatsapp.com/send?text=" + this.getQuoteImage;
-                window.open(waLink);
+
+                const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
+                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
+
             } else if (this.language == "GUJARATI") {
                 this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'joke_of_the_dayY',
                 });
-                let waLink = "https://api.whatsapp.com/send?text=" + this.getJokeImage;
-                window.open(waLink);
+
+                const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
+                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
+
             }
 
 
