@@ -30,7 +30,8 @@
                <p id="shareThisAsImage">
                   {{getHoroscope}}
                </p>
-                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && notRegistered"
+                        @click="triggerAnalyticsEventAndFireNotification()">
                     __("get_notification")
                 </button>
                 <div class="social-icons">
@@ -49,7 +50,10 @@ import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
-import WebPushUtil from '@/utils/WebPushUtil'
+import WebPushUtil from '@/utils/WebPushUtil';
+import * as firebase from "firebase";
+
+
 
 import {
     mapGetters,
@@ -90,13 +94,17 @@ export default {
             language: '',
             horoscopeImage: '',
             imageHoroscopeBanner: 'static/zodiac_signs/leo.svg',
-            shouldWebPush: null
+            shouldWebPush: true,
+            flag: false,
+            notRegistered: true
         }
     },
     methods: {
         ...mapActions('homepage', [
             'fetchHoroscope',
         ]),
+
+
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
@@ -114,11 +122,37 @@ export default {
             });
         },
         ifBrowserSupportsWebPush() {
-            if (WebPushUtil.canShowCustomPrompt()) {
+            if (WebPushUtil.isBrowserPushCompatible()) {
                 this.shouldWebPush = true;
             } else {
                 this.shouldWebPush = false;
             }
+        },
+        initializeFirebase() {
+            console.log("INITIALIZING FIREBASEEEE");
+            const that = this;
+            import('firebase').then((firebase) => {
+                const config = {
+                    apiKey: process.env.FIREBASE_API_KEY,
+                    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                    databaseURL: process.env.FIREBASE_DATABASE_URL,
+                    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                };
+                firebase.initializeApp(config);
+            });
+
+            const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
+            userPreferencesNode.on('value', function (snapshot) {
+                console.log("I am in MOUNTED");
+                console.log(snapshot.val());
+                let horoscopeDbValue = snapshot.val();
+                console.log(horoscopeDbValue);
+                if (horoscopeDbValue) {
+                    that.notRegistered = false;
+                }
+
+            })
+
         },
         triggerFacebookShareAnalytics() {
             let pratilipiAnalyticsData = {};
@@ -143,7 +177,51 @@ export default {
                 'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
             });
         },
+        triggerAnalyticsEventAndFireNotification() {
+            let pratilipiAnalyticsData = {};
+            if (this.getPratilipiData) {
+                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            }
 
+            this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPENOTIFICATION_HOME`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
+            });
+
+            if (this.getUserDetails.isGuest) {
+                console.log("SHow Login Modal");
+                this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+            }
+            else {
+                const that = this;
+                console.log("Val of horoscope: " + this.valueOfHoroscope);
+
+                console.log("My id: " + that.getUserDetails.userId);
+                const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
+                console.log(userPreferencesNode);
+                console.log("Val of horoscope: " + this.valueOfHoroscope);
+                userPreferencesNode.set({
+                    vapsiSubscription: {
+                        HOROSCOPE: this.valueOfHoroscope
+                    }
+                });
+                console.log(userPreferencesNode);
+                userPreferencesNode.on('value', function (snapshot) {
+                    console.log("I am in");
+                    console.log(snapshot.val());
+                    let horoscopeDbValue = snapshot.val();
+                    console.log(horoscopeDbValue);
+                    if (horoscopeDbValue) {
+                        that.notRegistered = false;
+                    }
+
+                })
+
+
+            }
+
+        },
         triggerWhatsappShareAnalytics() {
 
             const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
@@ -162,6 +240,9 @@ export default {
         },
         goToHoroscopeDetails() {
             if (this.valueOfHoroscope.length > 0) {
+                this.flag = true;
+            }
+            if (this.flag) {
                 this.goToDetails = true;
                 this.fetchHoroscope({horoscope: this.valueOfHoroscope, language: this.language});
 
@@ -175,14 +256,36 @@ export default {
                     'ENTITY_VALUE': 'HOROSCOPE_DETAIL_' + this.valueOfHoroscope.toUpperCase(),
                 });
             }
-            this.valueOfHoroscope = "";
+            this.flag = false;
         },
         setHoroscopeValue(value, index) {
+            const that = this;
             this.valueOfHoroscope = value;
+            console.log("here ", this.valueOfHoroscope);
             this.horoscopeImage = this.zodiacSignsImages[index];
+            const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
+            userPreferencesNode.on('value', function (snapshot) {
+                console.log(snapshot.val());
+                let horoscopeDbValue = snapshot.val();
+                console.log(horoscopeDbValue);
+                if (horoscopeDbValue) {
+                    that.notRegistered = false;
+                }
+
+            })
             this.goToHoroscopeDetails();
+
+
         }
     },
+    watch: {
+        'getUserDetails.isGuest'(isGuest) {
+            console.log("I am reinitializing firebase");
+            this.initializeFirebase();
+
+        }
+    },
+
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
@@ -192,6 +295,10 @@ export default {
         });
     },
     mounted() {
+
+        this.initializeFirebase();
+
+
         let k = 0;
         let pratilipiAnalyticsData = {};
         if (this.getPratilipiData) {
@@ -302,7 +409,7 @@ export default {
 }
 .horoscope-modal {
     position: fixed;
-    z-index: 9999;
+    z-index: 2;
     top: 20%;
     background-color: white;
     width: 90%;
