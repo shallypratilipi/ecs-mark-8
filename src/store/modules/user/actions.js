@@ -167,5 +167,10 @@ export default {
 
     setFirebaseGrowthDBInitialisedTrue({ commit }) {
         commit('setFirebaseGrowthDBInitialisedTrue');
+    },
+
+    setReadCount({ commit }, readCount) {
+        console.log(localStorage.readPratilipis);
+        commit('setReadCount', readCount);
     }
 }

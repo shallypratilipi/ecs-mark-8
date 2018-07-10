@@ -564,20 +564,20 @@
     "chat_yesterday": "నిన్న",
     "chat_today": "నేడు",
 
-    "event_participate":"పాల్గొనండి",
-    "event_participate_your_drafts":"మీ డ్రాఫ్ట్స్ ",
-    "event_participate_your_submissions":"మీ సమర్పణలు",
-    "event_participate_accepted_message":"మీ రచనను పోటీకి అంగీకరించాము. గడువు తేదికి రెండు రోజులు ముందుగ మీ రచనను ప్రచురిస్తాము. ",
-    "event_participate_drafted_item_edit":"మీ రచనలు ఇప్పటికే  డ్రాఫ్ట్స్ లో ఉన్నాయి.సవరించడానికి క్లిక్ చేయండి లేదా కొత్త రచన వ్రాయడానికి దిగువ క్లిక్ చేయండి.",
-    "event_participate_last_edited_on":"చివరిగా సవరించబడినది ",
-    "event_participate_finish":"ముగించు",
-    "event_participate_confirm_submission":"సమర్పణను నిర్ధారించండి",
-    "event_participate_cannot_change_drafts":"చివరి సమర్పణ తర్వాత మీ రచనను మీరు మార్చలేరు, మీరు ఖచ్చితంగా సమర్పించదలిచారా?",
-    "event_participate_check_your_entry_here":"మీ రచనను ఇక్కడ చూడండి",
-    
+    "event_participate": "పాల్గొనండి",
+    "event_participate_your_drafts": "మీ డ్రాఫ్ట్స్ ",
+    "event_participate_your_submissions": "మీ సమర్పణలు",
+    "event_participate_accepted_message": "మీ రచనను పోటీకి అంగీకరించాము. గడువు తేదికి రెండు రోజులు ముందుగ మీ రచనను ప్రచురిస్తాము. ",
+    "event_participate_drafted_item_edit": "మీ రచనలు ఇప్పటికే  డ్రాఫ్ట్స్ లో ఉన్నాయి.సవరించడానికి క్లిక్ చేయండి లేదా కొత్త రచన వ్రాయడానికి దిగువ క్లిక్ చేయండి.",
+    "event_participate_last_edited_on": "చివరిగా సవరించబడినది ",
+    "event_participate_finish": "ముగించు",
+    "event_participate_confirm_submission": "సమర్పణను నిర్ధారించండి",
+    "event_participate_cannot_change_drafts": "చివరి సమర్పణ తర్వాత మీ రచనను మీరు మార్చలేరు, మీరు ఖచ్చితంగా సమర్పించదలిచారా?",
+    "event_participate_check_your_entry_here": "మీ రచనను ఇక్కడ చూడండి",
+
     "chat_banner_send_messages": "సందేశాలను రచయితకు పంపండి",
     "chat_banner_start_chatting": "చాటింగ్ ప్రారంభించండి",
-    
+
     "message_capsule_conversation": "మీరు {{ initialUnreadConversations }} సంభాషణ ఇంకా చదవలేదు.",
     "message_capsule_conversations": "మీరు {{ initialUnreadConversations }} సంభాషణలు ఇంకా చదవలేదు.",
     "web_push_title": "దీనిని చదివినందుకు ఆనందించారా?",
@@ -586,5 +586,15 @@
     "web_push_message_2": "నోటిఫికేషన్ ద్వారా మంచి కథలను పొందాలనుకుంటున్నారా?",
     "web_push_message_3": "మంచి కథలను నోటిఫికేషన్ ద్వారా పంపడానికి ప్రతిలిపికి అనుమతి ఇవ్వగలరు...",
     "web_push_allow": "అనుమతించు",
-    "web_push_cancel": "రద్దు చేయు"
+    "web_push_cancel": "రద్దు చేయు",
+
+    "reader_gamify_level": "లెవెల్ {{ getReaderLevel }}",
+    "reader_gamify_read_count_to_reach_level": "<b>లెవెల్ {{ getReaderLevel + 1 }} </b> పొందడానికీ {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} రచనలు చదవండి",
+    "reader_gamify_explore_contents": "రచనలు అన్వేషించండి",
+    "reader_gamify_read_levels": "రీడింగ్ లెవెల్ ",
+    "reader_gamify_more_levels_coming_soon": "మరిన్ని లెవెల్స్ త్వరలో వస్తున్నాయి, చదవడం కొనసాగించండి!",
+    "reader_gamify_congratulations": "అభినందనలు!",
+    "reader_gamify_you_reached_level": "మీరు లెవెల్ {{getReaderLevel}} ను చేరుకున్నారు",
+    "reader_gamify_keep_reading": "చదువుతూ ఉండండి ",
+    "reader_gamify_login_to_save_your_progress": "మీ పురోగతి సేవ్ చేయడానికి లాగిన్ అవ్వండి "
 }

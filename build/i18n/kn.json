@@ -564,20 +564,20 @@
     "chat_yesterday": "ನಿನ್ನೆ",
     "chat_today": "ಇಂದು",
 
-    "event_participate":"ಭಾಗವಹಿಸಿ ",
-    "event_participate_your_drafts":"ನಿಮ್ಮ ಡ್ರಾಫ್ಟ್ಗಳು ",
-    "event_participate_your_submissions":"ಈ ಈವೆಂಟಿನ ನಿಮ್ಮ ಬರಹಗಳು ",
-    "event_participate_accepted_message":"ನಿಮ್ಮ ಬರಹದ ನಮೂದನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ಇವೆಂಟ್ ಮುಗಿದ ಬಳಿಕ ಇದು ಪ್ರತಿಲಿಪಿಯಲ್ಲಿ ಲಭ್ಯವಾಗುತ್ತವೆ.",
-    "event_participate_drafted_item_edit":"ನಿಮ್ಮ ಬರಹ ಈಗಾಗಲೇ ಡ್ರಾಫ್ಟ್ ನಲ್ಲಿ ಇದೆ. ಅದನ್ನು ಎಡಿಟ್ ಮಾಡಿ ಅಥವಾ ಹೊಸ ಬರಹವನ್ನು ಬರೆಯಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.",
-    "event_participate_last_edited_on":"ಕೊನೆಯದಾಗಿ ಎಡಿಟ್ ಮಾಡಿದ ದಿನಾಂಕ",
-    "event_participate_finish":"ಮುಕ್ತಾಯ ",
-    "event_participate_confirm_submission":"ಸಬ್ಮಿಟ್ ಮಾಡಲು ಖಾತ್ರಿಪಡಿಸಿ",
-    "event_participate_cannot_change_drafts":"ಸಬ್ಮಿಟ್ ಮಾಡಿದ ಬಳಿಕ ನಿಮ್ಮ ಬರಹವನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಖಾತ್ರಿಯಾಗಿ ಸಬ್ಮಿಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ ?",
-    "event_participate_check_your_entry_here":"ನಿಮ್ಮ ಇವೆಂಟ್ ಬರಹಗಳನ್ನು ಇಲ್ಲಿ ಪರಿಶೀಲಿಸಿ ",
-    
+    "event_participate": "ಭಾಗವಹಿಸಿ ",
+    "event_participate_your_drafts": "ನಿಮ್ಮ ಡ್ರಾಫ್ಟ್ಗಳು ",
+    "event_participate_your_submissions": "ಈ ಈವೆಂಟಿನ ನಿಮ್ಮ ಬರಹಗಳು ",
+    "event_participate_accepted_message": "ನಿಮ್ಮ ಬರಹದ ನಮೂದನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ಇವೆಂಟ್ ಮುಗಿದ ಬಳಿಕ ಇದು ಪ್ರತಿಲಿಪಿಯಲ್ಲಿ ಲಭ್ಯವಾಗುತ್ತವೆ.",
+    "event_participate_drafted_item_edit": "ನಿಮ್ಮ ಬರಹ ಈಗಾಗಲೇ ಡ್ರಾಫ್ಟ್ ನಲ್ಲಿ ಇದೆ. ಅದನ್ನು ಎಡಿಟ್ ಮಾಡಿ ಅಥವಾ ಹೊಸ ಬರಹವನ್ನು ಬರೆಯಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+    "event_participate_last_edited_on": "ಕೊನೆಯದಾಗಿ ಎಡಿಟ್ ಮಾಡಿದ ದಿನಾಂಕ",
+    "event_participate_finish": "ಮುಕ್ತಾಯ ",
+    "event_participate_confirm_submission": "ಸಬ್ಮಿಟ್ ಮಾಡಲು ಖಾತ್ರಿಪಡಿಸಿ",
+    "event_participate_cannot_change_drafts": "ಸಬ್ಮಿಟ್ ಮಾಡಿದ ಬಳಿಕ ನಿಮ್ಮ ಬರಹವನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಖಾತ್ರಿಯಾಗಿ ಸಬ್ಮಿಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ ?",
+    "event_participate_check_your_entry_here": "ನಿಮ್ಮ ಇವೆಂಟ್ ಬರಹಗಳನ್ನು ಇಲ್ಲಿ ಪರಿಶೀಲಿಸಿ ",
+
     "chat_banner_send_messages": "ಲೇಖಕರಿಗೆ ಸಂದೇಶವನ್ನು ಕಳುಹಿಸಿರಿ",
     "chat_banner_start_chatting": "ಚಾಟ್ ಮಾಡಲು ಶುರು ಮಾಡಿ",
-    
+
     "message_capsule_conversation": "ನೀವು {{ initialUnreadConversations }} ಸಂದೇಶವನ್ನು ಓದಿಲ್ಲ",
     "message_capsule_conversations": "ನೀವು {{ initialUnreadConversations }} ಸಂದೇಶಗಳನ್ನು ಓದಿಲ್ಲ",
     "web_push_title": "ಇದನ್ನು ಓದಿ ಆನಂದಿಸಿದಿರಾ?",
@@ -586,5 +586,15 @@
     "web_push_message_2": "ಉತ್ತಮ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಪಡೆಯಲು ಇಚ್ಛಿಸುತ್ತೀರಾ?",
     "web_push_message_3": "ಅತ್ಯುತ್ತಮ ಕಥಾನಕಗಳ ನೋಟಿಫಿಕೇಶನ್ಗಳನ್ನು ಕಳುಹಿಸಲು ಪ್ರತಿಲಿಪಿಗೆ ಅನುಮತಿಸಿ",
     "web_push_allow": "ಅನುಮತಿಸಿ",
-    "web_push_cancel": "ರದ್ದುಗೊಳಿಸಿ"
+    "web_push_cancel": "ರದ್ದುಗೊಳಿಸಿ",
+
+    "reader_gamify_level": "ಹಂತ {{getReaderLevel}}",
+    "reader_gamify_read_count_to_reach_level": "<b>{{ getReaderLevel + 1 }} ನೇ </b> ಹಂತವನ್ನು ತಲುಪಲು {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} ಬರಹಗಳನ್ನು ಓದಿ",
+    "reader_gamify_explore_contents": "ಹೆಚ್ಚು ಬರಹಗಳನ್ನು ಓದಿರಿ ",
+    "reader_gamify_read_levels": "ಓದುವಿಕೆಯ ಹಂತಗಳು ",
+    "reader_gamify_more_levels_coming_soon": "ಹೆಚ್ಚಿನ ಓದುವಿಕೆಯಿಂದ ಮುಂದಿನ ಹಂತಗಳನ್ನು ತಲುಪಿರಿ!",
+    "reader_gamify_congratulations": "ಅಭಿನಂದನೆಗಳು!",
+    "reader_gamify_you_reached_level": "ನೀವು {{ getReaderLevel }} ಹಂತವನ್ನು ತಲುಪಿದ್ದೀರಾ",
+    "reader_gamify_keep_reading": "ಓದನ್ನು ಮುಂದುವರೆಸಿ!",
+    "reader_gamify_login_to_save_your_progress": "ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಸೇವ್ ಮಾಡಲು ಲಾಗಿನ್ ಆಗಿರಿ"
 }
