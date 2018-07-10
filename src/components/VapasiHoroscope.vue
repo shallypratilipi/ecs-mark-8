@@ -114,12 +114,16 @@ export default {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             FB.ui({
-                method: 'share',
-                href: `https://${hindi.pratilipi.com}`,
-                title: '__("your_today_horoscope")',
-                picture: this.getHoroscopeImage,
-                caption: '__("your_today_horoscope")',
-                description: this.getHoroscope
+                method: 'share_open_graph',
+                action_type: 'og.shares',
+                action_properties: JSON.stringify({
+                    object: {
+                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
+                        'og:title': '__("your_today_horoscope")',
+                        'og:description': this.getHoroscope,
+                        'og:image': this.getHoroscopeImage
+                    }
+                })
             });
             this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,

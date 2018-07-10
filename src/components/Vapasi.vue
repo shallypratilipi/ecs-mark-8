@@ -145,17 +145,22 @@ export default {
 
         },
         triggerFacebookShareAnalytics() {
-            let fbShareUrl = this.getQuoteImage;
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             if (this.language == "HINDI") {
                 FB.ui({
-                    display: 'popup',
-                    method: 'share',
-                    href: fbShareUrl,
-                }, function(response) {
+                    method: 'share_open_graph',
+                    action_type: 'og.shares',
+                    action_properties: JSON.stringify({
+                        object: {
+                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
+                            'og:title': '__("thought_of_the_day")',
+                            'og:description': this.getQuoteOfTheDay,
+                            'og:image': this.getQuoteImage
+                        }
+                    })
                 });
                 this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
@@ -164,10 +169,16 @@ export default {
                 });
             } else if (this.language == "GUJARATI") {
                 FB.ui({
-                    display: 'popup',
-                    method: 'share',
-                    href: fbShareUrl,
-                }, function(response) {
+                    method: 'share_open_graph',
+                    action_type: 'og.shares',
+                    action_properties: JSON.stringify({
+                        object: {
+                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
+                            'og:title': '__("joke_of_the_day")',
+                            'og:description': this.getJokeOfTheDay,
+                            'og:image': this.getJokeImage
+                        }
+                    })
                 });
                 this.triggerAnanlyticsEvent(`SHARE_JOKEFB_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
