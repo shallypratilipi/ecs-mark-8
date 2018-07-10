@@ -109,18 +109,17 @@ export default {
             });
         },
         triggerFacebookShareAnalytics() {
-            let fbShareUrl = this.getHoroscopeImage;
-            console.log(fbShareUrl);
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             FB.ui({
-                display: 'popup',
                 method: 'share',
-                href: fbShareUrl,
-            }, function(response) {
-                console.log("FB share url is: "  + fbShareUrl);
+                href: `https://${hindi.pratilipi.com}`,
+                title: '__("your_today_horoscope")',
+                picture: this.getHoroscopeImage,
+                caption: '__("your_today_horoscope")',
+                description: this.getHoroscope
             });
             this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
