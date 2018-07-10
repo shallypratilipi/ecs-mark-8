@@ -3,9 +3,9 @@
       <div v-if="this.language=='GUJARATI'">
          <div class="vapasi-banner" @click="showModalContentJoke()">
             <div class="vapasi-text" >
-               __("joke_of_the_day") 
+               __("joke_of_the_day")
                <br class="vapasi-break">
-               __("click_here_to_know_more") 
+               __("click_here_to_know_more")
             </div>
             <div class="vapasi-image">
                <img src="static/quill.svg"  height="50" width="50">
@@ -19,10 +19,10 @@
                   <p id="shareThisAsImage">
                      {{getJokeOfTheDay}}
                   </p>
-                  <!-- <button class="btn btn-danger btn-sm">
-                     __("get_notofication")
-                     </button>  -->     
-                  <div class="social-icons">
+                   <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                       __("get_notofication")
+                   </button>
+                   <div class="social-icons">
                      <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
                      <span><a target="_blank" ><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></a></span>
                      <!-- <span><img src="../assets/twitterImage.png" height="30" width="30" ></span> -->
@@ -35,9 +35,9 @@
       <div v-if="this.language=='HINDI'">
          <div class="vapasi-banner" @click="showModalContentQuote()">
             <div class="vapasi-text" >
-               __("thought_of_the_day") 
+               __("thought_of_the_day")
                <br class="vapasi-banner">
-               __("click_here_to_know_more") 
+               __("click_here_to_know_more")
             </div>
             <div class="vapasi-image">
                <img src="../assets/quoteImage.svg"  height="50" width="50">
@@ -45,22 +45,22 @@
          </div>
          <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
             <p class="close" @click="resetModal()"><b>X</b></p>
-            <p class="vapasi-heading"> 
+            <p class="vapasi-heading">
                __("thought_of_the_day")
                <span> <img src="../assets/quoteImage.svg" height="30" width="30" class="span-image"></span>
             </p>
             <div class="horoscope-details">
                <p id="shareThisAsImage">
-                  {{getQuoteOfTheDay}} 
+                  {{getQuoteOfTheDay}}
                </p>
-               <!-- <button class="btn btn-danger btn-sm">
-                  __("get_notofication") 
-                  </button> -->      
-               <div class="social-icons">
+                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                  __("get_notofication")
+                </button>
+                <div class="social-icons">
                   <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
                   <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
                   <!--                   <span><img src="../assets/twitterImage.png" height="30" width="30" ></span>
-                     -->               
+                     -->
                </div>
             </div>
             <br>
@@ -73,6 +73,8 @@ import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
+import WebPushUtil from '@/utils/WebPushUtil'
+
 import {
     mapGetters,
     mapActions
@@ -104,6 +106,7 @@ export default {
             shouldShowModal: false,
             goToDetails: false,
             language: '',
+            shouldWebPush: false,
         }
     },
     methods: {
@@ -116,7 +119,6 @@ export default {
             this.shouldShowModal = false;
         },
         showModalContentJoke() {
-
             this.fetchJokeOfTheDay(this.language);
             this.shouldShowModal = true;
 
@@ -129,6 +131,13 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
             });
+        },
+        ifBrowserSupportsWebPush() {
+            if (WebPushUtil.canShowCustomPrompt()) {
+                this.shouldWebPush = true;
+            } else {
+                this.shouldWebPush = false;
+            }
         },
         showModalContentQuote() {
             this.shouldShowModal = true;
@@ -240,6 +249,7 @@ export default {
                 'ENTITY_VALUE': 'VAPASI_JOKE_VIEWED',
             });
         }
+        this.ifBrowserSupportsWebPush();
     },
     components: {},
 }
@@ -255,8 +265,8 @@ export default {
 }
 
 .vapasi-banner {
-    background: #ff9966;  
-    background: -webkit-linear-gradient(to right, #ff5e62, #ff9966); 
+    background: #ff9966;
+    background: -webkit-linear-gradient(to right, #ff5e62, #ff9966);
     background: linear-gradient(to right, #ff5e62, #ff9966);
     color: #fff;
     display: flex;

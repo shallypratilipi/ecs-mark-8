@@ -7,7 +7,7 @@
             __("click_here_to_know_more")
          </div>
          <div class="horoscope-image">
-            <img :src="zodiacSignsImages[2]" height="50" width="50">
+             <img :src="imageHoroscopeBanner" height="50" width="50">
          </div>
       </div>
       <div class="horoscope-shadow horoscope-modal" v-if="shouldShowModal">
@@ -22,7 +22,6 @@
                </div>
                <br><br>
             </div>
-            <p class="horoscope-footer" @click="goToHoroscopeDetails()">__("next") > </p>
          </div>
          <div v-if="goToDetails">
             <p class="close" @click="resetModal()">X</p>
@@ -31,8 +30,10 @@
                <p id="shareThisAsImage">
                   {{getHoroscope}}
                </p>
-               <!-- <button class="btn btn-danger btn-sm" @click="getPhotoHd()">Get in Notification</button>        -->
-               <div class="social-icons">
+                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                    __("get_notification")
+                </button>
+                <div class="social-icons">
                   <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
                   <span><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
                   <!-- <span><img src="../assets/twitterImage.png" height="30" width="30" ></span> -->
@@ -48,6 +49,8 @@ import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
+import WebPushUtil from '@/utils/WebPushUtil'
+
 import {
     mapGetters,
     mapActions
@@ -85,7 +88,9 @@ export default {
             goToDetails: false,
             valueOfHoroscope: "",
             language: '',
-            horoscopeImage: ''
+            horoscopeImage: '',
+            imageHoroscopeBanner: 'static/zodiac_signs/leo.svg',
+            shouldWebPush: null
         }
     },
     methods: {
@@ -107,6 +112,13 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'HOROSCOPE_LIST',
             });
+        },
+        ifBrowserSupportsWebPush() {
+            if (WebPushUtil.canShowCustomPrompt()) {
+                this.shouldWebPush = true;
+            } else {
+                this.shouldWebPush = false;
+            }
         },
         triggerFacebookShareAnalytics() {
             let pratilipiAnalyticsData = {};
@@ -174,6 +186,7 @@ export default {
         setHoroscopeValue(value, index) {
             this.valueOfHoroscope = value;
             this.horoscopeImage = this.zodiacSignsImages[index];
+            this.goToHoroscopeDetails();
         }
     },
     created() {
@@ -185,6 +198,7 @@ export default {
         });
     },
     mounted() {
+        let k = 0;
         let pratilipiAnalyticsData = {};
         if (this.getPratilipiData) {
             pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -194,6 +208,18 @@ export default {
             'USER_ID': this.getUserDetails.userId,
             'ENTITY_VALUE': 'VAPASI_HOROSCOPE_VIEWED',
         });
+
+        let that = this;
+        setInterval(function () {
+            that.imageHoroscopeBanner = that.zodiacSignsImages[k];
+            k++;
+            if (k >= 11) {
+                k = 0;
+            }
+        }, 3000);
+
+        this.ifBrowserSupportsWebPush();
+
     },
     components: {},
 }
@@ -204,9 +230,9 @@ export default {
     margin-bottom: 20px;
 }
 .horoscope-banner {
-        background: #1488CC; 
-        background: -webkit-linear-gradient(to right, #2B32B2, #1488CC); 
-        background: linear-gradient(to right, #2B32B2, #1488CC); 
+        background: #1488CC;
+        background: -webkit-linear-gradient(to right, #2B32B2, #1488CC);
+        background: linear-gradient(to right, #2B32B2, #1488CC);
         color: #EEE;
         display: flex;
         width: 100%;
@@ -271,6 +297,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 20px;
 }
 .horoscope-footer {
     font-weight: bold;
