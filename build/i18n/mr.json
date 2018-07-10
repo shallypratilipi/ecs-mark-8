@@ -574,10 +574,10 @@
     "event_participate_confirm_submission":"सादरीकरणाची पुष्टी करा",
     "event_participate_cannot_change_drafts":"एकदा सादर केल्यांनतर आपणास पुन्हा साहित्यात बदल करता येणार नाही, आपणास खात्रीपूर्वक हे साहित्य सादर करावयाचे आहे?",
     "event_participate_check_your_entry_here":"आपण केलेली नोंदणी येथे पहा ",
-    
+
     "chat_banner_send_messages": "लेखकास संदेश पाठवा",
     "chat_banner_start_chatting": "बोलणे सुरु करा",
-    
+
     "message_capsule_conversation": "आपली {{ initialUnreadConversations }} संभाषणे अपठीत",
     "message_capsule_conversations": "आपले {{ initialUnreadConversations }} संभाषण अपठीत",
     "web_push_title": "आपणास हे साहित्य आवडले का?",
@@ -592,5 +592,6 @@
      "select_zodiac_sign": "आपली राशी निवडा ",
      "next": "पुढे",
      "your_today_horoscope": "आपले आजचे भविष्य",
-    "web_push_cancel": "रद्द करा"
+    "web_push_cancel": "रद्द करा",
+    "get_notification": "नोटिफिकेशन प्राप्त करा"
 }
