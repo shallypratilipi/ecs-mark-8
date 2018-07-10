@@ -206,27 +206,6 @@ export default {
 
                 if (this.screenLocation === 'BOOKEND' && this.screenName === 'READER') {
 
-                    const { readCount, readPratilipis } = localStorage;
-                    const { pratilipiId } = this.pratilipiData;
-
-                    if (!readPratilipis || readPratilipis.length === 0) {
-                        localStorage.readPratilipis = JSON.stringify([ pratilipiId ]);
-                        localStorage.readCount = 1;
-                        this.setReadCount(localStorage.readCount);
-                    } else {
-                        const tempReadPratilipis = JSON.parse(readPratilipis);
-                        if (tempReadPratilipis.indexOf(pratilipiId) === -1) {
-                            tempReadPratilipis.push(pratilipiId);
-                            localStorage.readPratilipis = JSON.stringify(tempReadPratilipis);
-                            localStorage.readCount++;
-                            this.setReadCount(localStorage.readCount);
-                        } else {
-                            this.setReadCount(localStorage.readCount);
-                        }
-                    }
-                    this.triggerAnanlyticsEvent(`LANDED_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                        'USER_ID': this.getUserDetails.userId
-                    });
                 } else {
                     this.triggerAnanlyticsEvent(`VIEWED_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
                         'USER_ID': this.getUserDetails.userId

@@ -185,6 +185,29 @@ export default {
         'inViewport.now': function(visible) {
             console.log('LEVEL VISIBILITY: ', visible);
             if (visible) {
+
+                const { readCount, readPratilipis } = localStorage;
+                const { pratilipiId } = this.pratilipiData;
+
+                if (!readPratilipis || readPratilipis.length === 0) {
+                    localStorage.readPratilipis = JSON.stringify([ pratilipiId ]);
+                    localStorage.readCount = 1;
+                    this.setReadCount(localStorage.readCount);
+                } else {
+                    const tempReadPratilipis = JSON.parse(readPratilipis);
+                    if (tempReadPratilipis.indexOf(pratilipiId) === -1) {
+                        tempReadPratilipis.push(pratilipiId);
+                        localStorage.readPratilipis = JSON.stringify(tempReadPratilipis);
+                        localStorage.readCount++;
+                        this.setReadCount(localStorage.readCount);
+                    } else {
+                        this.setReadCount(localStorage.readCount);
+                    }
+                }
+                this.triggerAnanlyticsEvent(`LANDED_BOOKEND_READER`, 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId
+                });
+
                 const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
                 this.triggerAnanlyticsEvent(`VIEWED_PROGRESS_READER`, 'WGEN025', {
                     ...pratilipiAnalyticsData,
