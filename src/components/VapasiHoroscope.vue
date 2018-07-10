@@ -146,7 +146,7 @@ export default {
 
         triggerWhatsappShareAnalytics() {
 
-            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
 
             let pratilipiAnalyticsData = {};

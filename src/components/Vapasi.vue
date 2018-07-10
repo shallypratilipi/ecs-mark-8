@@ -208,7 +208,7 @@ export default {
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
 
-                const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
+                const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
                 window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
 
             } else if (this.language == "GUJARATI") {
@@ -218,7 +218,7 @@ export default {
                     'ENTITY_VALUE': 'joke_of_the_dayY',
                 });
 
-                const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
+                const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
                 window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
 
             }
