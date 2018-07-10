@@ -19,7 +19,9 @@
                   <p id="shareThisAsImage">
                      {{getJokeOfTheDay}}
                   </p>
-                   <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                   <!-- shouldWebPush && !getUserDetails.isGuest -->
+                   <button class="btn btn-danger btn-sm" v-if="shouldWebPush"
+                           @click="triggerAnalyticsEventAndFireNotification()">
                        __("get_notofication")
                    </button>
                    <div class="social-icons">
@@ -53,7 +55,8 @@
                <p id="shareThisAsImage">
                   {{getQuoteOfTheDay}}
                </p>
-                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                <button class="btn btn-danger btn-sm" v-if="shouldWebPush"
+                        @click="triggerAnalyticsEventAndFireNotification()">
                   __("get_notofication")
                 </button>
                 <div class="social-icons">
@@ -133,7 +136,7 @@ export default {
             });
         },
         ifBrowserSupportsWebPush() {
-            if (WebPushUtil.canShowCustomPrompt()) {
+            if (WebPushUtil.isBrowserPushCompatible()) {
                 this.shouldWebPush = true;
             } else {
                 this.shouldWebPush = false;
@@ -151,6 +154,42 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
             });
+
+        },
+        triggerAnalyticsEventAndFireNotification() {
+            if (this.language == "HINDI") {
+                let pratilipiAnalyticsData = {};
+                if (this.getPratilipiData) {
+                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+                }
+
+                this.triggerAnanlyticsEvent(`CLICKEVENT_JOKENOTIFICATION_HOME`, 'CONTROL', {
+                    ...pratilipiAnalyticsData,
+                    'USER_ID': this.getUserDetails.userId,
+                    'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
+                });
+            } else if (this.language == "GUJARATI") {
+
+                let pratilipiAnalyticsData = {};
+                if (this.getPratilipiData) {
+                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+                }
+
+                this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTENOTIFICATION_HOME`, 'CONTROL', {
+                    ...pratilipiAnalyticsData,
+                    'USER_ID': this.getUserDetails.userId,
+                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
+                });
+
+            }
+            if (this.getUserDetails.isGuest) {
+                console.log("SHow Login Modal");
+                this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+            }
+            else {
+                console.log("Go ahead");
+            }
+
 
         },
         triggerFacebookShareAnalytics() {
@@ -337,7 +376,7 @@ export default {
 
 .vapasi-modal {
     position: fixed;
-    z-index: 9999;
+    z-index: 2;
     top: 20%;
     background-color: white;
     width: 90%;

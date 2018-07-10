@@ -2195,5 +2195,18 @@ export default {
     "GOMESSAGESPAGE_HEADER_GLOBAL": {
         "LOCATION": "HEADER",
         "ACTION": "GOMESSAGESPAGE"
-    }
+    },
+    "CLICKEVENT_HOROSCOPENOTIFICATION_HOME": {
+        "LOCATION": "HOME",
+        "ACTION": "NOTIFYHOROSCOPE"
+    },
+    "CLICKEVENT_JOKENOTIFICATION_HOME": {
+        "LOCATION": "HOME",
+        "ACTION": "NOTIFYJOKE"
+    },
+    "CLICKEVENT_QUOTENOTIFICATION_HOME": {
+        "LOCATION": "HOME",
+        "ACTION": "NOTIFYQUOTE"
+    },
+
 };
