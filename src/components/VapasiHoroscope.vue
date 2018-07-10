@@ -154,7 +154,7 @@ export default {
         goToHoroscopeDetails() {
             if (this.valueOfHoroscope.length > 0) {
                 this.goToDetails = true;
-                this.fetchHoroscope(this.valueOfHoroscope);
+                this.fetchHoroscope({horoscope: this.valueOfHoroscope, language: this.language});
 
                 let pratilipiAnalyticsData = {};
                 if (this.getPratilipiData) {
