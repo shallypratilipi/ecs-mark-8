@@ -4,9 +4,11 @@
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
                 :banners="getHomePageBanners"
             ></Banners>
+            <Vapasi v-if="this.isMobile()"></Vapasi>
+            <VapasiHoroscope v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>
             <div v-if="getHomePageLoadingState === 'LOADING_SUCCESS'" v-for="(eachSection, index) in getHomePageSections" v-bind:key="eachSection.listPageUrl">
-                <PratilipiListComponent  
+                <PratilipiListComponent
                         :pratilipiList="eachSection.pratilipiList"
                         :title="eachSection.title"
                         :listPageUrl="eachSection.listPageUrl"
@@ -50,6 +52,9 @@
     import PratilipiListComponent from '@/components/PratilipiList.vue';
     import MainLayout from '@/layout/main-layout.vue';
     import Banners from '@/components/Banners.vue';
+    import Vapasi from '@/components/Vapasi.vue';
+    import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
+
     import ServerError from '@/components/ServerError.vue';
     import WebPushStrip from '@/components/WebPushStrip.vue';
     import WebPushModal from '@/components/WebPushModal.vue';
@@ -112,18 +117,23 @@ import { mapGetters, mapActions } from 'vuex'
             ServerError,
             DummyLoader,
             WebPushStrip,
-            WebPushModal
+            WebPushModal,
+            Vapasi,
+            VapasiHoroscope
         },
         created() {
             this.fetchBanners(this.getCurrentLanguage().fullName.toUpperCase());
             this.getListOfSections(this.getCurrentLanguage().fullName.toUpperCase());
-
+            if (this.$route.query.utm_image) {
+                document.head.querySelector('meta[property="og:image"]').content = this.$route.query.utm_image;
+            }
         },
         mounted() {
             this.triggerAnanlyticsEvent('LANDED_HOMEM_HOME', 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId
             });
             window.addEventListener('scroll', this.updateScroll);
+
         },
         watch: {
             'percentScrolled'(newPercentScrolled, prevPercentScrolled) {

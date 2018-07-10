@@ -596,6 +596,10 @@
     "reader_gamify_congratulations": "बधाई!",
     "reader_gamify_you_reached_level": "आप रीडिंग लेवल {{ getReaderLevel }} पर पहुँचे हैं ",
     "reader_gamify_keep_reading": "पढना जारी रखें!",
-    "reader_gamify_login_to_save_your_progress": "अपनी प्रगति को सहेजने के लिये लॉग इन करें "
+    "reader_gamify_login_to_save_your_progress": "अपनी प्रगति को सहेजने के लिये लॉग इन करें ",
+
+    "thought_of_the_day": "आज का सुविचार",
+    "click_here_to_know_more": "जानने के लिए यहाँ क्लिक करें",
+    "get_notofication": "नोटिफिकेशन पाइए"
 
 }

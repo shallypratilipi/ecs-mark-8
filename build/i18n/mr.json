@@ -574,7 +574,7 @@
     "event_participate_confirm_submission": "सादरीकरणाची पुष्टी करा",
     "event_participate_cannot_change_drafts": "एकदा सादर केल्यांनतर आपणास पुन्हा साहित्यात बदल करता येणार नाही, आपणास खात्रीपूर्वक हे साहित्य सादर करावयाचे आहे?",
     "event_participate_check_your_entry_here": "आपण केलेली नोंदणी येथे पहा ",
-
+    
     "chat_banner_send_messages": "लेखकास संदेश पाठवा",
     "chat_banner_start_chatting": "बोलणे सुरु करा",
 
@@ -588,6 +588,13 @@
     "web_push_allow": "परवानगी द्या",
     "web_push_cancel": "रद्द करा",
 
+    "today_horoscope": "आजचे राशी भविष्य",
+    "click_here_to_know_more": "जाणून घेण्यासाठी येथे क्लिक करा",
+    "select_zodiac_sign": "आपली राशी निवडा ",
+    "next": "पुढे",
+    "your_today_horoscope": "आपले आजचे भविष्य",
+    "web_push_cancel": "रद्द करा",
+
     "reader_gamify_level": "स्तर  {{ getReaderLevel }}",
     "reader_gamify_read_count_to_reach_level": "<b>{{ getReaderLevel + 1 }} स्तरावर </b> पोचण्याकरता आणखीन {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} कथा वाचा!  ",
     "reader_gamify_explore_contents": "अधिक साहित्य वाचा",
@@ -597,4 +604,5 @@
     "reader_gamify_you_reached_level": "आपण {{ getReaderLevel }} स्तरावर पोहोचलात ",
     "reader_gamify_keep_reading": "वाचत राहा!",
     "reader_gamify_login_to_save_your_progress": "आपला स्तरांचा उत्कर्ष जतन करण्यासाठी लॉग इन करा "
+
 }

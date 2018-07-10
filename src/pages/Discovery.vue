@@ -9,7 +9,8 @@
                         <div class="category-list" v-for="each_category_section in category_sections" :key="each_category_section.title">
                             <h4 class="category-section">{{ each_category_section.title }}</h4>
                             <ul>
-                                <li v-for="each_category in each_category_section.categories" :key="each_category.categoryUrl" v-if="each_category.pratilipiListData.listName">
+                                <li v-for="each_category in each_category_section.categories"
+                                    :key="each_category.categoryUrl">
                                     <router-link
                                     :to="{ path: each_category.categoryUrl }" @click.native="triggerAnanlyticsEventForClick(each_category.categoryUrl)"
                                     class="category-img"
@@ -59,7 +60,6 @@ export default {
     created() {
         this.category_sections = Constants.CATEGORY_DATA.sections;
         console.log(Constants);
-        console.log();
     },
     mounted() {
         this.triggerAnanlyticsEvent('LANDED_DISCOVERM_DISCOVER', 'CONTROL', {

@@ -355,9 +355,9 @@ export default {
                 else {
                     this.chapterCount = 1;
                 }
+                let pratilipiId = this.getPratilipiData.pratilipiId;
                 let chapterCount = this.chapterCount;
                 let indexData = this.getIndexData;
-                let pratilipiId = this.getPratilipiData.pratilipiId;
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
         },
