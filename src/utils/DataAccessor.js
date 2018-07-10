@@ -1061,11 +1061,11 @@ export default {
             });
     },
 
-    getHoroscopeOfTheDay: (aCallBack) => {
+    getHoroscopeOfTheDay: (language, aCallBack) => {
         httpUtil.get(API_PREFIX + INIT_API_VAPSI,
             null,
             {
-                "language": "MARATHI",
+                "language": language,
                 "vapsiType": "HOROSCOPE"
             },
             function (response, status) {

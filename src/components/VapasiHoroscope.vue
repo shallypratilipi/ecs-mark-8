@@ -121,16 +121,21 @@ export default {
             }
         },
         triggerFacebookShareAnalytics() {
-            let fbShareUrl = this.getHoroscopeImage;
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             FB.ui({
-                display: 'popup',
-                method: 'share',
-                href: fbShareUrl,
-            }, function(response) {
+                method: 'share_open_graph',
+                action_type: 'og.shares',
+                action_properties: JSON.stringify({
+                    object: {
+                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
+                        'og:title': '__("your_today_horoscope")',
+                        'og:description': this.getHoroscope,
+                        'og:image': this.getHoroscopeImage
+                    }
+                })
             });
             this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -164,7 +169,7 @@ export default {
         goToHoroscopeDetails() {
             if (this.valueOfHoroscope.length > 0) {
                 this.goToDetails = true;
-                this.fetchHoroscope(this.valueOfHoroscope);
+                this.fetchHoroscope({horoscope: this.valueOfHoroscope, language: this.language});
 
                 let pratilipiAnalyticsData = {};
                 if (this.getPratilipiData) {

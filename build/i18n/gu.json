@@ -564,17 +564,17 @@
     "chat_yesterday": "કાલે",
     "chat_today": "આજે",
 
-    "event_participate":"ભાગ લો ",
-    "event_participate_your_drafts":"તમારા ડ્રાફ્ટ ",
-    "event_participate_your_submissions":"તમારી સબમિટ થયેલી રચનાઓ ",
-    "event_participate_accepted_message":"અમને આપની રચના મળી ગઈ છે,સ્પર્ધા શરુ થશે ત્યારે અમે પ્રકાશિત કરીશું ",
-    "event_participate_drafted_item_edit":"આપની રચનાઓ અહીં છે. રચનાઓમાં સુધારો કરવા માટે અથવા નવી રચના શરુ કરવા માટે ક્લિક કરો. ",
-    "event_participate_last_edited_on":"છેલ્લો ફેરફાર ",
-    "event_participate_finish":"સમાપ્ત ",
-    "event_participate_confirm_submission":"સબમિશન કન્ફર્મ કરો ",
-    "event_participate_cannot_change_drafts":"ફાઇનલ સબમિશન પછી આપ રચનામાં કોઈ ફેરફાર નહી કરી શકો.શું આપ ફાઇનલ સબમિશન કરવા ઈચ્છો છો?",
-    "event_participate_check_your_entry_here":"આપની રચના એન્ટ્રી અહીં ચેક કરો ",
-    
+    "event_participate": "ભાગ લો ",
+    "event_participate_your_drafts": "તમારા ડ્રાફ્ટ ",
+    "event_participate_your_submissions": "તમારી સબમિટ થયેલી રચનાઓ ",
+    "event_participate_accepted_message": "અમને આપની રચના મળી ગઈ છે,સ્પર્ધા શરુ થશે ત્યારે અમે પ્રકાશિત કરીશું ",
+    "event_participate_drafted_item_edit": "આપની રચનાઓ અહીં છે. રચનાઓમાં સુધારો કરવા માટે અથવા નવી રચના શરુ કરવા માટે ક્લિક કરો. ",
+    "event_participate_last_edited_on": "છેલ્લો ફેરફાર ",
+    "event_participate_finish": "સમાપ્ત ",
+    "event_participate_confirm_submission": "સબમિશન કન્ફર્મ કરો ",
+    "event_participate_cannot_change_drafts": "ફાઇનલ સબમિશન પછી આપ રચનામાં કોઈ ફેરફાર નહી કરી શકો.શું આપ ફાઇનલ સબમિશન કરવા ઈચ્છો છો?",
+    "event_participate_check_your_entry_here": "આપની રચના એન્ટ્રી અહીં ચેક કરો ",
+
     "web_push_title": "આ રચના પસંદ આવી?",
     "web_push_section_title": "વાર્તાઓ મેળવો",
     "web_push_message_1": "આ પ્રકારની વાર્તાઓ નોટીફિકેશનમાં મેળવવા પ્રતિલિપિને અનુમતિ આપો",
@@ -582,15 +582,25 @@
     "web_push_message_3": "નોટીફિકેશન દ્વારા વાર્તાઓ મોકલવા માટે પ્રતિલિપિને અનુમતિ આપો..",
     "web_push_allow": "અનુમતિ આપો",
     "web_push_cancel": "રદ કરો",
+    
     "joke_of_the_day": "કવિની કલ્પનામાં આજે",
     "click_here_to_know_more": "જાણવા માટે અહીં ક્લિક કરો",
     "get_notofication": "નોટિફિકેશન મેળવો",
 
 
-    
     "chat_banner_send_messages": "લેખકને મેસેજ મોકલો",
     "chat_banner_start_chatting": "વાત કરવાની શરૂઆત કરો",
-    
+
     "message_capsule_conversation": "આપના {{ initialUnreadConversations }} ન વંચાયેલ મેસેજ છે.",
-    "message_capsule_conversations": "આપના {{ initialUnreadConversations }} ન વંચાયેલ મેસેજ છે."
+    "message_capsule_conversations": "આપના {{ initialUnreadConversations }} ન વંચાયેલ મેસેજ છે.",
+
+    "reader_gamify_level": "લેવલ {{ getReaderLevel }}",
+    "reader_gamify_read_count_to_reach_level": "<b>વાંચન-લેવલ {{ getReaderLevel + 1 }}</b> પર પહોંચવા માટે વધું {{ readLevelThreshold[getReaderLevel] - getReadStats.read_count }} રચનાઓ વાંચો. ",
+    "reader_gamify_explore_contents": "રચનાઓ શોધો ",
+    "reader_gamify_read_levels": "વાંચન-લેવલ  ",
+    "reader_gamify_more_levels_coming_soon": "અમે વધુ વાંચન-લેવલ લાવી રહ્યા છીએ. વાંચતા રહેશો. ",
+    "reader_gamify_congratulations": "અભિનંદન!",
+    "reader_gamify_you_reached_level": "આપે {{ getReaderLevel }} લેવલ પ્રાપ્ત કર્યું છે. ",
+    "reader_gamify_keep_reading": "વાંચતા રહો!",
+    "reader_gamify_login_to_save_your_progress": "આપની ગતિવિધિ સેવ કરવા માટે લોગઈન કરો"
 }

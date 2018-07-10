@@ -88,5 +88,10 @@ export default {
 
     setFirebaseGrowthDBInitialisedTrue(state) {
         state.growth_db_initialized = true;
+    },
+
+    setReadCount(state, readCount) {
+        state.read_stats.read_count = localStorage.readCount;
+        state.read_stats.read_books = localStorage.readPratilipis ? JSON.parse(localStorage.readPratilipis) : [];
     }
 }

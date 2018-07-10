@@ -27,6 +27,9 @@ import EventParticipatePageComponent from '@/pages/EventParticipate.vue'
 import VideoseriesPageComponent from '@/pages/Videoseries.vue'
 import VideoPlayListPageComponent from '@/pages/VideoPlayList.vue'
 import VideoPlayPageComponent from '@/pages/Videoplay.vue'
+import AdminEventSubmissions from '@/pages/AdminEventSubmissions'
+import AdminEventSubmission from '@/pages/AdminEventSubmission'
+
 import {
     getCookie
 } from '@/mixins/methods'
@@ -59,7 +62,7 @@ const defaultMetaTags = [{
     },
     {
         property: 'og:url',
-        content: window.location.protocol + '//' + window.location.host
+        content: window.location.href
     }
 ]
 
@@ -219,7 +222,7 @@ var router = new Router({
             path: '/story/:slug_id',
             name: 'Pratilipi',
             component: () => {
-                if (process.env.REALM === 'PROD') {
+                if (process.env.REALM === 'PROD' || process.env.REALM === 'PROD_BRIDGE') {
                     return new Promise((resolve, reject) => {
                         resolve(PratilipiPageComponent);
                     });
@@ -338,20 +341,21 @@ var router = new Router({
             path: '/read',
             name: 'Reader_Page',
             component: () => {
-                if (process.env.REALM === 'PROD') {
+                if (process.env.REALM === 'PROD' || process.env.REALM === 'PROD_BRIDGE') {
                     return new Promise((resolve, reject) => resolve(ReaderPageComponent));
                 } else {
-                    if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
-                        return import ('@/pages/experiments/reader_v5/Reader.vue');
-                    } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
-                        return import ('@/pages/experiments/reader_v6/Reader.vue');
-                    } else if (getCookie('bucketId') >= 6 && getCookie('bucketId') < 8) {
-                        return import ('@/pages/experiments/reader_v7/Reader.vue');
-                    } else if (getCookie('bucketId') >= 8 && getCookie('bucketId') < 10) {
-                        return import ('@/pages/experiments/reader_v8/Reader.vue');
-                    } else {
-                        return import ('@/pages/Reader.vue');
-                    }
+                    return import('@/pages/experiments/reader_progress_v1/Reader.vue');
+                    // if (getCookie('bucketId') >= 2 && getCookie('bucketId') < 4) {
+                    //     return import ('@/pages/experiments/reader_v5/Reader.vue');
+                    // } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
+                    //     return import ('@/pages/experiments/reader_v6/Reader.vue');
+                    // } else if (getCookie('bucketId') >= 6 && getCookie('bucketId') < 8) {
+                    //     return import ('@/pages/experiments/reader_v7/Reader.vue');
+                    // } else if (getCookie('bucketId') >= 8 && getCookie('bucketId') < 10) {
+                    //     return import ('@/pages/experiments/reader_v8/Reader.vue');
+                    // } else {
+                    //     return import ('@/pages/Reader.vue');
+                    // }
                 }
             },
             meta: {
@@ -506,6 +510,20 @@ var router = new Router({
                 'store': 'eventparticipate'
             },
             component: EventParticipatePageComponent
+        }, {
+            path: '/submissions',
+            meta: {
+                'title': '__("seo_home_page")',
+                'store': 'admineventsubmissions'
+            },
+            component: AdminEventSubmissions
+        }, {
+            path: '/submissions/:eventPratilipiId',
+            meta: {
+                'title': '__("seo_home_page")',
+                'store': 'admineventsubmissions'
+            },
+            component: AdminEventSubmission
         }, {
             path: '/:list_page_url',
             name: 'List_Page',

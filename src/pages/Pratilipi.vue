@@ -567,6 +567,7 @@ export default {
             document.head.querySelector('meta[property="og:title"]').content = `${pratilipiData.title} « ${pratilipiData.author.fullName}`;
             document.head.querySelector('meta[property="og:description"]').content = pratilipiData.summary + ' « ' + pratilipiData.author.fullName;
             document.head.querySelector('meta[property="og:image"]').content = pratilipiData.coverImageUrl;
+            document.head.querySelector('meta[property="og:url"]').content = window.location.href;
         }
     },
     created() {
