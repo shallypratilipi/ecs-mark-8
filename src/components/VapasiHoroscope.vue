@@ -7,7 +7,7 @@
             __("click_here_to_know_more")
          </div>
          <div class="horoscope-image">
-            <img v-bind:src="mockImage"  height="50" width="50">
+            <img :src="zodiacSignsImages[2]" height="50" width="50">
          </div>
       </div>
       <div class="horoscope-shadow horoscope-modal" v-if="shouldShowModal">
@@ -16,17 +16,17 @@
             <p class="horoscope-heading"> __("select_zodiac_sign")</p>
             <div class="modal-message">
                <div class="modal-buttons">
-                   <button class="btn btn-default horoscope-button" v-for="eachSign in zodiacSigns"
-                           @click="setHoroscopeValue(eachSign)"> {{eachSign}}
+                   <button class="btn btn-default horoscope-button" v-for="(eachSign,index) in zodiacSignsLanguage"
+                           @click="setHoroscopeValue(zodiacSigns[index],index)"> {{eachSign}}
                    </button>
                </div>
                <br><br>
             </div>
-            <p class="horoscope-footer" @click="goToHoroscopeDetails">__("next") > </p>
+            <p class="horoscope-footer" @click="goToHoroscopeDetails()">__("next") > </p>
          </div>
          <div v-if="goToDetails">
             <p class="close" @click="resetModal()">X</p>
-            <p class="horoscope-heading">__("your_today_horoscope")  <span> <img v-bind:src="mockImage" height="30" width="30" class="span-image"></span></p>
+            <p class="horoscope-heading">__("your_today_horoscope")  <span> <img v-bind:src="horoscopeImage" height="30" width="30" class="span-image"></span></p>
             <div class="horoscope-details">
                <p id="shareThisAsImage">
                   {{getHoroscope}}
@@ -79,11 +79,13 @@ export default {
     data() {
         return {
             zodiacSigns: ["capricorn", "aquarius", "pisces", "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius"],
+            zodiacSignsLanguage: ["मकर", "कुंभ", "मीन", "मेष", "वृषभ", "मिथुन", "कर्क", "सिंह","कन्या",  "तूळ", "वृश्चिक", "धनु"],
+            zodiacSignsImages: ["static/zodiac_signs/goat.svg", "static/zodiac_signs/aquarius.svg", "static/zodiac_signs/pisces.svg", "static/zodiac_signs/aries.svg", "static/zodiac_signs/taurus.svg", "static/zodiac_signs/gemini.svg", "static/zodiac_signs/cancer.svg", "static/zodiac_signs/leo.svg", "static/zodiac_signs/virgo.svg", "static/zodiac_signs/libra.svg", "static/zodiac_signs/scorpio.svg", "static/zodiac_signs/sagittarius.svg"],
             shouldShowModal: false,
-            mockImage: "https://cdn2.iconfinder.com/data/icons/horoscope/512/horoscope_5-512.png",
             goToDetails: false,
             valueOfHoroscope: "",
-            language: ''
+            language: '',
+            horoscopeImage: ''
         }
     },
     methods: {
@@ -100,7 +102,7 @@ export default {
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASI_HOROSCOPE_LIST`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIHOROSCOPE_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'HOROSCOPE_LIST',
@@ -118,9 +120,9 @@ export default {
                 method: 'share',
                 href: fbShareUrl,
             }, function(response) {
-                console.log("FB share url is: " + fbShareUrl);
+                console.log("FB share url is: "  + fbShareUrl);
             });
-            this.triggerAnanlyticsEvent(`SHARE_VAPASI_HOROSCOPE_FACEBOOK`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
@@ -129,10 +131,13 @@ export default {
 
         triggerWhatsappShareAnalytics() {
 
-            let utmParameters = `utm_source=vapsi&utm_image=${this.getHoroscopeImage}`;
-            let urlShareLink = `//${window.location.host}?${encodeURIComponent(utmParameters)}`;
-            let waLink = "https://api.whatsapp.com/send?text=" + urlShareLink;
-            console.log(urlShareLink);
+            // let utmParameters = `utm_source=vapsi&utm_image=${this.getHoroscopeImage}`;
+            // let urlShareLink = `${window.location.host}/?${encodeURIComponent(utmParameters)}`;
+            // let waLink = "https://api.whatsapp.com/send?text=" + urlShareLink;
+            // console.log(urlShareLink);
+            // window.open(waLink);
+
+            let waLink = "https://api.whatsapp.com/send?text=" + this.getHoroscopeImage;
             window.open(waLink);
 
             let pratilipiAnalyticsData = {};
@@ -140,38 +145,32 @@ export default {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
 
-            this.triggerAnanlyticsEvent(`SHARE_VAPASI_HOROSCOPE_WHATSAPP`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEWA_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
             });
         },
-
-        getPhotoHd() {
-            let canvas = document.getElementById("shareThisAsImage");
-            console.log(canvas);
-        },
         goToHoroscopeDetails() {
             if (this.valueOfHoroscope.length > 0) {
                 this.goToDetails = true;
-                console.log(this.valueOfHoroscope);
                 this.fetchHoroscope(this.valueOfHoroscope);
 
                 let pratilipiAnalyticsData = {};
                 if (this.getPratilipiData) {
                     pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
                 }
-                this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASI_HOROSCOPE_DETAILS`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPEDETAILS_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'HOROSCOPE_DETAIL_' + this.valueOfHoroscope.toUpperCase(),
                 });
             }
-
+            this.valueOfHoroscope = "";
         },
-        setHoroscopeValue(value) {
+        setHoroscopeValue(value, index) {
             this.valueOfHoroscope = value;
-            console.log(value);
+            this.horoscopeImage = this.zodiacSignsImages[index];
         }
     },
     created() {
@@ -179,8 +178,6 @@ export default {
         constants.LANGUAGES.forEach((eachLanguage) => {
             if (eachLanguage.shortName === currentLocale) {
                 this.language = eachLanguage.fullName.toUpperCase();
-                console.log("MY LANG IS: " + this.language);
-
             }
         });
     },
@@ -204,7 +201,10 @@ export default {
     margin-bottom: 20px;
 }
 .horoscope-banner {
-        background-color: #F99BA7;
+        background: #1488CC; 
+        background: -webkit-linear-gradient(to right, #2B32B2, #1488CC); 
+        background: linear-gradient(to right, #2B32B2, #1488CC); 
+        color: #EEE;
         display: flex;
         width: 100%;
         height: 100%;
