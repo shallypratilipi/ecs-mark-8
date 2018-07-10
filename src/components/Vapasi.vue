@@ -8,13 +8,13 @@
                __("click_here_to_know_more") 
             </div>
             <div class="vapasi-image">
-               <img src="../assets/smileImage.png"  height="50" width="50">
+               <img src="static/quill.svg"  height="50" width="50">
             </div>
          </div>
          <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal" >
             <p class="close" @click="resetModal()"><b>X</b></p>
             <div class="container">
-               <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="../assets/smileImage.png" height="30" width="30" class="span-image"></span></p>
+               <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
                <div class="horoscope-details">
                   <p id="shareThisAsImage">
                      {{getJokeOfTheDay}}
@@ -124,7 +124,7 @@ export default {
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASI_JOKE`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIJOKE_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
@@ -137,7 +137,7 @@ export default {
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASI_QUOTE`, 'CONTROL', {
+            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIQUOTE_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
@@ -154,11 +154,10 @@ export default {
                 FB.ui({
                     display: 'popup',
                     method: 'share',
-                    href: this.fbShareUrl,
+                    href: fbShareUrl,
                 }, function(response) {
-                    console.log(response);
                 });
-                this.triggerAnanlyticsEvent(`SHARE_VAPASI_QUOTE_FACEBOOK`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
@@ -167,11 +166,10 @@ export default {
                 FB.ui({
                     display: 'popup',
                     method: 'share',
-                    href: this.fbShareUrl,
+                    href: fbShareUrl,
                 }, function(response) {
-                    console.log(response);
                 });
-                this.triggerAnanlyticsEvent(`SHARE_VAPASI_JOKE_FACEBOOK`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`SHARE_JOKEFB_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
@@ -184,7 +182,7 @@ export default {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
             if (this.language == "HINDI") {
-                this.triggerAnanlyticsEvent(`SHARE_VAPASI_QUOTE_WHATSAPP`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`SHARE_QUOTEWA_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
@@ -192,7 +190,7 @@ export default {
                 let waLink = "https://api.whatsapp.com/send?text=" + this.getQuoteImage;
                 window.open(waLink);
             } else if (this.language == "GUJARATI") {
-                this.triggerAnanlyticsEvent(`SHARE_VAPASI_JOKE_WHATSAPP`, 'CONTROL', {
+                this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'joke_of_the_dayY',
@@ -246,7 +244,10 @@ export default {
 }
 
 .vapasi-banner {
-    background-color: #F99BA7;
+    background: #ff9966;  
+    background: -webkit-linear-gradient(to right, #ff5e62, #ff9966); 
+    background: linear-gradient(to right, #ff5e62, #ff9966);
+    color: #fff;
     display: flex;
     width: 100%;
     height: 100%;
