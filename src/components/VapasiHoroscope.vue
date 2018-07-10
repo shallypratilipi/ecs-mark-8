@@ -146,14 +146,8 @@ export default {
 
         triggerWhatsappShareAnalytics() {
 
-            // let utmParameters = `utm_source=vapsi&utm_image=${this.getHoroscopeImage}`;
-            // let urlShareLink = `${window.location.host}/?${encodeURIComponent(utmParameters)}`;
-            // let waLink = "https://api.whatsapp.com/send?text=" + urlShareLink;
-            // console.log(urlShareLink);
-            // window.open(waLink);
-
-            let waLink = "https://api.whatsapp.com/send?text=" + this.getHoroscopeImage;
-            window.open(waLink);
+            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
 
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {

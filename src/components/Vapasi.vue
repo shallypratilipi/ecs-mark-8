@@ -207,16 +207,20 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
-                let waLink = "https://api.whatsapp.com/send?text=" + this.getQuoteImage;
-                window.open(waLink);
+
+                const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
+                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
+
             } else if (this.language == "GUJARATI") {
                 this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'joke_of_the_dayY',
                 });
-                let waLink = "https://api.whatsapp.com/send?text=" + this.getJokeImage;
-                window.open(waLink);
+
+                const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
+                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
+
             }
 
 
