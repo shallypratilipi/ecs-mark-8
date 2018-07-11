@@ -2208,5 +2208,16 @@ export default {
         "LOCATION": "HOME",
         "ACTION": "NOTIFYQUOTE"
     },
-
+    "CLICKEVENT_HOROSCOPECLOSE_HOME" : {
+        "LOCATION": "HOME",
+        "ACTION": "CLOSEHOROSCOPE"
+    },
+    "CLICKEVENT_JOKECLOSE_HOME" : {
+        "LOCATION": "HOME",
+        "ACTION": "CLOSEJOKE"
+    },
+    "CLICKEVENT_QUOTECLOSE_HOME" : {
+        "LOCATION": "HOME",
+        "ACTION": "QUOTEJOKE"
+    },
 };

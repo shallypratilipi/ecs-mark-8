@@ -82,6 +82,16 @@ export default {
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
+
+             let pratilipiAnalyticsData = {};
+             if (this.getPratilipiData) {
+                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            }
+            this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTECLOSE_HOME`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'QUOTE_CLOSE',
+            });
         },
         showModalContentQuote() {
             this.shouldShowModal = true;

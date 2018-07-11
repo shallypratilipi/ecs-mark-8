@@ -165,6 +165,16 @@ export default {
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
+            let pratilipiAnalyticsData = {};
+             if (this.getPratilipiData) {
+                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            }
+            this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPECLOSE_HOME`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'HOROSCOPE_CLOSE',
+            });
+
         },
         showModal() {
             this.shouldShowModal = true;
@@ -331,14 +341,14 @@ export default {
             'ENTITY_VALUE': 'VAPASI_HOROSCOPE_VIEWED',
         });
 
-        // let that = this;
-        // setInterval(function () {
-        //     that.imageHoroscopeBanner = that.zodiacSignsImages[k];
-        //     k++;
-        //     if (k >= 11) {
-        //         k = 0;
-        //     }
-        // }, 3000);
+        let that = this;
+        setInterval(function () {
+            that.imageHoroscopeBanner = that.zodiac[k].image;
+            k++;
+            if (k >= 11) {
+                k = 0;
+            }
+        }, 3000);
 
 
         this.vapasiNotification(this.getUserDetails.isGuest);

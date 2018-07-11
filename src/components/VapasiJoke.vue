@@ -81,6 +81,15 @@ export default {
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
+             let pratilipiAnalyticsData = {};
+             if (this.getPratilipiData) {
+                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            }
+            this.triggerAnanlyticsEvent(`CLICKEVENT_JOKECLOSE_HOME`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'JOKE_CLOSE',
+            });
         },
         showModalContentJoke() {
             this.fetchJokeOfTheDay(this.language);
