@@ -1,42 +1,38 @@
 <template>
-   <div class="vapasi">
-         <div class="vapasi-banner" @click="showModalContentQuote()">
+    <div class="vapasi">
+        <div class="vapasi-banner" @click="showModalContentQuote()">
             <div class="vapasi-text" >
-               __("quote_of_the_day")
-               <br class="vapasi-banner">
-               __("click_here_to_know_more")
+                __("quote_of_the_day")
+                <br class="vapasi-banner">
+                __("click_here_to_know_more")
             </div>
             <div class="vapasi-image">
-               <img src="../assets/quoteImage.svg"  height="50" width="50">
+               <img src="../assets/quoteImage.svg" height="50" width="50">
             </div>
-         </div>
-         <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
+        </div>
+        <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
             <p class="close" @click="resetModal()"><b>X</b></p>
             <p class="vapasi-heading">
-               __("quote_of_the_day")
-               <span> <img src="../assets/quoteImage.svg" height="30" width="30" class="span-image"></span>
+                __("quote_of_the_day")
+                <span> <img src="../assets/quoteImage.svg" height="30" width="30" class="span-image"></span>
             </p>
             <div class="horoscope-details">
-               <p id="shareThisAsImage">
-                  {{getQuoteOfTheDay}}
-               </p>
-                <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
+                <p>{{getQuoteOfTheDay}}</p>
+                <button class="btn btn-danger btn-sm" 
+                        v-if="isNotificationButtonEnabled"
                         @click="triggerAnalyticsEventAndFireNotification()">
-                  __("get_notofication")
+                    __("get_notofication")
                 </button>
                 <div class="social-icons">
-                  <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                  <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
-                  <!--                   <span><img src="../assets/twitterImage.png" height="30" width="30" ></span>
-                     -->
-               </div>
+                    <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                    <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
+                </div>
             </div>
             <br>
-         </div>
-   </div>
+        </div>
+    </div>
 </template>
 <script>
-import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
@@ -48,7 +44,14 @@ import {
 } from 'vuex';
 
 export default {
-    props: {},
+    props: {
+        'in-viewport-once': {
+            default: true
+        },
+        'in-viewport-offset-top': {
+            default: -350
+        }
+    },
     mixins: [
         mixins,
         inViewport
@@ -59,20 +62,14 @@ export default {
             'getQuoteImage',
         ]),
         ...mapGetters([
-            'getUserDetails',
-            'getPratilipiData',
-        ]),
-
-
+            'getUserDetails'
+        ])
     },
     data() {
         return {
             shouldShowModal: false,
-            goToDetails: false,
             language: '',
-            shouldWebPush: false,
             isNotificationButtonEnabled: false
-
         }
     },
     methods: {
@@ -80,42 +77,24 @@ export default {
             'fetchQuoteOfTheDay'
         ]),
         resetModal() {
-            this.goToDetails = false;
             this.shouldShowModal = false;
-
-             let pratilipiAnalyticsData = {};
-             if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
             this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTECLOSE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'QUOTE_CLOSE',
+               'USER_ID': this.getUserDetails.userId
             });
         },
         showModalContentQuote() {
             this.shouldShowModal = true;
-            this.fetchQuoteOfTheDay(this.language);
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
             this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIQUOTE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
+                'USER_ID': this.getUserDetails.userId
             });
-
         },
-
         vapasiNotification(isGuest) {
-            if(WebPushUtil.isBrowserPushCompatible() ) {
-                if(isGuest == null)
+            if (WebPushUtil.isBrowserPushCompatible()) {
+                if (isGuest == null)
                     return;
                 if (isGuest) {
-                    this.isNotificationButtonEnabled=true;
-                    } else {
-
+                    this.isNotificationButtonEnabled = true;
+                } else {
                     const that = this;
                     import('firebase').then((firebase) => {
                         if (firebase.apps.length === 0) {
@@ -127,98 +106,71 @@ export default {
                             };
                             firebase.initializeApp(config);
                         }
-                                firebase.auth().onAuthStateChanged( function( fbUser ) {
+                        firebase.auth().onAuthStateChanged((fbUser) => {
                             if (fbUser) {
-                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
-                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
-                                const vapasiPreferences = snapshot.val();
-                                if(vapasiPreferences && vapasiPreferences.QUOTE) {
-                                    that.isNotificationButtonEnabled=false;
-                                }
-                                else {
-                                    that.isNotificationButtonEnabled=true;
-                                }
-                        });
+                                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
+                                vapasiPreferencesNode.on('value', (snapshot) => {
+                                    const vapasiPreferences = snapshot.val();
+                                    that.isNotificationButtonEnabled = vapasiPreferences && vapasiPreferences.QUOTE;
+                                });
                             }
-                        })  
-                        
-                  
-                    
-                        
-                       
+                        })
                     });
                 }
             }
         },
         triggerAnalyticsEventAndFireNotification() {
-                let pratilipiAnalyticsData = {};
-                if (this.getPratilipiData) {
-                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                }
-//fix it
-                this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTENOTIFICATION_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
+            this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTENOTIFICATION_HOME`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
+            if (this.getUserDetails.isGuest) {
+                this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+            } else {
+                WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
+                const that = this;
+                const vapasiPreferencesNode = firebase.database().ref("vapasiPreferencesNode").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
+                vapasiPreferencesNode.update({
+                    "QUOTE": true,
                 });
-
-                if (this.getUserDetails.isGuest) {
-                    this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
-                } else {
-                 WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
-
-                    const that = this;
-                    const vapasiPreferencesNode = firebase.database().ref("vapasiPreferencesNode").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
-
-                    vapasiPreferencesNode.update({
-                            "QUOTE": true,
-                    });
-                }
+            }
         },
         triggerFacebookShareAnalytics() {
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-                FB.ui({
-                    method: 'share_open_graph',
-                    action_type: 'og.shares',
-                    action_properties: JSON.stringify({
-                        object: {
-                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
-                            'og:title': '__("quote_of_the_day")',
-                            'og:description': this.getQuoteOfTheDay,
-                            'og:image': this.getQuoteImage
-                        }
-                    })
-                });
-                this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
-                });
-  
+            FB.ui({
+                method: 'share_open_graph',
+                action_type: 'og.shares',
+                action_properties: JSON.stringify({
+                    object: {
+                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
+                        'og:title': '__("quote_of_the_day")',
+                        'og:description': this.getQuoteOfTheDay,
+                        'og:image': this.getQuoteImage
+                    }
+                })
+            });
+            this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
         },
         triggerWhatsappShareAnalytics() {
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-                this.triggerAnanlyticsEvent(`SHARE_QUOTEWA_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
-                });
+            this.triggerAnanlyticsEvent(`SHARE_QUOTEWA_HOME`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
 
-                const textToShare = `__("quote_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
-                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
+            const textToShare = `__("quote_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
+            window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },
     watch: {
-         'getUserDetails.isGuest'(isGuest) {
-            this.vapasiNotification(isGuest);
-      
+        'inViewport.now'(visible) {
+            if (visible) {
+                this.triggerAnanlyticsEvent(`VIEWED_VAPASIQUOTE_HOME`, 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId
+                });
+            }
         },
+        'getUserDetails.isGuest'(isGuest) {
+            this.vapasiNotification(isGuest);
+        }
     },
     created() {
         const currentLocale = process.env.LANGUAGE;
@@ -228,22 +180,10 @@ export default {
             }
         });
     },
-
     mounted() {
-        let pratilipiAnalyticsData = {};
-        if (this.getPratilipiData) {
-            pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-        }
-            this.triggerAnanlyticsEvent(`VIEWED_VAPASIQUOTE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'VAPASI_QUOTE_VIEWED',
-            });
-
+        this.fetchQuoteOfTheDay(this.language);
         this.vapasiNotification(this.getUserDetails.isGuest);
-
-    },
-    components: {},
+    }
 }
 </script>
 
@@ -359,7 +299,7 @@ export default {
             right: 10%;
             bottom: 10%;
             @media screen and (min-width: 1400px) {
-                right: 20%;
+               right: 20%;
             }
         }
     }
