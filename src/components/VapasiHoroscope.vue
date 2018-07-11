@@ -93,57 +93,57 @@ export default {
                 },
                 {
                     'name': '__("zodiac_aquarius")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'aquarius',
                     'image': 'static/zodiac_signs/aquarius.svg'
                 },
                 {
                     'name': '__("zodiac_pisces")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'pisces',
                     'image': 'static/zodiac_signs/pisces.svg'
                 },
                 {
                     'name': '__("zodiac_aries")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'aries',
                     'image': 'static/zodiac_signs/aries.svg'
                 },
                 {
                     'name': '__("zodiac_taurus")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'taurus',
                     'image': 'static/zodiac_signs/taurus.svg'
                 },
                 {
                     'name': '__("zodiac_gemini")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'gemini',
                     'image': 'static/zodiac_signs/gemini.svg'
                 },
                 {
                     'name': '__("zodiac_cancer")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'cancer',
                     'image': 'static/zodiac_signs/cancer.svg'
                 },
                 {
                     'name': '__("zodiac_leo")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'leo',
                     'image': 'static/zodiac_signs/leo.svg'
                 },
                 {
                     'name': '__("zodiac_virgo")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'virgo',
                     'image': 'static/zodiac_signs/virgo.svg'
                 },
                 {
                     'name': '__("zodiac_libra")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'libra',
                     'image': 'static/zodiac_signs/libra.svg'
                 },
                 {
                     'name': '__("zodiac_scorpio")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'scorpio',
                     'image': 'static/zodiac_signs/scorpio.svg'
                 },
                    {
                     'name': '__("zodiac_sagittarius")',
-                    'nameEn': 'capricorn',
+                    'nameEn': 'sagittarius',
                     'image': 'static/zodiac_signs/sagittarius.svg'
                 },
                 ],
@@ -257,7 +257,9 @@ export default {
                 this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
             }
             else {
+                 WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
                 const that = this;
+
                 const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
                 vapasiPreferencesNode.update({
                         "HOROSCOPE": this.valueOfHoroscope

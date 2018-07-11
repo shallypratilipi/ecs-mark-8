@@ -155,6 +155,8 @@ export default {
                 if (this.getUserDetails.isGuest) {
                     this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
                 } else {
+                 WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
+
                     const that = this;
                     const vapasiPreferencesNode = firebase.database().ref("vapasiPreferencesNode").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
 
@@ -162,8 +164,6 @@ export default {
                             "QUOTE": true,
                     });
                 }
-        
-
         },
         triggerFacebookShareAnalytics() {
             let pratilipiAnalyticsData = {};
