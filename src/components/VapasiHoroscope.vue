@@ -141,7 +141,7 @@ export default {
 
                         firebase.auth().onAuthStateChanged( function( fbUser ) {
                             if (fbUser) {
-                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription');
+                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
                                 vapasiPreferencesNode.on( 'value', function( snapshot ) {
                                 const vapasiPreferences = snapshot.val();
                                 if(vapasiPreferences && vapasiPreferences.HOROSCOPE) {
@@ -199,7 +199,7 @@ export default {
             }
             else {
                 const that = this;
-                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription");;
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
                 vapasiPreferencesNode.update({
                         "HOROSCOPE": this.valueOfHoroscope
                 });

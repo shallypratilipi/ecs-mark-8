@@ -1,42 +1,8 @@
 <template>
    <div class="vapasi">
-      <div v-if="this.language=='GUJARATI'">
-         <div class="vapasi-banner" @click="showModalContentJoke()">
-            <div class="vapasi-text" >
-               __("joke_of_the_day")
-               <br class="vapasi-break">
-               __("click_here_to_know_more")
-            </div>
-            <div class="vapasi-image">
-               <img src="static/quill.svg"  height="50" width="50">
-            </div>
-         </div>
-         <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal" >
-            <p class="close" @click="resetModal()"><b>X</b></p>
-            <div class="container">
-               <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
-               <div class="horoscope-details">
-                  <p id="shareThisAsImage">
-                     {{getJokeOfTheDay}}
-                  </p>
-                   <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
-                           @click="triggerAnalyticsEventAndFireNotification()">
-                       __("get_notofication")
-                   </button>
-                   <div class="social-icons">
-                     <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                     <span><a target="_blank" ><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></a></span>
-                     <!-- <span><img src="../assets/twitterImage.png" height="30" width="30" ></span> -->
-                  </div>
-               </div>
-               <br>
-            </div>
-         </div>
-      </div>
-      <div v-if="this.language=='HINDI'">
          <div class="vapasi-banner" @click="showModalContentQuote()">
             <div class="vapasi-text" >
-               __("thought_of_the_day")
+               __("quote_of_the_day")
                <br class="vapasi-banner">
                __("click_here_to_know_more")
             </div>
@@ -67,7 +33,6 @@
             </div>
             <br>
          </div>
-      </div>
    </div>
 </template>
 <script>
@@ -90,9 +55,7 @@ export default {
     ],
     computed: {
         ...mapGetters('homepage', [
-            'getJokeOfTheDay',
             'getQuoteOfTheDay',
-            'getJokeImage',
             'getQuoteImage',
         ]),
         ...mapGetters([
@@ -107,32 +70,18 @@ export default {
             shouldShowModal: false,
             goToDetails: false,
             language: '',
+            shouldWebPush: false,
             isNotificationButtonEnabled: false
 
         }
     },
     methods: {
         ...mapActions('homepage', [
-            'fetchJokeOfTheDay',
             'fetchQuoteOfTheDay'
         ]),
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
-        },
-        showModalContentJoke() {
-            this.fetchJokeOfTheDay(this.language);
-            this.shouldShowModal = true;
-
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIJOKE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
-            });
         },
         showModalContentQuote() {
             this.shouldShowModal = true;
@@ -168,26 +117,9 @@ export default {
                             };
                             firebase.initializeApp(config);
                         }
-                        if(this.language == "HINDI") {
                                 firebase.auth().onAuthStateChanged( function( fbUser ) {
                             if (fbUser) {
-                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription');
-                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
-                                const vapasiPreferences = snapshot.val();
-                                if(vapasiPreferences && vapasiPreferences.JOKE) {
-                                    that.isNotificationButtonEnabled=false;
-                                }
-                                else {
-                                    that.isNotificationButtonEnabled=true;
-                                }
-                        });
-                            }
-                        })  
-                        }
-                        else if(this.language == "GUJARATI") {
-                                firebase.auth().onAuthStateChanged( function( fbUser ) {
-                            if (fbUser) {
-                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription');
+                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
                                 vapasiPreferencesNode.on( 'value', function( snapshot ) {
                                 const vapasiPreferences = snapshot.val();
                                 if(vapasiPreferences && vapasiPreferences.QUOTE) {
@@ -198,8 +130,9 @@ export default {
                                 }
                         });
                             }
-                        })
-                        }
+                        })  
+                        
+                  
                     
                         
                        
@@ -208,51 +141,28 @@ export default {
             }
         },
         triggerAnalyticsEventAndFireNotification() {
-            if (this.language == "HINDI") {
                 let pratilipiAnalyticsData = {};
                 if (this.getPratilipiData) {
                     pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
                 }
-
-                this.triggerAnanlyticsEvent(`CLICKEVENT_JOKENOTIFICATION_HOME`, 'CONTROL', {
+//fix it
+                this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTENOTIFICATION_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
+                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
 
                 if (this.getUserDetails.isGuest) {
                     this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
                 } else {
                     const that = this;
-                    const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription");
+                    const vapasiPreferencesNode = firebase.database().ref("vapasiPreferencesNode").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
 
                     vapasiPreferencesNode.update({
-                            "JOKE": true,
+                            "QUOTE": true,
                     });
                 }
-             
-            } else if (this.language == "GUJARATI") {
-
-                let pratilipiAnalyticsData = {};
-                if (this.getPratilipiData) {
-                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                }
-
-                this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTENOTIFICATION_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
-                });
-                  if (this.getUserDetails.isGuest) {
-                    this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
-                } else {
-                const that = this;
-                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription");
-                vapasiPreferencesNode.update({
-                        "QUOTE": true,
-                });
-              }
-            }
+        
 
         },
         triggerFacebookShareAnalytics() {
@@ -260,7 +170,6 @@ export default {
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            if (this.language == "HINDI") {
                 FB.ui({
                     method: 'share_open_graph',
                     action_type: 'og.shares',
@@ -278,32 +187,13 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
-            } else if (this.language == "GUJARATI") {
-                FB.ui({
-                    method: 'share_open_graph',
-                    action_type: 'og.shares',
-                    action_properties: JSON.stringify({
-                        object: {
-                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
-                            'og:title': '__("joke_of_the_day")',
-                            'og:description': this.getJokeOfTheDay,
-                            'og:image': this.getJokeImage
-                        }
-                    })
-                });
-                this.triggerAnanlyticsEvent(`SHARE_JOKEFB_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
-                });
-            }
+  
         },
         triggerWhatsappShareAnalytics() {
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            if (this.language == "HINDI") {
                 this.triggerAnanlyticsEvent(`SHARE_QUOTEWA_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
@@ -312,20 +202,6 @@ export default {
 
                 const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
                 window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
-
-            } else if (this.language == "GUJARATI") {
-                this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'joke_of_the_dayY',
-                });
-
-                const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
-                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
-
-            }
-
-
         }
     },
     watch: {
@@ -348,19 +224,12 @@ export default {
         if (this.getPratilipiData) {
             pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
         }
-        if (this.language == "HINDI") {
             this.triggerAnanlyticsEvent(`VIEWED_VAPASIQUOTE_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'VAPASI_QUOTE_VIEWED',
             });
-        } else if (this.language == "GUJARATI") {
-            this.triggerAnanlyticsEvent(`VIEWED_VAPASIJOKE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'VAPASI_JOKE_VIEWED',
-            });
-        }
+
         this.vapasiNotification(this.getUserDetails.isGuest);
 
     },
