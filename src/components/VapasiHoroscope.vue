@@ -199,11 +199,9 @@ export default {
             }
             else {
                 const that = this;
-                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-                vapasiPreferencesNode.set({
-                    vapsiSubscription: {
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription");;
+                vapasiPreferencesNode.update({
                         "HOROSCOPE": this.valueOfHoroscope
-                    }
                 });
             }
 

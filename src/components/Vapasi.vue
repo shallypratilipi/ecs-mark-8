@@ -19,8 +19,7 @@
                   <p id="shareThisAsImage">
                      {{getJokeOfTheDay}}
                   </p>
-                   <!-- shouldWebPush && !getUserDetails.isGuest -->
-                   <button class="btn btn-danger btn-sm" v-if="shouldWebPush"
+                   <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
                            @click="triggerAnalyticsEventAndFireNotification()">
                        __("get_notofication")
                    </button>
@@ -55,7 +54,7 @@
                <p id="shareThisAsImage">
                   {{getQuoteOfTheDay}}
                </p>
-                <button class="btn btn-danger btn-sm" v-if="shouldWebPush"
+                <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
                         @click="triggerAnalyticsEventAndFireNotification()">
                   __("get_notofication")
                 </button>
@@ -76,8 +75,8 @@ import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
-import WebPushUtil from '@/utils/WebPushUtil'
-
+import WebPushUtil from '@/utils/WebPushUtil';
+import * as firebase from "firebase";
 import {
     mapGetters,
     mapActions
@@ -105,11 +104,11 @@ export default {
     },
     data() {
         return {
-            zodiacSigns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
             shouldShowModal: false,
             goToDetails: false,
             language: '',
-            shouldWebPush: false,
+            isNotificationButtonEnabled: false
+
         }
     },
     methods: {
@@ -135,13 +134,6 @@ export default {
                 'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
             });
         },
-        ifBrowserSupportsWebPush() {
-            if (WebPushUtil.isBrowserPushCompatible()) {
-                this.shouldWebPush = true;
-            } else {
-                this.shouldWebPush = false;
-            }
-        },
         showModalContentQuote() {
             this.shouldShowModal = true;
             this.fetchQuoteOfTheDay(this.language);
@@ -156,6 +148,65 @@ export default {
             });
 
         },
+
+        vapasiNotification(isGuest) {
+            if(WebPushUtil.isBrowserPushCompatible() ) {
+                if(isGuest == null)
+                    return;
+                if (isGuest) {
+                    this.isNotificationButtonEnabled=true;
+                    } else {
+
+                    const that = this;
+                    import('firebase').then((firebase) => {
+                        if (firebase.apps.length === 0) {
+                            const config = {
+                                apiKey: process.env.FIREBASE_API_KEY,
+                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                                databaseURL: process.env.FIREBASE_DATABASE_URL,
+                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                            };
+                            firebase.initializeApp(config);
+                        }
+                        if(this.language == "HINDI") {
+                                firebase.auth().onAuthStateChanged( function( fbUser ) {
+                            if (fbUser) {
+                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription');
+                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
+                                const vapasiPreferences = snapshot.val();
+                                if(vapasiPreferences && vapasiPreferences.JOKE) {
+                                    that.isNotificationButtonEnabled=false;
+                                }
+                                else {
+                                    that.isNotificationButtonEnabled=true;
+                                }
+                        });
+                            }
+                        })  
+                        }
+                        else if(this.language == "GUJARATI") {
+                                firebase.auth().onAuthStateChanged( function( fbUser ) {
+                            if (fbUser) {
+                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription');
+                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
+                                const vapasiPreferences = snapshot.val();
+                                if(vapasiPreferences && vapasiPreferences.QUOTE) {
+                                    that.isNotificationButtonEnabled=false;
+                                }
+                                else {
+                                    that.isNotificationButtonEnabled=true;
+                                }
+                        });
+                            }
+                        })
+                        }
+                    
+                        
+                       
+                    });
+                }
+            }
+        },
         triggerAnalyticsEventAndFireNotification() {
             if (this.language == "HINDI") {
                 let pratilipiAnalyticsData = {};
@@ -168,6 +219,18 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
                 });
+
+                if (this.getUserDetails.isGuest) {
+                    this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+                } else {
+                    const that = this;
+                    const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription");
+
+                    vapasiPreferencesNode.update({
+                            "JOKE": true,
+                    });
+                }
+             
             } else if (this.language == "GUJARATI") {
 
                 let pratilipiAnalyticsData = {};
@@ -180,16 +243,16 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
-
+                  if (this.getUserDetails.isGuest) {
+                    this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+                } else {
+                const that = this;
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription");
+                vapasiPreferencesNode.update({
+                        "QUOTE": true,
+                });
+              }
             }
-            if (this.getUserDetails.isGuest) {
-                console.log("SHow Login Modal");
-                this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
-            }
-            else {
-                console.log("Go ahead");
-            }
-
 
         },
         triggerFacebookShareAnalytics() {
@@ -265,6 +328,12 @@ export default {
 
         }
     },
+    watch: {
+         'getUserDetails.isGuest'(isGuest) {
+            this.vapasiNotification(isGuest);
+      
+        },
+    },
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
@@ -292,7 +361,8 @@ export default {
                 'ENTITY_VALUE': 'VAPASI_JOKE_VIEWED',
             });
         }
-        this.ifBrowserSupportsWebPush();
+        this.vapasiNotification(this.getUserDetails.isGuest);
+
     },
     components: {},
 }
