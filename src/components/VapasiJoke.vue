@@ -1,41 +1,38 @@
 <template>
    <div class="vapasi">
-         <div class="vapasi-banner" @click="showModalContentJoke()">
-            <div class="vapasi-text" >
-               __("joke_of_the_day")
-               <br class="vapasi-break">
-               __("click_here_to_know_more")
-            </div>
-            <div class="vapasi-image">
-               <img src="static/quill.svg"  height="50" width="50">
-            </div>
+      <div class="vapasi-banner" @click="showModalContentJoke()">
+         <div class="vapasi-text" >
+            __("joke_of_the_day")
+            <br class="vapasi-break">
+            __("click_here_to_know_more")
          </div>
-         <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal" >
-            <p class="close" @click="resetModal()"><b>X</b></p>
-            <div class="container">
-               <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
-               <div class="horoscope-details">
-                  <p id="shareThisAsImage">
-                     {{getJokeOfTheDay}}
-                  </p>
-                   <!-- shouldWebPush && !getUserDetails.isGuest -->
-                   <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
-                           @click="triggerAnalyticsEventAndFireNotification()">
-                       __("get_notofication")
-                   </button>
-                   <div class="social-icons">
-                     <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                     <span><a target="_blank" ><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></a></span>
-                     <!-- <span><img src="../assets/twitterImage.png" height="30" width="30" ></span> -->
-                  </div>
+         <div class="vapasi-image">
+            <img src="static/quill.svg"  height="50" width="50">
+         </div>
+      </div>
+      <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal" >
+         <p class="close" @click="resetModal()"><b>X</b></p>
+         <div class="container">
+            <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
+            <div class="horoscope-details">
+               <p id="shareThisAsImage">
+                  {{getJokeOfTheDay}}
+               </p>
+               <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
+                  @click="triggerAnalyticsEventAndFireNotification()">
+               __("get_notofication")
+               </button>
+               <div class="social-icons">
+                  <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                  <span><a target="_blank" ><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></a></span>
                </div>
-               <br>
             </div>
+            <br>
          </div>
+      </div>
    </div>
 </template>
 <script>
-import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
@@ -47,7 +44,14 @@ import {
 } from 'vuex';
 
 export default {
-    props: {},
+    props: {
+        'in-viewport-once': {
+            default: true
+        },
+        'in-viewport-offset-top': {
+            default: -350
+        }
+    },
     mixins: [
         mixins,
         inViewport
@@ -55,23 +59,17 @@ export default {
     computed: {
         ...mapGetters('homepage', [
             'getJokeOfTheDay',
-            'getJokeImage',
+            'getJokeImage'
         ]),
         ...mapGetters([
             'getUserDetails',
-            'getPratilipiData',
         ]),
-
-
     },
     data() {
         return {
             shouldShowModal: false,
-            goToDetails: false,
             language: '',
-            shouldWebPush: false,
             isNotificationButtonEnabled: false
-
         }
     },
     methods: {
@@ -79,40 +77,24 @@ export default {
             'fetchJokeOfTheDay',
         ]),
         resetModal() {
-            this.goToDetails = false;
             this.shouldShowModal = false;
-             let pratilipiAnalyticsData = {};
-             if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
             this.triggerAnanlyticsEvent(`CLICKEVENT_JOKECLOSE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'JOKE_CLOSE',
             });
         },
         showModalContentJoke() {
-            this.fetchJokeOfTheDay(this.language);
             this.shouldShowModal = true;
-
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
             this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIJOKE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
             });
         },
         vapasiNotification(isGuest) {
-            if(WebPushUtil.isBrowserPushCompatible() ) {
-                if(isGuest == null)
+            if (WebPushUtil.isBrowserPushCompatible()) {
+                if (isGuest == null)
                     return;
                 if (isGuest) {
-                    this.isNotificationButtonEnabled=true;
-                    } else {
-
+                    this.isNotificationButtonEnabled = true;
+                } else {
                     const that = this;
                     import('firebase').then((firebase) => {
                         if (firebase.apps.length === 0) {
@@ -124,19 +106,14 @@ export default {
                             };
                             firebase.initializeApp(config);
                         }
-        
-                                firebase.auth().onAuthStateChanged( function( fbUser ) {
+
+                        firebase.auth().onAuthStateChanged(function(fbUser) {
                             if (fbUser) {
-                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
-                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
-                                const vapasiPreferences = snapshot.val();
-                                if(vapasiPreferences && vapasiPreferences.JOKE) {
-                                    that.isNotificationButtonEnabled=false;
-                                }
-                                else {
-                                    that.isNotificationButtonEnabled=true;
-                                }
-                        });
+                                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
+                                vapasiPreferencesNode.on('value', function(snapshot) {
+                                    const vapasiPreferences = snapshot.val();
+                                    that.isNotificationButtonEnabled = !(vapasiPreferences && vapasiPreferences.JOKE);
+                                });
                             }
                         })
                     });
@@ -144,71 +121,49 @@ export default {
             }
         },
         triggerAnalyticsEventAndFireNotification() {
-
-                let pratilipiAnalyticsData = {};
-                if (this.getPratilipiData) {
-                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                }
-
-                this.triggerAnanlyticsEvent(`CLICKEVENT_JOKENOTIFICATION_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
-                });
-                  if (this.getUserDetails.isGuest) {
-                    this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
-                } else {
-                 WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
+            this.triggerAnanlyticsEvent(`CLICKEVENT_JOKENOTIFICATION_HOME`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+            });
+            if (this.getUserDetails.isGuest) {
+                this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+            } else {
+                WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
                 const that = this;
                 const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
                 vapasiPreferencesNode.update({
-                        "JOKE": true,
+                    "JOKE": true,
                 });
-              }
-
+            }
         },
         triggerFacebookShareAnalytics() {
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-                FB.ui({
-                    method: 'share_open_graph',
-                    action_type: 'og.shares',
-                    action_properties: JSON.stringify({
-                        object: {
-                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
-                            'og:title': '__("joke_of_the_day")',
-                            'og:description': this.getJokeOfTheDay,
-                            'og:image': this.getJokeImage
-                        }
-                    })
-                });
-                this.triggerAnanlyticsEvent(`SHARE_JOKEFB_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
-                });
+            FB.ui({
+                method: 'share_open_graph',
+                action_type: 'og.shares',
+                action_properties: JSON.stringify({
+                    object: {
+                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
+                        'og:title': '__("joke_of_the_day")',
+                        'og:description': this.getJokeOfTheDay,
+                        'og:image': this.getJokeImage
+                    }
+                })
+            });
+            this.triggerAnanlyticsEvent(`SHARE_JOKEFB_HOME`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+            });
         },
         triggerWhatsappShareAnalytics() {
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-                this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'joke_of_the_dayY',
-                });
+            this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+            });
 
-                const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
-                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
+            const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
+            window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },
     watch: {
-         'getUserDetails.isGuest'(isGuest) {
+        'getUserDetails.isGuest'(isGuest) {
             this.vapasiNotification(isGuest);
-      
         },
     },
     created() {
@@ -219,21 +174,13 @@ export default {
             }
         });
     },
-
     mounted() {
-        let pratilipiAnalyticsData = {};
-        if (this.getPratilipiData) {
-            pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-        }
-            this.triggerAnanlyticsEvent(`VIEWED_VAPASIJOKE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'VAPASI_JOKE_VIEWED',
-            });
+        this.fetchJokeOfTheDay(this.language);
+        this.triggerAnanlyticsEvent(`VIEWED_VAPASIJOKE_HOME`, 'CONTROL', {
+            'USER_ID': this.getUserDetails.userId,
+        });
         this.vapasiNotification(this.getUserDetails.isGuest);
-
     },
-    components: {},
 }
 </script>
 
@@ -366,7 +313,6 @@ export default {
 .close:hover {
     font-weight: bold;
 }
-
 .span-image {
     position: absolute;
     right: 18%;
