@@ -1,6 +1,5 @@
 <template>
    <div class="vapasi">
-      <div v-if="this.language=='GUJARATI'">
          <div class="vapasi-banner" @click="showModalContentJoke()">
             <div class="vapasi-text" >
                __("joke_of_the_day")
@@ -19,7 +18,9 @@
                   <p id="shareThisAsImage">
                      {{getJokeOfTheDay}}
                   </p>
-                   <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
+                   <!-- shouldWebPush && !getUserDetails.isGuest -->
+                   <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
+                           @click="triggerAnalyticsEventAndFireNotification()">
                        __("get_notofication")
                    </button>
                    <div class="social-icons">
@@ -31,41 +32,6 @@
                <br>
             </div>
          </div>
-      </div>
-      <div v-if="this.language=='HINDI'">
-         <div class="vapasi-banner" @click="showModalContentQuote()">
-            <div class="vapasi-text" >
-               __("thought_of_the_day")
-               <br class="vapasi-banner">
-               __("click_here_to_know_more")
-            </div>
-            <div class="vapasi-image">
-               <img src="../assets/quoteImage.svg"  height="50" width="50">
-            </div>
-         </div>
-         <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
-            <p class="close" @click="resetModal()"><b>X</b></p>
-            <p class="vapasi-heading">
-               __("thought_of_the_day")
-               <span> <img src="../assets/quoteImage.svg" height="30" width="30" class="span-image"></span>
-            </p>
-            <div class="horoscope-details">
-               <p id="shareThisAsImage">
-                  {{getQuoteOfTheDay}}
-               </p>
-                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && !getUserDetails.isGuest">
-                  __("get_notofication")
-                </button>
-                <div class="social-icons">
-                  <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                  <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
-                  <!--                   <span><img src="../assets/twitterImage.png" height="30" width="30" ></span>
-                     -->
-               </div>
-            </div>
-            <br>
-         </div>
-      </div>
    </div>
 </template>
 <script>
@@ -73,8 +39,8 @@ import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
-import WebPushUtil from '@/utils/WebPushUtil'
-
+import WebPushUtil from '@/utils/WebPushUtil';
+import * as firebase from "firebase";
 import {
     mapGetters,
     mapActions
@@ -89,9 +55,7 @@ export default {
     computed: {
         ...mapGetters('homepage', [
             'getJokeOfTheDay',
-            'getQuoteOfTheDay',
             'getJokeImage',
-            'getQuoteImage',
         ]),
         ...mapGetters([
             'getUserDetails',
@@ -102,21 +66,30 @@ export default {
     },
     data() {
         return {
-            zodiacSigns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
             shouldShowModal: false,
             goToDetails: false,
             language: '',
             shouldWebPush: false,
+            isNotificationButtonEnabled: false
+
         }
     },
     methods: {
         ...mapActions('homepage', [
             'fetchJokeOfTheDay',
-            'fetchQuoteOfTheDay'
         ]),
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
+             let pratilipiAnalyticsData = {};
+             if (this.getPratilipiData) {
+                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            }
+            this.triggerAnanlyticsEvent(`CLICKEVENT_JOKECLOSE_HOME`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'JOKE_CLOSE',
+            });
         },
         showModalContentJoke() {
             this.fetchJokeOfTheDay(this.language);
@@ -132,25 +105,66 @@ export default {
                 'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
             });
         },
-        ifBrowserSupportsWebPush() {
-            if (WebPushUtil.canShowCustomPrompt()) {
-                this.shouldWebPush = true;
-            } else {
-                this.shouldWebPush = false;
+        vapasiNotification(isGuest) {
+            if(WebPushUtil.isBrowserPushCompatible() ) {
+                if(isGuest == null)
+                    return;
+                if (isGuest) {
+                    this.isNotificationButtonEnabled=true;
+                    } else {
+
+                    const that = this;
+                    import('firebase').then((firebase) => {
+                        if (firebase.apps.length === 0) {
+                            const config = {
+                                apiKey: process.env.FIREBASE_API_KEY,
+                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                                databaseURL: process.env.FIREBASE_DATABASE_URL,
+                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                            };
+                            firebase.initializeApp(config);
+                        }
+        
+                                firebase.auth().onAuthStateChanged( function( fbUser ) {
+                            if (fbUser) {
+                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
+                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
+                                const vapasiPreferences = snapshot.val();
+                                if(vapasiPreferences && vapasiPreferences.JOKE) {
+                                    that.isNotificationButtonEnabled=false;
+                                }
+                                else {
+                                    that.isNotificationButtonEnabled=true;
+                                }
+                        });
+                            }
+                        })
+                    });
+                }
             }
         },
-        showModalContentQuote() {
-            this.shouldShowModal = true;
-            this.fetchQuoteOfTheDay(this.language);
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIQUOTE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
-            });
+        triggerAnalyticsEventAndFireNotification() {
+
+                let pratilipiAnalyticsData = {};
+                if (this.getPratilipiData) {
+                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+                }
+
+                this.triggerAnanlyticsEvent(`CLICKEVENT_JOKENOTIFICATION_HOME`, 'CONTROL', {
+                    ...pratilipiAnalyticsData,
+                    'USER_ID': this.getUserDetails.userId,
+                    'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
+                });
+                  if (this.getUserDetails.isGuest) {
+                    this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
+                } else {
+                 WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
+                const that = this;
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
+                vapasiPreferencesNode.update({
+                        "JOKE": true,
+                });
+              }
 
         },
         triggerFacebookShareAnalytics() {
@@ -158,25 +172,6 @@ export default {
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            if (this.language == "HINDI") {
-                FB.ui({
-                    method: 'share_open_graph',
-                    action_type: 'og.shares',
-                    action_properties: JSON.stringify({
-                        object: {
-                            'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
-                            'og:title': '__("thought_of_the_day")',
-                            'og:description': this.getQuoteOfTheDay,
-                            'og:image': this.getQuoteImage
-                        }
-                    })
-                });
-                this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
-                });
-            } else if (this.language == "GUJARATI") {
                 FB.ui({
                     method: 'share_open_graph',
                     action_type: 'og.shares',
@@ -194,24 +189,12 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'JOKE_OF_THE_DAY',
                 });
-            }
         },
         triggerWhatsappShareAnalytics() {
             let pratilipiAnalyticsData = {};
             if (this.getPratilipiData) {
                 pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             }
-            if (this.language == "HINDI") {
-                this.triggerAnanlyticsEvent(`SHARE_QUOTEWA_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
-                });
-
-                const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
-                window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
-
-            } else if (this.language == "GUJARATI") {
                 this.triggerAnanlyticsEvent(`SHARE_JOKEWA_HOME`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId,
@@ -220,11 +203,13 @@ export default {
 
                 const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
                 window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
-
-            }
-
-
         }
+    },
+    watch: {
+         'getUserDetails.isGuest'(isGuest) {
+            this.vapasiNotification(isGuest);
+      
+        },
     },
     created() {
         const currentLocale = process.env.LANGUAGE;
@@ -240,20 +225,13 @@ export default {
         if (this.getPratilipiData) {
             pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
         }
-        if (this.language == "HINDI") {
-            this.triggerAnanlyticsEvent(`VIEWED_VAPASIQUOTE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'VAPASI_QUOTE_VIEWED',
-            });
-        } else if (this.language == "GUJARATI") {
             this.triggerAnanlyticsEvent(`VIEWED_VAPASIJOKE_HOME`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': 'VAPASI_JOKE_VIEWED',
             });
-        }
-        this.ifBrowserSupportsWebPush();
+        this.vapasiNotification(this.getUserDetails.isGuest);
+
     },
     components: {},
 }
@@ -350,7 +328,7 @@ export default {
 
 .vapasi-modal {
     position: fixed;
-    z-index: 9999;
+    z-index: 2;
     top: 20%;
     background-color: white;
     width: 90%;

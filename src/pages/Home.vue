@@ -4,7 +4,9 @@
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
                 :banners="getHomePageBanners"
             ></Banners>
-            <Vapasi v-if="this.isMobile()"></Vapasi>
+            <VapasiQuote v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiQuote>
+            <VapasiJoke v-if="this.isMobile() && getCurrentLanguage().fullName == 'gujarati'"></VapasiJoke>
+
             <VapasiHoroscope v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>
             <div v-if="getHomePageLoadingState === 'LOADING_SUCCESS'" v-for="(eachSection, index) in getHomePageSections" v-bind:key="eachSection.listPageUrl">
@@ -52,9 +54,9 @@
     import PratilipiListComponent from '@/components/PratilipiList.vue';
     import MainLayout from '@/layout/main-layout.vue';
     import Banners from '@/components/Banners.vue';
-    import Vapasi from '@/components/Vapasi.vue';
+    import VapasiQuote from '@/components/VapasiQuote.vue';
     import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
-
+    import VapasiJoke from '@/components/VapasiJoke.vue';
     import ServerError from '@/components/ServerError.vue';
     import WebPushStrip from '@/components/WebPushStrip.vue';
     import WebPushModal from '@/components/WebPushModal.vue';
@@ -118,8 +120,9 @@ import { mapGetters, mapActions } from 'vuex'
             DummyLoader,
             WebPushStrip,
             WebPushModal,
-            Vapasi,
-            VapasiHoroscope
+            VapasiQuote,
+            VapasiHoroscope,
+            VapasiJoke
         },
         created() {
             this.fetchBanners(this.getCurrentLanguage().fullName.toUpperCase());

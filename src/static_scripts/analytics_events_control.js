@@ -2195,5 +2195,29 @@ export default {
     "GOMESSAGESPAGE_HEADER_GLOBAL": {
         "LOCATION": "HEADER",
         "ACTION": "GOMESSAGESPAGE"
-    }
+    },
+    "CLICKEVENT_HOROSCOPENOTIFICATION_HOME": {
+        "LOCATION": "HOME",
+        "ACTION": "NOTIFYHOROSCOPE"
+    },
+    "CLICKEVENT_JOKENOTIFICATION_HOME": {
+        "LOCATION": "HOME",
+        "ACTION": "NOTIFYJOKE"
+    },
+    "CLICKEVENT_QUOTENOTIFICATION_HOME": {
+        "LOCATION": "HOME",
+        "ACTION": "NOTIFYQUOTE"
+    },
+    "CLICKEVENT_HOROSCOPECLOSE_HOME" : {
+        "LOCATION": "HOME",
+        "ACTION": "CLOSEHOROSCOPE"
+    },
+    "CLICKEVENT_JOKECLOSE_HOME" : {
+        "LOCATION": "HOME",
+        "ACTION": "CLOSEJOKE"
+    },
+    "CLICKEVENT_QUOTECLOSE_HOME" : {
+        "LOCATION": "HOME",
+        "ACTION": "QUOTEJOKE"
+    },
 };
