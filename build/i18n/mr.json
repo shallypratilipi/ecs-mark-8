@@ -594,7 +594,6 @@
     "select_zodiac_sign": "आपली राशी निवडा ",
     "next": "पुढे",
     "your_today_horoscope": "आपले आजचे भविष्य",
-    "web_push_cancel": "रद्द करा",
     "get_notification": "नोटिफिकेशन प्राप्त करा",
 
     "reader_gamify_level": "स्तर  {{ getReaderLevel }}",

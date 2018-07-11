@@ -1,35 +1,36 @@
 <template>
-   <div class="vapasi">
-      <div class="vapasi-banner" @click="showModalContentJoke()">
-         <div class="vapasi-text" >
-            __("joke_of_the_day")
-            <br class="vapasi-break">
-            __("click_here_to_know_more")
-         </div>
-         <div class="vapasi-image">
-            <img src="static/quill.svg"  height="50" width="50">
-         </div>
-      </div>
-      <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal" >
-         <p class="close" @click="resetModal()"><b>X</b></p>
-         <div class="container">
-            <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
-            <div class="horoscope-details">
-               <p id="shareThisAsImage">
-                  {{getJokeOfTheDay}}
-               </p>
-               <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
-                  @click="triggerAnalyticsEventAndFireNotification()">
-               __("get_notofication")
-               </button>
-               <div class="social-icons">
-                  <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                  <span><a target="_blank" ><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></a></span>
-               </div>
+    <div class="vapasi">
+        <div class="vapasi-banner" @click="showModalContentJoke()">
+            <div class="vapasi-text" >
+                __("joke_of_the_day")
+                <br class="vapasi-break">
+                __("click_here_to_know_more")
             </div>
-            <br>
-         </div>
-      </div>
+            <div class="vapasi-image">
+                <img src="static/quill.svg"  height="50" width="50">
+            </div>
+        </div>
+        <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
+            <p class="close" @click="resetModal()"><b>X</b></p>
+            <div class="container">
+                <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
+                <div class="horoscope-details">
+                    <p id="shareThisAsImage">
+                        {{getJokeOfTheDay}}
+                    </p>
+                    <button class="btn btn-danger btn-sm" 
+                            v-if="isNotificationButtonEnabled"
+                            @click="triggerAnalyticsEventAndFireNotification()">
+                        __("get_notification")
+                    </button>
+                    <div class="social-icons">
+                        <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                        <span><a target="_blank" ><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></a></span>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
    </div>
 </template>
 <script>
@@ -63,7 +64,7 @@ export default {
         ]),
         ...mapGetters([
             'getUserDetails',
-        ]),
+        ])
     },
     data() {
         return {
@@ -106,11 +107,10 @@ export default {
                             };
                             firebase.initializeApp(config);
                         }
-
-                        firebase.auth().onAuthStateChanged(function(fbUser) {
+                        firebase.auth().onAuthStateChanged((fbUser) => {
                             if (fbUser) {
                                 const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
-                                vapasiPreferencesNode.on('value', function(snapshot) {
+                                vapasiPreferencesNode.on('value', (snapshot) => {
                                     const vapasiPreferences = snapshot.val();
                                     that.isNotificationButtonEnabled = !(vapasiPreferences && vapasiPreferences.JOKE);
                                 });
@@ -122,7 +122,7 @@ export default {
         },
         triggerAnalyticsEventAndFireNotification() {
             this.triggerAnanlyticsEvent(`CLICKEVENT_JOKENOTIFICATION_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
+                'USER_ID': this.getUserDetails.userId
             });
             if (this.getUserDetails.isGuest) {
                 this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
@@ -164,7 +164,7 @@ export default {
     watch: {
         'getUserDetails.isGuest'(isGuest) {
             this.vapasiNotification(isGuest);
-        },
+        }
     },
     created() {
         const currentLocale = process.env.LANGUAGE;

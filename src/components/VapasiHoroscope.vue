@@ -15,8 +15,11 @@
                 <p class="horoscope-heading"> __("select_zodiac_sign")</p>
                 <div class="modal-message">
                     <div class="modal-buttons">
-                        <button class="btn btn-default horoscope-button" v-for="(eachSign) in zodiac" @click="setHoroscopeValue(eachSign.nameEn,eachSign.image)"> {{eachSign.name}}
-                        </button>
+                        <button 
+                            class="btn btn-default horoscope-button" 
+                            v-for="(eachSign) in zodiac" 
+                            v-bind:key="eachSign.nameEn"
+                            @click="setHoroscopeValue(eachSign.nameEn,eachSign.image)"> {{eachSign.name}}</button>
                     </div>
                     <br><br>
                 </div>
@@ -181,10 +184,10 @@ export default {
                             };
                             firebase.initializeApp(config);
                         }
-                        firebase.auth().onAuthStateChanged(function(fbUser) {
+                        firebase.auth().onAuthStateChanged((fbUser) => {
                             if (fbUser) {
                                 const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
-                                vapasiPreferencesNode.on('value', function(snapshot) {
+                                vapasiPreferencesNode.on('value', (snapshot) => {
                                     const vapasiPreferences = snapshot.val();
                                     that.isNotificationButtonEnabled = !(vapasiPreferences && vapasiPreferences.HOROSCOPE);
                                 });
@@ -255,7 +258,7 @@ export default {
     watch: {
         'getUserDetails.isGuest'(isGuest) {
             this.vapasiNotification(isGuest);
-        },
+        }
     },
     created() {
         const currentLocale = process.env.LANGUAGE;

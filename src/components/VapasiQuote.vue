@@ -21,7 +21,7 @@
                 <button class="btn btn-danger btn-sm" 
                         v-if="isNotificationButtonEnabled"
                         @click="triggerAnalyticsEventAndFireNotification()">
-                    __("get_notofication")
+                    __("get_notification")
                 </button>
                 <div class="social-icons">
                     <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
@@ -128,9 +128,9 @@ export default {
             } else {
                 WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
                 const that = this;
-                const vapasiPreferencesNode = firebase.database().ref("vapasiPreferencesNode").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
                 vapasiPreferencesNode.update({
-                    "QUOTE": true,
+                    "QUOTE": true
                 });
             }
         },
