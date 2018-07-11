@@ -111,7 +111,7 @@ export default {
                                 const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
                                 vapasiPreferencesNode.on('value', (snapshot) => {
                                     const vapasiPreferences = snapshot.val();
-                                    that.isNotificationButtonEnabled = vapasiPreferences && vapasiPreferences.QUOTE;
+                                    that.isNotificationButtonEnabled = !(vapasiPreferences && vapasiPreferences.QUOTE);
                                 });
                             }
                         })
