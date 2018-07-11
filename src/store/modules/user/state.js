@@ -10,7 +10,6 @@ export default {
     signup_source: null,
     forgot_password_update_state: 'LOADING_SUCCESS',
     growth_db_initialized: false,
-    showNotificationButton: true,
     read_stats: {
         read_count: 0,
         read_books: []
