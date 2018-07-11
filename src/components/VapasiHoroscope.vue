@@ -16,8 +16,8 @@
             <p class="horoscope-heading"> __("select_zodiac_sign")</p>
             <div class="modal-message">
                <div class="modal-buttons">
-                   <button class="btn btn-default horoscope-button" v-for="(eachSign,index) in zodiacSignsLanguage"
-                           @click="setHoroscopeValue(zodiacSigns[index],index)"> {{eachSign}}
+                   <button class="btn btn-default horoscope-button" v-for="(eachSign) in zodiac"
+                           @click="setHoroscopeValue(eachSign.nameEn,eachSign.image)"> {{eachSign.name}}
                    </button>
                </div>
                <br><br>
@@ -85,9 +85,68 @@ export default {
     },
     data() {
         return {
-            zodiacSigns: ["capricorn", "aquarius", "pisces", "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius"],
-            zodiacSignsLanguage: ["मकर", "कुंभ", "मीन", "मेष", "वृषभ", "मिथुन", "कर्क", "सिंह","कन्या",  "तूळ", "वृश्चिक", "धनु"],
-            zodiacSignsImages: ["static/zodiac_signs/goat.svg", "static/zodiac_signs/aquarius.svg", "static/zodiac_signs/pisces.svg", "static/zodiac_signs/aries.svg", "static/zodiac_signs/taurus.svg", "static/zodiac_signs/gemini.svg", "static/zodiac_signs/cancer.svg", "static/zodiac_signs/leo.svg", "static/zodiac_signs/virgo.svg", "static/zodiac_signs/libra.svg", "static/zodiac_signs/scorpio.svg", "static/zodiac_signs/sagittarius.svg"],
+             zodiac : [
+                {
+                    'name': '__("zodiac_capricorn")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/goat.svg'
+                },
+                {
+                    'name': '__("zodiac_aquarius")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/aquarius.svg'
+                },
+                {
+                    'name': '__("zodiac_pisces")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/pisces.svg'
+                },
+                {
+                    'name': '__("zodiac_aries")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/aries.svg'
+                },
+                {
+                    'name': '__("zodiac_taurus")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/taurus.svg'
+                },
+                {
+                    'name': '__("zodiac_gemini")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/gemini.svg'
+                },
+                {
+                    'name': '__("zodiac_cancer")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/cancer.svg'
+                },
+                {
+                    'name': '__("zodiac_leo")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/leo.svg'
+                },
+                {
+                    'name': '__("zodiac_virgo")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/virgo.svg'
+                },
+                {
+                    'name': '__("zodiac_libra")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/libra.svg'
+                },
+                {
+                    'name': '__("zodiac_scorpio")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/scorpio.svg'
+                },
+                   {
+                    'name': '__("zodiac_sagittarius")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/sagittarius.svg'
+                },
+                ],
             shouldShowModal: false,
             goToDetails: false,
             valueOfHoroscope: "",
@@ -236,10 +295,11 @@ export default {
                     'ENTITY_VALUE': 'HOROSCOPE_DETAIL_' + this.valueOfHoroscope.toUpperCase(),
                 });
         },
-        setHoroscopeValue(value, index) {
+        setHoroscopeValue(value,image) {
             const that = this;
+            console.log(value);
             this.valueOfHoroscope = value;
-            this.horoscopeImage = this.zodiacSignsImages[index];
+            this.horoscopeImage = image;
             this.goToHoroscopeDetails();
         }
     },
@@ -259,7 +319,6 @@ export default {
         });
     },
     mounted() {
-
         let k = 0;
         let pratilipiAnalyticsData = {};
         if (this.getPratilipiData) {
@@ -271,14 +330,14 @@ export default {
             'ENTITY_VALUE': 'VAPASI_HOROSCOPE_VIEWED',
         });
 
-        let that = this;
-        setInterval(function () {
-            that.imageHoroscopeBanner = that.zodiacSignsImages[k];
-            k++;
-            if (k >= 11) {
-                k = 0;
-            }
-        }, 3000);
+        // let that = this;
+        // setInterval(function () {
+        //     that.imageHoroscopeBanner = that.zodiacSignsImages[k];
+        //     k++;
+        //     if (k >= 11) {
+        //         k = 0;
+        //     }
+        // }, 3000);
 
 
         this.vapasiNotification(this.getUserDetails.isGuest);

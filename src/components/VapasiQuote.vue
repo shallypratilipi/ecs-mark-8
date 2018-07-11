@@ -13,7 +13,7 @@
          <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
             <p class="close" @click="resetModal()"><b>X</b></p>
             <p class="vapasi-heading">
-               __("thought_of_the_day")
+               __("quote_of_the_day")
                <span> <img src="../assets/quoteImage.svg" height="30" width="30" class="span-image"></span>
             </p>
             <div class="horoscope-details">
@@ -176,7 +176,7 @@ export default {
                     action_properties: JSON.stringify({
                         object: {
                             'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
-                            'og:title': '__("thought_of_the_day")',
+                            'og:title': '__("quote_of_the_day")',
                             'og:description': this.getQuoteOfTheDay,
                             'og:image': this.getQuoteImage
                         }
@@ -200,7 +200,7 @@ export default {
                     'ENTITY_VALUE': 'QUOTE_OF_THE_DAY',
                 });
 
-                const textToShare = `__("thought_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
+                const textToShare = `__("quote_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
                 window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },
