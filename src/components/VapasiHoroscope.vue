@@ -297,7 +297,6 @@ export default {
         },
         setHoroscopeValue(value,image) {
             const that = this;
-            console.log(value);
             this.valueOfHoroscope = value;
             this.horoscopeImage = image;
             this.goToHoroscopeDetails();
