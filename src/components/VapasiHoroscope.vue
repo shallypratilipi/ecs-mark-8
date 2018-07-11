@@ -30,7 +30,7 @@
                <p id="shareThisAsImage">
                   {{getHoroscope}}
                </p>
-                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && notRegistered"
+                <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled"
                         @click="triggerAnalyticsEventAndFireNotification()">
                     __("get_notification")
                 </button>
@@ -94,9 +94,7 @@ export default {
             language: '',
             horoscopeImage: '',
             imageHoroscopeBanner: 'static/zodiac_signs/leo.svg',
-            shouldWebPush: true,
-            flag: false,
-            notRegistered: true
+            isNotificationButtonEnabled: false
         }
     },
     methods: {
@@ -121,38 +119,45 @@ export default {
                 'ENTITY_VALUE': 'HOROSCOPE_LIST',
             });
         },
-        ifBrowserSupportsWebPush() {
-            if (WebPushUtil.isBrowserPushCompatible()) {
-                this.shouldWebPush = true;
-            } else {
-                this.shouldWebPush = false;
-            }
-        },
-        initializeFirebase() {
-            console.log("INITIALIZING FIREBASEEEE");
-            const that = this;
-            import('firebase').then((firebase) => {
-                const config = {
-                    apiKey: process.env.FIREBASE_API_KEY,
-                    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-                    databaseURL: process.env.FIREBASE_DATABASE_URL,
-                    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-                };
-                firebase.initializeApp(config);
-            });
+        vapasiNotification(isGuest) {
+            if(WebPushUtil.isBrowserPushCompatible() ) {
+                if(isGuest == null)
+                    return;
+                if (isGuest) {
+                    this.isNotificationButtonEnabled=true;
+                    } else {
 
-            const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-            userPreferencesNode.on('value', function (snapshot) {
-                console.log("I am in MOUNTED");
-                console.log(snapshot.val());
-                let horoscopeDbValue = snapshot.val();
-                console.log(horoscopeDbValue);
-                if (horoscopeDbValue) {
-                    that.notRegistered = false;
+                    const that = this;
+                    import('firebase').then((firebase) => {
+                        if (firebase.apps.length === 0) {
+                            const config = {
+                                apiKey: process.env.FIREBASE_API_KEY,
+                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                                databaseURL: process.env.FIREBASE_DATABASE_URL,
+                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                            };
+                            firebase.initializeApp(config);
+                        }
+
+                        firebase.auth().onAuthStateChanged( function( fbUser ) {
+                            if (fbUser) {
+                                const vapasiPreferencesNode = firebase.database().ref( "PREFERENCE" ).child( that.getUserDetails.userId).child('vapsiSubscription');
+                                vapasiPreferencesNode.on( 'value', function( snapshot ) {
+                                const vapasiPreferences = snapshot.val();
+                                if(vapasiPreferences && vapasiPreferences.HOROSCOPE) {
+                                    that.isNotificationButtonEnabled=false;
+                                }
+                                else {
+                                    that.isNotificationButtonEnabled=true;
+                                }
+                        });
+                            }
+                        })
+                        
+                       
+                    });
                 }
-
-            })
-
+            }
         },
         triggerFacebookShareAnalytics() {
             let pratilipiAnalyticsData = {};
@@ -190,35 +195,16 @@ export default {
             });
 
             if (this.getUserDetails.isGuest) {
-                console.log("SHow Login Modal");
                 this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
             }
             else {
                 const that = this;
-                console.log("Val of horoscope: " + this.valueOfHoroscope);
-
-                console.log("My id: " + that.getUserDetails.userId);
-                const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-                console.log(userPreferencesNode);
-                console.log("Val of horoscope: " + this.valueOfHoroscope);
-                userPreferencesNode.set({
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
+                vapasiPreferencesNode.set({
                     vapsiSubscription: {
-                        HOROSCOPE: this.valueOfHoroscope
+                        "HOROSCOPE": this.valueOfHoroscope
                     }
                 });
-                console.log(userPreferencesNode);
-                userPreferencesNode.on('value', function (snapshot) {
-                    console.log("I am in");
-                    console.log(snapshot.val());
-                    let horoscopeDbValue = snapshot.val();
-                    console.log(horoscopeDbValue);
-                    if (horoscopeDbValue) {
-                        that.notRegistered = false;
-                    }
-
-                })
-
-
             }
 
         },
@@ -239,12 +225,7 @@ export default {
             });
         },
         goToHoroscopeDetails() {
-            if (this.valueOfHoroscope.length > 0) {
-                this.flag = true;
-            }
-            if (this.flag) {
                 this.goToDetails = true;
-
                 this.fetchHoroscope({horoscope: this.valueOfHoroscope, language: this.language});
 
                 let pratilipiAnalyticsData = {};
@@ -256,35 +237,19 @@ export default {
                     'USER_ID': this.getUserDetails.userId,
                     'ENTITY_VALUE': 'HOROSCOPE_DETAIL_' + this.valueOfHoroscope.toUpperCase(),
                 });
-            }
-            this.flag = false;
         },
         setHoroscopeValue(value, index) {
             const that = this;
             this.valueOfHoroscope = value;
-            console.log("here ", this.valueOfHoroscope);
             this.horoscopeImage = this.zodiacSignsImages[index];
-            const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-            userPreferencesNode.on('value', function (snapshot) {
-                console.log(snapshot.val());
-                let horoscopeDbValue = snapshot.val();
-                console.log(horoscopeDbValue);
-                if (horoscopeDbValue) {
-                    that.notRegistered = false;
-                }
-
-            })
             this.goToHoroscopeDetails();
-
-
         }
     },
     watch: {
-        'getUserDetails.isGuest'(isGuest) {
-            console.log("I am reinitializing firebase");
-            this.initializeFirebase();
-
-        }
+         'getUserDetails.isGuest'(isGuest) {
+            this.vapasiNotification(isGuest);
+      
+        },
     },
 
     created() {
@@ -296,9 +261,6 @@ export default {
         });
     },
     mounted() {
-
-        this.initializeFirebase();
-
 
         let k = 0;
         let pratilipiAnalyticsData = {};
@@ -320,7 +282,8 @@ export default {
             }
         }, 3000);
 
-        this.ifBrowserSupportsWebPush();
+
+        this.vapasiNotification(this.getUserDetails.isGuest);
 
     },
     components: {},
