@@ -2106,11 +2106,37 @@ export default {
         "ACTION": "LANDED"
     },
 
-    "CLICKEVENT_VAPASIQUOTE_HOME": {
+    "VIEW_VAPSIQUOTE_HOME": {
         "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASI_QUOTE",
-        "ACTION": "CLICKEDQUOTE"
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "VIEW"
     },
+    "CLICK_VAPSIQUOTE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "CLICK"
+    },
+    "NOTIFY_VAPSIQUOTE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "NOTIFY"
+    },
+    "SHAREFB_VAPSIQUOTE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "SHAREFB"
+    },
+    "SHAREWA_VAPSIQUOTE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "SHAREWA"
+    },
+    "CLOSE_VAPSIQUOTE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "CLOSE"
+    },
+
     "CLICKEVENT_VAPASIJOKE_HOME": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "VAPASI_JOKE",
@@ -2126,25 +2152,15 @@ export default {
         "LOCATION": "HOROSCOPE_DETAIL",
         "ACTION": "CLICKEDHOROSCOPEDETAIL"
     },
-    "VIEWED_VAPASIQUOTE_HOME": {
-        "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASI_QUOTE",
-        "ACTION": "VIEWEDQUOTE"
-    },
     "VIEWED_VAPASIHOROSCOPE_HOME": {
         "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASI_QUOTE",
+        "LOCATION": "VAPASI_HOROSCOPE",
         "ACTION": "VIEWEDHOROSCOPE"
     },
     "VIEWED_VAPASIJOKE_HOME": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "VAPASI_JOKE",
         "ACTION": "VIEWEDJOKE"
-    },
-    "SHARE_QUOTEFB_HOME": {
-        "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASI_QUOTE",
-        "ACTION": "SHAREQUOTEFB"
     },
     "SHARE_JOKEFB_HOME": {
         "SCREEN_NAME": "HOME",
@@ -2156,11 +2172,7 @@ export default {
         "LOCATION": "VAPASI_HOROSCOPE",
         "ACTION": "SHAREHOROSCOPEFB"
     },
-    "SHARE_QUOTEWA_HOME": {
-        "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASI_QUOTE",
-        "ACTION": "SHAREQUOTEWA"
-    },
+    
     "SHARE_HOROSCOPEWA_HOME": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "VAPASI_HOROSCOPE",
@@ -2171,7 +2183,6 @@ export default {
         "LOCATION": "VAPASI_JOKE",
         "ACTION": "SHAREJOKEWA"
     },
-
     "STARTCHAT_AUTHORDETAIL_BOOK": {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "AUTHORDETAIL",
@@ -2204,10 +2215,6 @@ export default {
         "LOCATION": "HOME",
         "ACTION": "NOTIFYJOKE"
     },
-    "CLICKEVENT_QUOTENOTIFICATION_HOME": {
-        "LOCATION": "HOME",
-        "ACTION": "NOTIFYQUOTE"
-    },
     "CLICKEVENT_HOROSCOPECLOSE_HOME" : {
         "LOCATION": "HOME",
         "ACTION": "CLOSEHOROSCOPE"
@@ -2215,9 +2222,5 @@ export default {
     "CLICKEVENT_JOKECLOSE_HOME" : {
         "LOCATION": "HOME",
         "ACTION": "CLOSEJOKE"
-    },
-    "CLICKEVENT_QUOTECLOSE_HOME" : {
-        "LOCATION": "HOME",
-        "ACTION": "QUOTEJOKE"
-    },
+    }
 };
