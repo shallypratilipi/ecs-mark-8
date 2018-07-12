@@ -27,5 +27,4 @@ export default {
     getJokeImage: state => state.joke.imageUrl,
     getQuoteImage: state => state.quote.imageUrl,
     getHoroscope: state => state.horoscope.data,
-    getHoroscopeImage: state => state.horoscope.imageUrl
 }

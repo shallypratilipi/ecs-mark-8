@@ -29,7 +29,7 @@
                 <p class="horoscope-heading">__("your_today_horoscope") <span> <img v-bind:src="horoscopeImage" height="30" width="30" class="span-image"></span></p>
                 <div class="horoscope-details">
                     <p id="shareThisAsImage">
-                        {{getHoroscope}}
+                        {{getHoroscope[valueOfHoroscope].horoscope}}
                     </p>
                     <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled" @click="triggerAnalyticsEventAndFireNotification()">
                         __("get_notification")
@@ -56,6 +56,10 @@ import {
 } from 'vuex';
 export default {
    props: {
+        screenName: {
+            type: String,
+            required: true
+        },
         'in-viewport-once': {
             default: true
         },
@@ -70,8 +74,6 @@ export default {
     computed: {
         ...mapGetters('homepage', [
             'getHoroscope',
-            'getHoroscopeImage'
-
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -156,15 +158,11 @@ export default {
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
-            this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPECLOSE_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-            });
+            this.triggerAnanlyticsEvent(`CLOSE_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         showModal() {
             this.shouldShowModal = true;
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIHOROSCOPE_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-            });
+            this.triggerAnanlyticsEvent(`CLICK_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         vapasiNotification(isGuest) {
             if (WebPushUtil.isBrowserPushCompatible()) {
@@ -205,20 +203,16 @@ export default {
                     object: {
                         'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
                         'og:title': '__("your_today_horoscope")',
-                        'og:description': this.getHoroscope,
-                        'og:image': this.getHoroscopeImage
+                        'og:description': this.getHoroscope[this.valueOfHoroscope].horoscope,
+                        'og:image': this.getHoroscope[this.valueOfHoroscope].imageUrl
                     }
                 })
             });
-            this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-            });
+            this.triggerAnanlyticsEvent(`SHAREFB_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerAnalyticsEventAndFireNotification() {
 
-            this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPENOTIFICATION_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-            });
+            this.triggerAnanlyticsEvent(`NOTIFY_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
             if (this.getUserDetails.isGuest) {
                 this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
@@ -232,21 +226,13 @@ export default {
             }
         },
         triggerWhatsappShareAnalytics() {
-            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            const textToShare = `__("today_horoscope"): ${this.getHoroscope[this.valueOfHoroscope].imageUrl}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
-            this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEWA_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-            });
+            this.triggerAnanlyticsEvent(`SHAREWA_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         goToHoroscopeDetails() {
             this.goToDetails = true;
-            this.fetchHoroscope({
-                horoscope: this.valueOfHoroscope,
-                language: this.language
-            });
-            this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPEDETAILS_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-            });
+            this.triggerAnanlyticsEvent(`CLICKDETAILS_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         setHoroscopeValue(value, image) {
             const that = this;
@@ -256,6 +242,11 @@ export default {
         }
     },
     watch: {
+        'inViewport.now'(visible) {
+            if (visible) {
+                this.triggerAnanlyticsEvent(`VIEW_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            }
+        },
         'getUserDetails.isGuest'(isGuest) {
             this.vapasiNotification(isGuest);
         }
@@ -270,9 +261,6 @@ export default {
     },
     mounted() {
         let k = 0;
-        this.triggerAnanlyticsEvent(`VIEWED_VAPASIHOROSCOPE_HOME`, 'CONTROL', {
-            'USER_ID': this.getUserDetails.userId,
-        });
         let that = this;
         setInterval(function() {
             that.imageHoroscopeBanner = that.zodiac[k].image;
@@ -282,6 +270,7 @@ export default {
             }
         }, 3000);
         this.vapasiNotification(this.getUserDetails.isGuest);
+        this.fetchHoroscope(this.language);
     },
 }
 </script>

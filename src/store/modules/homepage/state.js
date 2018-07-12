@@ -23,7 +23,6 @@ export default {
 
     horoscope: {
         loading_state: 'LOADING',
-        data: "",
-        imageUrl: ""
+        data: [],
     }
 }

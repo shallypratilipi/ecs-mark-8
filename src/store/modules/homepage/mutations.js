@@ -88,8 +88,7 @@ export default {
     },
     setHoroscopeOfTheDay(state, data) {
         state.horoscope.loading_state = 'LOADING_SUCCESS';
-        state.horoscope.data = data.horoscope;
-        state.horoscope.imageUrl = data.imageUrl;
+        state.horoscope.data = data;
     },
 
 
