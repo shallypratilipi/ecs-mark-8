@@ -7,8 +7,12 @@
             <VapasiQuote 
                 screenName="HOME"
                 v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiQuote>
-            <VapasiJoke v-if="this.isMobile() && getCurrentLanguage().fullName == 'gujarati'"></VapasiJoke>
-            <VapasiHoroscope v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
+            <VapasiJoke 
+                screenName="HOME"
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'gujarati'"></VapasiJoke>
+            <VapasiHoroscope 
+                screenName="HOME"
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>
             <div v-if="getHomePageLoadingState === 'LOADING_SUCCESS'" v-for="(eachSection, index) in getHomePageSections" v-bind:key="eachSection.listPageUrl">
                 <PratilipiListComponent
