@@ -93,10 +93,10 @@ export default {
         })
     },
 
-    fetchHoroscope({commit, state}, {horoscope, language}) {
+    fetchHoroscope({commit, state}, language) {
         DataAccessor.getHoroscopeOfTheDay(language, (data) => {
             if (data.status === 200) {
-                commit('setHoroscopeOfTheDay', data.response[horoscope]);
+                commit('setHoroscopeOfTheDay', data.response);
             }
         })
     },

@@ -29,7 +29,7 @@
                 <p class="horoscope-heading">__("your_today_horoscope") <span> <img v-bind:src="horoscopeImage" height="30" width="30" class="span-image"></span></p>
                 <div class="horoscope-details">
                     <p id="shareThisAsImage">
-                        {{getHoroscope}}
+                        {{getHoroscope[valueOfHoroscope].horoscope}}
                     </p>
                     <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled" @click="triggerAnalyticsEventAndFireNotification()">
                         __("get_notification")
@@ -70,8 +70,6 @@ export default {
     computed: {
         ...mapGetters('homepage', [
             'getHoroscope',
-            'getHoroscopeImage'
-
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -205,8 +203,8 @@ export default {
                     object: {
                         'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
                         'og:title': '__("your_today_horoscope")',
-                        'og:description': this.getHoroscope,
-                        'og:image': this.getHoroscopeImage
+                        'og:description': this.getHoroscope[this.valueOfHoroscope].horoscope,
+                        'og:image': this.getHoroscope[this.valueOfHoroscope].imageUrl
                     }
                 })
             });
@@ -232,7 +230,7 @@ export default {
             }
         },
         triggerWhatsappShareAnalytics() {
-            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            const textToShare = `__("today_horoscope"): ${this.getHoroscope[this.valueOfHoroscope].imageUrl}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
             this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEWA_HOME`, 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId,
@@ -240,10 +238,6 @@ export default {
         },
         goToHoroscopeDetails() {
             this.goToDetails = true;
-            this.fetchHoroscope({
-                horoscope: this.valueOfHoroscope,
-                language: this.language
-            });
             this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPEDETAILS_HOME`, 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId,
             });
@@ -282,6 +276,7 @@ export default {
             }
         }, 3000);
         this.vapasiNotification(this.getUserDetails.isGuest);
+        this.fetchHoroscope(this.language);
     },
 }
 </script>
