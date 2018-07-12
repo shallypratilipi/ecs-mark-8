@@ -161,7 +161,6 @@
                                 screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
-
                         </div>
                     </div>
                 </div>
@@ -266,6 +265,17 @@
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
             <div class="reader-progress"><div class="progress-bar"></div></div>
+            <div class="container-fluid next-pratilipi-strip-container">
+                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3" @click="hideStripAndRedirect">
+                        <NextPratilipiStrip
+                            :pratilipi = 'getPratilipiData.nextPratilipi'
+                            v-if="isNextPratilipiEnabled"
+                        ></NextPratilipiStrip>
+                    </div>
+                </div>
+            </div>
         </div>
     </ReadLayout>
 </template>
@@ -287,6 +297,7 @@ import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
 import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
+import NextPratilipiStrip from '@/components/NextPratilipiStrip.vue'
 import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex';
 import constants from '@/constants';
@@ -301,7 +312,8 @@ export default {
         WebPushModal,
         Recommendation,
         ShareStrip,
-        OpenInApp
+        OpenInApp,
+        NextPratilipiStrip
     },
     mixins: [
         mixins
@@ -324,7 +336,8 @@ export default {
             maxRead: 0,
             chapterCount: 0,
             recordTime: null,
-            language: ''
+            language: '',
+            isNextPratilipiEnabled: false,
         }
     },
     methods: {
@@ -608,6 +621,21 @@ export default {
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
             this.percentScrolled = (wintop / (docheight - winheight)) * 100;
         },
+
+        // move this inside next pratilipi component
+        hideStripAndRedirect(){
+            console.log("removing next pratilipi");
+            this.isNextPratilipiEnabled = false;
+
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('CLICKED_NEXT_PRATILIPI', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'PARENT_ID': this.selectedChapter
+            });
+
+            this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.nextPratilipi.pratilipiId)} });
+        }
     },
     computed: {
         fontStyleObject() {
@@ -640,7 +668,8 @@ export default {
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
-         const currentLocale = process.env.LANGUAGE;
+
+        const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
             if (eachLanguage.shortName === currentLocale) {
                 this.language = eachLanguage.fullName.toUpperCase();
@@ -745,6 +774,11 @@ export default {
             if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
                 this.webPushModalTriggered = true
                 this.openWebPushModal()
+            }
+
+            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.isNextPratilipiEnabled) {
+                console.log("setting next pratilipi");
+                this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
             }
         },
         'getPratilipiLoadingState'(status) {
@@ -1367,4 +1401,9 @@ export default {
         }
     }
 }
+
+    .next-pratilipi-strip-container {
+        position: absolute;
+        bottom: 300px;
+    }
 </style>
