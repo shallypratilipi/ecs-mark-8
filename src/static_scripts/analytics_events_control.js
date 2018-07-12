@@ -2105,7 +2105,6 @@ export default {
         "LOCATION": "NEWCHATS",
         "ACTION": "LANDED"
     },
-
     "VIEW_VAPSIQUOTE_HOME": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "VAPSIQUOTE",
@@ -2138,22 +2137,22 @@ export default {
     },
     "VIEW_VAPSIHOROSCOPE_HOME": {
         "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASIHOROSCOPE",
+        "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "VIEW"
     },
     "CLICK_VAPSIHOROSCOPE_HOME": {
         "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASIHOROSCOPE",
+        "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "CLICK"
     },
     "CLICKDETAILS_VAPSIHOROSCOPE_HOME": {
         "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASIHOROSCOPE",
+        "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "CLICKDETAILS"
     },
     "NOTIFY_VAPSIHOROSCOPE_HOME": {
         "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASIHOROSCOPE",
+        "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "NOTIFY"
     },
     "SHAREFB_VAPSIHOROSCOPE_HOME": {
@@ -2201,11 +2200,6 @@ export default {
         "LOCATION": "VAPSIJOKE",
         "ACTION": "CLOSE"
     },
-    "SHARE_JOKEWA_HOME": {
-        "SCREEN_NAME": "HOME",
-        "LOCATION": "VAPASI_JOKE",
-        "ACTION": "SHAREJOKEWA"
-    },
     "STARTCHAT_AUTHORDETAIL_BOOK": {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "AUTHORDETAIL",
@@ -2229,6 +2223,5 @@ export default {
     "GOMESSAGESPAGE_HEADER_GLOBAL": {
         "LOCATION": "HEADER",
         "ACTION": "GOMESSAGESPAGE"
-    },
-
+    }
 };
