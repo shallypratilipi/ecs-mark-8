@@ -45,6 +45,10 @@ import {
 
 export default {
     props: {
+        screenName: {
+            type: String,
+            required: true
+        },
         'in-viewport-once': {
             default: true
         },
@@ -78,15 +82,11 @@ export default {
         ]),
         resetModal() {
             this.shouldShowModal = false;
-            this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTECLOSE_HOME`, 'CONTROL', {
-               'USER_ID': this.getUserDetails.userId
-            });
+            this.triggerAnanlyticsEvent(`CLOSE_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         showModalContentQuote() {
             this.shouldShowModal = true;
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIQUOTE_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId
-            });
+            this.triggerAnanlyticsEvent(`CLICK_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         vapasiNotification(isGuest) {
             if (WebPushUtil.isBrowserPushCompatible()) {
@@ -120,9 +120,7 @@ export default {
             }
         },
         triggerAnalyticsEventAndFireNotification() {
-            this.triggerAnanlyticsEvent(`CLICKEVENT_QUOTENOTIFICATION_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId
-            });
+            this.triggerAnanlyticsEvent(`NOTIFY_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
             if (this.getUserDetails.isGuest) {
                 this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
             } else {
@@ -147,14 +145,10 @@ export default {
                     }
                 })
             });
-            this.triggerAnanlyticsEvent(`SHARE_QUOTEFB_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId
-            });
+            this.triggerAnanlyticsEvent(`SHAREFB_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerWhatsappShareAnalytics() {
-            this.triggerAnanlyticsEvent(`SHARE_QUOTEWA_HOME`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId
-            });
+            this.triggerAnanlyticsEvent(`SHAREWA_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
             const textToShare = `__("quote_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
@@ -163,9 +157,7 @@ export default {
     watch: {
         'inViewport.now'(visible) {
             if (visible) {
-                this.triggerAnanlyticsEvent(`VIEWED_VAPASIQUOTE_HOME`, 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId
-                });
+                this.triggerAnanlyticsEvent(`VIEW_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
             }
         },
         'getUserDetails.isGuest'(isGuest) {
