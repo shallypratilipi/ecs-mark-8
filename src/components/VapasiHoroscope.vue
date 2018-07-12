@@ -232,7 +232,7 @@ export default {
         },
         goToHoroscopeDetails() {
             this.goToDetails = true;
-            this.triggerAnanlyticsEvent(`CLICK_VAPSIHOROSCOPEDETAILS_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            this.triggerAnanlyticsEvent(`CLICKDETAILS_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         setHoroscopeValue(value, image) {
             const that = this;
