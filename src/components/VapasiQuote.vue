@@ -138,7 +138,7 @@ export default {
                 action_type: 'og.shares',
                 action_properties: JSON.stringify({
                     object: {
-                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
+                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
                         'og:title': '__("quote_of_the_day")',
                         'og:description': this.getQuoteOfTheDay,
                         'og:image': this.getQuoteImage
@@ -150,7 +150,7 @@ export default {
         triggerWhatsappShareAnalytics() {
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
-            const textToShare = `__("quote_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
+            const textToShare = `__("quote_of_the_day"): ${this.getQuoteImage}. To see: https://${window.location.host}${window.location.pathname}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },

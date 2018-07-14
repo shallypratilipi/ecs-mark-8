@@ -139,7 +139,7 @@ export default {
                 action_type: 'og.shares',
                 action_properties: JSON.stringify({
                     object: {
-                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
+                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-joke`,
                         'og:title': '__("joke_of_the_day")',
                         'og:description': this.getJokeOfTheDay,
                         'og:image': this.getJokeImage
@@ -151,7 +151,7 @@ export default {
         triggerWhatsappShareAnalytics() {
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSIJOKE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
-            const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
+            const textToShare = `__("joke_of_the_day"): ${this.getJokeImage}. To see: https://${window.location.host}${window.location.pathname}${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-joke')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },

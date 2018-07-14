@@ -201,7 +201,7 @@ export default {
                 action_type: 'og.shares',
                 action_properties: JSON.stringify({
                     object: {
-                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
+                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
                         'og:title': '__("your_today_horoscope")',
                         'og:description': this.getHoroscope[this.valueOfHoroscope].horoscope,
                         'og:image': this.getHoroscope[this.valueOfHoroscope].imageUrl
@@ -226,7 +226,7 @@ export default {
             }
         },
         triggerWhatsappShareAnalytics() {
-            const textToShare = `__("today_horoscope"): ${this.getHoroscope[this.valueOfHoroscope].imageUrl}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            const textToShare = `__("today_horoscope"): ${this.getHoroscope[this.valueOfHoroscope].imageUrl}. To see: https://${window.location.host}${window.location.pathname}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
