@@ -1,7 +1,7 @@
 import DataAccessor from '@/utils/DataAccessor'
 
 export default {
-    setInputModalSaveAction({ commit, state }, { action, data, heading, prefilled_value, initial_value, pratilipi_data }) {
+    setInputModalSaveAction({commit, state}, {action, data, heading, prefilled_value, initial_value, pratilipi_data}) {
     	commit('setInputModalSaveAction', { action, data, prefilled_value, initial_value, pratilipi_data });
     	commit('setModalHeading', heading);
     },
@@ -12,7 +12,7 @@ export default {
     },
 
 
-    setConfirmModalAction({ commit, state }, { action, data, message, heading }) {
+    setConfirmModalAction({commit, state}, {action, heading, message, data}) {
         commit('setConfirmModalAction', { action, data, message });
         commit('setModalHeading', heading);
     },

@@ -108,7 +108,7 @@ export default {
         commit('setForgotPasswordUpdateStateTrue');
         DataAccessor.forgotPassword(email, () => {
             commit('setForgotPasswordUpdateStateSucess');
-            commit('alert/triggerAlertView', '__('password_reset_request_success')', { root: true });
+            commit('alert/triggerAlertView', '__('email_sent_for_password_reset')', { root: true });
             $('#forgotPassModal').modal('hide');
             setTimeout(() => {
                 commit('alert/triggerAlertHide', null, { root: true });

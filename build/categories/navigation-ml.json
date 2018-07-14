@@ -26,14 +26,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/mystery",
-                    "title": "ദുരൂഹ കഥകള്‍",
-                    "analyticsCategoryName": "mystery",
-                    "imageFileName": "suspence.jpg",
+                    "categoryUrl": "/horror",
+                    "title": "ഹൊറര്‍ കഥകള്‍",
+                    "analyticsCategoryName": "horror",
+                    "imageFileName": "horror.jpg",
                     "pratilipiListData": {
                         "language": "MALAYALAM",
                         "state": "PUBLISHED",
-                        "listName": "mystery"
+                        "listName": "horror"
                     }
                 },
                 {

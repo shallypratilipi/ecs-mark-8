@@ -35,8 +35,38 @@
             </div>
         </div>
         <Spinner v-if="eachReview.comments.loading_state === 'LOADING'"></Spinner>
+
+        <!-- Report Modal -->
+        <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">__("report_title")</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="reportModalTextarea">__("report_issue")</label>
+                                <textarea class="form-control" id="reportModalTextarea" rows="3"
+                                          placeholder="__('report_issue')"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-submit" @click="submitReport">
+                                __("submit")
+                            </button>
+                            <button type="button" class="cancel" data-dismiss="modal" aria-label="Close">__("cancel")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <ul class="comments-list reply-list">
-            <li 
+            <li
                 v-for="eachComment in eachReview.comments.data" :key="eachComment.commentId"
                 v-if="eachReview.comments && eachReview.comments.data && eachReview.comments.data.length > 0 && eachReview.comments.loading_state === 'LOADING_SUCCESS'">
                 <div class="comment-avatar">
@@ -57,8 +87,9 @@
                             <button v-if="eachComment.user.userId === getUserDetails.userId" type="button" @click="deleteComment(eachComment.commentId)" class="btn options-btn" data-toggle="modal" data-target="">
                                 __("review_delete_review")
                             </button>
-                            <button v-if="eachComment.user.userId !== getUserDetails.userId" type="button" class="btn options-btn" data-toggle="modal" data-target="#reportModal">
-                                __("report_button")
+                            <button v-if="eachComment.user.userId !== getUserDetails.userId" type="button"
+                                    class="btn options-btn" data-toggle="modal" data-target="#reportModal">
+                                __("report_button") sda
                             </button>
                         </div>
                         <span class="review-date"> {{ eachComment.creationDateMillis | convertDate }} </span>
@@ -102,11 +133,15 @@
             </li>
         </ul>
     </li>
+
+
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import mixins from '@/mixins'
 import Spinner from '@/components/Spinner.vue';
+import constants from '@/constants';
+
 
 export default {
     mixins: [
@@ -116,7 +151,8 @@ export default {
         return {
             newComment: '',
             x: '',
-            updatedComment: ''
+            updatedComment: '',
+            language: ''
         }
     },
     props: {
@@ -187,6 +223,26 @@ export default {
             }
             this.newComment = `@${data.reviewUserName} `;
         },
+        submitReport() {
+            const currentLocale = process.env.LANGUAGE;
+            constants.LANGUAGES.forEach((eachLanguage) => {
+                if (eachLanguage.shortName === currentLocale) {
+                    this.language = eachLanguage.fullName.toUpperCase();
+                }
+            });
+
+            let user = this.getUserDetails;
+            let message = $('#reportModalTextarea').val().toString();
+            let name = user.displayName;
+            let email = user.email;
+            let pratilipiId = this.getPratilipiData.pratilipiId;
+            let language = this.language;
+            console.log(user + " " + message);
+            this.submitPrailipiReport({name, email, message, pratilipiId, language});
+            $('#reportModal').modal('hide');
+            this.triggerAlert({message: '__("success_generic_message")', timer: 3000});
+            $("#reportModalTextarea").val("");
+        },
         triggerEventAndCreateComment(review) {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
             this.triggerAnanlyticsEvent(`COMMENT_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
@@ -194,12 +250,12 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': review.userPratilipiId
             });
-            
-            this.createComment({ 
-                userPratilipiId: review.userPratilipiId, 
-                content: this.newComment 
-            }); 
-            this.newComment = ''; 
+
+            this.createComment({
+                userPratilipiId: review.userPratilipiId,
+                content: this.newComment
+            });
+            this.newComment = '';
         },
         editComment(commentId, content) {
             this.updatedComment = content;
@@ -212,7 +268,7 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_STATE': 'UPDATE'
             });
-            
+
             $(this.$el).find(".comment-content.editable." + data.commentId).toggle();
             this.updateComment(data);
         },
@@ -236,7 +292,7 @@ export default {
             } else {
                 this.likeOrDislikeReview(data.userPratilipiId);
             }
-            
+
             let action = !data.isLiked ? 'LIKE' : 'UNLIKE';
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
             this.triggerAnanlyticsEvent(`${action}_REVIEWS_${this.screenName}`, 'CONTROL', {
@@ -277,7 +333,17 @@ export default {
             });
         },
         ...mapActions([
-            'setAfterLoginAction'
+            'setAfterLoginAction',
+            'setInputModalSaveAction'
+        ]),
+        ...mapActions('alert', [
+            'triggerAlert'
+        ]),
+        ...mapActions('readerpage', [
+            'submitPrailipiReport'
+        ]),
+        ...mapGetters('readerpage', [
+            'getPratilipiData'
         ])
     },
     computed: {
@@ -293,6 +359,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    #reportModal {
+        text-align: left;
+        max-width: 350px;
+        margin: 50px auto;
+        .form-group {
+            font-size: 14px;
+        }
+        .btn-submit {
+            background: #d0021b;
+            border: 0;
+            font-size: 14px;
+            float: right;
+        }
+        .cancel {
+            background: none;
+            border: 0;
+            float: right;
+            font-size: 12px;
+            line-height: 33px;
+        }
+    }
 .comments-container {
     margin: 0 0 15px;
     width: 100%;

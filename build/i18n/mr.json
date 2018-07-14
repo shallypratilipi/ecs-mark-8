@@ -539,6 +539,7 @@
     "email_not_registered": "ई-मेल आयडी नोंदणीकृत नाही",
     "email_already_registered": "ई-मेल आयडी आधीच नोंदणीकृत",
     "email_entered_incorrectly": "दिलेला इ-मेल आइडी चुकीचा आहे",
+    "email_sent_for_password_reset": "पासवर्ड रिसेट करण्या करिता लिंक तुमच्या मेल वर पाठवली आहे",
     "password_minimum": "पासवर्ड किमान 6 वर्ण असावा",
     "login_failed": "लॉगिन अयशस्वी, कृपया पुन्हा प्रयत्न करा",
     "signup_failed": "साइन अप अयशस्वी. पुन्हा प्रयत्न करा.",

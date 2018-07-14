@@ -5,13 +5,31 @@
                 <div class="row" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                     <div class="book-details col-md-12 col-lg-5 p-0">
                         <div class="card">
-                            <div class="book-image" v-bind:style="{ backgroundImage: 'url(' + getPratilipiData.coverImageUrl  + ')' }">
-                                <button class="update-img" v-if="getPratilipiData.hasAccessToUpdate" @click="uploadImage('pratilipi-image')"><i class="material-icons">camera_alt</i></button>
-                                <input type="file" hidden name="pratilipiimage" @change="triggerPratilipiImageUpload($event)" accept="image/*" id="pratilipiimage-uploader">
-                                <div class="uploading" v-if="getImageUploadLoadingState === 'LOADING'">
-                                    <Spinner></Spinner>
+                            <div class="book-image-container">
+                                <div class="book-image"
+                                     v-bind:style="{ backgroundImage: 'url(' + getPratilipiData.coverImageUrl  + ')' }">
+                                    <div class="progress-bar-read">
+                                        <div
+                                            class="reader-progress"
+                                            v-bind:style="{width: getPratilipiData.userPratilipi.percentageRead  + '%'}"
+                                        ></div>
+                                    </div>
+                                    <button class="update-img"
+                                            v-if="getPratilipiData.hasAccessToUpdate"
+                                            @click="uploadImage('pratilipi-image')">
+                                        <i class="material-icons">camera_alt</i>
+                                    </button>
+                                    <input type="file"
+                                           hidden name="pratilipiimage"
+                                           @change="triggerPratilipiImageUpload($event)"
+                                           accept="image/*"
+                                           id="pratilipiimage-uploader">
+                                    <div class="uploading" v-if="getImageUploadLoadingState === 'LOADING'">
+                                        <Spinner></Spinner>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="book-title">{{ getPratilipiData.title }} <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
                             <router-link
                               :to="getPratilipiData.author.pageUrl"
@@ -248,7 +266,8 @@ export default {
             isWebPushModalEnabled: false,
             webPushModalTriggered: false,
             scrollPosition: null,
-            percentScrolled: null
+            percentScrolled: null,
+            percentageRead: null,
         }
     },
     mixins: [
@@ -455,8 +474,8 @@ export default {
             });
             this.setConfirmModalAction({
                 action: `${this.$route.meta.store}/unpublishOrPublishBook`,
-                heading: 'pratilipi_delete_content',
-                message: 'pratilipi_confirm_delete_content',
+                heading: 'pratilipi_confirm_move_to_drafts_title',
+                message: 'pratilipi_confirm_move_to_drafts_body',
                 data: {
                     pratilipiId: this.getPratilipiData.pratilipiId,
                     bookState
@@ -561,7 +580,7 @@ export default {
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
-            this.percentScrolled = ($(window).scrollTop()/($(document).height()-$(window).height()))*100
+            this.percentScrolled = ($(window).scrollTop() / ($(document).height() - $(window).height())) * 100;
         },
         setPratilipiPageOgTags( pratilipiData ) {
             document.head.querySelector('meta[property="og:title"]').content = `${pratilipiData.title} « ${pratilipiData.author.fullName}`;
@@ -635,7 +654,6 @@ export default {
                 setTimeout(() => {
                     that.detectOverflow();
                 }, 0);
-
             }
         },
         'getUserDetails.userId'() {
@@ -667,6 +685,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
     .pratilipi-page {
         background: #f8f8f8;
         margin-top: 85px;
@@ -752,14 +771,29 @@ export default {
                 text-align: center;
                 margin: 5px 10px 0;
             }
-            .book-image {
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                margin: 10px 0 5px;
-                width: 100%;
-                height: 200px;
-                position: relative;
+            .book-image-container {
+                display: flex;
+                justify-content: center;
+                .book-image {
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                    margin: 10px 0 5px;
+                    width: 200px;
+                    height: 300px;
+                    position: relative;
+                    .progress-bar-read {
+                        height: 8px;
+                        position: absolute;
+                        bottom: 0;
+                        width: 100%;
+                        display: block;
+                    }
+                    .reader-progress {
+                        height: 8px;
+                        background-color: red;
+                    }
+                }
             }
             .update-img {
                 position: absolute;

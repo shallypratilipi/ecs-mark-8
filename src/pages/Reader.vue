@@ -1,7 +1,7 @@
 <template>
     <ReadLayout>
         <div class="read-page">
-            <div class="header-section" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
+            <div class="header-section" v-if="shouldLoadHeaderAndSetPageTheme()">
                 <div class="container">
                     <div class="row">
                         <div class="exit-reader tool-icon-1">
@@ -149,9 +149,11 @@
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
                                     :context="'summaryPage'"
+                                    :themeColor="readingMode"
                                     screenName="READER"
                                     screenLocation="RECOMMENDBOOK"
-                                    v-if="getPratilipiData && getPratilipiData.pratilipiId">
+                                    v-if="getPratilipiData && getPratilipiData.pratilipiId"
+                                >
                                 </Recommendation>
                             </div>
 
@@ -223,7 +225,7 @@
                                 <router-link
                                     :to="{ path: '/read', query: { id: String(getPratilipiData.pratilipiId), chapterNo: eachIndex.chapterNo } }"
                                     @click.native="triggerEventAndCloseSidebar(eachIndex.chapterNo)">
-                                    __("writer_chapter") {{ eachIndex.title || eachIndex.chapterNo }}
+                                    {{ eachIndex.title || eachIndex.chapterNo }}
                                 </router-link>
                         </li>
                     </ul>
@@ -324,7 +326,8 @@ export default {
             maxRead: 0,
             chapterCount: 0,
             recordTime: null,
-            language: ''
+            language: '',
+            readingMode: 'white'
         }
     },
     methods: {
@@ -359,6 +362,22 @@ export default {
                 let chapterCount = this.chapterCount;
                 let indexData = this.getIndexData;
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
+            }
+        },
+        shouldLoadHeaderAndSetPageTheme() {
+            if (this.getPratilipiLoadingState === 'LOADING_SUCCESS' && this.getPratilipiData) {
+                switch (this.readingMode) {
+                    case 'black':
+                        this.themeBlack();
+                        break;
+                    case 'yellow':
+                        this.themeYellow();
+                        break;
+                    case 'white':
+                        this.themeWhite();
+                        break;
+                }
+                return true;
             }
         },
         submitReport() {
@@ -491,6 +510,7 @@ export default {
             });
         },
         themeWhite() {
+            this.readingMode = 'white';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
@@ -510,14 +530,17 @@ export default {
             });
         },
         themeBlack() {
+            this.readingMode = 'black';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-black");
+
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-black");
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
+
             $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
             $(".book-bottom-webpush-subscribe").addClass("bg-black");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -528,6 +551,7 @@ export default {
             });
         },
         themeYellow() {
+            this.readingMode = 'yellow';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-yellow");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");

@@ -7,17 +7,20 @@
             </h2>
 	        <div class="pratilipi-list" v-if="pratilipiList.length > 0">
 	            <slick ref="slick" :options="slickOptions" @beforeChange="handleBeforeChange" class="slick-pratilipis">
-	                <PratilipiComponent 
-	                v-for="(eachPratilipi, index) in pratilipiList" 
-	                v-bind:key="eachPratilipi.pratilipiId + index"
-	                :pratilipiData="eachPratilipi"
-                    :addToLibrary="addToLibrary"
-                    :removeFromLibrary="removeFromLibrary"
-                    :redirectToReader="redirectToReader"
-                    :screenName="screenName"
-                	:screenLocation="screenLocation"
-                    :experimentId="experimentId"
+                    <div
+                        class="pratilipi-recommendation"
+                        v-for="(eachPratilipi, index) in pratilipiList"
+                        v-bind:key="eachPratilipi.pratilipiId + index">
+                        <PratilipiComponent
+                            :pratilipiData="eachPratilipi"
+                            :addToLibrary="addToLibrary"
+                            :removeFromLibrary="removeFromLibrary"
+                            :redirectToReader="redirectToReader"
+                            :screenName="screenName"
+                            :screenLocation="screenLocation"
+                            :experimentId="experimentId"
                     ></PratilipiComponent>
+                    </div>
 					<router-link :to="listPageUrl" v-if="listPageUrl" class="view_more">
 						<div class="view_more_card">
 							<i class="material-icons">keyboard_arrow_right</i>
@@ -25,6 +28,9 @@
 						</div>
 					</router-link>
 	            </slick>
+                <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
+                    __("view_more")
+                </button>
 	        </div>
 		</div>
 	</div>
@@ -44,6 +50,10 @@ export default {
     		type: Array,
     		required: true
     	},
+        themeColor: {
+            color: String,
+            require: false
+        },
         title: {
             type: String,
             require: true
@@ -53,7 +63,7 @@ export default {
         },
         addToLibrary: {
             type: Function
-        }, 
+        },
         removeFromLibrary: {
             type: Function
         },
@@ -104,6 +114,9 @@ export default {
         prev() {
             this.$refs.slick.prev()
         },
+        navigateToHome() {
+            this.$router.push("/");
+        },
         handleBeforeChange() {
             if (this.$route.meta.store === 'homepage') {
                 this.triggerAnanlyticsEvent(`SWIPE_COLLECTIONS_HOME`, 'CONTROL', {
@@ -124,11 +137,33 @@ export default {
             });
         }
     },
+    created() {
+        if (this.isMobile()) {
+            this.slickOptions = {
+                vertical: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                verticalSwiping: true,
+                infinite: false,
+                arrows: false,
+                edgeFriction: 0.80,
+            }
+        }
+
+    },
     mounted() {
         const that = this;
     	if (this.pratilipiList.length > 0) {
     		this.reInit();
     	}
+        if (this.themeColor == 'black') {
+            $(".container-fluid").css({"background-color": "black",});
+        } else if (this.themeColor == 'yellow') {
+            $(".container-fluid").css({"background-color": "#F4ECD8",})
+        } else if (this.themeColor == 'white') {
+            $(".container-fluid").css({"background-color": "white",});
+        }
+
     },
     components: {
         PratilipiComponent,
@@ -179,6 +214,7 @@ export default {
     }
 	.recommendation .section {
 		.container-fluid {
+            background-color: rgba(54, 25, 25, .00004);
 			padding: 0;
 			text-align: center;
 			.section-title {
@@ -191,6 +227,10 @@ export default {
 			}
 			.pratilipi-list {
 				padding: 5px 10px;
+                .pratilipi-recommendation {
+                    display: flex !important;
+                    justify-content: center !important;
+                }
 			}
 		}
         .section-title a {
@@ -221,7 +261,7 @@ export default {
 				}
 				span {
 					height: 41px;
-					line-height: 37px; 
+					line-height: 37px;
 					display: block;
 				}
 			}
