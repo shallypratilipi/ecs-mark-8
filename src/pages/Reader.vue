@@ -97,8 +97,9 @@
                                 class="chapter-title p-lr-15"
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
+
                                 v-if="eachIndex.chapterNo == selectedChapter">
-                                    {{ eachIndex.title || eachIndex.chapterNo }}
+                                  {{ eachIndex.title || chapter + eachIndex.chapterNo }}
                             </h2>
                             <div class="content-section lh-md p-lr-15"
                                  :class="fontStyleObject"
@@ -224,7 +225,7 @@
                                 <router-link
                                     :to="{ path: '/read', query: { id: String(getPratilipiData.pratilipiId), chapterNo: eachIndex.chapterNo } }"
                                     @click.native="triggerEventAndCloseSidebar(eachIndex.chapterNo)">
-                                    {{ eachIndex.title || eachIndex.chapterNo }}
+                                    {{ eachIndex.title || chapter  + eachIndex.chapterNo }}
                                 </router-link>
                         </li>
                     </ul>
@@ -341,6 +342,7 @@ export default {
             language: '',
             readingMode: 'white',
             isNextPratilipiEnabled: false,
+            chapter: '__("writer_chapter") '
         }
     },
     methods: {
