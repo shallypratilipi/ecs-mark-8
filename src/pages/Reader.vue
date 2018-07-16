@@ -402,7 +402,8 @@ export default {
             let email = user.email;
             let pratilipiId = this.getPratilipiData.pratilipiId;
             let language = this.language;
-            this.submitPrailipiReport({name ,email,message, pratilipiId, language});
+            let dataType = "PRATILIPI";
+            this.submitPrailipiReport({name, email, message, pratilipiId, language, dataType});
             $('#reportModal').modal('hide');
             this.triggerAlert({ message: '__("success_generic_message")', timer: 3000 });
             $("#reportModalTextarea").val("");

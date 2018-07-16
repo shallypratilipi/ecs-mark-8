@@ -224,6 +224,10 @@ export default {
             this.newComment = `@${data.reviewUserName} `;
         },
         submitReport() {
+            if (this.getUserDetails.isGuest) {
+                this.openLoginModal(this.$route.meta.store, 'REVIEW', 'LOGIN');
+                return;
+            }
             const currentLocale = process.env.LANGUAGE;
             constants.LANGUAGES.forEach((eachLanguage) => {
                 if (eachLanguage.shortName === currentLocale) {
@@ -235,10 +239,11 @@ export default {
             let message = $('#reportModalTextarea').val().toString();
             let name = user.displayName;
             let email = user.email;
-            let pratilipiId = this.getPratilipiData.pratilipiId;
+            let pratilipiId = this.pratilipiData.pratilipiId;
             let language = this.language;
+            let dataType = "REVIEW";
             console.log(user + " " + message);
-            this.submitPrailipiReport({name, email, message, pratilipiId, language});
+            this.submitPrailipiReport({name, email, message, pratilipiId, language, dataType});
             $('#reportModal').modal('hide');
             this.triggerAlert({message: '__("success_generic_message")', timer: 3000});
             $("#reportModalTextarea").val("");
