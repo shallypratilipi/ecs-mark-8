@@ -1,7 +1,7 @@
 <template>
     <ReadLayout>
         <div class="read-page">
-            <div class="header-section" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
+            <div class="header-section" v-if="shouldLoadHeaderAndSetPageTheme()">
                 <div class="container">
                     <div class="row">
                         <div class="exit-reader tool-icon-1">
@@ -97,8 +97,9 @@
                                 class="chapter-title p-lr-15"
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
+
                                 v-if="eachIndex.chapterNo == selectedChapter">
-                                    {{ eachIndex.title || eachIndex.chapterNo }}
+                                  {{ eachIndex.title || chapter + eachIndex.chapterNo }}
                             </h2>
                             <div class="content-section lh-md p-lr-15"
                                  :class="fontStyleObject"
@@ -149,9 +150,11 @@
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
                                     :context="'summaryPage'"
+                                    :themeColor="readingMode"
                                     screenName="READER"
                                     screenLocation="RECOMMENDBOOK"
-                                    v-if="getPratilipiData && getPratilipiData.pratilipiId">
+                                    v-if="getPratilipiData && getPratilipiData.pratilipiId"
+                                >
                                 </Recommendation>
                             </div>
 
@@ -222,7 +225,7 @@
                                 <router-link
                                     :to="{ path: '/read', query: { id: String(getPratilipiData.pratilipiId), chapterNo: eachIndex.chapterNo } }"
                                     @click.native="triggerEventAndCloseSidebar(eachIndex.chapterNo)">
-                                    __("writer_chapter") {{ eachIndex.title || eachIndex.chapterNo }}
+                                    {{ eachIndex.title || chapter  + eachIndex.chapterNo }}
                                 </router-link>
                         </li>
                     </ul>
@@ -337,7 +340,9 @@ export default {
             chapterCount: 0,
             recordTime: null,
             language: '',
+            readingMode: 'white',
             isNextPratilipiEnabled: false,
+            chapter: '__("writer_chapter") '
         }
     },
     methods: {
@@ -374,6 +379,22 @@ export default {
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
         },
+        shouldLoadHeaderAndSetPageTheme() {
+            if (this.getPratilipiLoadingState === 'LOADING_SUCCESS' && this.getPratilipiData) {
+                switch (this.readingMode) {
+                    case 'black':
+                        this.themeBlack();
+                        break;
+                    case 'yellow':
+                        this.themeYellow();
+                        break;
+                    case 'white':
+                        this.themeWhite();
+                        break;
+                }
+                return true;
+            }
+        },
         submitReport() {
             let user = this.getUserDetails;
             let message = $('#reportModalTextarea').val().toString();
@@ -381,7 +402,8 @@ export default {
             let email = user.email;
             let pratilipiId = this.getPratilipiData.pratilipiId;
             let language = this.language;
-            this.submitPrailipiReport({name ,email,message, pratilipiId, language});
+            let dataType = "PRATILIPI";
+            this.submitPrailipiReport({name, email, message, pratilipiId, language, dataType});
             $('#reportModal').modal('hide');
             this.triggerAlert({ message: '__("success_generic_message")', timer: 3000 });
             $("#reportModalTextarea").val("");
@@ -504,6 +526,7 @@ export default {
             });
         },
         themeWhite() {
+            this.readingMode = 'white';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
@@ -523,14 +546,17 @@ export default {
             });
         },
         themeBlack() {
+            this.readingMode = 'black';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-black");
+
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-black");
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
+
             $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
             $(".book-bottom-webpush-subscribe").addClass("bg-black");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -541,6 +567,7 @@ export default {
             });
         },
         themeYellow() {
+            this.readingMode = 'yellow';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-yellow");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");

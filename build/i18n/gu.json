@@ -538,6 +538,7 @@
     "email_not_registered": "ઈ-મેઈલ આઈડી નોંધાયેલ નથી",
     "email_already_registered": "ઈ-મેઈલ આઈડી પહેલેથી નોંધાયેલ છે.",
     "email_entered_incorrectly": "દર્જ કરેલ ઈ-મેઈલ આઈડી ખોટું છે.",
+    "email_sent_for_password_reset": "પાસવર્ડ રીસેટ  કરવાની લીંક આપને ઈ-મેઈલ કરી છે",
     "password_minimum": "પાસવર્ડમાં ઓછામાં ઓછા ૬ અક્ષર હોવા જોઈએ.",
     "login_failed": "લોગ ઇનમાં વિક્ષેપ, ફરીથી પ્રયાસ કરો.",
     "signup_failed": "સાઈન અપ થયું નથી, ફરી પ્રયાસ કરો",

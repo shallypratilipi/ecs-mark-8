@@ -1,7 +1,7 @@
 <template>
     <div class="recommendation old-style">
-        <PratilipiListComponent 
-            :pratilipiList="getRecommendationList" 
+        <PratilipiListComponent
+            :pratilipiList="getRecommendationList"
             :title="getRecommendationTitle"
             v-bind="{ addToLibrary, removeFromLibrary }"
             v-if="getRecommendationLoadingState === 'LOADING_SUCCESS' && getRecommendationList.length > 0"
@@ -9,6 +9,7 @@
             :screenLocation="screenLocation"
             :experimentId="experimentId"
             :redirectToReader="true"
+            :themeColor="themeColor"
         ></PratilipiListComponent>
     </div>
 </template>
@@ -29,6 +30,10 @@ export default {
         contextId: {
             type: Number,
             required: true
+        },
+        themeColor: {
+            type: String,
+            required: false
         },
         experimentId: {
             String
@@ -91,7 +96,7 @@ export default {
                 this.triggerAnanlyticsEvent(`VIEWED_${this.screenLocation}_${this.screenName}`, this.experimentId ? this.experimentId : 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId
                 });
-                
+
             }
         }
     }

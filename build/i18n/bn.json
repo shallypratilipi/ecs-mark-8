@@ -532,6 +532,7 @@
     "email_already_registered": "ইমেল আইডি ইতিমধ্যে নিবন্ধিত",
     "email_entered_incorrectly": "প্রদত্ত ইমেল আইডিটি  ভুল",
     "password_minimum": "পাসওয়ার্ড সর্বনিম্ন ৬ অক্ষরের হতে হবে",
+    "email_sent_for_password_reset": "পাসওয়ার্ড রিসেট লিঙ্ক আপনার ইমেলে পাঠানো হয়েছে",
     "login_failed": "লগ ইন অসফল,অনুগ্রহ করে পুনরায় প্রচেষ্টা করুন",
     "signup_failed": "সাইন আপ হয়নি,অনুগ্রহ করে আবার চেষ্টা করুন",
     "name_required": "নাম বাধ্যতামূলক",

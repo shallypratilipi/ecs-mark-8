@@ -538,6 +538,7 @@
     "email_not_registered": "ईमेल आईडी पंजीकृत नहीं है",
     "email_already_registered": "ईमेल आईडी पहले से पंजीकृत",
     "email_entered_incorrectly": "दर्ज की गई ई मेल आई डी गलत है",
+    "email_sent_for_password_reset": "पासवर्ड रीसेट करने का लिंक आपको ईमेल कर दिया गया है",
     "password_minimum": "पासवर्ड में न्यूनतम 6 अक्षर होने चाहिए",
     "login_failed": "लॉगिन विफल, कृपया फिर से कोशिश करें",
     "signup_failed": "साइन अप नहीं हुआ ,कृपया फिर से कोशिश करें",
