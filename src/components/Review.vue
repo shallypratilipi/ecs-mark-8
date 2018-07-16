@@ -95,7 +95,7 @@
                         <span class="review-date"> {{ eachComment.creationDateMillis | convertDate }} </span>
                     </div>
                     <div class="comment-content non-editable">
-                        {{ eachComment.content }}
+                        {{ eachComment.content }} 
                     </div>
                     <div style="display: none" :class="['comment-content editable', String(eachComment.commentId)]">
                         <form>

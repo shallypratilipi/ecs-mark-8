@@ -1,19 +1,19 @@
 <template>
     <div class="comments-container">
         <ul id="comments-list" @scroll="updateScroll" :class="{'y-scrolling': haveInfiniteScroll }" class="comments-list" v-if="getReviewsLoadingState === 'LOADING_SUCCESS' || getReviewsData.length > 0">
-            <OwnReview 
-                :userPratilipiData="userPratilipiData" 
+            <OwnReview
+                :userPratilipiData="userPratilipiData"
                 :authorId="authorId"
                 :screenName="screenName"
                 :pratilipiData="pratilipiData"
                 :screenLocation="screenLocation"></OwnReview>
             <li class="all-reviews" v-if="getReviewsData.length > 0">__("pratilipi_count_reviews")</li>
             <li class="no-results" v-if="getReviewsData.length === 0">__("pratilipi_no_reviews")</li>
-            <Review 
-                v-if="haveInfiniteScroll && getReviewsData.length > 0"
-                v-for="eachReview in getReviewsData" 
+            <Review
+                v-if="haveInfiniteScroll && getReviewsData.length > 0 && !(userPratilipiData.userId==eachReview.userId)"
+                v-for="eachReview in getReviewsData"
                 :loadCommentsOfReview="loadCommentsOfReview"
-                :likeOrDislikeReview="likeOrDislikeReview" 
+                :likeOrDislikeReview="likeOrDislikeReview"
                 :userPratilipiData="userPratilipiData"
                 :eachReview="eachReview" :key="eachReview.userPratilipiId"
                 :authorId="authorId"
@@ -25,11 +25,11 @@
                 :screenLocation="'REVIEWS'"
                 :pratilipiData="pratilipiData"
                 ></Review>
-            <Review 
-                v-if="!haveInfiniteScroll && getReviewsData.length > 0"
-                v-for="eachReview in getReviewsData.slice(0, 2)" 
+            <Review
+                v-if="!haveInfiniteScroll && getReviewsData.length > 0  && !(userPratilipiData.userId==eachReview.userId)"
+                v-for="eachReview in getReviewsData.slice(0, 3)"
                 :loadCommentsOfReview="loadCommentsOfReview"
-                :likeOrDislikeReview="likeOrDislikeReview" 
+                :likeOrDislikeReview="likeOrDislikeReview"
                 :userPratilipiData="userPratilipiData"
                 :eachReview="eachReview" :key="eachReview.userPratilipiId"
                 :authorId="authorId"
@@ -41,7 +41,7 @@
                 :screenLocation="'REVIEWS'"
                 :pratilipiData="pratilipiData"
                 ></Review>
-            
+
         </ul>
         <Spinner v-if="getReviewsLoadingState === 'LOADING'"></Spinner>
     </div>
@@ -188,7 +188,7 @@ export default {
 }
 .y-scrolling {
     overflow: hidden;
-    height: 470px;  
+    height: 470px;
     overflow-y: auto;
 }
 .show-more {

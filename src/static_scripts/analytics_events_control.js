@@ -2223,5 +2223,9 @@ export default {
     "GOMESSAGESPAGE_HEADER_GLOBAL": {
         "LOCATION": "HEADER",
         "ACTION": "GOMESSAGESPAGE"
+    },
+    "CLICK_NEXTPRATILIPI_READER": {
+        "LOCATION": "READER",
+        "ACTION": "GONEXTPRATILIPI"
     }
 };

@@ -113,6 +113,12 @@
                                 <div class="prev" v-if="selectedChapter != 1" @click="goToPreviousChapter">__("reader_prev_chapter")</div>
                                 <div class="next" v-if="selectedChapter != getIndexData.length" @click="goToNextChapter">__("reader_next_chapter")</div>
                             </div>
+                            <div @click="hideStripAndRedirect" class="next-strip-container">
+                                <NextPratilipiStrip
+                                    :pratilipi='getPratilipiData.nextPratilipi'
+                                    v-if="isNextPratilipiEnabled"
+                                ></NextPratilipiStrip>
+                            </div>
 
                            <ShareStrip
                                 v-if="selectedChapter == getIndexData.length"
@@ -268,17 +274,6 @@
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
             <div class="reader-progress"><div class="progress-bar"></div></div>
-            <div class="container-fluid next-pratilipi-strip-container">
-                <div class="row">
-                    <div class="col-md-9"></div>
-                    <div class="col-md-3" @click="hideStripAndRedirect">
-                        <NextPratilipiStrip
-                            :pratilipi = 'getPratilipiData.nextPratilipi'
-                            v-if="isNextPratilipiEnabled"
-                        ></NextPratilipiStrip>
-                    </div>
-                </div>
-            </div>
         </div>
     </ReadLayout>
 </template>
@@ -653,13 +648,7 @@ export default {
         hideStripAndRedirect(){
             console.log("removing next pratilipi");
             this.isNextPratilipiEnabled = false;
-
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            this.triggerAnanlyticsEvent('CLICKED_NEXT_PRATILIPI', 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'PARENT_ID': this.selectedChapter
-            });
+            this.triggerAnanlyticsEvent(`CLICK_NEXTPRATILIPI_READER`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.nextPratilipi.pratilipiId)} });
         }
@@ -825,6 +814,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .next-strip-container {
+        margin: 0 auto;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        cursor: pointer;
+        overflow: hidden;
+    }
 .read-page {
     margin: 0;
     padding: 0;
@@ -926,7 +924,7 @@ export default {
             height: 100%;
             z-index:9;
             max-width: 100%;
-            background-color:#d0021b;
+            background-color: #d0021b;
             -webkit-transition: width .3s ease;
             -o-transition: width .3s ease;
             transition: width .3s ease;
@@ -1428,10 +1426,4 @@ export default {
         }
     }
 }
-
-    .next-pratilipi-strip-container {
-        position: absolute;
-        background-color: #ff000000 !important;
-        bottom: 300px;
-    }
 </style>
