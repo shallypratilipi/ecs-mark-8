@@ -141,12 +141,11 @@ export default {
         if (this.isMobile()) {
             this.slickOptions = {
                 vertical: true,
-                slidesToShow: 3,
+                slidesToShow: 6,
                 slidesToScroll: 1,
-                verticalSwiping: true,
+                verticalSwiping: false,
                 infinite: false,
                 arrows: false,
-                edgeFriction: 0.80,
             }
         }
 

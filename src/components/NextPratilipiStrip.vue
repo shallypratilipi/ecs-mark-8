@@ -1,17 +1,15 @@
 <template>
     <div class="next-pratilipi-strip">
-        <div class="row ">
-            <div class="col-3 next-pratilipi-image-container">
-                <img class="next-pratilipi-image" :src="this.pratilipi.coverImageUrl">
-            </div>
-            <div class="col-9">
-                <h6 class="next-pratilipi-strip-title">Read the next part of this book here</h6>
-                <p>{{ this.pratilipi.title }}</p>
-            </div>
+        <div class="next-pratilipi-image"
+             v-bind:style="{ backgroundImage: 'url(' + this.pratilipi.coverImageUrl  + ')' }">
+
+        </div>
+        <div class="next-pratilipi-text">
+            <p class="next-pratilipi-text-title"> Read the next part of this book here</p>
+            <p class="next-pratilipi-text-title">{{ this.pratilipi.title }}</p>
         </div>
     </div>
 </template>
-
 <script>
 
     import mixins from '@/mixins';
@@ -36,21 +34,30 @@
 </script>
 
 <style lang="scss" scoped>
-
     .next-pratilipi-strip {
-        text-align: left;
-        box-shadow: -20px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        display: flex;
 
-        .next-pratilipi-image-container {
-            padding: 0px;
+        @media screen and (max-width: 576px) {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
         }
-
-        .next-pratilipi-strip-title {
-            margin-top: 10px;
-        }
-
         .next-pratilipi-image {
-            width: 100%;
+            flex: 2;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 200px;
+            height: 150px;
+            @media screen and (max-width: 576px) {
+                height: 120px;
+            }
+
+        }
+        .next-pratilipi-text {
+            flex: 3;
+            border: 1px solid #00000030;
+            .next-pratilipi-text-title {
+                font-size: 16px;
+                margin: 10px;
+            }
         }
     }
 </style>
