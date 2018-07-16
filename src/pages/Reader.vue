@@ -805,7 +805,7 @@ export default {
 
             if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.isNextPratilipiEnabled) {
                 console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
-                this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0 && window.location.hostname.includes('gamma');
+                this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0 && (window.location.hostname.includes('gamma') || window.location.hostname.includes('localhost'));
             }
         },
         'getPratilipiLoadingState'(status) {
@@ -1431,6 +1431,7 @@ export default {
 
     .next-pratilipi-strip-container {
         position: absolute;
+        background-color: #ff000000 !important;
         bottom: 300px;
     }
 </style>
