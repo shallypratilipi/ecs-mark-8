@@ -77,8 +77,8 @@ import { mapGetters, mapActions } from 'vuex'
         data() {
             return {
                 sectionList: [],
-                isWebPushStripEnabled: this.isMobile() && WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 70 && (parseInt(this.getCookie('bucketId')) || 0) < 90,
-                isWebPushModalEnabled: WebPushUtil.canShowCustomPrompt()  && (parseInt(this.getCookie('bucketId')) || 0) >= 90 && (parseInt(this.getCookie('bucketId')) || 0) < 100,
+                isWebPushStripEnabled: false,
+                isWebPushModalEnabled: false,
                 webPushModalTriggered: false,
                 scrollPosition: null,
                 percentScrolled: null
@@ -145,7 +145,7 @@ import { mapGetters, mapActions } from 'vuex'
         },
         watch: {
             'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
-                if (newPercentScrolled > 90 && !this.webPushModalTriggered) {
+                if (newPercentScrolled > 90 && !this.webPushModalTriggered && this.isWebPushModalEnabled) {
                     this.webPushModalTriggered = true
                     this.openWebPushModal()
                 }
