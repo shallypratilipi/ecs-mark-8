@@ -89,7 +89,7 @@
                             </button>
                             <button v-if="eachComment.user.userId !== getUserDetails.userId" type="button"
                                     class="btn options-btn" data-toggle="modal" data-target="#reportModal">
-                                __("report_button") sda
+                                __("report_button")
                             </button>
                         </div>
                         <span class="review-date"> {{ eachComment.creationDateMillis | convertDate }} </span>
