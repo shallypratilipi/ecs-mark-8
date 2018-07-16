@@ -539,6 +539,7 @@
     "email_not_registered": "ई-मेल आयडी नोंदणीकृत नाही",
     "email_already_registered": "ई-मेल आयडी आधीच नोंदणीकृत",
     "email_entered_incorrectly": "दिलेला इ-मेल आइडी चुकीचा आहे",
+    "email_sent_for_password_reset": "पासवर्ड रिसेट करण्या करिता लिंक तुमच्या मेल वर पाठवली आहे",
     "password_minimum": "पासवर्ड किमान 6 वर्ण असावा",
     "login_failed": "लॉगिन अयशस्वी, कृपया पुन्हा प्रयत्न करा",
     "signup_failed": "साइन अप अयशस्वी. पुन्हा प्रयत्न करा.",
@@ -594,7 +595,6 @@
     "select_zodiac_sign": "आपली राशी निवडा ",
     "next": "पुढे",
     "your_today_horoscope": "आपले आजचे भविष्य",
-    "web_push_cancel": "रद्द करा",
     "get_notification": "नोटिफिकेशन प्राप्त करा",
 
     "reader_gamify_level": "स्तर  {{ getReaderLevel }}",
@@ -605,6 +605,19 @@
     "reader_gamify_congratulations": "अभिनंदन!",
     "reader_gamify_you_reached_level": "आपण {{ getReaderLevel }} स्तरावर पोहोचलात ",
     "reader_gamify_keep_reading": "वाचत राहा!",
-    "reader_gamify_login_to_save_your_progress": "आपला स्तरांचा उत्कर्ष जतन करण्यासाठी लॉग इन करा "
+    "reader_gamify_login_to_save_your_progress": "आपला स्तरांचा उत्कर्ष जतन करण्यासाठी लॉग इन करा ",
+
+    "zodiac_capricorn" : "मकर",
+    "zodiac_aquarius" : "कुंभ",
+    "zodiac_pisces" : "मीन",
+    "zodiac_aries" : "मेष",
+    "zodiac_taurus" : "वृषभ",
+    "zodiac_gemini" : "मिथुन",
+    "zodiac_cancer" : "कर्क",
+    "zodiac_leo" : "सिंह",
+    "zodiac_virgo" : "कन्या",
+    "zodiac_libra" : "तूळ",
+    "zodiac_scorpio" :  "वृश्चिक",
+    "zodiac_sagittarius" :  "धनु"
 
 }

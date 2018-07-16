@@ -1,70 +1,71 @@
 <template>
-   <div class="vapasi">
-      <div class="horoscope-banner" @click="showModal()">
-         <div class="horoscope-text" >
-            __("today_horoscope")
-            <br class="vapasi-break">
-            __("click_here_to_know_more")
-         </div>
-         <div class="horoscope-image">
-             <img :src="imageHoroscopeBanner" height="50" width="50">
-         </div>
-      </div>
-      <div class="horoscope-shadow horoscope-modal" v-if="shouldShowModal">
-         <div v-if="!goToDetails">
-            <p class="close" @click="resetModal()">X</p>
-            <p class="horoscope-heading"> __("select_zodiac_sign")</p>
-            <div class="modal-message">
-               <div class="modal-buttons">
-                   <button class="btn btn-default horoscope-button" v-for="(eachSign,index) in zodiacSignsLanguage"
-                           @click="setHoroscopeValue(zodiacSigns[index],index)"> {{eachSign}}
-                   </button>
-               </div>
-               <br><br>
+    <div class="vapasi">
+        <div class="horoscope-banner" @click="showModal()">
+            <div class="horoscope-text">
+                __("today_horoscope")
+                <br class="vapasi-break"> __("click_here_to_know_more")
             </div>
-         </div>
-         <div v-if="goToDetails">
-            <p class="close" @click="resetModal()">X</p>
-            <p class="horoscope-heading">__("your_today_horoscope")  <span> <img v-bind:src="horoscopeImage" height="30" width="30" class="span-image"></span></p>
-            <div class="horoscope-details">
-               <p id="shareThisAsImage">
-                  {{getHoroscope}}
-               </p>
-                <button class="btn btn-danger btn-sm" v-if="shouldWebPush && notRegistered"
-                        @click="triggerAnalyticsEventAndFireNotification()">
-                    __("get_notification")
-                </button>
-                <div class="social-icons">
-                  <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                  <span><img  src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
-                  <!-- <span><img src="../assets/twitterImage.png" height="30" width="30" ></span> -->
-               </div>
+            <div class="horoscope-image">
+                <img :src="imageHoroscopeBanner" height="50" width="50">
             </div>
-            <br><br>
-         </div>
-      </div>
-   </div>
+        </div>
+        <div class="horoscope-shadow horoscope-modal" v-if="shouldShowModal">
+            <div v-if="!goToDetails">
+                <p class="close" @click="resetModal()">X</p>
+                <p class="horoscope-heading"> __("select_zodiac_sign")</p>
+                <div class="modal-message">
+                    <div class="modal-buttons">
+                        <button 
+                            class="btn btn-default horoscope-button" 
+                            v-for="(eachSign) in zodiac" 
+                            v-bind:key="eachSign.nameEn"
+                            @click="setHoroscopeValue(eachSign.nameEn,eachSign.image)"> {{eachSign.name}}</button>
+                    </div>
+                    <br><br>
+                </div>
+            </div>
+            <div v-if="goToDetails">
+                <p class="close" @click="resetModal()">X</p>
+                <p class="horoscope-heading">__("your_today_horoscope") <span> <img v-bind:src="horoscopeImage" height="30" width="30" class="span-image"></span></p>
+                <div class="horoscope-details">
+                    <p id="shareThisAsImage">
+                        {{getHoroscope[valueOfHoroscope].horoscope}}
+                    </p>
+                    <button class="btn btn-danger btn-sm" v-if="isNotificationButtonEnabled" @click="triggerAnalyticsEventAndFireNotification()">
+                        __("get_notification")
+                    </button>
+                    <div class="social-icons">
+                        <span id="fecebookShareButton"><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                        <span><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
-import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
 import WebPushUtil from '@/utils/WebPushUtil';
 import * as firebase from "firebase";
-
-
-
 import {
     mapGetters,
     mapActions
 } from 'vuex';
-
-
-
 export default {
-    props: {
-
+   props: {
+        screenName: {
+            type: String,
+            required: true
+        },
+        'in-viewport-once': {
+            default: true
+        },
+        'in-viewport-offset-top': {
+            default: -350
+        }
     },
     mixins: [
         mixins,
@@ -73,219 +74,183 @@ export default {
     computed: {
         ...mapGetters('homepage', [
             'getHoroscope',
-            'getHoroscopeImage'
-
         ]),
         ...mapGetters([
-            'getUserDetails',
-            'getPratilipiData',
+            'getUserDetails'
         ]),
-
-
     },
     data() {
         return {
-            zodiacSigns: ["capricorn", "aquarius", "pisces", "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius"],
-            zodiacSignsLanguage: ["मकर", "कुंभ", "मीन", "मेष", "वृषभ", "मिथुन", "कर्क", "सिंह","कन्या",  "तूळ", "वृश्चिक", "धनु"],
-            zodiacSignsImages: ["static/zodiac_signs/goat.svg", "static/zodiac_signs/aquarius.svg", "static/zodiac_signs/pisces.svg", "static/zodiac_signs/aries.svg", "static/zodiac_signs/taurus.svg", "static/zodiac_signs/gemini.svg", "static/zodiac_signs/cancer.svg", "static/zodiac_signs/leo.svg", "static/zodiac_signs/virgo.svg", "static/zodiac_signs/libra.svg", "static/zodiac_signs/scorpio.svg", "static/zodiac_signs/sagittarius.svg"],
+            zodiac: [{
+                    'name': '__("zodiac_capricorn")',
+                    'nameEn': 'capricorn',
+                    'image': 'static/zodiac_signs/goat.svg'
+                },
+                {
+                    'name': '__("zodiac_aquarius")',
+                    'nameEn': 'aquarius',
+                    'image': 'static/zodiac_signs/aquarius.svg'
+                },
+                {
+                    'name': '__("zodiac_pisces")',
+                    'nameEn': 'pisces',
+                    'image': 'static/zodiac_signs/pisces.svg'
+                },
+                {
+                    'name': '__("zodiac_aries")',
+                    'nameEn': 'aries',
+                    'image': 'static/zodiac_signs/aries.svg'
+                },
+                {
+                    'name': '__("zodiac_taurus")',
+                    'nameEn': 'taurus',
+                    'image': 'static/zodiac_signs/taurus.svg'
+                },
+                {
+                    'name': '__("zodiac_gemini")',
+                    'nameEn': 'gemini',
+                    'image': 'static/zodiac_signs/gemini.svg'
+                },
+                {
+                    'name': '__("zodiac_cancer")',
+                    'nameEn': 'cancer',
+                    'image': 'static/zodiac_signs/cancer.svg'
+                },
+                {
+                    'name': '__("zodiac_leo")',
+                    'nameEn': 'leo',
+                    'image': 'static/zodiac_signs/leo.svg'
+                },
+                {
+                    'name': '__("zodiac_virgo")',
+                    'nameEn': 'virgo',
+                    'image': 'static/zodiac_signs/virgo.svg'
+                },
+                {
+                    'name': '__("zodiac_libra")',
+                    'nameEn': 'libra',
+                    'image': 'static/zodiac_signs/libra.svg'
+                },
+                {
+                    'name': '__("zodiac_scorpio")',
+                    'nameEn': 'scorpio',
+                    'image': 'static/zodiac_signs/scorpio.svg'
+                },
+                {
+                    'name': '__("zodiac_sagittarius")',
+                    'nameEn': 'sagittarius',
+                    'image': 'static/zodiac_signs/sagittarius.svg'
+                },
+            ],
             shouldShowModal: false,
             goToDetails: false,
             valueOfHoroscope: "",
             language: '',
             horoscopeImage: '',
             imageHoroscopeBanner: 'static/zodiac_signs/leo.svg',
-            shouldWebPush: true,
-            flag: false,
-            notRegistered: true
+            isNotificationButtonEnabled: false
         }
     },
     methods: {
         ...mapActions('homepage', [
             'fetchHoroscope',
         ]),
-
-
         resetModal() {
             this.goToDetails = false;
             this.shouldShowModal = false;
+            this.triggerAnanlyticsEvent(`CLOSE_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         showModal() {
             this.shouldShowModal = true;
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-            this.triggerAnanlyticsEvent(`CLICKEVENT_VAPASIHOROSCOPE_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'HOROSCOPE_LIST',
-            });
+            this.triggerAnanlyticsEvent(`CLICK_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
-        ifBrowserSupportsWebPush() {
+        vapasiNotification(isGuest) {
             if (WebPushUtil.isBrowserPushCompatible()) {
-                this.shouldWebPush = true;
-            } else {
-                this.shouldWebPush = false;
-            }
-        },
-        initializeFirebase() {
-            console.log("INITIALIZING FIREBASEEEE");
-            const that = this;
-            import('firebase').then((firebase) => {
-                const config = {
-                    apiKey: process.env.FIREBASE_API_KEY,
-                    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-                    databaseURL: process.env.FIREBASE_DATABASE_URL,
-                    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-                };
-                firebase.initializeApp(config);
-            });
-
-            const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-            userPreferencesNode.on('value', function (snapshot) {
-                console.log("I am in MOUNTED");
-                console.log(snapshot.val());
-                let horoscopeDbValue = snapshot.val();
-                console.log(horoscopeDbValue);
-                if (horoscopeDbValue) {
-                    that.notRegistered = false;
+                if (isGuest == null)
+                    return;
+                if (isGuest) {
+                    this.isNotificationButtonEnabled = true;
+                } else {
+                    const that = this;
+                    import('firebase').then((firebase) => {
+                        if (firebase.apps.length === 0) {
+                            const config = {
+                                apiKey: process.env.FIREBASE_API_KEY,
+                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                                databaseURL: process.env.FIREBASE_DATABASE_URL,
+                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                            };
+                            firebase.initializeApp(config);
+                        }
+                        firebase.auth().onAuthStateChanged((fbUser) => {
+                            if (fbUser) {
+                                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
+                                vapasiPreferencesNode.on('value', (snapshot) => {
+                                    const vapasiPreferences = snapshot.val();
+                                    that.isNotificationButtonEnabled = !(vapasiPreferences && vapasiPreferences.HOROSCOPE);
+                                });
+                            }
+                        })
+                    });
                 }
-
-            })
-
+            }
         },
         triggerFacebookShareAnalytics() {
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
             FB.ui({
                 method: 'share_open_graph',
                 action_type: 'og.shares',
                 action_properties: JSON.stringify({
                     object: {
-                        'og:url': `https://${window.location.host}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
+                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-horoscope`,
                         'og:title': '__("your_today_horoscope")',
-                        'og:description': this.getHoroscope,
-                        'og:image': this.getHoroscopeImage
+                        'og:description': this.getHoroscope[this.valueOfHoroscope].horoscope,
+                        'og:image': this.getHoroscope[this.valueOfHoroscope].imageUrl
                     }
                 })
             });
-            this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEFB_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
-            });
+            this.triggerAnanlyticsEvent(`SHAREFB_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerAnalyticsEventAndFireNotification() {
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
 
-            this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPENOTIFICATION_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
-            });
+            this.triggerAnanlyticsEvent(`NOTIFY_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
             if (this.getUserDetails.isGuest) {
-                console.log("SHow Login Modal");
                 this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
-            }
-            else {
+            } else {
+                WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
                 const that = this;
-                console.log("Val of horoscope: " + this.valueOfHoroscope);
-
-                console.log("My id: " + that.getUserDetails.userId);
-                const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-                console.log(userPreferencesNode);
-                console.log("Val of horoscope: " + this.valueOfHoroscope);
-                userPreferencesNode.set({
-                    vapsiSubscription: {
-                        HOROSCOPE: this.valueOfHoroscope
-                    }
+                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
+                vapasiPreferencesNode.update({
+                    "HOROSCOPE": this.valueOfHoroscope
                 });
-                console.log(userPreferencesNode);
-                userPreferencesNode.on('value', function (snapshot) {
-                    console.log("I am in");
-                    console.log(snapshot.val());
-                    let horoscopeDbValue = snapshot.val();
-                    console.log(horoscopeDbValue);
-                    if (horoscopeDbValue) {
-                        that.notRegistered = false;
-                    }
-
-                })
-
-
             }
-
         },
         triggerWhatsappShareAnalytics() {
-
-            const textToShare = `__("today_horoscope"): ${this.getHoroscopeImage}. To see: https://${window.location.host}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
+            const textToShare = `__("today_horoscope"): ${this.getHoroscope[this.valueOfHoroscope].imageUrl}. To see: https://${window.location.host}${window.location.pathname}/${encodeURIComponent('?utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-horoscope')}.`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
-
-            let pratilipiAnalyticsData = {};
-            if (this.getPratilipiData) {
-                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            }
-
-            this.triggerAnanlyticsEvent(`SHARE_HOROSCOPEWA_HOME`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'HOROSCOPE_OF_THE_DAY',
-            });
+            this.triggerAnanlyticsEvent(`SHAREWA_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         goToHoroscopeDetails() {
-            if (this.valueOfHoroscope.length > 0) {
-                this.flag = true;
-            }
-            if (this.flag) {
-                this.goToDetails = true;
-                this.fetchHoroscope({horoscope: this.valueOfHoroscope, language: this.language});
-
-                let pratilipiAnalyticsData = {};
-                if (this.getPratilipiData) {
-                    pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                }
-                this.triggerAnanlyticsEvent(`CLICKEVENT_HOROSCOPEDETAILS_HOME`, 'CONTROL', {
-                    ...pratilipiAnalyticsData,
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': 'HOROSCOPE_DETAIL_' + this.valueOfHoroscope.toUpperCase(),
-                });
-            }
-            this.flag = false;
+            this.goToDetails = true;
+            this.triggerAnanlyticsEvent(`CLICKDETAILS_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
-        setHoroscopeValue(value, index) {
+        setHoroscopeValue(value, image) {
             const that = this;
             this.valueOfHoroscope = value;
-            console.log("here ", this.valueOfHoroscope);
-            this.horoscopeImage = this.zodiacSignsImages[index];
-            const userPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId);
-            userPreferencesNode.on('value', function (snapshot) {
-                console.log(snapshot.val());
-                let horoscopeDbValue = snapshot.val();
-                console.log(horoscopeDbValue);
-                if (horoscopeDbValue) {
-                    that.notRegistered = false;
-                }
-
-            })
+            this.horoscopeImage = image;
             this.goToHoroscopeDetails();
-
-
         }
     },
     watch: {
+        'inViewport.now'(visible) {
+            if (visible) {
+                this.triggerAnanlyticsEvent(`VIEW_VAPSIHOROSCOPE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            }
+        },
         'getUserDetails.isGuest'(isGuest) {
-            console.log("I am reinitializing firebase");
-            this.initializeFirebase();
-
+            this.vapasiNotification(isGuest);
         }
     },
-
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
@@ -295,34 +260,18 @@ export default {
         });
     },
     mounted() {
-
-        this.initializeFirebase();
-
-
         let k = 0;
-        let pratilipiAnalyticsData = {};
-        if (this.getPratilipiData) {
-            pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-        }
-        this.triggerAnanlyticsEvent(`VIEWED_VAPASIHOROSCOPE_HOME`, 'CONTROL', {
-            ...pratilipiAnalyticsData,
-            'USER_ID': this.getUserDetails.userId,
-            'ENTITY_VALUE': 'VAPASI_HOROSCOPE_VIEWED',
-        });
-
         let that = this;
-        setInterval(function () {
-            that.imageHoroscopeBanner = that.zodiacSignsImages[k];
+        setInterval(function() {
+            that.imageHoroscopeBanner = that.zodiac[k].image;
             k++;
             if (k >= 11) {
                 k = 0;
             }
         }, 3000);
-
-        this.ifBrowserSupportsWebPush();
-
+        this.vapasiNotification(this.getUserDetails.isGuest);
+        this.fetchHoroscope(this.language);
     },
-    components: {},
 }
 </script>
 
@@ -344,8 +293,7 @@ export default {
         padding-left: 400px;
         padding-right: 400px;
     }
-
-    }
+}
 
 .horoscope-image {
      flex: 1;
@@ -353,7 +301,6 @@ export default {
         font-size: 26px;
         text-align: center;
     }
-
 }
 .horoscope-text {
      flex: 2;
@@ -362,7 +309,6 @@ export default {
         font-size: 26px;
         text-align: center;
     }
-
 }
 .horoscope-shadow {
     -webkit-box-shadow: 0px 6px 18px -2px rgba(89,128,122,1);
@@ -379,7 +325,6 @@ export default {
         font-size: 26px;
         text-align: center;
     }
-
 }
 .horoscope-button {
     margin: 1px;
@@ -429,7 +374,6 @@ export default {
             }
         }
     }
-
 }
 .close {
     display: flex;
@@ -445,5 +389,4 @@ export default {
     position: absolute;
     right: 18%;
 }
-
 </style>

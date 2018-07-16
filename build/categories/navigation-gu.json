@@ -92,6 +92,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/samajik-vartao",
+                    "title": "સામાજિક વાર્તાઓ",
+                    "analyticsCategoryName": "social",
+                    "imageFileName": "social.jpg",
+                    "pratilipiListData": {
+                        "language": "GUJARATI",
+                        "state": "PUBLISHED",
+                        "listName": "samajik-vartao"
+                    }
+                },
+                {
                     "categoryUrl": "/women",
                     "title": "ઉડાન - સ્ત્રી વિશેષ",
                     "analyticsCategoryName": "women",

@@ -16,6 +16,8 @@ export default {
                 return '__("event_participate_confirm_submission")';
             case 'author_about':
                 return '__("author_about")';
+            case 'pratilipi_confirm_move_to_drafts_title':
+                return '__("pratilipi_confirm_move_to_drafts_title")';
         }
     },
 
@@ -38,6 +40,8 @@ export default {
         switch (state.message) {
             case 'pratilipi_confirm_delete_content':
                 return '__("pratilipi_confirm_delete_content")';
+            case 'pratilipi_confirm_move_to_drafts_body':
+                return '__("pratilipi_confirm_move_to_drafts_body")';
         }
     }
 }

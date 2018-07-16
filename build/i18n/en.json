@@ -539,6 +539,7 @@
     "email_not_registered": "Email ID not registered",
     "email_already_registered": "Email ID already registered",
     "email_entered_incorrectly": "Email ID has been entered incorrectly",
+    "email_sent_for_password_reset": "Password reset link sent to your email",
     "password_minimum": "Password should be of minimum 6 characters",
     "login_failed": "Login failed. Please retry.",
     "signup_failed": "Signup Failed. Please retry.",

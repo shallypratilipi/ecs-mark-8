@@ -219,7 +219,7 @@ export default {
         if (pratilipiId == null) return;
 
         var requests = [];
-        requests.push(new request("req1", PRATILIPI_API, { "pratilipiId": pratilipiId }));
+        requests.push(new request("req1", PRATILIPI_API, { "pratilipiId": pratilipiId , "nextPratilipi" : true }));
         requests.push(new request("req2", PRATILIPI_CONTENT_INDEX_API, { "pratilipiId": pratilipiId }));
         if (includeUserPratilipi)
             requests.push(new request("req3", USER_PRATILIPI_API, { "pratilipiId": pratilipiId }));

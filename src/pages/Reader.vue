@@ -1,7 +1,7 @@
 <template>
     <ReadLayout>
         <div class="read-page">
-            <div class="header-section" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
+            <div class="header-section" v-if="shouldLoadHeaderAndSetPageTheme()">
                 <div class="container">
                     <div class="row">
                         <div class="exit-reader tool-icon-1">
@@ -97,8 +97,9 @@
                                 class="chapter-title p-lr-15"
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
+
                                 v-if="eachIndex.chapterNo == selectedChapter">
-                                    {{ eachIndex.title || eachIndex.chapterNo }}
+                                  {{ eachIndex.title || chapter + eachIndex.chapterNo }}
                             </h2>
                             <div class="content-section lh-md p-lr-15"
                                  :class="fontStyleObject"
@@ -149,9 +150,11 @@
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
                                     :context="'summaryPage'"
+                                    :themeColor="readingMode"
                                     screenName="READER"
                                     screenLocation="RECOMMENDBOOK"
-                                    v-if="getPratilipiData && getPratilipiData.pratilipiId">
+                                    v-if="getPratilipiData && getPratilipiData.pratilipiId"
+                                >
                                 </Recommendation>
                             </div>
 
@@ -161,7 +164,6 @@
                                 screenName="READER"
                                 :includeDisableButton=true
                                 v-if="selectedChapter == getIndexData.length && isWebPushModalEnabled"></WebPushModal>
-
                         </div>
                     </div>
                 </div>
@@ -223,7 +225,7 @@
                                 <router-link
                                     :to="{ path: '/read', query: { id: String(getPratilipiData.pratilipiId), chapterNo: eachIndex.chapterNo } }"
                                     @click.native="triggerEventAndCloseSidebar(eachIndex.chapterNo)">
-                                    __("writer_chapter") {{ eachIndex.title || eachIndex.chapterNo }}
+                                    {{ eachIndex.title || chapter  + eachIndex.chapterNo }}
                                 </router-link>
                         </li>
                     </ul>
@@ -266,6 +268,17 @@
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
             <div class="reader-progress"><div class="progress-bar"></div></div>
+            <div class="container-fluid next-pratilipi-strip-container">
+                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3" @click="hideStripAndRedirect">
+                        <NextPratilipiStrip
+                            :pratilipi = 'getPratilipiData.nextPratilipi'
+                            v-if="isNextPratilipiEnabled"
+                        ></NextPratilipiStrip>
+                    </div>
+                </div>
+            </div>
         </div>
     </ReadLayout>
 </template>
@@ -287,6 +300,7 @@ import WebPushModal from '@/components/WebPushModal.vue';
 import Recommendation from '@/components/Recommendation.vue';
 import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
+import NextPratilipiStrip from '@/components/NextPratilipiStrip.vue'
 import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex';
 import constants from '@/constants';
@@ -301,7 +315,8 @@ export default {
         WebPushModal,
         Recommendation,
         ShareStrip,
-        OpenInApp
+        OpenInApp,
+        NextPratilipiStrip
     },
     mixins: [
         mixins
@@ -324,7 +339,10 @@ export default {
             maxRead: 0,
             chapterCount: 0,
             recordTime: null,
-            language: ''
+            language: '',
+            readingMode: 'white',
+            isNextPratilipiEnabled: false,
+            chapter: '__("writer_chapter") '
         }
     },
     methods: {
@@ -361,6 +379,22 @@ export default {
                 this.postReadingPercentage({pratilipiId, chapterCount, maxRead, indexData});
             }
         },
+        shouldLoadHeaderAndSetPageTheme() {
+            if (this.getPratilipiLoadingState === 'LOADING_SUCCESS' && this.getPratilipiData) {
+                switch (this.readingMode) {
+                    case 'black':
+                        this.themeBlack();
+                        break;
+                    case 'yellow':
+                        this.themeYellow();
+                        break;
+                    case 'white':
+                        this.themeWhite();
+                        break;
+                }
+                return true;
+            }
+        },
         submitReport() {
             let user = this.getUserDetails;
             let message = $('#reportModalTextarea').val().toString();
@@ -368,7 +402,8 @@ export default {
             let email = user.email;
             let pratilipiId = this.getPratilipiData.pratilipiId;
             let language = this.language;
-            this.submitPrailipiReport({name ,email,message, pratilipiId, language});
+            let dataType = "PRATILIPI";
+            this.submitPrailipiReport({name, email, message, pratilipiId, language, dataType});
             $('#reportModal').modal('hide');
             this.triggerAlert({ message: '__("success_generic_message")', timer: 3000 });
             $("#reportModalTextarea").val("");
@@ -491,6 +526,7 @@ export default {
             });
         },
         themeWhite() {
+            this.readingMode = 'white';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-white");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
@@ -510,14 +546,17 @@ export default {
             });
         },
         themeBlack() {
+            this.readingMode = 'black';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-black");
+
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
             $(".header-section").addClass("theme-black");
             $(".footer-section").removeClass("theme-white theme-black theme-yellow");
             $(".footer-section").addClass("theme-black");
             $(".container-fluid").css({"background-color": "black",});
             $(".comment-box").css({"background-color": "black",});
+
             $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
             $(".book-bottom-webpush-subscribe").addClass("bg-black");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
@@ -528,6 +567,7 @@ export default {
             });
         },
         themeYellow() {
+            this.readingMode = 'yellow';
             $(".read-page").removeClass("theme-white theme-black theme-yellow");
             $(".read-page").addClass("theme-yellow");
             $(".header-section").removeClass("theme-white theme-black theme-yellow");
@@ -608,6 +648,21 @@ export default {
             let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
             this.percentScrolled = (wintop / (docheight - winheight)) * 100;
         },
+
+        // move this inside next pratilipi component
+        hideStripAndRedirect(){
+            console.log("removing next pratilipi");
+            this.isNextPratilipiEnabled = false;
+
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('CLICKED_NEXT_PRATILIPI', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'PARENT_ID': this.selectedChapter
+            });
+
+            this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.nextPratilipi.pratilipiId)} });
+        }
     },
     computed: {
         fontStyleObject() {
@@ -640,7 +695,8 @@ export default {
         if (this.$route.query.chapterNo) {
             this.selectedChapter = Number(this.$route.query.chapterNo);
         }
-         const currentLocale = process.env.LANGUAGE;
+
+        const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
             if (eachLanguage.shortName === currentLocale) {
                 this.language = eachLanguage.fullName.toUpperCase();
@@ -745,6 +801,11 @@ export default {
             if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
                 this.webPushModalTriggered = true
                 this.openWebPushModal()
+            }
+
+            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.isNextPratilipiEnabled) {
+                console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
+                this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0 && window.location.hostname.includes('gamma');
             }
         },
         'getPratilipiLoadingState'(status) {
@@ -1367,4 +1428,9 @@ export default {
         }
     }
 }
+
+    .next-pratilipi-strip-container {
+        position: absolute;
+        bottom: 300px;
+    }
 </style>
