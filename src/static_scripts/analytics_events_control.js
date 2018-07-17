@@ -2225,7 +2225,8 @@ export default {
         "ACTION": "GOMESSAGESPAGE"
     },
     "CLICK_NEXTPRATILIPI_READER": {
-        "LOCATION": "READER",
+        "SCREEN_NAME": "READER",
+        "LOCATION": "BOOKEND",
         "ACTION": "GONEXTPRATILIPI"
     }
 };

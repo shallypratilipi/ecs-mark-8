@@ -646,10 +646,11 @@ export default {
 
         // move this inside next pratilipi component
         hideStripAndRedirect(){
-            console.log("removing next pratilipi");
             this.isNextPratilipiEnabled = false;
-            this.triggerAnanlyticsEvent(`CLICK_NEXTPRATILIPI_READER`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
-
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent(`CLICK_NEXTPRATILIPI_READER`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId});
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.nextPratilipi.pratilipiId)} });
         }
     },
