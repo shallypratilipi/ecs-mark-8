@@ -29,7 +29,7 @@
 					</router-link>
 	            </slick>
                 <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
-                    __("view_more")
+                    __("reader_goto_home_page")
                 </button>
 	        </div>
 		</div>
