@@ -2228,5 +2228,15 @@ export default {
         "SCREEN_NAME": "READER",
         "LOCATION": "BOOKEND",
         "ACTION": "GONEXTPRATILIPI"
+    },
+    "GOTOHOME_RECOMMENDBOOK_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "RECOMMENDBOOK",
+        "ACTION": "GOTOHOME"
+    },
+    "GOTOHOME_RECOMMENDBOOK_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "RECOMMENDBOOK",
+        "ACTION": "GOTOHOME"
     }
 };

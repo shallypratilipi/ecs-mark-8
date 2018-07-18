@@ -27,13 +27,24 @@
                 },
                 {
                     "categoryUrl": "/horror",
-                    "title": "மர்மம்",
+                    "title": "திகில்",
                     "analyticsCategoryName": "horror",
                     "imageFileName": "horror.jpg",
                     "pratilipiListData": {
                         "language": "TAMIL",
                         "state": "PUBLISHED",
                         "listName": "horror"
+                    }
+                },
+                {
+                    "categoryUrl": "/suspense",
+                    "title": "மர்மம்",
+                    "analyticsCategoryName": "suspense",
+                    "imageFileName": "suspence.jpg",
+                    "pratilipiListData": {
+                        "language": "TAMIL",
+                        "state": "PUBLISHED",
+                        "listName": "suspense"
                     }
                 },
                 {

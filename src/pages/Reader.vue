@@ -793,7 +793,7 @@ export default {
                 this.openWebPushModal()
             }
 
-            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.isNextPratilipiEnabled) {
+            if (this.selectedChapter == this.getIndexData.length && !this.isNextPratilipiEnabled) {
                 console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
             }
