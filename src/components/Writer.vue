@@ -1,33 +1,8 @@
 <template>
-    <MainLayout>
+    <div class="writer-container">
         <div class="static-page page-wrap">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="head-title">{{ getEventData.name }}</div>
-                    </div>
-                </div>
-<!--                 <div class="row" v-if="getDraftedEventPratilipi.length > 0 && getEventLoadingState === 'LOADING_SUCCESS' && currentStep === 1 && !$route.params.eventPratilipiId">
-                    <div  class="col-md-12">
-                        <p class="drafted-msg">__('event_participate_drafted_item_edit')</p>
-                        <div class="drafted-items">
-                            <UserEventPratilipiComponent
-                                :pratilipiData="{
-                                    title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
-                                    type: pratilipiData.type,
-                                    description: pratilipiData.description,
-                                    createdAt: pratilipiData.createdAt
-                                }"
-                                @click.native="goToSecondStepToEdit(pratilipiData.eventId, pratilipiData._id)"
-                                :key="pratilipiData._id"
-                                v-for="pratilipiData in getDraftedEventPratilipi"
-                                :isEventParticipatePage="true"
-                                ></UserEventPratilipiComponent>
-                        </div>
-                    </div>
-                </div> -->
-               <!--  <div id="mySidenav" class="sidenav">
+                <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
                     <a class="chapters" :class="{ 'selected-chapter': selectedChapter === index }" v-for="(eachChapter, index) in chapters" :key="index">
                         <span class="chapter-title" @click="selectChapter(index)">
@@ -40,152 +15,38 @@
                     <a class="chapter-add" @click="addChapter">
                         <i class="material-icons">add</i>
                     </a>
-                </div> -->
+                </div>
                 <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
                 <div id="main" v-show="getEventLoadingState === 'LOADING_SUCCESS'">
-                    <div class="step-container">
-                        <div class="row steps">
-                        <div class="step step-1" :class="{ active: currentStep === 1 }">
-                            <div class="step-number">
-                                <span>1</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_add_content_title")</p>
-                        </div>
-                        <div class="step step-2" :class="{ active: currentStep === 2 }">
-                            <div class="step-number">
-                                <span>2</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_table_of_contents")</p>
-                        </div>
-                        <div class="step step-3" :class="{ active: currentStep === 3 }">
-                            <div class="step-number">
-                                <span>3</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_editor_image")</p>
-                        </div>
-            <!--             <div class="step step-4" :class="{ active: currentStep === 4 }">
-                            <div class="step-number">
-                                <span>4</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_finish")</p>
-                        </div> -->
-                    </div>
-                    </div>
-
-
-                    <div v-if="currentStep == 1">
-                        <div class="row">
-                            <div class="col-md-5 mb-10">
-                                <div class="event-image" :style="{ backgroundImage: 'url(' + getEventData.bannerImageUrl + ')' }"></div>
-                            </div>
-                            <div class="col-md-7">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="pratilipi_write_title_input">__("writer_input_title") *</label>
-                                        <p class="validation_error" v-if="titleIsMissing">
-                                            <i class="material-icons">error</i>
-                                            <span>This is a madatory field</span>
-                                        </p>
-                                        <TranslatingInput :classObj="{ error: titleIsMissing }" :value="title" :oninput="updateCurrentTitle" :placeholder="'__("writer_input_title")'"></TranslatingInput>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="pratilipi_write_title_en_input">__("writer_input_title_en")</label>
-                                        <input type="text" :value="titleEn" @input="($event) => { titleEn = $event.target.value}" class="form-control" id="pratilipi_write_title_en_input" :placeholder="'__("writer_input_title_en")'">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="pratilipi_write_type">__("write_type")</label>
-                                        <select class="form-control" id="pratilipi_write_type" v-model="type">
-                                            <option disabled value="">__('write_type')</option>
-                                            <option value="POEM">__('_pratilipi_type_poem')</option>
-                                            <option value="STORY">__('_pratilipi_type_story')</option>
-                                            <option value="ARTICLE">__('_pratilipi_type_article')</option>
-                                        </select>
-                                    </div>
-                                    <label class="form-check-label" for="agree-terms-conditions">__("writer_accept_copyright")</label>
-                                    <a href="/terms-of-service" class="terms-link" target="_blank">__("writer_read_copyright")</a>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="row writer-navigation">
-                            <div class="col-6">
-                            </div>
-                            <div class="col-6 text-right">
-                                <button class="next" @click="createEventPratilipi">__("writer_to_next_screen")</button>
-                            </div>
-                        </div>
-                    </div>
-
-
                     <div v-if="currentStep == 2">
-                    <WriteModule></WriteModule>
-                        <div class="row writer-navigation">
-                            <div class="col-6">
-                                <button class="prev" @click="goToFirstStepForEdit">__("back")</button>
-                            </div>
-                            <div class="col-6 text-right">
-<!--                                 <button class="save" @click="autoSaveContents">__("save_changes")</button>
- -->                                <button class="next" @click="saveContentAndGoToThirdStep">__("writer_to_next_screen")</button>
+                        <div class="row">
+                            <div class="col-12 chapter">
+                                <div class="follow-btn-w-count" @click="openNav"><!-- Follow Button -->
+                                    <button>
+                                        <i class="material-icons">list</i>
+                                    </button><span><b>__('writer_chapter')</b></span>
+                                </div>
+                                <TranslatingInput :value="chapters[selectedChapter].title" placeholder="__('writer_add_chapter_title')" :oninput="updateTitle"></TranslatingInput>
                             </div>
                         </div>
-                    </div>
-
-                    <div v-if="currentStep == 3">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="book-image" v-bind:style="{ backgroundImage: 'url(' + getEventPratilipiCoverImage + ')' }">
-                                    <button class="update-img" @click="uploadCoverImage"><i class="material-icons">camera_alt</i></button>
-                                    <input type="file" hidden name="pratilipiimage" accept="image/*" @change="triggerPratilipiImageUpload" id="pratilipiimage-uploader">
-                                    <div class="uploading" v-if="getEventPratilipiImageUploadLoadingState === 'LOADING'">
-                                        <Spinner></Spinner>
-                                    </div>
+                            <div class="col-md-12">
+                                <div class="writer-wrapper">
+                                    <!-- Use any element to open the sidenav -->
+                                    <div class="writer-area" contenteditable="true"></div>
+                                    <ul class="word-suggestions-dropdown" :class="{hidden: suggestions.length === 0}">
+                                        <li :class="{ active: index === selectedSuggestion }" @click="selectSuggestion(eachSuggestion)" :key="index" v-for="(eachSuggestion, index ) in suggestions">{{ eachSuggestion }}</li>
+                                    </ul>
+
+                                    <ul class="word-suggestions" v-if="false">
+                                        <li @click="selectSuggestion(eachSuggestion)" :key="index" v-for="(eachSuggestion, index ) in suggestions">{{ eachSuggestion }}</li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="col-md-8">
-                                <div class="head-title">__("pratilipi_summary")</div>
-                                <br>
-                                <TranslatingInput :value="description" :oninput="(value) => { description = value}" :placeholder="'__("edit_pratilipi_summary")'"></TranslatingInput>
+                        </div>
+                                <button class="btn btn-info" style="float: right;" @click="autoSaveContents">__("save_changes")</button>
 
-                                <!-- <div class="tag-sections">
-                                    <div class="head-title">__("tags_categories")</div>
-                                    <div class="tag-section-body">
-                                        <span class="all-tags active" v-for="each_tag in pratilipiData.tags" :key="each_tag.id">{{ each_tag.name}}</span>
-                                        <span class="all-tags"
-                                            v-for="each_tag in [ {id: 1, name: 'test1'}, {id: 2, name: 'test2'}, {id: 3, name: 'test3'}, {id: 4, name: 'test4'} ]"
-                                            :key="each_tag.id">{{ each_tag.name }}</span>
-                                    </div>
-                                </div> -->
-                            </div>
-
-                        </div>
-                        <div class="row writer-navigation">
-                            <div class="col-6">
-                                <button class="prev" @click="goToSecondStepForEdit">__("back")</button>
-                            </div>
-                            <div class="col-6 text-right">
-                                <button class="save" @click="autoSaveContents">__("save_changes")</button>
-                                <button class="next" @click="saveMetaInformationAndFinalSubmit">__('event_participate_finish')</button>
-                            </div>
-                        </div>
                     </div>
-<!-- 
-                    <div v-if="currentStep == 4">
-                        <div class="row">
-                            <div class="circle-loader">
-                                <div class="checkmark draw"></div>
-                            </div>
-                        </div>
-                        <div class="row accepted-msg" v-if="showAcceptedMessage">
-                            <div class="col-12">
-                                <p>__('event_participate_accepted_message')</p>
-                                <p><router-link :to="getEventData.pageUrl + '#yourEntries'">__('event_participate_check_your_entry_here')</router-link></p>
-                            </div>
-                        </div>
-                    </div>
- -->
                 </div>
                 <Spinner v-if="getEventLoadingState === 'LOADING'"></Spinner>
             </div>
@@ -193,7 +54,7 @@
         </div>
         <input name="image" id="image_input" type="file" accept="image/*" style="display: none;">
         <input type="hidden" id="field_name" value="" />
-    </MainLayout>
+    </div>
 </template>
 
 <script>
@@ -203,16 +64,14 @@ import mixins from '@/mixins';
 import TranslatingInput from '@/components/TranslatingInput.vue';
 import UserEventPratilipiComponent from '@/components/UserEventPratilipi.vue';
 import Spinner from '@/components/Spinner.vue';
-import { mapGetters, mapActions } from 'vuex';
-import WriteModule from '@/components/Writer.vue';
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     components: {
         MainLayout,
         TranslatingInput,
         Spinner,
-        UserEventPratilipiComponent,
-        WriteModule
+        UserEventPratilipiComponent
     },
     computed: {
         ...mapGetters([
@@ -280,6 +139,26 @@ export default {
             'setAfterLoginAction',
             'setConfirmModalAction'
         ]),
+        deleteChapter(index) {
+            console.log("DELETING" + index);
+            if (this.chapters.length === 1) {
+                alert('You need to have atleast one chapter');
+                return;
+            }
+
+            // if (index === this.chapters.length) {}
+            if (index === this.chapters.length - 1) {
+                this.selectedChapter = index - 1;
+            }
+
+            if (this.selectedChapter >= this.chapters.length - 1) {
+                this.selectedChapter = this.selectedChapter - 1;
+            }
+            console.log(this.chapters);
+            this.chapters.splice(index, 1);
+            console.log(this.chapters);
+
+        },
 
         updateCurrentTitle(value) {
             this.title = value;
@@ -329,14 +208,15 @@ export default {
         },
 
         saveContentAndGoToThirdStep() {
+            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
             this.$router.push({
                 query: { step : 3 }
             });
         },
 
         autoSaveContents() {
-            // this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
-            // this.triggerAlert({message: '__("writer_changes_saved")', timer: 3000});
+            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
+            this.triggerAlert({message: '__("writer_changes_saved")', timer: 3000});
         },
 
         saveMetaInformationAndFinalSubmit() {
@@ -352,14 +232,9 @@ export default {
         },
 
         goToFirstStep() {
-            console.log("I am getting called");
             $('.circle-loader').removeClass('load-complete');
             $('.checkmark').hide();
-            this.$router.push({
-                query: { step : 1 }
-            });
             this.currentStep = 1;
-
         },
 
         goToFirstStepForEdit() {
@@ -384,6 +259,7 @@ export default {
         },
 
         goToThirdStep() {
+            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
             $('.circle-loader').removeClass('load-complete');
             $('.checkmark').hide();
             this.currentStep = 3;
@@ -429,12 +305,14 @@ export default {
 
         selectChapter(index) {
             this.selectedChapter = index;
+            tinymce.activeEditor.setContent(this.chapters[index].content);
             this.closeNav();
         },
 
         updateTitle(value) {
             this.chapters[this.selectedChapter].title = value;
         },
+
 
         openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -500,10 +378,11 @@ export default {
         },
 
         selectSuggestion(suggestion, fromSpace) {
+            console.log(" I am getting fired");
+            const editorRange = tinymce.activeEditor.selection.getRng();
             var node = editorRange.commonAncestorContainer; // relative node to the selection
             const range = document.createRange(); // create a new range object for the deletion
             range.selectNodeContents(node);
-
             if (fromSpace) {
                 range.setStart(node, editorRange.endOffset - this.wordToTranslate.length); // current caret pos - 3
             } else {
@@ -519,9 +398,47 @@ export default {
             editorRange.insertNode(spaceNode);
             editorRange.insertNode(suggestionNode);
             this.lastTranslatedWord = suggestion;
+
+            tinymce.activeEditor.focus();
+            tinymce.activeEditor.selection.select(spaceNode, true);
+            tinymce.activeEditor.selection.collapse(false);
             this.suggestions = [];
         },
 
+        setAndLocateSuggestionDropdown() {
+            const ed = tinymce.activeEditor;
+            var tinymcePosition = $(ed.getContainer()).position();
+            var toolbarPosition = $(ed.getContainer()).find(".mce-toolbar").first();
+
+            var nodePosition = $(ed.selection.getNode()).position();
+            var textareaTop = 0;
+            var textareaLeft = 0;
+
+            if (ed.selection.getRng().getClientRects().length > 0) {
+                textareaTop = ed.selection.getRng().getClientRects()[0].top + ed.selection.getRng().getClientRects()[0].height;
+                textareaLeft = ed.selection.getRng().getClientRects()[0].x;
+            } else {
+                textareaTop = parseInt($(ed.selection.getNode()).css("font-size")) + nodePosition.top;
+                textareaLeft = nodePosition.left;
+            }
+
+            var position = $(ed.getContainer()).offset();
+            var caretPosition = {
+                top:  tinymcePosition.top + toolbarPosition.innerHeight() + textareaTop,
+                left: textareaLeft
+            }
+            $(".word-suggestions-dropdown").css("top", caretPosition.top + 10);
+
+            const suggesterWidth = $(".word-suggestions-dropdown").width();
+            if ((suggesterWidth + caretPosition.left) >= ($(window).width() - 35)) {
+                $(".word-suggestions-dropdown").css("left", "auto");
+                $(".word-suggestions-dropdown").css("right", "0");
+            }
+            else {
+                $(".word-suggestions-dropdown").css("left", caretPosition.left);
+                $(".word-suggestions-dropdown").css("right", "auto");
+            }
+        },
 
         initializeTinyMCE() {
             const that = this;
@@ -774,7 +691,7 @@ export default {
                         setTimeout(() => {
                             console.log('setting dirty');
                             // ed.setDirty(true);
-                            that.autoSaveContents();
+                            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
                             tinymce.triggerSave();
                         }, 20000);
                     });
@@ -946,7 +863,7 @@ export default {
             }
         },
         '$route.query.step'(step) {
-
+            console.log("New step: " + step);
             if (!step) {
                 this.goToFirstStep();
             }
@@ -1008,7 +925,21 @@ export default {
         }
     },
     created() {
-        console.log("HAVE A LOOK" , this.$route);
+        this.chapters.push({
+            title: '',
+            content: ''
+        });
+
+
+        this.loadTinyMCE(() => {
+            console.log("LOOK HERE: " + this.$route.params.eventSlug);
+            this.fetchEventDetails(this.$route.params.eventSlug);
+            console.log('FROM PARTICIPATE PAGE: ', this.$route.params);
+            if (!this.$route.params.eventPratilipiId) {
+                this.currentStep = 1;
+            }
+
+
             if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.query.step == 2) {
                 this.fetchPratilipiContent(this.$route.params.eventPratilipiId);
                 this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
@@ -1027,8 +958,13 @@ export default {
             if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 4) {
                 this.goToFourthStep();
             }
+        });
     },
     mounted() {
+        setTimeout(( ) => {
+            this.initializeTinyMCE()
+        }, 10);
+        this.checkWordSuggester();
         const that = this;
 
         $('.backdrop').click(() => {
@@ -1048,14 +984,23 @@ export default {
                 that.inputInFocus = false;
             });
         }
+
+        window.addEventListener('scroll', this.updateScroll);
+        setTimeout(() => {
+            this.checkWordSuggester();
+        }, 500);
     },
     destroyed() {
+        this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
         window.removeEventListener('scroll', this.updateScroll);
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.writer-container {
+    margin-bottom: -90px;
+}
 .step-container {
     width: Auto; margin: 0 auto;
 }
