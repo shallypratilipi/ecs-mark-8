@@ -2229,14 +2229,14 @@ export default {
         "LOCATION": "BOOKEND",
         "ACTION": "GONEXTPRATILIPI"
     },
-    "CLICK_RECOMMENDBOOK_BOOK": {
+    "GOTOHOME_RECOMMENDBOOK_BOOK": {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "RECOMMENDBOOK",
-        "ACTION": "CLICK"
+        "ACTION": "GOTOHOME"
     },
-    "CLICK_RECOMMENDBOOK_READER": {
+    "GOTOHOME_RECOMMENDBOOK_READER": {
         "SCREEN_NAME": "READER",
         "LOCATION": "RECOMMENDBOOK",
-        "ACTION": "CLICK"
+        "ACTION": "GOTOHOME"
     }
 };
