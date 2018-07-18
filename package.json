@@ -15,7 +15,7 @@
     "generate_nav": "node build/generate_nav.js"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0",
+    "bootstrap": "4.0.0",
     "compression": "^1.7.2",
     "cookie-parser": "^1.4.3",
     "es6-promise-promise": "^1.0.0",
