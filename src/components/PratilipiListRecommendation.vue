@@ -115,6 +115,9 @@ export default {
             this.$refs.slick.prev()
         },
         navigateToHome() {
+            this.triggerAnanlyticsEvent(`CLICK_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
             this.$router.push("/");
         },
         handleBeforeChange() {

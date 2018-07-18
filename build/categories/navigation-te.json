@@ -103,6 +103,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/comedy",
+                    "title": "హాస్యం",
+                    "analyticsCategoryName": "comedy",
+                    "imageFileName": "comedy.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "comedy"
+                    }
+                },
+                {
                     "categoryUrl": "/children",
                     "title": "బాల సాహిత్యం",
                     "analyticsCategoryName": "children",
