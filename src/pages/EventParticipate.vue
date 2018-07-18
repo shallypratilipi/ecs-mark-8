@@ -78,6 +78,8 @@
 
 
                     <div v-if="currentStep == 1">
+                    <WriteModule style="display: none"></WriteModule>
+
                         <div class="row">
                             <div class="col-md-5 mb-10">
                                 <div class="event-image" :style="{ backgroundImage: 'url(' + getEventData.bannerImageUrl + ')' }"></div>
@@ -171,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-<!-- 
+
                     <div v-if="currentStep == 4">
                         <div class="row">
                             <div class="circle-loader">
@@ -185,7 +187,7 @@
                             </div>
                         </div>
                     </div>
- -->
+
                 </div>
                 <Spinner v-if="getEventLoadingState === 'LOADING'"></Spinner>
             </div>
@@ -406,15 +408,7 @@ export default {
             });
         },
 
-        addChapter() {
-            this.chapters.push({
-                title: '',
-                content: ''
-            });
-            this.selectedChapter = this.chapters.length - 1;
-            tinymce.activeEditor.setContent(this.chapters[this.selectedChapter].content);
 
-        },
 
         uploadCoverImage() {
             $('#pratilipiimage-uploader').click();
@@ -434,18 +428,6 @@ export default {
 
         updateTitle(value) {
             this.chapters[this.selectedChapter].title = value;
-        },
-
-        openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            $(".backdrop").fadeIn();
-        },
-
-        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
-        closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
-            $(".backdrop").hide();
         },
         uploadOnServer() {
             var field_name = "#" + $( '#field_name' ).val();
@@ -521,324 +503,6 @@ export default {
             this.lastTranslatedWord = suggestion;
             this.suggestions = [];
         },
-
-
-        initializeTinyMCE() {
-            const that = this;
-            tinymce.init({
-                selector: '.writer-area',  // change this value according to your HTML,
-                // inline: true,
-                block_formats: 'Paragraph=p;',
-                plugins: ['autoresize autolink lists link image', 'paste'],
-                menubar: false,
-                statusbar: false,
-                toolbar: 'bold italic underline | CustomLeftAlign CustomCenterAlign CustomRightAlign | CustomBlockquote link imageCustom | Ulist Olist',
-                // height: '50vh',
-                // min_height: '600',
-                language: process.env.LANGUAGE,
-                link_context_toolbar: false,
-                anchor_bottom: false,
-                anchor_top: false,
-                default_link_target: "_blank",
-                allow_unsafe_link_target: false,
-                target_list: false,
-                link_title: false,
-                paste_data_images: true,
-                paste_as_text: false,
-                paste_auto_cleanup_on_paste: true,
-                paste_webkit_styles: "none",
-                paste_remove_styles_if_webkit: false,
-                paste_text_linebreaktype: "p",
-
-                browser_spellcheck: false,
-                allow_conditional_comments: false,
-                allow_html_in_named_anchor: false,
-
-                forced_root_block: 'p',
-                force_br_newlines: false,
-                force_p_newlines: true,
-                remove_trailing_brs: false,
-                autoresize_min_height: 300,
-                autoresize_bottom_margin: 100,
-
-                formats: {
-                    bold:
-                    {
-                        inline: 'b',
-                        exact: true
-                    },
-                    italic:
-                    {
-                        inline: 'i',
-                        exact: true
-                    },
-                    underline:
-                    {
-                        inline: 'u',
-                        exact: true
-                    },
-                    blockquote:
-                    {
-                        block: 'blockquote'
-                    },
-                    img:
-                    {
-                        block: 'img'
-                    },
-                    alignleft:
-                    {
-                        selector: 'p,li',
-                        styles:
-                        {
-                            textAlign: 'left'
-                        }
-                    },
-                    aligncenter:
-                    {
-                        selector: 'p,li',
-                        styles:
-                        {
-                            textAlign: 'center'
-                        }
-                    },
-                    alignright:
-                    {
-                        selector: 'p,li',
-                        styles:
-                        {
-                            textAlign: 'right'
-                        }
-                    },
-                },
-                images_upload_handler: function( blobInfo, success, failure ) {
-                    var fd = new FormData();
-                    fd.append( 'file', blobInfo.blob() );
-                    fd.append( 'eventPratilipiId', that.getEventPratilipiData._id );
-                    $.ajax({
-                        type:'POST',
-                        url: `https://gamma.pratilipi.com/event-participate/images?type=CONTENT`,
-                        data: fd,
-                        cache: true,
-                        contentType: false,
-                        processData: false,
-                        success: function( data ) {
-                            var parsed_data = JSON.parse( data );
-                            _this.parent_object.setNewImageFlag( true );
-                            success( parsed_data.url );
-                        },
-                        error: function( data ) {
-                            alert( 'HTTP Error: ' + data.status );
-                            return;
-                        }
-                    });
-                },
-                file_browser_callback: function( field_name, url, type, win ) {
-                    if( type=='image' ) {
-                        $( '#field_name' ).val( field_name );
-                        $( "#image_input" ).click();
-                    }
-                },
-                paste_postprocess: function( plugin, args ) {
-                    $( args.node ).find( "a:has(img)" ).replaceWith( function() {
-                        return $(this).find( "img" );
-                    });
-                    $( args.node ).find( "div" ).replaceWith( function() {
-                        if( $(this).text().length ) {
-                            return "<p>" + $(this).html() + '</p>';
-                        } else {
-                            return "";
-                        }
-                    });
-                    $( args.node ).find( "h1,h2,h3,h4,h5,h6" ).replaceWith( function() {
-                        if( $(this).text().length ) {
-                            if( $(this).closest( "p,blockquote,li" ).length ) {
-                                return "<b>" + $(this).html() + '</b>';
-                            } else {
-                                return "<p><b>" + $(this).html() + "</b></p>";
-                            }
-                        } else {
-                            return "";
-                        }
-                    });
-                },
-                setup: function(ed) {
-                    if(that.isMobile()) {
-                        ed.on("focus", function(event) {
-                            that.writerInFocus = true;
-                        });
-                        ed.on("blur", function(event) {
-                            that.writerInFocus = false;
-                        });
-                    }
-
-                    ed.on('keydown', (event) => {
-
-                        if (event.code === 'Escape') {
-                            that.suggestions = [];
-                            that.selectedSuggestion = 0;
-                        }
-
-                        if (event.code === 'Space' || event.code === 'Enter') {
-                            if (that.suggestions.length > 0) {
-                                that.selectSuggestion(that.suggestions[that.selectedSuggestion], true);
-                                event.preventDefault();
-                            }
-                            that.suggestions = [];
-                            that.selectedSuggestion = 0;
-                        }
-
-                        if (event.code === 'ArrowDown' && that.suggestions.length > 0) {
-                            event.preventDefault();
-                            if (that.selectedSuggestion + 1 >= that.suggestions.length) {
-                                return;
-                            }
-                            that.selectedSuggestion++;
-                        }
-
-                        if (event.code === 'ArrowUp' && that.suggestions.length > 0) {
-                            event.preventDefault();
-                            if (that.selectedSuggestion - 1 < 0) {
-                                return;
-                            }
-                            that.selectedSuggestion--;
-                        }
-
-                    });
-
-                    ed.on("mousedown", () => {
-                        that.suggestions = [];
-                        that.selectedSuggestion = 0;
-                    });
-
-                    ed.on("keyup", function(event){
-                        that.setAndLocateSuggestionDropdown();
-                        that.chapters[that.selectedChapter].content = tinymce.activeEditor.getContent({format : 'raw'});
-
-                        if (event.code === 'Space' || event.code === 'Enter' || (event.code === 'ArrowDown' && that.suggestions.length > 0) || (event.code === 'ArrowUp' && that.suggestions.length > 0)) {
-                            return;
-                        }
-
-                        const words = event.target.innerText.split(/\n| |\u00A0/).map(function(item) {
-                            return item.trim();
-                        });
-
-
-                        // console.log('---------------------------------');
-                        // console.log('OLD LIST:', [...that.wordList]);
-                        // console.log('NEW LIST:', words);
-                        // console.log('DIFF: ', that.arr_diff(words, that.wordList));
-
-                        const changedWords = that.arr_diff(words, that.wordList);
-                        if (changedWords.length === 0) {
-                            // that.suggestions = [];
-                        } else if (changedWords.length > 0 && changedWords[0] === '') {
-                            that.suggestions = [];
-                        } else if( that.lastTranslatedWord === changedWords[0]) {
-                            //
-                        } else {
-                            const wordToTranslate = changedWords[0];
-                            that.wordToTranslate = wordToTranslate;
-                            that.translateWord(changedWords[0], (suggestions) => {
-                                suggestions.push(wordToTranslate);
-                                that.selectedSuggestion = 0;
-                                that.suggestions = suggestions;
-                            });
-                        }
-                        // console.log('---------------------------------');
-
-                        that.wordList = [ ...words ];
-
-
-                        // console.log(caretPosition);
-                        // console.log(event.code);
-                        // console.log($(tinymce.activeEditor.selection.getNode()).text());
-                        // console.log(tinymce.activeEditor.selection.getEnd());
-                        // console.log(tinymce.activeEditor.selection.getRng());
-                        // // console.log($(ed.getContainer()).position());
-                        // const range = tinymce.activeEditor.selection.getRng()
-                        // console.log($(tinymce.activeEditor.selection.getNode()).position());
-                        // console.log($(tinymce.activeEditor.selection.getNode()).width());
-                        // console.log(range);
-                        // range.insertNode($('.suggestion').get(0));
-
-                    });
-
-                    ed.on('init', (event) => {
-                        console.log(that.chapters[that.selectedChapter]);
-                        console.log('CHAPTERS: ', that.chapters);
-                        tinymce.activeEditor.setContent(that.chapters[that.selectedChapter].content);
-                    });
-
-                    ed.on('dirty', (event) => {
-                        console.log('dirty');
-                        setTimeout(() => {
-                            console.log('setting dirty');
-                            // ed.setDirty(true);
-                            that.autoSaveContents();
-                            tinymce.triggerSave();
-                        }, 20000);
-                    });
-
-                    ed.addButton('CustomLeftAlign', {
-                        icon: 'mce-ico mce-i-alignleft',
-                        tooltip: "Align left",
-                        cmd: "JustifyLeft",
-                        onpostrender: monitorAlignmentChange
-                    });
-                    ed.addButton('CustomCenterAlign', {
-                        icon: 'mce-ico mce-i-aligncenter',
-                        tooltip: "Align center",
-                        cmd: "JustifyCenter",
-                        onpostrender: monitorAlignmentChange
-                    });
-                    ed.addButton('CustomRightAlign', {
-                        icon: 'mce-ico mce-i-alignright',
-                        tooltip: "Align right",
-                        cmd: "JustifyRight",
-                        onpostrender: monitorAlignmentChange
-                    });
-                    ed.addButton('imageCustom', {
-                        icon: 'image',
-                        tooltip: "Insert/edit image",
-                        cmd: "mceImage",
-                        onpostrender: monitorImageChange
-                    });
-
-                    function monitorImageChange() {
-                        var btn = this;
-                        ed.on('NodeChange', function(e) {
-                            var parents = e.parents.map(lowercasedElemName);
-                            btn.disabled(parents.includes("blockquote") ||
-                                parents.includes("li") ||
-                                parents.includes("u") ||
-                                parents.includes("i") ||
-                                parents.includes("b") ||
-                                parents.includes("a"));
-                        });
-                    }
-
-                    function lowercasedElemName(elem) {
-                        return elem.nodeName.toLowerCase();
-                    }
-
-                    function monitorAlignmentChange() {
-                        var btn = this;
-                        ed.on('NodeChange', function(e) {
-                            var parents = e.parents.map(lowercasedElemName);
-                            btn.disabled(parents.includes("blockquote") || parents.includes("img"));
-                        });
-                    }
-                },
-                valid_elements : 'p[style],img[src|width|height],blockquote,b,i,u,a[href|target=_blank],br,b/strong,i/em,ol,ul,li',
-                extended_valid_elements: 'img[src|width|height],p[style],blockquote,ul,ol,li[style],a[href|target=_blank],br',
-                valid_children : 'body[p|img|blockquote|ol|ul],-body[br],p[b|i|u|a[href]|br],-p[img],blockquote[b|i|u|a[href]|br],-blockquote[blockquote|img|p],ol[li],ul[li],-ul[ul|ol|img],li[b|i|u|a[href]|br],-li[img|blockquote|p]',
-                invalid_elements : "div",
-                valid_styles: { 'p': 'text-align', 'li': 'text-align' },
-
-                image_description: false,
-                image_dimensions: false
-            });
-        },
         updateScroll() {
             this.scrollPosition = window.scrollY
         },
@@ -853,32 +517,8 @@ export default {
                 }
             }
         },
-        loadTinyMCE(callback) {
-            const script = document.createElement('script');
-            // script.setAttribute('async', '');
-            // script.setAttribute('defer', '');
-            // script.id = 'tinymcescript';
-            script.setAttribute('src', 'https://0.ptlp.co/third-party/tinymce-4.5.1/tinymce.min.js');
-            console.log(script);
-            script.onload = function() {
-                document.getElementsByTagName('head')[0].appendChild(script);
-                console.log('loading tinymce');
-                callback();
-            }
-
-            document.head.appendChild(script);
-        }
     },
     watch: {
-        'currentStep'(stepNumber){
-            if (stepNumber === 2) {
-                setTimeout(( ) => {
-                    this.initializeTinyMCE()
-                }, 10);
-            } else {
-                tinymce.remove();
-            }
-        },
         'getEventPratilipiCreateOrUpdateStateSuccess'(state) {
             if (state === 'LOADING_SUCCESS') {
                 this.$router.push({
@@ -1008,23 +648,26 @@ export default {
         }
     },
     created() {
-        console.log("HAVE A LOOK" , this.$route);
             if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.query.step == 2) {
+                console.log("I am");
                 this.fetchPratilipiContent(this.$route.params.eventPratilipiId);
                 this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
                 this.goToSecondStep();
             }
             if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 1) {
+                console.log("I am");
                 this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
                 this.goToFirstStepForEdit();
             }
 
             if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 3) {
+                console.log("I am");
                 this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
                 this.goToThirdStep();
             }
 
             if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 4) {
+                console.log("I am");
                 this.goToFourthStep();
             }
     },

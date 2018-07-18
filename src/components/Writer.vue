@@ -231,20 +231,20 @@ export default {
             this.openPrimaryConfirmationModal();
         },
 
-        goToFirstStep() {
-            $('.circle-loader').removeClass('load-complete');
-            $('.checkmark').hide();
-            this.currentStep = 1;
-        },
+        // goToFirstStep() {
+        //     $('.circle-loader').removeClass('load-complete');
+        //     $('.checkmark').hide();
+        //     this.currentStep = 1;
+        // },
 
-        goToFirstStepForEdit() {
-            this.$router.push({
-                path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}?step=1`,
-                params: {
-                    eventId: this.getEventData.eventId
-                }
-            });
-        },
+        // goToFirstStepForEdit() {
+        //     this.$router.push({
+        //         path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}?step=1`,
+        //         params: {
+        //             eventId: this.getEventData.eventId
+        //         }
+        //     });
+        // },
 
         goToSecondStepForEdit() {
             this.$router.push({
