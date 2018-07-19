@@ -116,7 +116,7 @@
                             <div @click="hideStripAndRedirect" class="next-strip-container">
                                 <NextPratilipiStrip
                                     :pratilipi='getPratilipiData.nextPratilipi'
-                                    v-if="isNextPratilipiEnabled"
+                                    v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0"
                                 ></NextPratilipiStrip>
                             </div>
 
@@ -796,8 +796,15 @@ export default {
             if (this.selectedChapter == this.getIndexData.length && !this.isNextPratilipiEnabled) {
                 console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
-            }
-        },
+            if (this.isNextPratilipiEnabled) { 
+                        const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+                        this.triggerAnanlyticsEvent(`VIEW_NEXTPRATILIPI_READER`, 'CONTROL', {
+                        ...pratilipiAnalyticsData,
+                        'USER_ID': this.getUserDetails.userId
+                        });
+                    }
+                }
+            },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS') {
                 const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
