@@ -163,6 +163,16 @@
             "title": "പ്രസിദ്ധമായവ",
             "categories": [
                 {
+                    "categoryUrl": "/videoseries/സര്‍ഗയാനം-അഭിമുഖ-പരമ്പര-m11p0r7p9p",
+                    "title": "വീഡിയോ അഭിമുഖങ്ങള്‍",
+                    "analyticsCategoryName": "video-series",
+                    "imageFileName": "mike.jpg",
+                    "pratilipiListData": {
+                        "language": "MALAYALAM",
+                        "slug": "m11p0r7p9p"
+                    }
+                },
+                {
                     "categoryUrl": "/most-read",
                     "title": "നിര്‍ദ്ദേശിക്കപ്പെട്ടവ",
                     "analyticsCategoryName": "most-read",

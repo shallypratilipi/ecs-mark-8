@@ -103,14 +103,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/comedy",
+                    "categoryUrl": "/humor",
                     "title": "హాస్యం",
-                    "analyticsCategoryName": "comedy",
+                    "analyticsCategoryName": "humor",
                     "imageFileName": "comedy.jpg",
                     "pratilipiListData": {
                         "language": "TELUGU",
                         "state": "PUBLISHED",
-                        "listName": "comedy"
+                        "listName": "humor"
                     }
                 },
                 {

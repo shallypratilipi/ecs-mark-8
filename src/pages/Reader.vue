@@ -804,7 +804,7 @@ export default {
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
             if (this.isNextPratilipiEnabled) {
                         const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                        this.triggerAnanlyticsEvent(`VIEW_NEXTPRATILIPI_READER`, 'CONTROL', {
+                        this.triggerAnanlyticsEvent(`VIEWNEXTPRATILIPI_READERM_READER`, 'CONTROL', {
                         ...pratilipiAnalyticsData,
                         'USER_ID': this.getUserDetails.userId
                         });
