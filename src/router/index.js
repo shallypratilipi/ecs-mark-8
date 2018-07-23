@@ -414,6 +414,13 @@ var router = new Router({
                 'title': '__("seo_home_page")'
             }
         }, {
+            path: '/settings/notifications/newsletter/unsubscribe',
+            name: 'Newsletter_Hack',
+            component: NewsletterUnSubscribePageComponent,
+            meta: {
+                'title': '__("seo_home_page")'
+            }
+        }, {
             path: '/library',
             name: 'Library_Page',
             component: LibraryPageComponent,

@@ -1,22 +1,22 @@
 <template>
-    <MainLayout> 
+    <MainLayout>
         <div class="static-page page-wrap">
             <div class="container">
                 <div class="row" v-if="getVideoDetailsData.length>0">
                     <div class="col-md-12">
                         <h2>__("seo_videoseries_list_page") </h2>
                        </v-container>
-                          <iframe 
+                          <iframe
                                         :src="getVideoDetailsData[0].videoEmbedUrl  " >
                            </iframe>
                            <h3 class="videoseries-list-title" > {{getVideoDetailsData[0].name}} </h3>
                            <p class="videoseries-list-description" >
                                {{getVideoDetailsData[0].description}}
                            </p>
-                           <h7>नया एपिसोड</h7>
+                        <h7>__("seo_videoseries_latest_episode")</h7>
                            <div class="row">
                            <div class="col-md-6">
-                           <iframe  class="latest-video" 
+                           <iframe  class="latest-video"
                                         :src="getVideoDetailsLatestData[0].videoEmbedUrl" >
                            </iframe>
                            <br>
@@ -29,14 +29,14 @@
                            </div>
                            </div>
                         <div class="page-content videoseries-list">
-                            <ul> 
+                            <ul>
                                 <li v-for="each_event in getListOfVideoPlayListdata" >
                                 <router-link :to="{ name: 'Videos_Page', params: { videos_slug: each_event.pageUrl.split('/').pop() } }">
                                     <img  class="videoseries-img" :src=" each_event.imageUrl ">
                                         <span class="videoseries-name"> {{ each_event.displayTitle }}</span>
                                 </router-link>
                                 </li>
-                            </ul>   
+                            </ul>
                             <p class="load-more" @click="loadMoreVideos" v-if="getListOfVideoPlayListdata.length<getListOfVideoPlayListTotal">Load More</p>
                         </div>
                     </div>
@@ -81,14 +81,14 @@ export default {
 
 
         ]),
-        
+
     },
     methods: {
          ...mapActions('videoseries', [
             'fetchListOfVideoPlaylists',
             'fetchListOfVideoPlayListdata',
             'fetchVideoDetails',
-            'fetchVideoDetailsLatest', 
+            'fetchVideoDetailsLatest',
             'resetVideoList'
 
         ]),
@@ -100,7 +100,7 @@ export default {
         var videoseries_slug_offset = videoseries_slug + "&offset=" + this.offset;
         this.fetchListOfVideoPlayListdata(videoseries_slug_offset);
     }
-    }, 
+    },
       watch: {
         'getVideoPlayListsLoadingState'(state) {
             console.log("changing", state);
@@ -132,7 +132,7 @@ export default {
         console.log("The only log I need: ", );
     },
     mounted() {
-     
+
     }
 }
 

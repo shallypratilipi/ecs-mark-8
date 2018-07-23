@@ -2135,6 +2135,36 @@ export default {
         "LOCATION": "VAPSIQUOTE",
         "ACTION": "CLOSE"
     },
+    "VIEW_VAPSIQUOTE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "VIEW"
+    },
+    "CLICK_VAPSIQUOTE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "CLICK"
+    },
+    "NOTIFY_VAPSIQUOTE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "NOTIFY"
+    },
+    "SHAREFB_VAPSIQUOTE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "SHAREFB"
+    },
+    "SHAREWA_VAPSIQUOTE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "SHAREWA"
+    },
+    "CLOSE_VAPSIQUOTE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIQUOTE",
+        "ACTION": "CLOSE"
+    },
     "VIEW_VAPSIHOROSCOPE_HOME": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "VAPSIHOROSCOPE",
@@ -2170,36 +2200,76 @@ export default {
         "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "CLOSE"
     },
-    "VIEW_VAPSIJOKE_HOME": {
-        "SCREEN_NAME": "HOME",
+
+
+    "VIEW_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "VIEW"
+    },
+    "CLICK_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "CLICK"
+    },
+    "CLICKDETAILS_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "CLICKDETAILS"
+    },
+    "NOTIFY_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "NOTIFY"
+    },
+    "SHAREFB_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "SHAREFB"
+    },
+    "SHAREWA_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "SHAREWA"
+    },
+    "CLOSE_VAPSIHOROSCOPE_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "VAPSIHOROSCOPE",
+        "ACTION": "CLOSE"
+    },
+
+
+    "VIEW_VAPSIJOKE_BOOK": {
+        "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "VIEW"
     },
-    "CLICK_VAPSIJOKE_HOME": {
-        "SCREEN_NAME": "HOME",
+    "CLICK_VAPSIJOKE_BOOK": {
+        "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "CLICK"
     },
-    "NOTIFY_VAPSIJOKE_HOME": {
-        "SCREEN_NAME": "HOME",
+    "NOTIFY_VAPSIJOKE_BOOK": {
+        "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "NOTIFY"
     },
-    "SHAREFB_VAPSIJOKE_HOME": {
-        "SCREEN_NAME": "HOME",
+    "SHAREFB_VAPSIJOKE_BOOK": {
+        "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "SHAREFB"
     },
-    "SHAREWA_VAPSIJOKE_HOME": {
+    "SHAREWA_VAPSIJOKE_BOOK": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "SHAREWA"
     },
-    "CLOSE_VAPSIJOKE_HOME": {
-        "SCREEN_NAME": "HOME",
+    "CLOSE_VAPSIJOKE_BOOK": {
+        "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "CLOSE"
     },
+
     "STARTCHAT_AUTHORDETAIL_BOOK": {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "AUTHORDETAIL",

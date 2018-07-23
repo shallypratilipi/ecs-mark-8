@@ -130,6 +130,21 @@
                             :fetchSystemTags="fetchSystemTags"
                             ></BookTags>
                     </div>
+                    <div class="container vapasi-container" v-if="this.isMobile()">
+                        <VapasiQuote
+                            screenName="BOOK"
+                            v-if="getCurrentLanguage().fullName == 'hindi'">
+                        </VapasiQuote>
+                        <VapasiJoke
+                            screenName="BOOK"
+                            v-if="getCurrentLanguage().fullName == 'gujarati'">
+                        </VapasiJoke>
+                        <VapasiHoroscope
+                            screenName="BOOK"
+                            v-if="getCurrentLanguage().fullName == 'marathi'">
+                        </VapasiHoroscope>
+                    </div>
+
                     <div class="book-synopsis col-md-12 col-lg-7 p-0">
                         <div class="card">
                             <div v-if="getPratilipiData.summary.trim() || getPratilipiData.state === 'DRAFTED' || getPratilipiData.hasAccessToUpdate">
@@ -247,6 +262,9 @@ import mixins from '@/mixins';
 import constants from '@/constants'
 import WebPushUtil from '@/utils/WebPushUtil'
 import { mapGetters, mapActions } from 'vuex'
+import VapasiQuote from '@/components/VapasiQuote.vue';
+import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
+import VapasiJoke from '@/components/VapasiJoke.vue';
 
 export default {
     name: 'Pratilipi',
@@ -612,7 +630,10 @@ export default {
 	    WebPushModal,
         BookShareStrip,
         ChatBanner,
-	    MessageButton
+        MessageButton,
+        VapasiQuote,
+        VapasiHoroscope,
+        VapasiJoke
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
@@ -637,10 +658,10 @@ export default {
             this.webPushModalTriggered = false;
 
             // setting isWebPushStripEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 50 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 60 && (parseInt(this.getCookie('bucketId')) || 0) < 80;
 
             // setting isWebPushModalEnabled
-            this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 60 && (parseInt(this.getCookie('bucketId')) || 0) < 70;
+            this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 80 && (parseInt(this.getCookie('bucketId')) || 0) < 100;
         },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS' && !this.hasLandedBeenTriggered) {
@@ -685,7 +706,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .vapasi-container {
+        padding-top: 10px;
+    }
     .pratilipi-page {
         background: #f8f8f8;
         margin-top: 85px;

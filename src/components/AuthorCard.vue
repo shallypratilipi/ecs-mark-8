@@ -6,14 +6,14 @@
                 <div v-if="authorData.displayName || authorData.displayName === ''" class="follow-name">{{ authorData.displayName }}</div>
                 <div v-else class="follow-name">{{ authorData.displayName }}</div>
             </router-link>
-            <div class="follow-count">__("author_followers"): 
-                <span v-if="authorData.followersCount !== undefined">{{ authorData.followersCount}}</span>
-                <span v-else>{{ authorData.followersCount }}</span>
+            <div class="follow-count">__("author_followers"):
+                <span v-if="authorData.followCount !== undefined">{{ authorData.followCount}}</span>
+                <span v-else>0 </span>
             </div>
-            
+
             <span class="button-container">
                 <span v-if="authorData.authorId === undefined && authorData.authorId !== getUserDetails.authorId">
-                    <button class="btn btn-light follow-link" 
+                    <button class="btn btn-light follow-link"
                         v-if="authorData.following === false"
                         @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.authorId, following: false })">
                         <i class="material-icons">person_add</i>
@@ -32,10 +32,10 @@
                     </button>
                     <button v-else @click="verifyAndFollowOrUnfollowAuthor({ authorId: authorData.authorId, following: true })" class="btn btn-light follow-link">
                         <i class="material-icons">check</i> __("author_following")
-                    </button>    
+                    </button>
                 </span>
             </span>
-            
+
         </div>
     </div>
 </template>
@@ -76,7 +76,7 @@ export default {
     ],
     data() {
         return {
-            
+
         }
     },
     computed: {
@@ -98,13 +98,13 @@ export default {
             });
             if (this.getUserDetails.isGuest) {
                 if (this.inFollowingTab) {
-                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/followOrUnfollowFollowing`, data });    
+                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/followOrUnfollowFollowing`, data });
                 } else if (this.inFollowersTab) {
-                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/followOrUnfollowFollowers`, data });    
+                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/followOrUnfollowFollowers`, data });
                 } else {
-                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/followOrUnfollowAuthor`, data });    
+                    this.setAfterLoginAction({ action: `${this.$route.meta.store}/followOrUnfollowAuthor`, data });
                 }
-                
+
                 this.openLoginModal(this.$route.meta.store, 'FOLLOW', 'USERRESULT');
             } else {
                 this.followOrUnfollowAuthor(data);
@@ -120,7 +120,7 @@ export default {
         }
     },
     components: {
-        
+
     },
     created() {
         this.authorData.followCount = this.authorData.followCount || this.authorData.followersCount;

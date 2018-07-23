@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "காணொளித்தொடர்",
     "seo_videoseries_page": "${ videoseriesName }",
     "seo_video_page": "${ videoName }",
+    "seo_videoseries_latest_episode": "சமீபத்திய பேட்டி",
     "facebook": "முகநூல்",
     "twitter": "ட்விட்டர்",
     "google_plus": "கூகிள்+",
@@ -527,7 +528,7 @@
     "menu_category": "வகைகள்",
     "menu_profile": "பக்கம்",
     "join_pratilipi": "பிரதிலிபியில் இணையுங்கள்",
-    "about_pratilipi": "25,000 எழுத்தாளர்கள். 1,50,000 கதைகள். 13,00,000 வாசகர்கள்.",
+    "about_pratilipi": "45,000 எழுத்தாளர்கள். 2,00,000 கதைகள். 17,00,000 வாசகர்கள்.",
     "login_benifits": "லாக் இன் செய்வதன் பயன்பாடுகள்",
     "pratilipi_feature_1": "கதைகளைச் சேர்த்து, எங்கும் படிக்கவும்.",
     "pratilipi_feature_2": "எழுதி பரிசுகளை வெல்லுங்கள்",
@@ -597,6 +598,11 @@
     "reader_gamify_congratulations": "வாழ்த்துக்கள்!",
     "reader_gamify_you_reached_level": "நீங்கள் படிநிலை {{ getReaderLevel }}-ஐ அடைந்துவிட்டீர்கள்",
     "reader_gamify_keep_reading": "தொடர்ந்து வாசியுங்கள்!",
-    "reader_gamify_login_to_save_your_progress": "உங்களது படிநிலைகளை சேமிக்க லாக்-இன் செய்யவும்"
+    "reader_gamify_login_to_save_your_progress": "உங்களது படிநிலைகளை சேமிக்க லாக்-இன் செய்யவும்",
+    "rating_hated_it": "வெறுக்கிறேன்",
+    "rating_didnt_like_it": "பிடிக்கவில்லை",
+    "rating_just_ok": "పర్వాలేదు ",
+    "rating_liked_it": "பிடித்திருந்தது",
+    "rating_loved_it": "மிகப் பிடித்திருந்தது"
 
 }

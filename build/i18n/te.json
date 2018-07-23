@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "వీడియో సిరీస్",
     "seo_videoseries_page": "${ videoseriesName }",
     "seo_video_page": "${ videoName }",
+    "seo_videoseries_latest_episode": "తాజా ఎపిసోడ్",
     "facebook": "ఫేస్ బుక్",
     "twitter": "ట్విట్టర్",
     "google_plus": "గూగుల్ ప్లస్",
@@ -527,7 +528,7 @@
     "menu_category": "విభాగాలు",
     "menu_profile": "ప్రొఫైల్",
     "join_pratilipi": "ప్రతిలిపిలో జాయిన్ అవ్వండి",
-    "about_pratilipi": "25,000 రచయితలు. 1,50,000 కథలు. 13,00,000 పాఠకులు.",
+    "about_pratilipi": "45,000 రచయితలు. 2,00,000 కథలు. 17,00,000 పాఠకులు.",
     "login_benifits": "లాగిన్ ప్రయోజనాలు",
     "pratilipi_feature_1": "కథలను యాడ్ చేసి ఎప్పుడైనా ఎక్కడైనా చదవండి.",
     "pratilipi_feature_2": "కథలు రాసి బహుమతులు గెలుచుకోండి ",
@@ -597,5 +598,10 @@
     "reader_gamify_congratulations": "అభినందనలు!",
     "reader_gamify_you_reached_level": "మీరు లెవెల్ {{getReaderLevel}} ను చేరుకున్నారు",
     "reader_gamify_keep_reading": "చదువుతూ ఉండండి ",
-    "reader_gamify_login_to_save_your_progress": "మీ పురోగతి సేవ్ చేయడానికి లాగిన్ అవ్వండి "
+    "reader_gamify_login_to_save_your_progress": "మీ పురోగతి సేవ్ చేయడానికి లాగిన్ అవ్వండి ",
+    "rating_hated_it": "అసలు నచ్చలేదు ",
+    "rating_didnt_like_it": "బాగాలేదు ",
+    "rating_just_ok": "పర్వాలేదు ",
+    "rating_liked_it": "బాగుంది ",
+    "rating_loved_it": "చాలా బాగా నచ్చింది "
 }

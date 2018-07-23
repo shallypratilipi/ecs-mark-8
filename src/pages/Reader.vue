@@ -98,8 +98,14 @@
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
 
-                                v-if="eachIndex.chapterNo == selectedChapter">
+                                v-if="eachIndex.chapterNo == selectedChapter && (getPratilipiContent.length > 1 || eachIndex.title)">
                                   {{ eachIndex.title || chapter + eachIndex.chapterNo }}
+                            </h2>
+                            <h2
+                                v-for="eachIndex in getIndexData"
+                                v-if="eachIndex.chapterNo == selectedChapter && getPratilipiContent.length == 1 && !eachIndex.title"
+                                class="chapter-title p-lr-15">
+                                {{getPratilipiData.displayTitle}}
                             </h2>
                             <div class="content-section lh-md p-lr-15"
                                  :class="fontStyleObject"
@@ -796,7 +802,7 @@ export default {
             if (this.selectedChapter == this.getIndexData.length && !this.isNextPratilipiEnabled) {
                 console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
-            if (this.isNextPratilipiEnabled) { 
+            if (this.isNextPratilipiEnabled) {
                         const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
                         this.triggerAnanlyticsEvent(`VIEW_NEXTPRATILIPI_READER`, 'CONTROL', {
                         ...pratilipiAnalyticsData,

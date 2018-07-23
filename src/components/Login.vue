@@ -6,7 +6,7 @@
                 <GoogleLogin></GoogleLogin>
             </div>
             <div class="or">__("or")</div>
-            <form>
+            <form id="formToSubmit">
                 <p class="validation_error" v-if="(getLoginError && getLoginError.message)">
                     <i class="material-icons">error</i>
                     <span v-if="(getLoginError && getLoginError.message)">{{ getLoginError.message | getTranslatedLoginErrorMessage }}</span>
@@ -38,7 +38,7 @@
             </form>
         </div>
         <div class="spinner-overlay" v-if="getLoginLoadingState === 'LOADING'">
-            <Spinner></Spinner> 
+            <Spinner></Spinner>
         </div>
     </div>
 </template>
@@ -84,7 +84,7 @@ export default {
             'loginUser'
         ]),
         tabsignup(event) {
-            event.preventDefault();        
+            event.preventDefault();
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".login-menu a").removeClass("active");
             $(".signup").addClass("active");
@@ -92,8 +92,8 @@ export default {
             $("#" + tab_id).show();
         },
         validateAndLoginUser({ email, password }) {
-            
-            
+
+
             this.emailIsInvalid = !this.validateEmail(email);
             this.passwordIsInvalid = !this.validatePassword(password);
             if (!this.emailIsInvalid && !this.passwordIsInvalid) {
@@ -114,6 +114,16 @@ export default {
         ForgetPassword
     },
     created() {
+
+    },
+    mounted() {
+        let formToSubmit = document.getElementById("formToSubmit");
+        let that = this;
+        formToSubmit.addEventListener("keydown", function (e) {
+            if (e.keyCode === 13) {
+                that.validateAndLoginUser({email: that.email, password: that.password})
+            }
+        });
     }
 }
 </script>

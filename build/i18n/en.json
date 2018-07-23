@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "Video Series List in Pratilipi",
     "seo_videoseries_page": "${ videoseriesNameEn }",
     "seo_video_page": "${ videoNameEn }",
+    "seo_videoseries_latest_episode": "Latest episode",
     "facebook": "Facebook",
     "twitter": "Twitter",
     "google_plus": "Google Plus",
@@ -564,7 +565,7 @@
     "chat_no_unread_msgs": "You don't have any unread messages",
     "chat_yesterday": "Yesterday",
     "chat_today": "Today",
-    
+
     "web_push_title": "Enjoyed reading this?",
     "web_push_section_title": "Get Stories",
     "web_push_message_1": "Allow Pratilipi to send you notifications for other such stories",
@@ -572,7 +573,7 @@
     "web_push_message_3": "Allow Pratilipi to send you notifications for good stories...",
     "web_push_allow": "Allow",
     "web_push_cancel": "Cancel",
-    
+
     "event_participate":"Participate",
     "event_participate_your_drafts":"Your Drafts",
     "event_participate_your_submissions":"Your Submissions",
@@ -583,10 +584,15 @@
     "event_participate_confirm_submission":"Confirm Submission",
     "event_participate_cannot_change_drafts":"You cannot change your entry after final submission, are you sure you want to submit it?",
     "event_participate_check_your_entry_here":"Check Your Entry Here",
-    
+
     "chat_banner_send_messages": "Send messages to the author",
     "chat_banner_start_chatting": "Start Chatting",
-    
+
     "message_capsule_conversation": "You have {{ initialUnreadConversations }} unread conversation",
-    "message_capsule_conversations": "You have {{ initialUnreadConversations }} unread conversations"
+    "message_capsule_conversations": "You have {{ initialUnreadConversations }} unread conversations",
+    "rating_hated_it": "Hated It",
+    "rating_didnt_like_it": "Didn't Like It",
+    "rating_just_ok": "Just Okay",
+    "rating_liked_it": "Liked It",
+    "rating_loved_it": "Loved It"
 }

@@ -520,7 +520,7 @@
     "menu_category": "শ্রেণী",
     "menu_profile": "প্রোফাইল",
     "join_pratilipi": "প্রতিলিপির সাথে মিতালী গড়ুন",
-    "about_pratilipi": "25,000 লেখক. 1,50,000 কাহিনী. 13,00,000 পাঠক.",
+    "about_pratilipi": "45,000 লেখক. 2,00,000 কাহিনী. 17,00,000 পাঠক.",
     "login_benifits": "লগইন এর উপকারিতা",
     "pratilipi_feature_1": "কাহিনী যুক্ত করে যেকোন জায়গায়, যেকোন সময়ে পড়ুন",
     "pratilipi_feature_2": "লিখুন এবং পুরষ্কার জিতে নিন",
@@ -590,5 +590,10 @@
     "reader_gamify_congratulations": "অভিনন্দন!",
     "reader_gamify_you_reached_level": "আপনি রিডিং লেবেল {{ getReaderLevel }} অবধি পৌঁছেছেন",
     "reader_gamify_keep_reading": "পড়ুতে থাকুন!",
-    "reader_gamify_login_to_save_your_progress": "আপনার অগ্রগতি সংরক্ষণ করতে হলে লগ-ইন করুন"
+    "reader_gamify_login_to_save_your_progress": "আপনার অগ্রগতি সংরক্ষণ করতে হলে লগ-ইন করুন",
+    "rating_hated_it": "খুব বাজে",
+    "rating_didnt_like_it": "পছন্দ হয় নি",
+    "rating_just_ok": "ঠিকঠাক",
+    "rating_liked_it": "ভাল লাগলো",
+    "rating_loved_it": "খুব ভালো"
 }
