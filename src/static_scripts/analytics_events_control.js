@@ -2243,5 +2243,15 @@ export default {
         "SCREEN_NAME": "READER",
         "LOCATION": "RECOMMENDBOOK",
         "ACTION": "GOTOHOME"
+    },
+    "CLICKNEXTPRATILIPI_BOOKM_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "BOOKM",
+        "ACTION": "CLICKNEXTPRATILIPI"
+    },
+    "VIEWNEXTPRATILIPI_BOOKM_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "BOOKM",
+        "ACTION": "VIEWNEXTPRATILIPI"
     }
 };
