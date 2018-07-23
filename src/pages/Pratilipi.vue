@@ -112,6 +112,14 @@
                             :data="getPratilipiData"
                             :type="'PRATILIPI'"></BookShareStrip>
                         </div>
+                        <!-- add next Pratilipi here-->
+                        <div @click="hideStripAndRedirect" class="next-strip-container">
+                            <NextPratilipiStrip
+                                :pratilipi='getPratilipiData.nextPratilipi'
+                                v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0"
+                            ></NextPratilipiStrip>
+                        </div>
+
                         <BookTags
                             v-if="getPratilipiData.hasAccessToUpdate"
                             :selectedPratilipiType="selectedPratilipiType"
@@ -258,6 +266,7 @@ import WebPushModal from '@/components/WebPushModal.vue';
 import BookTags from '@/components/BookTags.vue';
 import ChatBanner from '@/components/ChatBanner.vue';
 import MessageButton from '@/components/MessageButton.vue';
+import NextPratilipiStrip from '@/components/NextPratilipiStrip.vue';
 import mixins from '@/mixins';
 import constants from '@/constants'
 import WebPushUtil from '@/utils/WebPushUtil'
@@ -279,6 +288,7 @@ export default {
             newSuggestedTag: '',
             showShowMoreOfSummary: false,
             hasLandedBeenTriggered: false,
+            hasNextPratilipiBeenTriggered: false,
             isCreated: null,
             isWebPushStripEnabled: false,
             isWebPushModalEnabled: false,
@@ -286,6 +296,7 @@ export default {
             scrollPosition: null,
             percentScrolled: null,
             percentageRead: null,
+            isNextPratilipiEnabled: false,
         }
     },
     mixins: [
@@ -597,7 +608,7 @@ export default {
             WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
         },
         updateScroll() {
-            this.scrollPosition = window.scrollY
+            this.scrollPosition = window.scrollY;
             this.percentScrolled = ($(window).scrollTop() / ($(document).height() - $(window).height())) * 100;
         },
         setPratilipiPageOgTags( pratilipiData ) {
@@ -605,6 +616,15 @@ export default {
             document.head.querySelector('meta[property="og:description"]').content = pratilipiData.summary + ' « ' + pratilipiData.author.fullName;
             document.head.querySelector('meta[property="og:image"]').content = pratilipiData.coverImageUrl;
             document.head.querySelector('meta[property="og:url"]').content = window.location.href;
+        },
+        hideStripAndRedirect(){
+            this.isNextPratilipiEnabled = false;
+            console.log("hiding next Pratilipi");
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent(`CLICKNEXTPRATILIPI_BOOKM_BOOK`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId});
+            this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.nextPratilipi.pratilipiId)} });
         }
     },
     created() {
@@ -675,6 +695,18 @@ export default {
                 setTimeout(() => {
                     that.detectOverflow();
                 }, 0);
+            }
+
+            this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
+            if (status === 'LOADING_SUCCESS' && this.isNextPratilipiEnabled && !this.hasNextPratilipiBeenTriggered) {
+                console.log("showing next pratilipi");
+                const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+                this.triggerAnanlyticsEvent(`VIEWNEXTPRATILIPI_BOOKM_BOOK`, 'CONTROL', {
+                    ...pratilipiAnalyticsData,
+                    'USER_ID': this.getUserDetails.userId
+                });
+
+                this.hasNextPratilipiBeenTriggered = true;
             }
         },
         'getUserDetails.userId'() {
@@ -790,6 +822,20 @@ export default {
             }
         }
         .book-details {
+            .next-strip-container {
+                margin-top: 10px;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                cursor: pointer;
+                overflow: hidden;
+
+                .next-pratilipi-strip {
+                    background-color: white;
+                }
+            }
+
             .card {
                 text-align: center;
                 margin: 5px 10px 0;
