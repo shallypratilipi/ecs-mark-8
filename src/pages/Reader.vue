@@ -796,9 +796,9 @@ export default {
             if (this.selectedChapter == this.getIndexData.length && !this.isNextPratilipiEnabled) {
                 console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
-            if (this.isNextPratilipiEnabled) { 
+            if (this.isNextPratilipiEnabled) {
                         const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                        this.triggerAnanlyticsEvent(`VIEW_NEXTPRATILIPI_READER`, 'CONTROL', {
+                        this.triggerAnanlyticsEvent(`VIEWNEXTPRATILIPI_READERM_READER`, 'CONTROL', {
                         ...pratilipiAnalyticsData,
                         'USER_ID': this.getUserDetails.userId
                         });
