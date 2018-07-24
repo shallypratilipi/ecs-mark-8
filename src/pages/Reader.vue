@@ -48,9 +48,9 @@
                                 <div class="option">
                                     <span>__("reader_background"):</span>
                                     <div class="buttons">
-                                        <button type="button" name="button" @click="themeWhite"><icon name="file-text-o" scale="1.5"></icon></button>
-                                        <button type="button" name="button" @click="themeBlack"><icon name="file-text" scale="1.5"></icon></button>
-                                        <button type="button" name="button" @click="themeYellow" class="yellow"><icon name="file-text-o" scale="1.5"></icon></button>
+                                        <button type="button" id="whiteThemeButton" name="button" @click="themeWhite"><icon name="file-text-o" scale="1.5"></icon></button>
+                                        <button type="button" id="blackThemeButton" name="button" @click="themeBlack"><icon name="file-text" scale="1.5"></icon></button>
+                                        <button type="button" id="yellowThemeButton" name="button" @click="themeYellow"  class="yellow"><icon name="file-text-o" scale="1.5"></icon></button>
                                     </div>
                                 </div>
                                 <div class="option">
@@ -98,8 +98,14 @@
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
 
-                                v-if="eachIndex.chapterNo == selectedChapter">
+                                v-if="eachIndex.chapterNo == selectedChapter && (getPratilipiContent.length > 1 || eachIndex.title)">
                                   {{ eachIndex.title || chapter + eachIndex.chapterNo }}
+                            </h2>
+                            <h2
+                                v-for="eachIndex in getIndexData"
+                                v-if="eachIndex.chapterNo == selectedChapter && getPratilipiContent.length == 1 && !eachIndex.title"
+                                class="chapter-title p-lr-15">
+                                {{getPratilipiData.displayTitle}}
                             </h2>
                             <div class="content-section lh-md p-lr-15"
                                  :class="fontStyleObject"
@@ -337,7 +343,7 @@ export default {
             language: '',
             readingMode: 'white',
             isNextPratilipiEnabled: false,
-            chapter: '__("writer_chapter") '
+            chapter: '__("writer_chapter") ',
         }
     },
     methods: {
@@ -375,20 +381,44 @@ export default {
             }
         },
         shouldLoadHeaderAndSetPageTheme() {
-            if (this.getPratilipiLoadingState === 'LOADING_SUCCESS' && this.getPratilipiData) {
-                switch (this.readingMode) {
-                    case 'black':
-                        this.themeBlack();
-                        break;
-                    case 'yellow':
-                        this.themeYellow();
-                        break;
-                    case 'white':
-                        this.themeWhite();
-                        break;
-                }
+            if (this.getPratilipiLoadingState === 'LOADING_SUCCESS' && this.getPratilipiData ) {
+                    switch (this.readingMode) {
+                        case 'black':
+                            this.themeBlack();
+                            break;
+                        case 'yellow':
+                            this.themeYellow();
+                            break;
+                        case 'white':
+                            this.themeWhite();
+                            break;
+                    }
                 return true;
             }
+        },  
+        fireAnalyticsForWhiteTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'WHITE'
+            });
+        },
+        fireAnalyticsForBlackTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'NIGHT'
+            });
+        },
+        fireAnalyticsForYellowTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'SEPIA'
+            });
         },
         submitReport() {
             let user = this.getUserDetails;
@@ -533,12 +563,6 @@ export default {
             $(".comment-box").css({"background-color": "#f8f8f8",});
             $(".book-bottom-webpush-subscribe").removeClass("bg-black");
             $(".book-bottom-webpush-subscribe").addClass("bg-grey");
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'WHITE'
-            });
         },
         themeBlack() {
             this.readingMode = 'black';
@@ -554,12 +578,6 @@ export default {
 
             $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
             $(".book-bottom-webpush-subscribe").addClass("bg-black");
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'NIGHT'
-            });
         },
         themeYellow() {
             this.readingMode = 'yellow';
@@ -573,12 +591,6 @@ export default {
             $(".comment-box").css({"background-color": "#f8f8f8",});
             $(".book-bottom-webpush-subscribe").removeClass("bg-black");
 -           $(".book-bottom-webpush-subscribe").addClass("bg-grey");
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId,
-                'ENTITY_VALUE': 'SEPIA'
-            });
         },
         openReviewModal() {
             $(".review-popout").addClass("show");
@@ -705,6 +717,18 @@ export default {
             that.maxRead = ((winheight / docheight) * 100);
             that.recordMaxRead(that.maxRead);
         }, 1000);
+        setTimeout(function() {
+            $("#whiteThemeButton").on('click', function () {
+                that.fireAnalyticsForWhiteTheme();
+            });
+            $("#blackThemeButton").on('click', function () {
+                that.fireAnalyticsForBlackTheme();
+            });
+            $("#yellowThemeButton").on('click', function () {
+                that.fireAnalyticsForYellowTheme();
+            });
+        }, 500)
+               
     },
 
     watch: {

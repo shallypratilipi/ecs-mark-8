@@ -15,9 +15,9 @@
                 <p class="horoscope-heading"> __("select_zodiac_sign")</p>
                 <div class="modal-message">
                     <div class="modal-buttons">
-                        <button 
-                            class="btn btn-default horoscope-button" 
-                            v-for="(eachSign) in zodiac" 
+                        <button
+                            class="btn btn-default horoscope-button"
+                            v-for="(eachSign) in zodiac"
                             v-bind:key="eachSign.nameEn"
                             @click="setHoroscopeValue(eachSign.nameEn,eachSign.image)"> {{eachSign.name}}</button>
                     </div>
@@ -84,22 +84,22 @@ export default {
             zodiac: [{
                     'name': '__("zodiac_capricorn")',
                     'nameEn': 'capricorn',
-                    'image': 'static/zodiac_signs/goat.svg'
+                'image': '/static/zodiac_signs/goat.svg'
                 },
                 {
                     'name': '__("zodiac_aquarius")',
                     'nameEn': 'aquarius',
-                    'image': 'static/zodiac_signs/aquarius.svg'
+                    'image': '/static/zodiac_signs/aquarius.svg'
                 },
                 {
                     'name': '__("zodiac_pisces")',
                     'nameEn': 'pisces',
-                    'image': 'static/zodiac_signs/pisces.svg'
+                    'image': '/static/zodiac_signs/pisces.svg'
                 },
                 {
                     'name': '__("zodiac_aries")',
                     'nameEn': 'aries',
-                    'image': 'static/zodiac_signs/aries.svg'
+                    'image': '/static/zodiac_signs/aries.svg'
                 },
                 {
                     'name': '__("zodiac_taurus")',
@@ -109,37 +109,37 @@ export default {
                 {
                     'name': '__("zodiac_gemini")',
                     'nameEn': 'gemini',
-                    'image': 'static/zodiac_signs/gemini.svg'
+                    'image': '/static/zodiac_signs/gemini.svg'
                 },
                 {
                     'name': '__("zodiac_cancer")',
                     'nameEn': 'cancer',
-                    'image': 'static/zodiac_signs/cancer.svg'
+                    'image': '/static/zodiac_signs/cancer.svg'
                 },
                 {
                     'name': '__("zodiac_leo")',
                     'nameEn': 'leo',
-                    'image': 'static/zodiac_signs/leo.svg'
+                    'image': '/static/zodiac_signs/leo.svg'
                 },
                 {
                     'name': '__("zodiac_virgo")',
                     'nameEn': 'virgo',
-                    'image': 'static/zodiac_signs/virgo.svg'
+                    'image': '/static/zodiac_signs/virgo.svg'
                 },
                 {
                     'name': '__("zodiac_libra")',
                     'nameEn': 'libra',
-                    'image': 'static/zodiac_signs/libra.svg'
+                    'image': '/static/zodiac_signs/libra.svg'
                 },
                 {
                     'name': '__("zodiac_scorpio")',
                     'nameEn': 'scorpio',
-                    'image': 'static/zodiac_signs/scorpio.svg'
+                    'image': '/static/zodiac_signs/scorpio.svg'
                 },
                 {
                     'name': '__("zodiac_sagittarius")',
                     'nameEn': 'sagittarius',
-                    'image': 'static/zodiac_signs/sagittarius.svg'
+                    'image': '/static/zodiac_signs/sagittarius.svg'
                 },
             ],
             shouldShowModal: false,
@@ -147,7 +147,7 @@ export default {
             valueOfHoroscope: "",
             language: '',
             horoscopeImage: '',
-            imageHoroscopeBanner: 'static/zodiac_signs/leo.svg',
+            imageHoroscopeBanner: '/static/zodiac_signs/leo.svg',
             isNotificationButtonEnabled: false
         }
     },

@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "વિડિઓ - સિરીઝ",
     "seo_videoseries_page": "${ videoseriesName }",
     "seo_video_page": "${ videoName }",
+    "seo_videoseries_latest_episode": "નવો એપિસોડ",
     "facebook": "ફેસબુક",
     "twitter": "ટ્વીટર",
     "google_plus": "ગૂગલ+",
@@ -527,7 +528,7 @@
     "menu_category": "શ્રેણી",
     "menu_profile": "પ્રોફાઈલ",
     "join_pratilipi": "પ્રતિલિપિ સાથે જોડાઓ",
-    "about_pratilipi": "25,000 લેખકો. 1,50,000 વાર્તાઓ. 13,00,000 વાચકો.",
+    "about_pratilipi": "45,000 લેખકો. 2,00,000 વાર્તાઓ. 17,00,000 વાચકો.",
     "login_benifits": "લોગ-ઇન કરવાના ફાયદાઓ",
     "pratilipi_feature_1": "વાર્તાઓ ઉમેરો અને ગમે ત્યાં ગમે ત્યારે વાંચો",
     "pratilipi_feature_2": "લખો અને ઈનામો જીતો",
@@ -583,7 +584,7 @@
     "web_push_message_3": "નોટીફિકેશન દ્વારા વાર્તાઓ મોકલવા માટે પ્રતિલિપિને અનુમતિ આપો..",
     "web_push_allow": "અનુમતિ આપો",
     "web_push_cancel": "રદ કરો",
-    
+
     "joke_of_the_day": "કવિની કલ્પનામાં આજે",
     "click_here_to_know_more": "જાણવા માટે અહીં ક્લિક કરો",
     "get_notification": "નોટિફિકેશન મેળવો",
@@ -603,5 +604,10 @@
     "reader_gamify_congratulations": "અભિનંદન!",
     "reader_gamify_you_reached_level": "આપે {{ getReaderLevel }} લેવલ પ્રાપ્ત કર્યું છે. ",
     "reader_gamify_keep_reading": "વાંચતા રહો!",
-    "reader_gamify_login_to_save_your_progress": "આપની ગતિવિધિ સેવ કરવા માટે લોગઈન કરો"
+    "reader_gamify_login_to_save_your_progress": "આપની ગતિવિધિ સેવ કરવા માટે લોગઈન કરો",
+    "rating_hated_it": "બહુ ખરાબ ",
+    "rating_didnt_like_it": "ના ગમ્યું",
+    "rating_just_ok": "ઠીક છે ",
+    "rating_liked_it": "સારું લાગ્યું ",
+    "rating_loved_it": "બહુ જ સરસ "
 }

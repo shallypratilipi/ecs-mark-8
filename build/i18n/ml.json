@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "അഭിമുഖ പരമ്പര",
     "seo_videoseries_page": "${അഭിമുഖ പരമ്പര}",
     "seo_video_page": "${ videoName }",
+    "seo_videoseries_latest_episode": "പുതിയ എപ്പിസോഡ്",
     "facebook": "ഫേസ്ബുക്ക്",
     "twitter": "ട്വിറ്റര്‍",
     "google_plus": "ഗൂഗിള്‍ പ്ലസ്",
@@ -527,7 +528,7 @@
     "menu_category": "വിഭാഗങ്ങള്‍",
     "menu_profile": "പ്രൊഫൈല്‍",
     "join_pratilipi": "പ്രതിലിപിയോടൊപ്പം ചേരൂ",
-    "about_pratilipi": "25,000 എഴുത്തുകാര്‍. 1,50,000 രചനകള്‍. 13,00,000 വായനക്കാര്‍. ",
+    "about_pratilipi": "45,000 എഴുത്തുകാര്‍. 2,00,000 രചനകള്‍. 17,00,000 വായനക്കാര്‍. ",
     "login_benifits": "ലോഗിന്‍ ചെയ്യുന്നതിന്‍റെ ഗുണങ്ങള്‍",
     "pratilipi_feature_1": "രചനകള്‍ ചേര്‍ക്കൂ, വായിക്കൂ. എവിടെ വെച്ചും, എപ്പോള്‍ വേണമെങ്കിലും.",
     "pratilipi_feature_2": "എഴുതൂ, സമ്മാനങ്ങള്‍ നേടൂ",
@@ -598,5 +599,10 @@
     "reader_gamify_congratulations": "അഭിനന്ദനങ്ങള്‍!",
     "reader_gamify_you_reached_level": "താങ്കള്‍ {{ getReaderLevel }}ല്‍ പ്രവേശിച്ചിരിക്കുന്നു ",
     "reader_gamify_keep_reading": "തുടര്‍ന്നും വായിക്കൂ ! ",
-    "reader_gamify_login_to_save_your_progress": "താങ്കളുടെ നേട്ടങ്ങള്‍ സേവ് ആകണമെങ്കില്‍ ലോഗിന്‍ ചെയ്യൂ "
+    "reader_gamify_login_to_save_your_progress": "താങ്കളുടെ നേട്ടങ്ങള്‍ സേവ് ആകണമെങ്കില്‍ ലോഗിന്‍ ചെയ്യൂ ",
+    "rating_hated_it": "വളരെ മോശം ",
+    "rating_didnt_like_it": "ഇഷ്ടമായില്ല ",
+    "rating_just_ok": "കുഴപ്പമില്ല",
+    "rating_liked_it": "ഇഷ്ടമായി ",
+    "rating_loved_it": "ഒരുപാട് ഇഷ്ടമായി"
 }

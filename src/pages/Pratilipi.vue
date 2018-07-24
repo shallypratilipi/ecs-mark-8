@@ -113,10 +113,11 @@
                             :type="'PRATILIPI'"></BookShareStrip>
                         </div>
                         <!-- add next Pratilipi here-->
-                        <div @click="hideStripAndRedirect" class="next-strip-container">
+                        <div @click="hideStripAndRedirect" 
+                        class="next-strip-container"
+                        v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0">
                             <NextPratilipiStrip
                                 :pratilipi='getPratilipiData.nextPratilipi'
-                                v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0"
                             ></NextPratilipiStrip>
                         </div>
 
@@ -138,6 +139,21 @@
                             :fetchSystemTags="fetchSystemTags"
                             ></BookTags>
                     </div>
+                    <div class="vapasi-container" v-if="this.isMobile()">
+                        <VapasiQuote
+                            screenName="BOOK"
+                            v-if="getCurrentLanguage().fullName == 'hindi'">
+                        </VapasiQuote>
+                        <VapasiJoke
+                            screenName="BOOK"
+                            v-if="getCurrentLanguage().fullName == 'gujarati'">
+                        </VapasiJoke>
+                        <VapasiHoroscope
+                            screenName="BOOK"
+                            v-if="getCurrentLanguage().fullName == 'marathi'">
+                        </VapasiHoroscope>
+                    </div>
+
                     <div class="book-synopsis col-md-12 col-lg-7 p-0">
                         <div class="card">
                             <div v-if="getPratilipiData.summary.trim() || getPratilipiData.state === 'DRAFTED' || getPratilipiData.hasAccessToUpdate">
@@ -256,6 +272,9 @@ import mixins from '@/mixins';
 import constants from '@/constants'
 import WebPushUtil from '@/utils/WebPushUtil'
 import { mapGetters, mapActions } from 'vuex'
+import VapasiQuote from '@/components/VapasiQuote.vue';
+import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
+import VapasiJoke from '@/components/VapasiJoke.vue';
 
 export default {
     name: 'Pratilipi',
@@ -632,7 +651,10 @@ export default {
 	    WebPushModal,
         BookShareStrip,
         ChatBanner,
-	    MessageButton,
+        MessageButton,
+        VapasiQuote,
+        VapasiHoroscope,
+        VapasiJoke,
         NextPratilipiStrip
     },
     mounted() {
@@ -718,7 +740,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .vapasi-container {
+        padding-top: 10px;
+        width: 100%;
+    }
     .pratilipi-page {
         background: #f8f8f8;
         margin-top: 85px;

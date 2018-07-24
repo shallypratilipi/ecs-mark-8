@@ -7,18 +7,19 @@
                 __("click_here_to_know_more")
             </div>
             <div class="vapasi-image">
-                <img src="static/quill.svg"  height="50" width="50">
+                <img src="/static/quill.svg" height="50" width="50">
             </div>
         </div>
         <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
             <p class="close" @click="resetModal()"><b>X</b></p>
             <div class="container">
-                <p class="vapasi-heading">__("joke_of_the_day")  <span> <img src="static/quill.svg" height="30" width="30" class="span-image"></span></p>
+                <p class="vapasi-heading">__("joke_of_the_day") <span> <img src="/static/quill.svg" height="30"
+                                                                            width="30" class="span-image"></span></p>
                 <div class="horoscope-details">
                     <p id="shareThisAsImage">
                         {{getJokeOfTheDay}}
                     </p>
-                    <button class="btn btn-danger btn-sm" 
+                    <button class="btn btn-danger btn-sm"
                             v-if="isNotificationButtonEnabled"
                             @click="triggerAnalyticsEventAndFireNotification()">
                         __("get_notification")

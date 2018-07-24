@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "Video Series List in Pratilipi",
     "seo_videoseries_page": "ಪ್ರತಿಲಿಪಿಯ ವೀಡಿಯೊ ಸರಣಿಗಳು${ videoseriesName }",
     "seo_video_page": "${ videoName }",
+    "seo_videoseries_latest_episode": "ಹೊಸ ಎಪಿಸೋಡ್",
     "facebook": "ಫೇಸ್ಬುಕ್",
     "twitter": "ಟ್ವಿಟರ್",
     "google_plus": "ಗೂಗಲ್ ಪ್ಲಸ್",
@@ -527,7 +528,7 @@
     "menu_category": "ವಿಭಾಗಗಳು",
     "menu_profile": "ಪ್ರೊಫೈಲ್",
     "join_pratilipi": "ಪ್ರತಿಲಿಪಿಯ ಸದಸ್ಯರಾಗಿರಿ",
-    "about_pratilipi": "25,000 ಲೇಖಕರು. 1,50,000 ಕಥೆಗಳು. 13,00,000 ರೀಡರ್ಸ್.",
+    "about_pratilipi": "45,000 ಲೇಖಕರು. 2,00,000 ಕಥೆಗಳು. 17,00,000 ರೀಡರ್ಸ್.",
     "login_benifits": "ಲಾಗಿನ್ ಆಗುವುದರ ಉಪಯೋಗಗಳು",
     "pratilipi_feature_1": "ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ನಿಮ್ಮ ಬರಹಗಳನ್ನು ಪ್ರಕಟಿಸಿರಿ ಮತ್ತು ಓದಿರಿ",
     "pratilipi_feature_2": "ಬರೆಯಿರಿ ಮತ್ತು ಆಕರ್ಷಕ ಬಹುಮಾನಗಳನ್ನು ಗೆಲ್ಲಿರಿ",
@@ -597,5 +598,10 @@
     "reader_gamify_congratulations": "ಅಭಿನಂದನೆಗಳು!",
     "reader_gamify_you_reached_level": "ನೀವು {{ getReaderLevel }} ಹಂತವನ್ನು ತಲುಪಿದ್ದೀರಾ",
     "reader_gamify_keep_reading": "ಓದನ್ನು ಮುಂದುವರೆಸಿ!",
-    "reader_gamify_login_to_save_your_progress": "ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಸೇವ್ ಮಾಡಲು ಲಾಗಿನ್ ಆಗಿರಿ"
+    "reader_gamify_login_to_save_your_progress": "ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಸೇವ್ ಮಾಡಲು ಲಾಗಿನ್ ಆಗಿರಿ",
+    "rating_hated_it": "ಕೆಟ್ಟದಾಗಿದೆ.",
+    "rating_didnt_like_it": "ಚೆನ್ನಾಗಿಲ್ಲ ",
+    "rating_just_ok": "ಪರವಾಗಿಲ್ಲ ",
+    "rating_liked_it": "ಇಷ್ಟವಾಯಿತು",
+    "rating_loved_it": "ತುಂಬಾ ಇಷ್ಟವಾಯಿತು "
 }

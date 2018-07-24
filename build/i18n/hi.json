@@ -445,6 +445,7 @@
     "seo_videoseries_list_page": "वीडियो - श्रृंखला",
     "seo_videoseries_page": "${ videoseriesName }",
     "seo_video_page": "${ videoName }",
+    "seo_videoseries_latest_episode": "नया एपिसोड",
     "facebook": "फेसबुक",
     "twitter": "ट्वीटर",
     "google_plus": "गूगल+",
@@ -527,7 +528,7 @@
     "menu_category": "श्रेणी",
     "menu_profile": "प्रोफ़ाइल",
     "join_pratilipi": "प्रतिलिपि से जुड़े",
-    "about_pratilipi": "25,000 लेखक. 1,50,000 कहानियाँ. 13,00,000 पाठक",
+    "about_pratilipi": "45,000 लेखक. 2,00,000 कहानियाँ. 17,00,000 पाठक",
     "login_benifits": "लॉगिन करने के फायदे",
     "pratilipi_feature_1": "कहानियाँ ऐड करें और पढ़ें कहीं भी, कभी भी",
     "pratilipi_feature_2": "लिखें और पुरस्कार जीतें",
@@ -601,6 +602,11 @@
 
     "quote_of_the_day": "आज का सुविचार",
     "click_here_to_know_more": "जानने के लिए यहाँ क्लिक करें",
-    "get_notification": "नोटिफिकेशन पाइए"
+    "get_notification": "नोटिफिकेशन पाइए",
+    "rating_hated_it": "बहुत बुरा",
+    "rating_didnt_like_it": "पसंद नहीं आया",
+    "rating_just_ok": "ठीक है",
+    "rating_liked_it": "अच्छा लगा",
+    "rating_loved_it": "बहुत पसन्द आया"
 
 }
