@@ -139,7 +139,7 @@
                             :fetchSystemTags="fetchSystemTags"
                             ></BookTags>
                     </div>
-                    <div class="container vapasi-container" v-if="this.isMobile()">
+                    <div class="vapasi-container" v-if="this.isMobile()">
                         <VapasiQuote
                             screenName="BOOK"
                             v-if="getCurrentLanguage().fullName == 'hindi'">
@@ -742,6 +742,7 @@ export default {
 <style lang="scss" scoped>
     .vapasi-container {
         padding-top: 10px;
+        width: 100%;
     }
     .pratilipi-page {
         background: #f8f8f8;
