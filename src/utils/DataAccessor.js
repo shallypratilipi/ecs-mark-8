@@ -182,7 +182,7 @@ export default {
 
     getPratilipiBySlug: (slug, includeUserPratilipi, aCallBack) => {
         var requests = [];
-        requests.push(new request("req1", PRATILIPI_NEW_API, { "slug": slug }));
+        requests.push(new request("req1", PRATILIPI_NEW_API, { "slug": slug, "nextPratilipi" : true}));
 
         if (includeUserPratilipi)
             requests.push(new request("req2", USER_PRATILIPI_API, { "pratilipiId": "$req1.pratilipiId" }));
