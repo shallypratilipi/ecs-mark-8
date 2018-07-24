@@ -113,10 +113,11 @@
                             :type="'PRATILIPI'"></BookShareStrip>
                         </div>
                         <!-- add next Pratilipi here-->
-                        <div @click="hideStripAndRedirect" class="next-strip-container">
+                        <div @click="hideStripAndRedirect" 
+                        class="next-strip-container"
+                        v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0">
                             <NextPratilipiStrip
                                 :pratilipi='getPratilipiData.nextPratilipi'
-                                v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0"
                             ></NextPratilipiStrip>
                         </div>
 
