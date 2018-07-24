@@ -239,7 +239,7 @@ export default {
             let message = $('#reportModalTextarea').val().toString();
             let name = user.displayName;
             let email = user.email;
-            let pratilipiId = this.pratilipiData.pratilipiId;
+            let pratilipiId = this.eachReview.userPratilipiId;
             let language = this.language;
             let dataType = "REVIEW";
             console.log(user + " " + message);

@@ -2200,8 +2200,6 @@ export default {
         "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "CLOSE"
     },
-
-
     "VIEW_VAPSIHOROSCOPE_BOOK": {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIHOROSCOPE",
@@ -2237,8 +2235,36 @@ export default {
         "LOCATION": "VAPSIHOROSCOPE",
         "ACTION": "CLOSE"
     },
-
-
+    "VIEW_VAPSIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIJOKE",
+        "ACTION": "VIEW"
+    },
+    "CLICK_VAPSIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIJOKE",
+        "ACTION": "CLICK"
+    },
+    "NOTIFY_VAPSIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIJOKE",
+        "ACTION": "NOTIFY"
+    },
+    "SHAREFB_VAPSIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIJOKE",
+        "ACTION": "SHAREFB"
+    },
+    "SHAREWA_VAPSIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIJOKE",
+        "ACTION": "SHAREWA"
+    },
+    "CLOSE_VAPSIJOKE_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "VAPSIJOKE",
+        "ACTION": "CLOSE"
+    },
     "VIEW_VAPSIJOKE_BOOK": {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
@@ -2260,7 +2286,7 @@ export default {
         "ACTION": "SHAREFB"
     },
     "SHAREWA_VAPSIJOKE_BOOK": {
-        "SCREEN_NAME": "HOME",
+        "SCREEN_NAME": "BOOK",
         "LOCATION": "VAPSIJOKE",
         "ACTION": "SHAREWA"
     },

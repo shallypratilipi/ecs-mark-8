@@ -393,13 +393,9 @@ export default {
                             this.themeWhite();
                             break;
                     }
-               document.getElementById("whiteThemeButton").addEventListener('click', this.fireAnalyticsForWhiteTheme);
-               document.getElementById("blackThemeButton").addEventListener('click', this.fireAnalyticsForBlackTheme);
-               document.getElementById("yellowThemeButton").addEventListener('click', this.fireAnalyticsForYellowTheme);
-
                 return true;
             }
-        },
+        },  
         fireAnalyticsForWhiteTheme() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
@@ -721,6 +717,18 @@ export default {
             that.maxRead = ((winheight / docheight) * 100);
             that.recordMaxRead(that.maxRead);
         }, 1000);
+        setTimeout(function() {
+            $("#whiteThemeButton").on('click', function () {
+                that.fireAnalyticsForWhiteTheme();
+            });
+            $("#blackThemeButton").on('click', function () {
+                that.fireAnalyticsForBlackTheme();
+            });
+            $("#yellowThemeButton").on('click', function () {
+                that.fireAnalyticsForYellowTheme();
+            });
+        }, 500)
+               
     },
 
     watch: {

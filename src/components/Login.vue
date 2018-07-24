@@ -117,9 +117,8 @@ export default {
 
     },
     mounted() {
-        let formToSubmit = document.getElementById("formToSubmit");
-        let that = this;
-        formToSubmit.addEventListener("keydown", function (e) {
+    let that = this;
+    $( "#formToSubmit" ).keydown(function(e) {
             if (e.keyCode === 13) {
                 that.validateAndLoginUser({email: that.email, password: that.password})
             }
