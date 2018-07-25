@@ -66,7 +66,14 @@ export default {
     watch: {
         'isVisible' : function () {
             const that = this;
-            this.shouldShow = this.isVisible;
+            if (this.isVisible && !this.shouldShow) {
+                console.log("setting visibility");
+                this.shouldShow = this.isVisible;
+
+                setTimeout(function () {
+                    that.shouldShow = false;
+                }, 5000);
+            }
 
             if (this.fireViewedEvent){
                 this.fireViewedEvent = false;
@@ -77,9 +84,6 @@ export default {
                 });
             }
 
-            setTimeout(function () {
-                that.shouldShow = false;
-            }, 3000);
         }
     },
     mounted() {
