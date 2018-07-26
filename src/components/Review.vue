@@ -14,7 +14,7 @@
                             <i class="material-icons">more_vert</i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="ReviewMoreOptions">
-                            <button type="button" class="btn options-btn" data-toggle="modal" data-target="#reportModal">
+                            <button type="button" class="btn options-btn" data-toggle="modal" data-target="#reportModalPratilipi">
                                 __("report_button")
                             </button>
                         </div>
@@ -37,7 +37,7 @@
         <Spinner v-if="eachReview.comments.loading_state === 'LOADING'"></Spinner>
 
         <!-- Report Modal -->
-        <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="reportModalPratilipi" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -88,7 +88,7 @@
                                 __("review_delete_review")
                             </button>
                             <button v-if="eachComment.user.userId !== getUserDetails.userId" type="button"
-                                    class="btn options-btn" data-toggle="modal" data-target="#reportModal">
+                                    class="btn options-btn" data-toggle="modal" data-target="#reportModalPratilipi">
                                 __("report_button")
                             </button>
                         </div>
@@ -244,7 +244,7 @@ export default {
             let dataType = "REVIEW";
             console.log(user + " " + message);
             this.submitPrailipiReport({name, email, message, pratilipiId, language, dataType});
-            $('#reportModal').modal('hide');
+            $('#reportModalPratilipi').modal('hide');
             this.triggerAlert({message: '__("success_generic_message")', timer: 3000});
             $("#reportModalTextarea").val("");
         },
@@ -364,7 +364,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    #reportModal {
+    #reportModalPratilipi {
         text-align: left;
         max-width: 350px;
         margin: 50px auto;
