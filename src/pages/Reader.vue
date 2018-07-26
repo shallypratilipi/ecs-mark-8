@@ -333,7 +333,7 @@ export default {
             openRateRev: false,
             openRateReaderm: false,
             rateRev: 'RATEREV',
-            shouldShowOpenInAppStrip: true,
+            shouldShowOpenInAppStrip: false,
             webPushModalTriggered: false,
             isWebPushStripEnabled: false,
             isWebPushModalEnabled: false,
@@ -396,6 +396,30 @@ export default {
                 return true;
             }
         },  
+        fireAnalyticsForWhiteTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'WHITE'
+            });
+        },
+        fireAnalyticsForBlackTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'NIGHT'
+            });
+        },
+        fireAnalyticsForYellowTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'SEPIA'
+            });
+        },
         fireAnalyticsForWhiteTheme() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
@@ -728,7 +752,6 @@ export default {
                 that.fireAnalyticsForYellowTheme();
             });
         }, 500)
-               
     },
 
     watch: {
@@ -797,10 +820,13 @@ export default {
                 $('.reader-progress').removeClass('progress-up');
                 this.counter = 0;
             }
-            if ($(window).height() + newScrollPosition > $('.content-section').height()) {
-                this.shouldShowOpenInAppStrip = false;
-            } else {
+
+            if (this.scrollDirection === 'UP' && !this.shouldShowOpenInAppStrip){
                 this.shouldShowOpenInAppStrip = true;
+            }
+
+            if (this.scrollDirection === 'DOWN') {
+                this.shouldShowOpenInAppStrip = false;
             }
         },
         'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
@@ -818,7 +844,6 @@ export default {
             }
 
             if (this.selectedChapter == this.getIndexData.length && !this.isNextPratilipiEnabled) {
-                console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
             if (this.isNextPratilipiEnabled) {
                         const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
