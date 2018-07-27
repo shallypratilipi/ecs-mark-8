@@ -67,7 +67,6 @@ export default {
         'isVisible' : function () {
             const that = this;
             if (this.isVisible && !this.shouldShow) {
-                console.log("setting visibility");
                 this.shouldShow = this.isVisible;
 
                 setTimeout(function () {
