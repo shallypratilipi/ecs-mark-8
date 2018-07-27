@@ -5,19 +5,20 @@ export default {
     cacheEventData({ commit, state }, eventData) {
         commit('setEventDataFromCache', eventData);
     },
-    
+
     fetchEventDetails({ commit, state }, eventSlug) {
         console.log(eventSlug);
         commit('setEventDataLoadingTrue');
         DataAccessor.getEventBySlug(eventSlug, (eventData) => {
             if (eventData) {
-                commit('setEventDataLoadingSuccess', eventData);
+                console.log(eventData);
+                commit('setEventDataLoadingSuccess', eventData.response);
             } else {
                 commit('setEventDataLoadingError');
             }
         });
     },
-    
+
     fetchInitialEventPratilipis({ commit, state }, { eventId, resultCount }) {
         commit('setInitialEventPratilipiLoadingTrue');
         DataAccessor.getPratilipiListByEventId(eventId, null, null, resultCount, (data) => {
@@ -37,7 +38,7 @@ export default {
             } else {
                 commit('setDynamicEventPratilipiLoadingError');
             }
-        });  
+        });
     },
 
     addToLibrary({ commit, state }, pratilipiId) {
@@ -74,4 +75,18 @@ export default {
             }
         });
     },
+
+    deleteEntryFromEvent({commit, state}, {eventId, eventEntryId}) {
+        console.log("Delete: " + eventId + "  " + eventEntryId);
+    },
+
+    moveEntryToDrafts({commit, state}, {eventId, eventEntryId}) {
+        console.log("Move to drafts: " + eventId + "  " + eventEntryId);
+    },
+
+    publishEntryForEvent({commit, state}, {eventId, eventEntryId}) {
+        console.log("Publish : " + eventId + "  " + eventEntryId);
+    },
+
+
 }
