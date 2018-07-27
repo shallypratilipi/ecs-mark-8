@@ -94,17 +94,19 @@ export default {
 
 <style lang="scss" scoped>
 .reader-read-in-app-helper {
+    position: fixed;
+    width: 100%;
+    bottom: 60px;
 
     .download-in-app-helper {
-        position: fixed;
         background-color: #266a1f;
         border-radius: 23px;
-        max-width: 100%;
-        padding-top: 8px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        width: fit-content;
+        padding: 10px;
         opacity: 0.92;
-        bottom: 60px;
-        left: 30%;
-        right: 30%;
         height: 46px;
         color: white;
 

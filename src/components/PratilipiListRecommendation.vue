@@ -5,10 +5,9 @@
                 <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerListLink">{{title}}</router-link>
                 <span v-else>{{title}}</span>
             </h2>
-	        <div class="pratilipi-list" v-if="pratilipiList.length > 0">
-	            <slick ref="slick" :options="slickOptions" @beforeChange="handleBeforeChange" class="slick-pratilipis">
+	        <div class="pratilipi-list row" v-if="pratilipiList.length > 0">
                     <div
-                        class="pratilipi-recommendation"
+                        class="pratilipi-recommendation col-md-4 col-sm-12"
                         v-for="(eachPratilipi, index) in pratilipiList"
                         v-bind:key="eachPratilipi.pratilipiId + index">
                         <PratilipiComponent
@@ -27,11 +26,11 @@
 							<span>__("view_more")</span>
 						</div>
 					</router-link>
-	            </slick>
-                <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
-                    __("reader_goto_home_page")
-                </button>
 	        </div>
+
+            <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
+                __("reader_goto_home_page")
+            </button>
 		</div>
 	</div>
 </template>
