@@ -215,6 +215,7 @@ export default {
             notificationSettings: {
                 emailFrequency: 'IMMEDIATELY',
                 newsletterFrequency: 'DAILY',
+                newsletterUnsubscribeReason: 'MANUAL',
                 notificationSubscriptions: {
                     AUTHOR: true,
                     AUTHOR_FOLLOW: true,
@@ -469,6 +470,7 @@ export default {
                 node.update({
                     "emailFrequency": that.notificationSettings[ "emailFrequency" ],
                     "newsletterFrequency": that.notificationSettings[ "newsletterFrequency" ],
+                    "newsletterUnsubscribeReason": that.notificationSettings[ "newsletterUnsubscribeReason" ],
                     "notificationSubscriptions": that.notificationSettings[ "notificationSubscriptions" ],
                     "lastUpdated": firebase.database.ServerValue.TIMESTAMP
                 });
@@ -505,6 +507,7 @@ export default {
                         if(userPreferences) {
                             that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
                             that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                            that.notificationSettings.newsletterUnsubscribeReason = userPreferences.newsletterUnsubscribeReason || "MANUAL";
                             if(userPreferences.notificationSubscriptions) {
                                 that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
                             }
@@ -611,6 +614,7 @@ export default {
                         if(userPreferences) {
                             that.notificationSettings.emailFrequency = userPreferences.emailFrequency || "IMMEDIATELY";
                             that.notificationSettings.newsletterFrequency = userPreferences.newsletterFrequency || "DAILY";
+                            that.notificationSettings.newsletterUnsubscribeReason = userPreferences.newsletterUnsubscribeReason || "MANUAL";
                             if(userPreferences.notificationSubscriptions) {
                                 that.notificationSettings.notificationSubscriptions = userPreferences.notificationSubscriptions;
                             }
