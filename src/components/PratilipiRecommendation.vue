@@ -7,7 +7,6 @@
                     <div class="stats-container">
                         <div class="icons"><i class="material-icons">star</i></div>
                         <span class="margin-right-10">{{ pratilipiData.averageRating | round(1) }}</span>
-                        
                         <div class="icons"><i class="material-icons">remove_red_eye</i></div>
                         <span>{{ pratilipiData.readCount | round(1) }}</span>
                     </div>
@@ -278,7 +277,7 @@ export default {
         &:hover .image-mask {
             opacity: 1;
         }
-        
+
         .pratilipi-details {
             text-align: left;
             padding: 0 10px;
@@ -334,7 +333,7 @@ export default {
                 font-size: 12px;
             }
         }
-        
+
         // Old Recomendation Styles
         .recommendation {
             background-repeat: no-repeat;

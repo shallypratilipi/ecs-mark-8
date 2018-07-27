@@ -1,9 +1,6 @@
 <template>
     <div class="reader-read-in-app-helper">
-        <div class="download-in-app-helper"  v-if="shouldShow && this.isVisible">
-            <button class="read-in-app-close" @click="closeBanner">
-                <i class="material-icons">close</i>
-            </button>
+        <div class="download-in-app-helper"  v-if="shouldShow">
             <p class="read-in-app-text" @click="downloadApp">
                 __('reader_read_in_app_helper_text')
             </p>
@@ -32,7 +29,8 @@ export default {
     },
     data() {
         return {
-            shouldShow: this.isVisible
+            shouldShow: this.isVisible,
+            fireViewedEvent : true,
         }
     },
     mixins: [
@@ -66,14 +64,25 @@ export default {
         }
     },
     watch: {
-        'inViewport.now': function(visible) {
-            if (visible) {
+        'isVisible' : function () {
+            const that = this;
+            if (this.isVisible && !this.shouldShow) {
+                this.shouldShow = this.isVisible;
+
+                setTimeout(function () {
+                    that.shouldShow = false;
+                }, 5000);
+            }
+
+            if (this.fireViewedEvent){
+                this.fireViewedEvent = false;
                 const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
                 this.triggerAnanlyticsEvent(`VIEWANDROID_OPENAPP_READER`, 'CONTROL', {
                     ...pratilipiAnalyticsData,
                     'USER_ID': this.getUserDetails.userId
                 });
             }
+
         }
     },
     mounted() {
@@ -84,16 +93,19 @@ export default {
 
 <style lang="scss" scoped>
 .reader-read-in-app-helper {
+    position: fixed;
+    width: 100%;
+    bottom: 60px;
 
     .download-in-app-helper {
-        position: fixed;
         background-color: #266a1f;
-        max-width: 100%;
+        border-radius: 23px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        width: fit-content;
         padding: 10px;
         opacity: 0.92;
-        bottom: 46px;
-        left: 0px;
-        right: 0px;
         height: 46px;
         color: white;
 
@@ -109,7 +121,7 @@ export default {
         .read-in-app-text {
             text-align: center;
             font-size: 20px;
-            padding: 5px;
+            padding: 3px;
             padding-top: 0px;
         }
     }

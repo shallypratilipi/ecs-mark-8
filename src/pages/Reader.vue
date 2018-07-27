@@ -275,7 +275,7 @@
                     </div>
                 </div>
             </div>
-            <OpenInApp v-if="isAndroid() && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
+            <OpenInApp v-if="isAndroid() && percentScrolled < 102 && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
             <div class="overlay" @click="closeSidebar"></div>
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
@@ -333,7 +333,7 @@ export default {
             openRateRev: false,
             openRateReaderm: false,
             rateRev: 'RATEREV',
-            shouldShowOpenInAppStrip: true,
+            shouldShowOpenInAppStrip: false,
             webPushModalTriggered: false,
             isWebPushStripEnabled: false,
             isWebPushModalEnabled: false,
@@ -395,7 +395,31 @@ export default {
                     }
                 return true;
             }
-        },  
+        },
+        fireAnalyticsForWhiteTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'WHITE'
+            });
+        },
+        fireAnalyticsForBlackTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'NIGHT'
+            });
+        },
+        fireAnalyticsForYellowTheme() {
+            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'SEPIA'
+            });
+        },
         fireAnalyticsForWhiteTheme() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READERBACKGROUND_SETTINGS_READER', 'CONTROL', {
@@ -651,8 +675,8 @@ export default {
             $('#share_modal').modal('show');
         },
         updateScroll() {
-            this.scrollPosition = window.scrollY
-            let wintop = $(window).scrollTop(), docheight = $('.book-content').height(), winheight = $(window).height()
+            this.scrollPosition = window.scrollY;
+            let wintop = $(window).scrollTop(), docheight = $('.content-section').height(), winheight = $(window).height()
             this.percentScrolled = (wintop / (docheight - winheight)) * 100;
         },
 
@@ -712,7 +736,7 @@ export default {
         window.addEventListener('scroll', this.updateScroll);
         let that = this;
         setTimeout(function () {
-            let docheight = $('.book-content').height();
+            let docheight = $('.content-section').height();
             let winheight = $(window).height();
             that.maxRead = ((winheight / docheight) * 100);
             that.recordMaxRead(that.maxRead);
@@ -728,14 +752,13 @@ export default {
                 that.fireAnalyticsForYellowTheme();
             });
         }, 500)
-               
     },
 
     watch: {
         '$route' (newValue) {
             let that = this;
             setTimeout(function () {
-                let docheight = $('.book-content').height();
+                let docheight = $('.content-section').height();
                 let winheight = $(window).height();
                 that.maxRead = ((winheight / docheight) * 100);
                 that.recordMaxRead(that.maxRead);
@@ -797,11 +820,16 @@ export default {
                 $('.reader-progress').removeClass('progress-up');
                 this.counter = 0;
             }
-            if ($(window).height() + newScrollPosition > $('.content-section').height()) {
-                this.shouldShowOpenInAppStrip = false;
-            } else {
+
+
+            if (this.scrollDirection === 'UP' && !this.shouldShowOpenInAppStrip){
                 this.shouldShowOpenInAppStrip = true;
             }
+
+            if (this.scrollDirection === 'DOWN') {
+                this.shouldShowOpenInAppStrip = false;
+            }
+
         },
         'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
             if (this.maxRead < newPercentScrolled) {
@@ -811,24 +839,24 @@ export default {
                     this.recordTime = new Date();
                 }
             }
-            $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
-            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 80 && !this.webPushModalTriggered) {
-                this.webPushModalTriggered = true
+
+            $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%");
+            if (this.selectedChapter == this.getIndexData.length && newPercentScrolled > 100 && !this.webPushModalTriggered) {
+                this.webPushModalTriggered = true;
                 this.openWebPushModal()
             }
 
             if (this.selectedChapter == this.getIndexData.length && !this.isNextPratilipiEnabled) {
-                console.log("setting next pratilipi " + window.location.hostname.includes('gamma') );
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
-            if (this.isNextPratilipiEnabled) {
-                        const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
-                        this.triggerAnanlyticsEvent(`VIEWNEXTPRATILIPI_READERM_READER`, 'CONTROL', {
-                        ...pratilipiAnalyticsData,
-                        'USER_ID': this.getUserDetails.userId
-                        });
-                    }
+                if (this.isNextPratilipiEnabled) {
+                    const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+                    this.triggerAnanlyticsEvent(`VIEWNEXTPRATILIPI_READERM_READER`, 'CONTROL', {
+                    ...pratilipiAnalyticsData,
+                    'USER_ID': this.getUserDetails.userId
+                    });
                 }
-            },
+            }
+        },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS') {
                 const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);

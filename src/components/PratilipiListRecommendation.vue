@@ -5,10 +5,9 @@
                 <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerListLink">{{title}}</router-link>
                 <span v-else>{{title}}</span>
             </h2>
-	        <div class="pratilipi-list" v-if="pratilipiList.length > 0">
-	            <slick ref="slick" :options="slickOptions" @beforeChange="handleBeforeChange" class="slick-pratilipis">
+	        <div class="pratilipi-list row" v-if="pratilipiList.length > 0">
                     <div
-                        class="pratilipi-recommendation"
+                        class="pratilipi-recommendation col-md-4 col-sm-12"
                         v-for="(eachPratilipi, index) in pratilipiList"
                         v-bind:key="eachPratilipi.pratilipiId + index">
                         <PratilipiComponent
@@ -27,18 +26,17 @@
 							<span>__("view_more")</span>
 						</div>
 					</router-link>
-	            </slick>
-                <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
-                    __("reader_goto_home_page")
-                </button>
 	        </div>
+
+            <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
+                __("reader_goto_home_page")
+            </button>
 		</div>
 	</div>
 </template>
 
 <script type="text/javascript">
 import PratilipiComponent from '@/components/PratilipiRecommendation.vue'
-import Slick from 'vue-slick'
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import { mapGetters, mapActions, mapState } from 'vuex'
@@ -96,24 +94,9 @@ export default {
     },
     data() {
         return {
-            slickOptions: {
-                infinite: false,
-                adaptiveHeight: false,
-                variableWidth: true,
-                draggable: true,
-                edgeFriction: 0.30,
-                swipe: true,
-                arrows: false
-            }
         }
     },
     methods: {
-        next() {
-            this.$refs.slick.next()
-        },
-        prev() {
-            this.$refs.slick.prev()
-        },
         navigateToHome() {
             this.triggerAnanlyticsEvent(`GOTOHOME_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId
@@ -131,7 +114,6 @@ export default {
         reInit() {
             // Helpful if you have to deal with v-for to update dynamic lists
             // console.log(this.listPageUrl);
-            this.$refs.slick.reSlick();
         },
         triggerListLink() {
             this.triggerAnanlyticsEvent(`CLICKCOLLECTION_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
@@ -141,16 +123,6 @@ export default {
         }
     },
     created() {
-        if (this.isMobile()) {
-            this.slickOptions = {
-                vertical: true,
-                slidesToShow: 6,
-                slidesToScroll: 1,
-                verticalSwiping: false,
-                infinite: false,
-                arrows: false,
-            }
-        }
 
     },
     mounted() {
@@ -169,7 +141,6 @@ export default {
     },
     components: {
         PratilipiComponent,
-        Slick
     },
     watch: {
         'inViewport.now': function(visible) {
@@ -307,18 +278,6 @@ export default {
 				color: #fff;
 			}
 		}
-		&.slick-disabled {
-			i {
-				opacity: 0.2;
-			}
-            &:hover {
-                background: #fff;
-                border-color: #fff;
-                i {
-                    color: #212121;
-                }
-            }
-		}
 	}
 	.back {
 		margin-left: -5px;
@@ -331,7 +290,4 @@ export default {
             top: 44%;
         }
     }
-</style>
-<style lang="scss">
-    @import '../../node_modules/slick-carousel/slick/slick.css';
 </style>

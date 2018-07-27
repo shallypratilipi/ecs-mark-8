@@ -5,7 +5,7 @@
 
         </div>
         <div class="next-pratilipi-text">
-            <p class="next-pratilipi-text-title"> Read the next part of this book here</p>
+            <p class="next-pratilipi-text-title">__("read_next_pratilipi_here")</p>
             <p class="next-pratilipi-text-title">{{ this.pratilipi.title }}</p>
         </div>
     </div>
