@@ -1,7 +1,7 @@
 import { httpUtil, formatParams } from './HttpUtil';
 
 
-const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://prod.pratilipi.com";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
 
 // const API_PREFIX  = "https://hindi-devo.ptlp.co";
 /* Search */
