@@ -7,10 +7,16 @@
                         <h2>__("event_events")</h2>
                         <div class="page-content event-list">
                             <ul>
-                                <li v-for="each_event in getEventsData" :key="each_event.eventId">
+                                <li v-for="each_event in getEventsData" :key="each_event.eventId"
+                                    class="show-status"
+                                    v-bind:class="{ eventFinished: (each_event.eventId%2) }"
+                                    v-on:mouseover="showTextOverlay(this)"
+                                    v-on:mouseout="showTextOverlay(this)">
                                     <router-link @click.native="triggerEvent(each_event.eventId)" :to="{ name: 'Event_Page', params: { event_slug: each_event.pageUrl.split('/').pop(), event_data: each_event } }">
-                                        <span class="event-img" v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }"></span>
-                                        <span class="event-name">{{ each_event.name }}</span>
+                                        <span class="event-img show-status"
+                                              v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }"
+                                        ></span>
+                                        <span class="event-name">{{ each_event.title }} </span>
                                     </router-link>
                                 </li>
                             </ul>
@@ -47,10 +53,20 @@ export default {
             'getUserDetails'
         ])
     },
+    data() {
+        return {
+            isEventActive: false,
+            showText: false
+        }
+    },
     methods: {
         ...mapActions('eventspage', [
             'fetchListOfEvents'
         ]),
+        showTextOverlay() {
+            this.showText = !this.showText;
+            console.log("Changing: " + this.showText);
+        },
         triggerEvent(data) {
             this.triggerAnanlyticsEvent(`CLICKEVENT_EVENTLISTM_EVENTLIST`, 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId,
@@ -58,6 +74,7 @@ export default {
             });
         }
     },
+
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
@@ -70,11 +87,23 @@ export default {
         this.triggerAnanlyticsEvent('LANDED_EVENTLISTM_EVENTLIST', 'CONTROL', {
             'USER_ID': this.getUserDetails.userId
         });
-    }
+    },
+
 }
 </script>
 
 <style lang="scss" scoped>
+    .eventFinished {
+        opacity: 0.5;
+    }
+
+    .show-status {
+        z-index: 99999 !important;
+    }
+
+    .show-status:hover {
+        background: #008CBA !important;
+    }
 .static-page {
     margin-top: 85px;
     text-align: left;

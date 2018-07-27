@@ -17,7 +17,7 @@ export default {
     //         return total + product.price * product.quantity
     //     }, 0)
     // }
-    
+
 
 
 
@@ -26,11 +26,14 @@ export default {
     getEventDataLoadingState: state => state.event.loading_state,
     getEventData: state => state.event.data,
 
+    getDraftData: state => state.event.drafts,
+    getSubmissionData: state => state.event.submissions,
+
     getEventPratilipis: state => state.pratilipiList.data,
     getEventPratilipisCursor: state => state.pratilipiList.cursor,
     getEventPratilipisLoadingState: state => state.pratilipiList.loading_state,
 
     getUserEventDataLoadingState: state => state.userEventPratilipis.loading_state,
-    getUserEventData: state => { return state.userEventPratilipis.data.filter(eachPratilipi => eachPratilipi.state === 'SUBMITTED') },
-    getUserEventDraftData: state => { return state.userEventPratilipis.data.filter(eachPratilipi => eachPratilipi.state === 'DRAFTED') }
+    // getUserEventData: state => { return state.userEventPratilipis.data.filter(eachPratilipi => eachPratilipi.state === 'SUBMITTED') },
+    // getUserEventDraftData: state => { return state.userEventPratilipis.data.filter(eachPratilipi => eachPratilipi.state === 'DRAFTED') }
 }

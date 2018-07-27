@@ -5,23 +5,28 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card event-info">
-                            <div class="head-title">{{ getEventData.name }}</div>
+                            <div class="head-title">{{ getEventData.title }}</div>
                             <img :src="getEventData.bannerImageUrl" alt="">
                             <div class="desc" v-html="getEventData.description"></div>
                             <button v-if="canParticipate" type="button" class="participate_btn" name="button" @click="goToEventParticipate">__('event_participate')</button>
                         </div>
                     </div>
-                    <div class="col-md-12" v-if="getUserEventDraftData.length > 0 && canParticipate ">
+                    <div class="col-md-12" v-if="getDraftData.length > 0">
+                        <!-- v-if="getUserEventDraftData.length > 0 && canParticipate " -->
                         <div class="page-content event-list card" id="yourDrafts">
                             <div class="head-title">__('event_participate_your_drafts')</div>
-                            <router-link v-for="pratilipiData in getUserEventDraftData" :key="pratilipiData._id" :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData._id + "?step=2"'>
+                            <router-link v-for="pratilipiData in getDraftData" :key="pratilipiData.eventEntryId"
+                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
                                     title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImage || 'https://0.ptlp.co/pratilipi/cover',
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
-                                    createdAt: pratilipiData.createdAt
+                                    submissionDate: pratilipiData.submissionDate,
+                                    submissionType: 'SUBMITTED',
+                                    eventEntryId: pratilipiData.eventEntryId,
+                                    eventId: getEventData.eventId
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -30,17 +35,23 @@
                     <div class="col-md-12 loader-overflow">
                     <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader>
                     </div>
-                    <div class="col-md-12" v-if="getUserEventData.length > 0 && canParticipate ">
+                    <div class="col-md-12" v-if="getSubmissionData.length > 0">
+                        <!-- v-if="getUserEventData.length > 0 && canParticipate " -->
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
-                            <router-link v-for="pratilipiData in getUserEventData" :key="pratilipiData._id" :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData._id + "?step=2"'>
+                            <router-link v-for="pratilipiData in getSubmissionData" :key="pratilipiData.eventEntryId"
+                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
                                     title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImage || 'https://0.ptlp.co/pratilipi/cover',
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
-                                    createdAt: pratilipiData.createdAt
+                                    submissionDate: pratilipiData.submissionDate,
+                                    submissionType: 'DRAFT',
+                                    eventEntryId: pratilipiData.eventEntryId,
+                                    eventId: getEventData.eventId
+
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -106,7 +117,10 @@ export default {
             'getEventPratilipisCursor',
             'getUserEventData',
             'getUserEventDraftData',
-            'getUserEventDataLoadingState'
+            'getUserEventDataLoadingState',
+
+            'getDraftData',
+            'getSubmissionData'
 
         ]),
         ...mapGetters([
@@ -173,11 +187,14 @@ export default {
     },
     created() {
         const { event_data, event_slug } = this.$route.params;
-        if (event_data) {
-            this.cacheEventData(event_data);
-        } else {
+        console.log(" event_slug " + event_slug);
+        // if (event_data) {
+        //     this.cacheEventData(event_data);
+        //     console.log("Here");
+        // } else {
             this.fetchEventDetails(event_slug);
-        }
+        console.log("HEre 2");
+        // }
 
     },
     mounted() {

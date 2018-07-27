@@ -1,9 +1,9 @@
 import { httpUtil, formatParams } from './HttpUtil';
 
 
-const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://prod.pratilipi.com";
 
-
+// const API_PREFIX  = "https://hindi-devo.ptlp.co";
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";
 const SEARCH_TRENDING_API = "/trending_search";
@@ -81,6 +81,8 @@ const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
 const READ_PERCENTAGE_API = "/user_pratilipi/v2.0/user_pratilipis";
 
 const INIT_API_VAPSI = "/init/v2.0/vapsi";
+
+const EVENT_AUTOMATION_LIST = "https://hindi-devo.ptlp.co/api/event/list";
 
 const request = function(name, api, params) {
     return {
@@ -298,17 +300,22 @@ export default {
     },
 
     getEventBySlug: (slug, aCallBack) => {
+        httpUtil.get('http://www.mocky.io/v2/5b5848573000002117fe4e45',
+            null,null,
+            function(response, status) { processGetResponse(response, status, aCallBack)
+             });
 
-        var requests = [];
-        requests.push(new request("req1", EVENTS_API, { "slug": slug }));
 
-        httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
-            function(response, status) {
-                if (aCallBack != null) {
-                    var event = response.req1.status == 200 ? response.req1.response : null;
-                    aCallBack(event);
-                }
-            });
+        // var requests = [];
+        // requests.push(new request("req1", EVENTS_API, { "slug": slug }));
+
+        // httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
+        //     function(response, status) {
+        //         if (aCallBack != null) {
+        //             var event = response.req1.status == 200 ? response.req1.response : null;
+        //             aCallBack(event);
+        //         }
+        //     });
     },
 
     getEventById: (eventId, aCallBack) => {
@@ -319,9 +326,11 @@ export default {
     },
 
     getEventList: (language, aCallBack) => {
-        httpUtil.get(API_PREFIX + EVENT_LIST_API,
-            null, { "language": language },
-            function(response, status) { processGetResponse(response, status, aCallBack) });
+        httpUtil.get("https://hindi-devo.ptlp.co/api/event/list?language=HINDI",
+            null,
+            null,
+            function(response, status) { processGetResponse(response, status, aCallBack)
+             });
     },
 
     getVideoseriesList : ( language, aCallBack ) => {
@@ -495,7 +504,7 @@ export default {
         httpUtil.get(API_PREFIX + PRATILIPI_LIST_API,
             null,
             params,
-            function(response, status) { processGetResponse(response, status, aCallBack) });
+            function(response, status) { processGetResponse(response, status, aCallBack)});
     },
 
     getPratilipiListBySearchQuery: (searchQuery, cursor, offset, resultCount, language, aCallBack) => {

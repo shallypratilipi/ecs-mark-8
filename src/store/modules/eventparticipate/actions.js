@@ -4,11 +4,13 @@ export default {
 
     fetchEventPratilipiData({ commit, state }, eventPratilipiId) {
         commit('setEventPratilipiDataLoadingTrue');
+        console.log("Getting called multiple timrs");
         DataAccessor.getEventPratilipiById(eventPratilipiId, (eventPratilipiData) => {
             if (eventPratilipiData.status === 200) {
-                commit('setEventPratilipiDataLoadingSuccess', eventPratilipiData.response);
+                console.log("Getting called multiple times inside");
+                // commit('setEventPratilipiDataLoadingSuccess', eventPratilipiData.response);
             } else {
-                commit('setEventPratilipiDataLoadingError');
+                // commit('setEventPratilipiDataLoadingError');
             }
         });
     },
