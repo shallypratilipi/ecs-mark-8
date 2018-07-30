@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>{{ getPratilipiListTitle }}</h2>
+                        <h1>{{ getPratilipiListTitle }}</h1>
                         <PratilipiComponent
                         :pratilipiData="pratilipiData"
                         :key="pratilipiData.pratilipiId"
@@ -51,7 +51,8 @@ export default {
             'getPratilipiListData',
             'getPratilipiListTotalCount',
             'getPratilipiListTitle',
-            'getPratilipiListCursor'
+            'getPratilipiListCursor',
+            'getPageTitle'
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -70,7 +71,7 @@ export default {
     },
     created() {
         console.log(this.$route)
-
+	document.head.querySelector('meta[name="description"]').content = "";
         const { list_page_url } = this.$route.params;
 
         const currentLocale = process.env.LANGUAGE;
@@ -115,6 +116,9 @@ export default {
                     });
                 }
             });
+        },
+        'getPageTitle'(title) {
+            document.title = title;
         }
     },
     mounted() {
@@ -146,7 +150,7 @@ export default {
         margin-top: 65px;
         text-align: center;
     }
-    h2 {
+    h1 {
         font-size: 24px;
         font-weight: bold;
         text-align: left;

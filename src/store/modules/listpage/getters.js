@@ -22,6 +22,7 @@ export default {
     getPratilipiListCursor: state => state.cursor,
     getPratilipiListData: state => state.data,
     getPratilipiListTotalCount: state => state.numberFound,
-    getPratilipiListTitle: state => state.title
+    getPratilipiListTitle: state => state.title,
+    getPageTitle: state => state.titleEn === "" || state.titleEn === null || state.titleEn === "undefined" || state.titleEn === "null" || state.titleEn === undefined ? state.title : state.title+" | "+state.titleEn
 
 }

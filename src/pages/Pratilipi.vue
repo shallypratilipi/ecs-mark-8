@@ -30,7 +30,7 @@
                                 </div>
                             </div>
 
-                            <div class="book-title">{{ getPratilipiData.title }} <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
+                            <div class="book-title"><h1>{{ getPratilipiData.title }}</h1> <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
                             <router-link
                               :to="getPratilipiData.author.pageUrl"
                               @click.native="triggerClickAuthorNameEvent"
@@ -673,8 +673,9 @@ export default {
             this.selectedPratilipiType = this.getPratilipiData.type;
             this.selectedTags = this.getPratilipiData.tags ? [ ...this.getPratilipiData.tags ] : [];
             this.suggestedTags = this.getPratilipiData.suggestedTags;
-            document.title = this.getPratilipiData.title;
-            this.setPratilipiPageOgTags(this.getPratilipiData);
+            document.title = this.getPratilipiData.titleEn === ""  || this.getPratilipiData.titleEn === null || this.getPratilipiData.titleEn === "undefined" || this.getPratilipiData.titleEn === "null" || this.getPratilipiData.titleEn === undefined ? this.getPratilipiData.title : this.getPratilipiData.title+" | "+ this.getPratilipiData.titleEn;
+            document.head.querySelector('meta[name="description"]').content = this.getPratilipiData.summary;
+	    this.setPratilipiPageOgTags(this.getPratilipiData);
 
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
@@ -1106,5 +1107,9 @@ export default {
                 }
             }
         }
+    }
+    h1 {
+	font-size: inherit;
+	font-weight: inherit;
     }
 </style>
