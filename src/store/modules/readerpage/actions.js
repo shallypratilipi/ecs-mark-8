@@ -110,16 +110,23 @@ export default {
 
     setPratilipiRating({ commit, state }, { rating, pratilipiId }) {
         commit('setPratilipiRatingUpdateLoading');
-        DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {
-            commit('setPratilipiRatingUpdateSuccess', rating);
-        }, (errorData) => {
-            commit('setPratilipiRatingUpdateError');
-        });
+        // console.log("inside api call stopped");
+        // DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {
+        //     commit('setPratilipiRatingUpdateSuccess', rating);
+        // }, (errorData) => {
+        //     commit('setPratilipiRatingUpdateError');
+        // });
     },
 
-    saveOrUpdateReview({ commit, state }, { review, pratilipiId }) {
-        console.log(state);
-        if (state.userPratilipi.data.rating === null || state.userPratilipi.data.rating === undefined) {
+    saveOrUpdateReview({ commit, state }, { review, pratilipiId, rating }) {
+        // DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {
+        //     commit('setPratilipiRatingUpdateSuccess', rating);
+        // }, (errorData) => {
+        //     commit('setPratilipiRatingUpdateError');
+        // });
+        console.log(state,rating, pratilipiId, review);
+        // state.userPratilipi.data.rating = rating;
+        if (rating === null || rating === undefined) {
             commit('alert/triggerAlertView', 'need_rating', { root: true });
             setTimeout(() => {
                 commit('alert/triggerAlertHide', null, { root: true });
@@ -127,9 +134,10 @@ export default {
             console.log('okay, i wont give review');
             return;
         }
-        commit('setPratilipiReviewUpdateLoading');
-        DataAccessor.createOrUpdateReview(pratilipiId, null, review, function(successData) {
+        // commit('setPratilipiReviewUpdateLoading');
+        DataAccessor.createOrUpdateReview(pratilipiId, rating, review, function(successData) {
             commit('setPratilipiReviewUpdateSuccess', review);
+            commit('setPratilipiRatingUpdateSuccess', rating);
         }, (errorData) => {
             commit('setPratilipiReviewUpdateError');
         });
