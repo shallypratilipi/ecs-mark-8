@@ -80,6 +80,9 @@ const AUTHOR_INTERVIEWS_API = "/oasis/author-interviews/v1.0";
 const AUTHOR_INTERVIEWS_LIST_API = "/oasis/author-interviews/v1.0/list";
 const READ_PERCENTAGE_API = "/user_pratilipi/v2.0/user_pratilipis";
 
+const READER_BATCH_API = "/web/v1.0/reader/readerBatch";
+const READER_CHAPTER_API = "/web/v1.0/reader/readerChapter";
+
 const INIT_API_VAPSI = "/init/v2.0/vapsi";
 
 const request = function(name, api, params) {
@@ -280,6 +283,53 @@ export default {
                     aCallBack(author);
                 }
             });
+    },
+
+    getUserPratilipiByPratilipiId: (pratilipiId, aCallBack) => {
+        httpUtil.get(API_PREFIX + USER_PRATILIPI_API, null, {pratilipiId}, function (response, status) {
+            processGetResponse(response, status, aCallBack)
+        })
+    },
+
+    // Reader V2
+
+    getReaderBatch: (chapterSlug, aCallBack) => {
+        httpUtil.get(API_PREFIX + READER_BATCH_API, null, {chapterSlug}, function (response, status) {
+            // TODO: Remove asap
+            if (status === 200) {
+                for (let i = 0; i < response.contentIndex.length; i++) {
+                    let {pageUrl} = response.contentIndex[i]
+                    pageUrl = pageUrl.split(' ').join('-')
+                    if (!pageUrl.startsWith('/read/')) {
+                        pageUrl = `/read/${pageUrl}`
+                    }
+                    response.contentIndex[i].pageUrl = pageUrl
+                    response.contentIndex[i].slugId = pageUrl.split('/').pop().split('-').pop()
+                    response.contentIndex[i].chapterNo = i + 1
+                    delete response.contentIndex[i].slug
+                }
+                if (response.chapterData.pageUrl) {
+                    response.chapterData.slugId = response.chapterData.pageUrl.split('/').pop().split('-').pop()
+                    delete response.chapterData.pageUrl
+                    delete response.chapterData.pratilipiId
+                }
+            }
+            processGetResponse(response, status, aCallBack)
+        })
+    },
+
+    getReaderChapter: (chapterSlug, aCallBack) => {
+        httpUtil.get(API_PREFIX + READER_CHAPTER_API, null, {chapterSlug}, function (response, status) {
+            // TODO: Remove asap
+            if (status === 200) {
+                if (response.pageUrl) {
+                    response.slugId = response.pageUrl.split('/').pop().split('-').pop()
+                    delete response.pageUrl
+                    delete response.pratilipiId
+                }
+            }
+            processGetResponse(response, status, aCallBack)
+        })
     },
 
     getEventByUri: (pageUri, aCallBack) => {

@@ -23,6 +23,7 @@ import sharemodal from './modules/sharemodal'
 import alert from './modules/alert'
 import inputmodal from './modules/inputmodal'
 import readerpage from './modules/readerpage'
+import readerv2page from './modules/readerv2page'
 import pratilipimodal from './modules/pratilipimodal'
 import messages from './modules/messages'
 import eventparticipate from './modules/eventparticipate'
@@ -54,6 +55,7 @@ export default new Vuex.Store({
         blogpage,
         settingspage,
         readerpage,
+        readerv2page,
         interviewspage,
         interviewpage,
         sharemodal,

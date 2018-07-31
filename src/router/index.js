@@ -15,6 +15,7 @@ import BlogPageComponent from '@/pages/Blog.vue'
 import NotificationComponent from '@/pages/Notification.vue'
 import SettingsPageComponent from '@/pages/Settings.vue'
 import ReaderPageComponent from '@/pages/Reader.vue'
+import ReaderPageV2Component from '@/pages/ReaderV2.vue'
 import InterviewsPageComponent from '@/pages/Interviews.vue'
 import InterviewPageComponent from '@/pages/Interview.vue'
 import NewsletterUnSubscribePageComponent from '@/pages/NewsletterUnSubscribe.vue'
@@ -360,6 +361,14 @@ var router = new Router({
             },
             meta: {
                 'store': 'readerpage',
+                'title': '__("seo_home_page")'
+            }
+        }, {
+            path: '/read/:slug',
+            name: 'Reader_Page_V2',
+            component: ReaderPageV2Component,
+            meta: {
+                'store': 'readerv2page',
                 'title': '__("seo_home_page")'
             }
         }, {
