@@ -6,9 +6,9 @@ export default {
         commit('setDraftedContentsLoadingTrue');
         DataAccessor.getPratilipiListByAuthor(authorId, 'DRAFTED', null, null, resultCount, (data) => {
             if (data.status === 200) {
-                commit('setDraftedContentsLoadingSuccess', data.response);    
+                commit('setDraftedContentsLoadingSuccess', data.response);
             } else {
-                commit('setDraftedContentsLoadingError');    
+                commit('setDraftedContentsLoadingError');
             }
         })
     },
@@ -21,19 +21,19 @@ export default {
             } else {
                 commit('setDraftedContentsDynamicLoadingError');
             }
-        });  
+        });
     },
 
     createPratilipiAndGoToWriter({ commit, state }, { title, titleEn, language, type }) {
         console.log(titleEn)
-        DataAccessor.createOrUpdatePratilipi({ 
+        DataAccessor.createOrUpdatePratilipi({
             title,
             titleEn,
             language,
             type,
             state: 'DRAFTED'
         }, (data) => {
-            console.log(data);
+            console.log("MY DATA IS: ", data);
             window.location = data.writePageUrl;
         }, (error) => {
             console.log(error);

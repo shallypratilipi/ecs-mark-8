@@ -17,11 +17,11 @@ export default {
     //         return total + product.price * product.quantity
     //     }, 0)
     // }
-    
+
     getEventPratilipiCreateOrUpdateStateSuccess: state => state.eventPratilipiCreateOrUpdateState,
     getEventPratilipiLoadingState: state => state.eventPratilipiLoadingState,
     getEventPratilipiData: state => state.eventPratilipi,
-    getEventPratilipiCoverImage: state => { 
+    getEventPratilipiCoverImage: state => {
         if(state.eventPratilipi.coverImage) return state.eventPratilipi.coverImage;
         else return 'https://0.ptlp.co/pratilipi/cover'
     },
@@ -32,5 +32,11 @@ export default {
     getEventLoadingState: state => state.eventDataLoadingState,
     getDraftedEventPratilipiLoadingState: state => state.draftedEventPratilipis.loading_state,
     getDraftedEventPratilipi: state => state.draftedEventPratilipis.data,
-    getEventPratilipiImageUploadLoadingState: state => state.pratilipi_image_upload_state
+    getEventPratilipiImageUploadLoadingState: state => state.pratilipi_image_upload_state,
+
+
+    getPratilipiOfEvent: state => state.eventForPratilipi.data,
+    getPratilipiOfEventLoadingState: state => state.eventForPratilipi.loading_state,
+
+
 }
