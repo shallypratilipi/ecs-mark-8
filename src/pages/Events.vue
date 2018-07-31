@@ -8,16 +8,24 @@
                         <div class="page-content event-list">
                             <ul>
                                 <li v-for="each_event in getEventsData" :key="each_event.eventId"
-                                    class="show-status"
-                                    v-bind:class="{ eventFinished: (each_event.eventId%2) }"
-                                    v-on:mouseover="showTextOverlay(this)"
-                                    v-on:mouseout="showTextOverlay(this)">
+                                    v-bind:class="{ eventFinished: (each_event.eventState != `SUBMISSION`) }"
+                                    v-on:mouseover="showTextOverlay(each_event.eventId)"
+                                    v-on:mouseout="showTextOverlay(each_event.eventId)"
+                                >
                                     <router-link @click.native="triggerEvent(each_event.eventId)" :to="{ name: 'Event_Page', params: { event_slug: each_event.pageUrl.split('/').pop(), event_data: each_event } }">
                                         <span class="event-img show-status"
                                               v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }"
                                         ></span>
-                                        <span class="event-name">{{ each_event.title }} </span>
+                                        <span class="event-name">{{ each_event.name }} </span>
+                                        <span
+                                            v-if="showText && eachEventId == each_event.eventId && each_event.eventState != `SUBMISSION`"
+                                            class="show-overlay">Event Closed</span>
+                                        <span
+                                            v-if="showText && eachEventId == each_event.eventId && each_event.eventState == `SUBMISSION`"
+                                            class="show-overlay">Event Open</span>
                                     </router-link>
+                                    <br><br>
+                                    <!--  -->
                                 </li>
                             </ul>
                             <Spinner v-if="getEventsLoadingState === 'LOADING'"></Spinner>
@@ -31,10 +39,10 @@
 
 <script>
 import MainLayout from '@/layout/main-layout.vue';
-import constants from '@/constants'
+import constants from '@/constants';
 import Spinner from '@/components/Spinner.vue';
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex'
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
     components: {
@@ -56,15 +64,17 @@ export default {
     data() {
         return {
             isEventActive: false,
-            showText: false
+            showText: false,
+            eachEventId: null
         }
     },
     methods: {
         ...mapActions('eventspage', [
             'fetchListOfEvents'
         ]),
-        showTextOverlay() {
+        showTextOverlay(eventId) {
             this.showText = !this.showText;
+            this.eachEventId = eventId;
             console.log("Changing: " + this.showText);
         },
         triggerEvent(data) {
@@ -103,6 +113,14 @@ export default {
 
     .show-status:hover {
         background: #008CBA !important;
+    }
+
+    .show-overlay {
+        position: relative;
+        bottom: 150px;
+        right: -100px;
+        font-size: 16px;
+        color: white;
     }
 .static-page {
     margin-top: 85px;

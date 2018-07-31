@@ -32,9 +32,18 @@ export default {
     setEventDataLoadingSuccess(state, eventData) {
         state.event.loading_state = 'LOADING_SUCCESS';
         state.event.data = eventData.event;
-        console.log("eventData : ", eventData);
-        state.event.drafts = eventData.entries.yourDrafted;
-        state.event.submissions = eventData.entries.yourSubmitted;
+        console.log("Look at this: ", eventData.Event);
+        if (eventData.entries.yourDrafted.length > 0) {
+            state.event.drafts = eventData.entries.yourDrafted;
+        }
+        if (eventData.entries.yourSubmitted.length > 0) {
+            state.event.submissions = eventData.entries.yourSubmitted;
+        }
+    },
+    resetDraftList(state) {
+        console.log("BAAM", state.event.drafts);
+        state.event.drafts.splice(index, 1);
+        console.log("BAAM2", state.event.drafts);
     },
 
     setEventDataLoadingError(state) {

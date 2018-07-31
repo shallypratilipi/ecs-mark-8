@@ -17,6 +17,7 @@ const httpUtil = {
         if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
+            // headers["AccessToken"] = "672222fb-d1bd-41e6-890b-01167bb9d94f";
         }
 
         if (headers != null) {
@@ -101,6 +102,39 @@ const httpUtil = {
                 aCallback(processResponseText(anHttpRequest.responseText), anHttpRequest.status);
         };
         anHttpRequest.open("PATCH", aUrl, true);
+        anHttpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+
+        /*
+        Need to look for an alternative
+        */
+        if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
+            headers = headers || {};
+            headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
+        }
+        
+
+        if (headers != null) {
+            for (var key in headers)
+                if (headers.hasOwnProperty(key))
+                    anHttpRequest.setRequestHeader(key, headers[key]);
+        }
+        anHttpRequest.send(formatParams(params));
+    },
+
+    delete: (aUrl, headers, params, aCallback) => {
+        if ('onLine' in navigator) {
+            if (!navigator['onLine']) {
+                aCallback({ "message": "${ _strings.could_not_connect_server }" }, 0);
+                return;
+            }
+        }
+        var anHttpRequest = new XMLHttpRequest();
+        anHttpRequest.onreadystatechange = function() {
+            if (anHttpRequest.readyState == 4 && aCallback != null)
+                aCallback(processResponseText(anHttpRequest.responseText), anHttpRequest.status);
+        };
+        anHttpRequest.open("DELETE", aUrl, true);
         anHttpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
         /*

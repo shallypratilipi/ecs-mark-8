@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card event-info">
-                            <div class="head-title">{{ getEventData.title }}</div>
+                            <div class="head-title">{{ getEventData.name }}</div>
                             <img :src="getEventData.bannerImageUrl" alt="">
                             <div class="desc" v-html="getEventData.description"></div>
                             <button v-if="canParticipate" type="button" class="participate_btn" name="button" @click="goToEventParticipate">__('event_participate')</button>
@@ -19,7 +19,7 @@
                                          :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
-                                    title: pratilipiData.title,
+                                    title: pratilipiData.name,
                                     coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="col-md-12 loader-overflow">
-                    <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader>
+                        <!-- <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader> -->
                     </div>
                     <div class="col-md-12" v-if="getSubmissionData.length > 0">
                         <!-- v-if="getUserEventData.length > 0 && canParticipate " -->
@@ -51,7 +51,6 @@
                                     submissionType: 'DRAFT',
                                     eventEntryId: pratilipiData.eventEntryId,
                                     eventId: getEventData.eventId
-
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -72,9 +71,12 @@
                             <Spinner v-if="getEventPratilipisLoadingState === 'LOADING'"></Spinner>
                         </div>
                     </div>
-
                     <Spinner v-if="getEventDataLoadingState === 'LOADING'"></Spinner>
                 </div>
+                <router-link
+                    :to="{path: `/event/${this.$route.params.event_slug}/participate/` , params: {eventId :this.$route.params.event_data.eventId }}">
+                    <button class="btn btn-danger">__('event_participate')</button>
+                </router-link>
             </div>
         </div>
     </MainLayout>
@@ -118,7 +120,6 @@ export default {
             'getUserEventData',
             'getUserEventDraftData',
             'getUserEventDataLoadingState',
-
             'getDraftData',
             'getSubmissionData'
 
@@ -142,7 +143,7 @@ export default {
         },
         goToEventParticipate() {
             this.$router.push(`/event/${this.$route.params.event_slug}/participate/`);
-        }
+        },
     },
     watch: {
         'getEventData.eventId' (eventId) {
@@ -163,7 +164,6 @@ export default {
         'scrollPosition'(newScrollPosition){
             const nintyPercentOfList = ( 80 / 100 ) * $('.event-page').innerHeight();
             const { eventId } = this.getEventData;
-
             if (newScrollPosition > nintyPercentOfList &&
                 this.getEventPratilipisLoadingState !== 'LOADING' &&
                 this.getEventPratilipisCursor !== null) {
@@ -187,18 +187,21 @@ export default {
     },
     created() {
         const { event_data, event_slug } = this.$route.params;
-        console.log(" event_slug " + event_slug);
+        console.log(" event_slug " + event_slug + " " + event_data.eventId);
         // if (event_data) {
         //     this.cacheEventData(event_data);
         //     console.log("Here");
         // } else {
-            this.fetchEventDetails(event_slug);
+        this.fetchEventDetails(event_data.eventId);
         console.log("HEre 2");
         // }
 
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
+        this.$route.params.eventId = this.getEventData.eventId;
+
+        console.log("this.$route.params.eventId ", this.$route.params.event_data.eventId);
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);

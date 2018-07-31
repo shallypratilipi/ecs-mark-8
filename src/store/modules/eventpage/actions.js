@@ -6,12 +6,12 @@ export default {
         commit('setEventDataFromCache', eventData);
     },
 
-    fetchEventDetails({ commit, state }, eventSlug) {
-        console.log(eventSlug);
+    fetchEventDetails({commit, state}, eventId) {
+        console.log(eventId);
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventBySlug(eventSlug, (eventData) => {
+        DataAccessor.getEventDetailById(eventId, (eventData) => {
             if (eventData) {
-                console.log(eventData);
+                console.log("DANG", eventData.response);
                 commit('setEventDataLoadingSuccess', eventData.response);
             } else {
                 commit('setEventDataLoadingError');
@@ -29,6 +29,7 @@ export default {
             }
         });
     },
+
 
     fetchMorePratilipisForEvent({ commit, state }, {  eventId, resultCount }) {
         commit('setDynamicEventPratilipiLoadingTrue');
@@ -77,7 +78,20 @@ export default {
     },
 
     deleteEntryFromEvent({commit, state}, {eventId, eventEntryId}) {
-        console.log("Delete: " + eventId + "  " + eventEntryId);
+        console.log("Delete:" + eventId + "  " + eventEntryId);
+        DataAccessor.deleteEntryOfEvent(eventId, eventEntryId, (data) => {
+            console.log("About to commit" + data.status);
+
+            if (data.status === 200) {
+                console.log("About to commit");
+                commit('resetDraftList');
+                // commit('setInitialEventPratilipiLoadingSuccess', data.response);
+            } else {
+                // commit('setInitialEventPratilipiLoadingError');
+            }
+        });
+
+
     },
 
     moveEntryToDrafts({commit, state}, {eventId, eventEntryId}) {
@@ -85,7 +99,16 @@ export default {
     },
 
     publishEntryForEvent({commit, state}, {eventId, eventEntryId}) {
+
         console.log("Publish : " + eventId + "  " + eventEntryId);
+
+        DataAccessor.publishEntryOfEvent(eventId, eventEntryId, (data) => {
+            if (data.status === 200) {
+                // commit('setInitialEventPratilipiLoadingSuccess', data.response);
+            } else {
+                // commit('setInitialEventPratilipiLoadingError');
+            }
+        });
     },
 
 
