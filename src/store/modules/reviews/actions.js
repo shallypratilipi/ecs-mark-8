@@ -1,7 +1,7 @@
 import DataAccessor from '@/utils/DataAccessor'
 
 export default {
-    
+
     fetchPratilipiReviews({ commit, state }, { resultCount, pratilipiId }) {
         commit('setReviewLoadingTrue');
         DataAccessor.getReviewList(pratilipiId, state.cursor, null, resultCount, function(data) {
@@ -21,7 +21,7 @@ export default {
             } else {
                 commit('setMoreReviewLoadingError');
             }
-        });   
+        });
     },
 
     loadCommentsOfReview({ commit, state }, { resultCount, parentId }) {
@@ -55,10 +55,9 @@ export default {
         }
 
         if (pageName === 'readerpage') {
-            console.log("user inside this function");
             dispatch('readerpage/setPratilipiRating', { rating, pratilipiId }, { root: true });
         }
-        // commit('alert/triggerAlertView', '__("success_generic_message")', { root: true });
+        commit('alert/triggerAlertView', '__("success_generic_message")', { root: true });
         setTimeout(() => {
             commit('alert/triggerAlertHide', null, { root: true });
         }, 3000);
@@ -66,11 +65,11 @@ export default {
 
     saveOrUpdateReview({ commit, state, dispatch }, { review, pratilipiId, pageName, rating }) {
         if (pageName === 'pratilipipage') {
-            dispatch('pratilipipage/saveOrUpdateReview', { review, pratilipiId }, { root: true });    
+            dispatch('pratilipipage/saveOrUpdateReview', { review, pratilipiId, rating }, { root: true });
         }
 
         if (pageName === 'readerpage') {
-            dispatch('readerpage/saveOrUpdateReview', { review, pratilipiId, rating }, { root: true });    
+            dispatch('readerpage/saveOrUpdateReview', { review, pratilipiId, rating }, { root: true });
         }
     },
 
@@ -84,11 +83,11 @@ export default {
 
     deleteReview({ commit, state, dispatch }, { pratilipiId, pageName }) {
         if (pageName === 'pratilipipage') {
-            dispatch('pratilipipage/deleteReview', pratilipiId, { root: true });    
+            dispatch('pratilipipage/deleteReview', pratilipiId, { root: true });
         }
 
         if (pageName === 'readerpage') {
-            dispatch('readerpage/deleteReview', pratilipiId, { root: true });    
+            dispatch('readerpage/deleteReview', pratilipiId, { root: true });
         }
     },
 

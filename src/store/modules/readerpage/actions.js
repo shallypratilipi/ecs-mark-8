@@ -110,22 +110,14 @@ export default {
 
     setPratilipiRating({ commit, state }, { rating, pratilipiId }) {
         commit('setPratilipiRatingUpdateLoading');
-        // console.log("inside api call stopped");
-        // DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {
-        //     commit('setPratilipiRatingUpdateSuccess', rating);
-        // }, (errorData) => {
-        //     commit('setPratilipiRatingUpdateError');
-        // });
+        DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {
+            commit('setPratilipiReviewRatingUpdateSuccess', rating);
+        }, (errorData) => {
+            commit('setPratilipiRatingUpdateError');
+        });
     },
 
     saveOrUpdateReview({ commit, state }, { review, pratilipiId, rating }) {
-        // DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {
-        //     commit('setPratilipiRatingUpdateSuccess', rating);
-        // }, (errorData) => {
-        //     commit('setPratilipiRatingUpdateError');
-        // });
-        console.log(state,rating, pratilipiId, review);
-        // state.userPratilipi.data.rating = rating;
         if (rating === null || rating === undefined) {
             commit('alert/triggerAlertView', 'need_rating', { root: true });
             setTimeout(() => {
@@ -134,10 +126,9 @@ export default {
             console.log('okay, i wont give review');
             return;
         }
-        // commit('setPratilipiReviewUpdateLoading');
+        commit('setPratilipiReviewUpdateLoading');
         DataAccessor.createOrUpdateReview(pratilipiId, rating, review, function(successData) {
-            commit('setPratilipiReviewUpdateSuccess', review);
-            commit('setPratilipiRatingUpdateSuccess', rating);
+            commit('setPratilipiReviewRatingUpdateSuccess', {review : review, rating: rating});
         }, (errorData) => {
             commit('setPratilipiReviewUpdateError');
         });
@@ -180,9 +171,11 @@ export default {
         })
     },
 
-    submitPrailipiReport({commit, state}, {name, email, message, pratilipiId, language, dataType}) {
+    submitPrailipiReport ({commit, state} , {name, email, message, pratilipiId , language }) {
         let phone = null;
+        let dataType = "PRATILIPI";
         let dataId = pratilipiId;
+        console.log(language);
           DataAccessor.reportContent(name, email, phone, message, dataType, dataId, language, (response) => {
         }, (errorData) => {
             console.log("ERROR IN READ PERCENTAGE API");

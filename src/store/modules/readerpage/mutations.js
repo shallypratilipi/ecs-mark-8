@@ -45,7 +45,7 @@ export default {
         state.index.data = [];
     },
 
-    
+
     setReaderPratilipiUserDataLoadingTrue(state) {
         state.userPratilipi.loading_state = 'LOADING';
     },
@@ -84,7 +84,7 @@ export default {
     addPratilipiToLibrarySuccess(state) {
         state.userPratilipi.data.addedToLib = true;
     },
-    
+
     addPratilipiToLibraryError(state) {
 
     },
@@ -92,7 +92,7 @@ export default {
     removePratilipiFromLibrarySuccess(state) {
         state.userPratilipi.data.addedToLib = false;
     },
-    
+
     removePratilipiFromLibraryError(state) {
 
     },
@@ -132,7 +132,7 @@ export default {
     setFollowUnfollowLoadingDataLoadingSuccess(state, data){
         state.author.data.following = data.following;
         if (data.following) {
-            state.author.data.followCount++;    
+            state.author.data.followCount++;
         } else {
             state.author.data.followCount--;
         }
@@ -176,9 +176,10 @@ export default {
     setPratilipiReviewUpdateLoading(state){
 
     },
-    setPratilipiReviewUpdateSuccess(state, value){
-        state.userPratilipi.data.review = value;
-        state.userPratilipi.data.reviewDateMillis = value ? Date.now() : null;
+    setPratilipiReviewRatingUpdateSuccess(state, value){
+        state.userPratilipi.data.review = value.review;
+        state.userPratilipi.data.rating = value.rating;
+        state.userPratilipi.data.reviewDateMillis = Date.now();
     },
     setPratilipiReviewUpdateError(state){
 

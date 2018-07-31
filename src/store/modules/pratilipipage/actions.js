@@ -38,12 +38,12 @@ export default {
             if (pratilipiData) {
                 commit('setPratilipiDataLoadingSuccess', pratilipiData);
             } else {
-                commit('setPratilipiDataLoadingError');    
+                commit('setPratilipiDataLoadingError');
             }
             if (userPratilipiData) {
                 commit('setPratilipiUserDataLoadingSuccess', userPratilipiData);
             } else {
-                commit('setPratilipiUserDataLoadingError');    
+                commit('setPratilipiUserDataLoadingError');
             }
         });
     },
@@ -101,17 +101,18 @@ export default {
         });
     },
 
-    saveOrUpdateReview({ commit, state, dispatch }, { review, pratilipiId }) {
-        if (state.userPratilipi.data.rating === null || state.userPratilipi.data.rating === undefined) {
+    saveOrUpdateReview({ commit, state }, { review, pratilipiId, rating }) {
+        if (rating === null || rating === undefined) {
             commit('alert/triggerAlertView', 'need_rating', { root: true });
             setTimeout(() => {
                 commit('alert/triggerAlertHide', null, { root: true });
             }, 3000);
+            console.log('okay, i wont give review');
             return;
         }
         commit('setPratilipiReviewUpdateLoading');
-        DataAccessor.createOrUpdateReview(pratilipiId, null, review, function(successData) {
-            commit('setPratilipiReviewUpdateSuccess', review);
+        DataAccessor.createOrUpdateReview(pratilipiId, rating, review, function(successData) {
+            commit('setPratilipiReviewRatingUpdateSuccess', {review : review, rating: rating});
         }, (errorData) => {
             commit('setPratilipiReviewUpdateError');
         });
@@ -134,7 +135,7 @@ export default {
             if (authorData) {
                 commit('setAuthorDetailsLoadingSuccess', authorData);
             } else {
-                commit('setAuthorDetailsLoadingError');    
+                commit('setAuthorDetailsLoadingError');
             }
         });
     },
@@ -209,7 +210,7 @@ export default {
             commit('setUpdatedTypeAndCategoriesError');
         })
     },
-    
+
     triggerRouteToMessageUser({ commit, state }, routeState) {
         commit('setRouteToMessageUser', routeState);
     }

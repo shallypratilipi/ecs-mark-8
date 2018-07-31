@@ -116,7 +116,7 @@
                             :type="'PRATILIPI'"></BookShareStrip>
                         </div>
                         <!-- add next Pratilipi here-->
-                        <div @click="hideStripAndRedirect" 
+                        <div @click="hideStripAndRedirect"
                         class="next-strip-container"
                         v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0">
                             <NextPratilipiStrip
@@ -142,7 +142,8 @@
                             :fetchSystemTags="fetchSystemTags"
                             ></BookTags>
                     </div>
-                    <div class="vapasi-container" v-if="this.isMobile()">
+                    <!-- removing vapsi as a failed experiment -->
+                    <!--<div class="vapasi-container" v-if="this.isMobile()">
                         <VapasiQuote
                             screenName="BOOK"
                             v-if="getCurrentLanguage().fullName == 'hindi'">
@@ -155,7 +156,7 @@
                             screenName="BOOK"
                             v-if="getCurrentLanguage().fullName == 'marathi'">
                         </VapasiHoroscope>
-                    </div>
+                    </div>-->
 
                     <div class="book-synopsis col-md-12 col-lg-7 p-0">
                         <div class="card">
@@ -241,6 +242,12 @@
                                 v-if="getPratilipiData && getPratilipiData.pratilipiId">
                             </Recommendation>
                         </div>
+                    </div>
+
+                    <div class="go-to-home-screen">
+                        <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
+                            __("reader_goto_home_page")
+                        </button>
                     </div>
                 </div>
                 <Spinner v-if="getPratilipiLoadingState === 'LOADING'"></Spinner>
@@ -346,6 +353,12 @@ export default {
         ...mapActions('alert', [
             'triggerAlert'
         ]),
+        navigateToHome() {
+            this.triggerAnanlyticsEvent(`GOTOHOME_RECOMMENDBOOK_BOOK`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
+            this.$router.push("/");
+        },
         logReadEvent() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent('READBOOK_BOOKM_BOOK', 'CONTROL', {
@@ -624,7 +637,6 @@ export default {
         },
         hideStripAndRedirect(){
             this.isNextPratilipiEnabled = false;
-            console.log("hiding next Pratilipi");
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent(`CLICKNEXTPRATILIPI_BOOKM_BOOK`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
@@ -760,6 +772,17 @@ export default {
         .col-md-12.p-0 {
             padding: 0;
         }
+        .go-to-home-screen {
+            text-align: center;
+            margin-bottom: 10px;
+            width: 100%;
+
+            button {
+                width: 50%;
+                height: 30px;
+            }
+        }
+
         .card {
             margin: 10px;
             display: block;

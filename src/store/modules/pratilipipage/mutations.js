@@ -109,6 +109,13 @@ export default {
         state.userPratilipi.data.review = value;
         state.userPratilipi.data.reviewDateMillis = value ? Date.now() : null;
     },
+
+    setPratilipiReviewRatingUpdateSuccess(state, value){
+        state.userPratilipi.data.review = value.review;
+        state.userPratilipi.data.rating = value.rating;
+        state.userPratilipi.data.reviewDateMillis = Date.now();
+    },
+
     setPratilipiReviewUpdateError(state){
 
     },
