@@ -92,6 +92,10 @@ export default {
         });
     },
 
+    updateRatingInStore({ commit, state }, { review, pratilipiId, rating }) {
+        commit('setPratilipiReviewRating', {review : review, rating: rating});
+    },
+
     setPratilipiRating({ commit, state }, { rating, pratilipiId }) {
         commit('setPratilipiRatingUpdateLoading');
         DataAccessor.createOrUpdateReview(pratilipiId, rating, null, function(successData) {

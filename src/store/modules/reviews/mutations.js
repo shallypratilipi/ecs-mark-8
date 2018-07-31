@@ -7,7 +7,7 @@ export default {
     },
     setReviewLoadingSuccess(state, data) {
         state.loading_state = 'LOADING_SUCCESS';
-        
+
         state.cursor = data.cursor;
         state.numberFound = data.numberFound;
 
@@ -85,11 +85,10 @@ export default {
         concernedReview.comments.data.push(data);
         concernedReview.commentCount++;
     },
-    
+
     addNewCommentError() {
 
     },
-
     updateCommentSuccess(state, { commentId, data }){
         state.data.forEach(( eachReview ) => {
             let requiredComment = eachReview.comments.data.find(( eachComment ) => eachComment.commentId === commentId);
@@ -110,9 +109,9 @@ export default {
             if (requiredComment) {
                 requiredComment.isLiked = isLiked;
                 if (isLiked) {
-                    requiredComment.likeCount++;    
+                    requiredComment.likeCount++;
                 } else {
-                    requiredComment.likeCount--;    
+                    requiredComment.likeCount--;
                 }
             }
         });
@@ -130,6 +129,6 @@ export default {
             if (indexToRemove !== null) {
                 eachReview.comments.data.splice(indexToRemove, 1);
             }
-        });  
+        });
     }
 }

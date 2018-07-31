@@ -572,6 +572,11 @@ export default {
         "LOCATION": "COLLECTIONS",
         "ACTION": "CLICKCOLLECTION"
     },
+    "CLICKMORECOLLECTION_COLLECTIONS_HOME": {
+        "SCREEN_NAME": "HOME",
+        "LOCATION": "COLLECTIONS",
+        "ACTION": "CLICKCOLLECTION"
+    },
     "SWIPE_COLLECTIONS_HOME": {
         "SCREEN_NAME": "HOME",
         "LOCATION": "COLLECTIONS",

@@ -49,6 +49,16 @@ export default {
         });
     },
 
+    updateRatingInStore({ commit, state, dispatch }, { review, pratilipiId, pageName, rating }) {
+        if (pageName === 'pratilipipage') {
+            dispatch('pratilipipage/updateRatingInStore', { review, pratilipiId, rating }, { root: true });
+        }
+
+        if (pageName === 'readerpage') {
+            dispatch('readerpage/updateRatingInStore', { review, pratilipiId, rating }, { root: true });
+        }
+    },
+
     setPratilipiRating({ commit, state, dispatch }, { rating, pratilipiId, pageName }) {
         if (pageName === 'pratilipipage') {
             dispatch('pratilipipage/setPratilipiRating', { rating, pratilipiId }, { root: true });
