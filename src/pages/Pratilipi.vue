@@ -2,7 +2,7 @@
     <MainLayout>
         <div class="pratilipi-page page-wrap">
             <div class="container">
-                <div class="row" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
+                <div class="row" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'" itemscope itemtype="http://schema.org/Book">
                     <div class="book-details col-md-12 col-lg-5 p-0">
                         <div class="card">
                             <div class="book-image-container">
@@ -30,12 +30,15 @@
                                 </div>
                             </div>
 
-                            <div class="book-title"><h1>{{ getPratilipiData.title }}</h1> <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
+                            <div class="book-title"><h1 itemprop="headline">{{ getPratilipiData.title }}</h1> <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
+			    <meta itemprop="url" v-bind:content="currentPageUrl" />
+			    <meta itemprop="thumbnailUrl" v-bind:content="getPratilipiData.coverImageUrl" />	    
+			    <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/>
                             <router-link
                               :to="getPratilipiData.author.pageUrl"
                               @click.native="triggerClickAuthorNameEvent"
                               class="author-name">
-                              <span>{{ getPratilipiData.author.name }}</span>
+                              <span itemprop="author">{{ getPratilipiData.author.name }}</span>
                             </router-link>
                             <MessageButton
                                  v-if="getAuthorDetails.user && getAuthorDetails.user.userId && getUserDetails.userId !== getAuthorDetails.user.userId"
@@ -52,15 +55,15 @@
                                 :locationName="'BOOKM'"
                                 ></MessageButton>
                             <div class="book-stats">
-                                <span class="avg-rating stars-green"><span class="rating-text">{{ getPratilipiData.averageRating | round(1) }}</span> <i class="material-icons">star_rate</i></span>
+                                <span class="avg-rating stars-green" ><span class="rating-text" itemprop="aggregateRating">{{ getPratilipiData.averageRating | round(1) }}</span> <i class="material-icons">star_rate</i></span>
                                 <span class="review-count">{{ getPratilipiData.ratingCount }} __("rating_ratings")</span>
                             </div>
                             <div class="book-stats">
-                                <span class="read-time">__("pratilipi_reading_time"): {{ getPratilipiData.readingTime | showInMinutesOrHours }}</span>
+                                <span class="read-time" >__("pratilipi_reading_time"): <span itemprop="timeRequired">{{ getPratilipiData.readingTime | showInMinutesOrHours }}</span></span>
                             </div>
                             <div class="book-stats">
                                 <span class="read-count">__("pratilipi_count_reads"): {{ getPratilipiData.readCount }}</span>
-                                <span class="date">__("pratilipi_listing_date"): {{ getPratilipiData.listingDateMillis | convertDate }}</span>
+                                <span class="date">__("pratilipi_listing_date"): <span itemprop="datePublished">{{ getPratilipiData.listingDateMillis | convertDate }}</span></span>
                             </div>
                             <div class="main-actions"  v-if="getUserPratilipiLoadingState === 'LOADING_SUCCESS'">
                                 <div class="book-edit-actions" v-if="getPratilipiData.hasAccessToUpdate">
@@ -160,7 +163,7 @@
                                 <div class="head-title">__("pratilipi_summary")
                                     <button class="edit" @click="editPratilipiSummary" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button>
                                 </div>
-                                <p class="text show-more-height">{{ getPratilipiData.summary }}</p>
+                                <p class="text show-more-height" itemprop="text">{{ getPratilipiData.summary }}</p>
                                 <button type="button" v-if="showShowMoreOfSummary" class="show_more" name="button" data-toggle="modal" data-target="#book_summary_modal">__("view_more")</button>
                             </div>
                             <!-- SUMMARY MODAL -->
@@ -298,6 +301,7 @@ export default {
             percentScrolled: null,
             percentageRead: null,
             isNextPratilipiEnabled: false,
+	    currentPageUrl: null,
         }
     },
     mixins: [
@@ -685,6 +689,7 @@ export default {
 
             // setting isWebPushModalEnabled
             this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 80 && (parseInt(this.getCookie('bucketId')) || 0) < 100;
+	    this.currentPageUrl = window.location.href;
         },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS' && !this.hasLandedBeenTriggered) {
