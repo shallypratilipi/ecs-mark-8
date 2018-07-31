@@ -27,10 +27,6 @@
 						</div>
 					</router-link>
 	        </div>
-
-            <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
-                __("reader_goto_home_page")
-            </button>
 		</div>
 	</div>
 </template>
@@ -97,12 +93,6 @@ export default {
         }
     },
     methods: {
-        navigateToHome() {
-            this.triggerAnanlyticsEvent(`GOTOHOME_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId
-            });
-            this.$router.push("/");
-        },
         handleBeforeChange() {
             if (this.$route.meta.store === 'homepage') {
                 this.triggerAnanlyticsEvent(`SWIPE_COLLECTIONS_HOME`, 'CONTROL', {

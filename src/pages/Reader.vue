@@ -161,13 +161,18 @@
                             <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
-                                    :context="'summaryPage'"
+                                    :context="'readPage'"
                                     :themeColor="readingMode"
                                     screenName="READER"
                                     screenLocation="RECOMMENDBOOK"
                                     v-if="getPratilipiData && getPratilipiData.pratilipiId"
                                 >
                                 </Recommendation>
+                            </div>
+                            <div class="go-to-home-screen">
+                                <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
+                                    __("reader_goto_home_page")
+                                </button>
                             </div>
 
                             <WebPushModal
@@ -366,6 +371,12 @@ export default {
             'setShareDetails',
             'setAfterLoginAction'
         ]),
+        navigateToHome() {
+            this.triggerAnanlyticsEvent(`GOTOHOME_RECOMMENDBOOK_READER`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId
+            });
+            this.$router.push("/");
+        },
         recordMaxRead(maxRead) {
             if (!this.getUserDetails.isGuest && !isNaN(maxRead)) {
                 if (this.$route.query.chapterNo) {
@@ -1483,6 +1494,15 @@ export default {
    .book-bottom-webpush-subscribe.bg-black {
        .webpush-container .webpush-inner-container {
            background: black;
+        }
+    }
+    .go-to-home-screen {
+        text-align: center;
+        margin-bottom: 10px;
+
+        button {
+            width: 50%;
+            height: 30px;
         }
     }
 }

@@ -20,8 +20,8 @@
                         <span>{{ userPratilipiData.reviewDateMillis | convertDate }}</span>
                     </div>
                     <div class="rating">
-                        <i class="material-icons" v-for="index in Number(userPratilipiData.rating)" :key="index + Math.random()">star</i>
-                        <i class="material-icons" v-for="index in 5 - Number(userPratilipiData.rating)" :key="index + Math.random()">star_border</i>
+                        <i class="material-icons" v-for="index in Number(this.rating)" :key="index + Math.random()">star</i>
+                        <i class="material-icons" v-for="index in 5 - Number(this.rating)" :key="index + Math.random()">star_border</i>
                     </div>
                     <div class="comment-content">
                         {{ userPratilipiData.review }}
@@ -33,7 +33,7 @@
                                <!--  <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
                                 <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue"  placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
-                            <button type="button" class="btn btn-primary" :disabled="newReview === '' || !newReview" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId })">__("save")</button>
+                            <button type="button" class="btn btn-primary" :disabled="newReview === '' || !newReview" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: rating})">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
                         </form>
                     </div>
@@ -41,16 +41,13 @@
                 <div class="rate-now" v-if="!userPratilipiData.reviewDateMillis || editRatingMode">
                     <span class="text">__("rating_your_rating")</span>
                     <fieldset class="rating" @click="openReview">
-                        
-                        <input type="radio" id="star5" name="rating" value="5" :checked="curUserRating == 5" @change="changeRating"/><label class = "full" for="star5"></label>
-                        <input type="radio" id="star4" name="rating" value="4" :checked="curUserRating == 4" @change="changeRating"/><label class = "full" for="star4"></label>
-                        <input type="radio" id="star3" name="rating" value="3" :checked="curUserRating == 3" @change="changeRating"/><label class = "full" for="star3"></label>
-                        <input type="radio" id="star2" name="rating" value="2" :checked="curUserRating == 2" @change="changeRating"/><label class = "full" for="star2"></label>
-                        <input type="radio" id="star1" name="rating" value="1" :checked="curUserRating == 1" @change="changeRating"/><label class = "full" for="star1"></label>
+                        <input  type="radio" id="star5" name="rating" value="5" :checked="this.rating == 5" @change="changeRating"/><label class = "full star" for="star5"></label>
+                        <input  type="radio" id="star4" name="rating" value="4" :checked="this.rating == 4" @change="changeRating"/><label class = "full star" for="star4"></label>
+                        <input  type="radio" id="star3" name="rating" value="3" :checked="this.rating == 3" @change="changeRating"/><label class = "full star" for="star3"></label>
+                        <input  type="radio" id="star2" name="rating" value="2" :checked="this.rating == 2" @change="changeRating"/><label class = "full star" for="star2"></label>
+                        <input  type="radio" id="star1" name="rating" value="1" :checked="this.rating == 1" @change="changeRating"/><label class = "full star" for="star1"></label>
                     </fieldset>
-                    <div>
-                        <div><span>{{ratingText}}</span></div>
-                    </div>
+                    <p class="rating-helper"> {{ ratingHelper }} </p>
                     <button class="btn btn-primary write-review-btn" v-if="!userPratilipiData.review || userPratilipiData.review === ''" @click="openReview">__("review_write_a_review")</button>
                     <button class="btn btn-primary write-review-btn" @click="openReview" v-else>__("review_edit_review")</button>
                     <div class="review-box">
@@ -59,7 +56,7 @@
                                 <!-- <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
                                 <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue"  placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
-                            <button type="button" class="btn btn-primary" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId })">__("save")</button>
+                            <button type="button" :disabled="!isSaveActive &&  (newReview === '' || !newReview)" class="btn btn-primary" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: rating })">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
                         </form>
                     </div>
@@ -104,20 +101,15 @@ export default {
         pratilipiData: {
             type: Object,
             required: true
-        },
-        curUserRating: {
-            type: Number
-        },
-        ratingText:{
-            type: String,
-            default: ''
         }
     },
     data() {
         return {
             newReview: '',
             editRatingMode: false,
-            ratingText: 'Enter your Rating'
+            isSaveActive: false,
+            rating: this.userPratilipiData.rating,
+            ratingHelper: null
         }
     },
     computed: {
@@ -138,8 +130,6 @@ export default {
             'setAfterLoginAction'
         ]),
         changeRating(e) {
-            this.checkRating(e.target.value);
-            console.log("inside method call after star",e.target.value);
             let action = this.userPratilipiData.rating ? 'EDITRATE' : 'RATE';
             this.triggerAnanlyticsEvent(`${action}_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId,
@@ -152,42 +142,15 @@ export default {
                 $('#star3').prop('checked', false);
                 $('#star4').prop('checked', false);
                 $('#star5').prop('checked', false);
-                this.setAfterLoginAction({ action: `reviews/setPratilipiRating`, data: { 
-                    rating: newRating, 
+                this.setAfterLoginAction({ action: `reviews/setPratilipiRating`, data: {
+                    rating: newRating,
                     pratilipiId: this.userPratilipiData.pratilipiId,
                     pageName: this.$route.meta.store
                 } });
                 this.openLoginModal(this.$route.meta.store, 'RATE', this.screenLocation);
             } else {
-                const newRating = e.target.value;
-                this.curUserRating = e.target.value;
-                this.setPratilipiRating({ 
-                    rating: newRating, 
-                    pratilipiId: this.userPratilipiData.pratilipiId,
-                    pageName: this.$route.meta.store
-                });
-            }
-        },
-        checkRating(value){
-            console.log("inside value switch",value)
-            switch(value){
-                case 1:
-                    this.ratingText = "Bad";
-                    break;
-                case 2:
-                    this.ratingText = "Not Bad";
-                    break;
-                case 3:
-                    this.ratingText = "Good";
-                    break;
-                case 4:
-                    this.ratingText = "Very Good";
-                    break;
-                case 5:
-                    this.ratingText = "Awesome";
-                    break;
-                default:
-                    this.ratingText = "Enter your Rating";
+                this.isSaveActive = true;
+                this.rating = e.target.value;
             }
         },
         checkAndUpdateReview(data) {
@@ -204,14 +167,12 @@ export default {
             this.editRatingMode = false;
             if (this.getUserDetails.isGuest) {
                 data.pageName = this.$route.meta.store;
-                this.saveOrUpdateReview(data)
+                this.saveOrUpdateReview(data);
                 this.openLoginModal(this.$route.meta.store, 'REVIEW', this.screenLocation);
                 this.cancelReview();
             } else {
-                console.log("=========",data);
                 data.pageName = this.$route.meta.store;
-                data.rating = this.curUserRating;
-                this.saveOrUpdateReview(data)
+                this.saveOrUpdateReview(data);
                 this.cancelReview();
             }
         },
@@ -238,6 +199,38 @@ export default {
     created() {
         this.newReview = this.userPratilipiData.review;
     },
+    mounted() {
+        let that = this;
+        $( ".star" ).hover(function () {
+            let className = $(this).prop('for');
+
+            switch (className) {
+                case "star1" :
+                    that.ratingHelper = '__("rating_hated_it")';
+                    break;
+                case "star2" :
+                    that.ratingHelper = '__("rating_didnt_like_it")';
+                    break;
+                case "star3" :
+                    that.ratingHelper = '__("rating_just_ok")';
+                    break;
+                case "star4" :
+                    that.ratingHelper = '__("rating_liked_it")';
+                    break;
+                case "star5" :
+                    that.ratingHelper = '__("rating_loved_it")';
+                    break;
+                default:
+                    that.ratingHelper = null;
+                    break;
+            }
+        });
+
+        $( ".star" ).mouseout(function() {
+            that.ratingHelper = null;
+        });
+
+    },
     watch: {
         'inViewport.now': function(visible) {
             if (visible) {
@@ -245,13 +238,13 @@ export default {
                 if (this.screenLocation === 'BOOKEND' && this.screenName === 'READER') {
                     this.triggerAnanlyticsEvent(`LANDED_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
                         'USER_ID': this.getUserDetails.userId
-                    });    
+                    });
                 } else {
                     this.triggerAnanlyticsEvent(`VIEWED_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
                         'USER_ID': this.getUserDetails.userId
                     });
                 }
-                
+
             }
         }
     },
@@ -266,56 +259,6 @@ export default {
 li {
     list-style: none;
 }
-
-label{
-    // background: #2c3e50 !important;
-    &.tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-    
-        /* Position the tooltip text - see examples below! */
-        position: absolute;
-        z-index: 1;
-    };
-    &:hover .tooltiptext{
-        visibility: hidden;
-    }
-}
-
-.for1:hover{
-    .for1 .tooltip{
-        visibility: visible;
-    }
-}
-
-.tooltip {
-    // position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-    .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-    
-        /* Position the tooltip text - see examples below! */
-        position: absolute;
-        z-index: 1;
-    };
-    &:hover .tooltiptext{
-        visibility: visible;
-    }
-
-}
-
 .comment-main-level {
     margin: 0 5px 10px;
     text-align: center;
@@ -421,6 +364,10 @@ label{
                 margin: 0;
                 font-size: 14px;
             }
+            .rating-helper{
+                font-size: 18px;
+                height: 20px;
+            }
             .rating {
                 border: none;
                 width: 230px;
@@ -428,7 +375,7 @@ label{
                 input {
                     display: none;
                 }
-                label:before { 
+                label:before {
                     margin: 2px 5px 0 0;
                     font-size: 40px;
                     font-family: 'Material Icons';
@@ -436,15 +383,15 @@ label{
                     content: "\e83a";
                     color: #28a745;
                 }
-                label { 
-                    color: #9e9e9e; 
+                label {
+                    color: #9e9e9e;
                     float: right;
                     margin: 0;
                 }
                 input:checked ~ label, &:not(:checked) > label:hover, &:not(:checked) > label:hover ~ label {
                     color: #d0021b;
                 }
-                input:checked ~ label:before { 
+                input:checked ~ label:before {
                     content: "\e838";
                 }
             }
