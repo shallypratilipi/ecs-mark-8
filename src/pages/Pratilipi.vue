@@ -31,6 +31,7 @@
                             </div>
 
                             <div class="book-title"><h1 itemprop="headline">{{ getPratilipiData.title }}</h1> <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
+			    <meta itemprop="inLanguage" v-bind:content="getPratilipiData.language" />
 			    <meta itemprop="url" v-bind:content="currentPageUrl" />
 			    <meta itemprop="thumbnailUrl" v-bind:content="getPratilipiData.coverImageUrl" />	    
 			    <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/>

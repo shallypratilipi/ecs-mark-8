@@ -4,7 +4,10 @@
             <div class="container">
                 <div class="page-content">
                     <div class="row">
-                        <div class="col-md-12 profile-top" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'">
+                        <div class="col-md-12 profile-top" v-if="getAuthorDataLoadingState === 'LOADING_SUCCESS'" itemscope itemtype="http://schema.org/Person">
+			    <meta itemprop="url" v-bind:content="currentPageUrl" />
+			    <meta itemprop="knowsLanguage" v-bind:content="getAuthorData.language" />
+			    <meta itemprop="alternateName" v-bind:content="getAuthorData.displayName" />
                             <div class="profile-cover" :style="{ backgroundImage: 'url(' + getAuthorData.coverImageUrl + ')' }">
                                 <div class="cover-options">
                                     <router-link
@@ -23,6 +26,7 @@
                             </div>
 
                             <div class="profile-image">
+				<meta itemprop="image" v-bind:content="getAuthorData.imageUrl" />
                                 <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" alt="profile">
                                 <button class="update-img" v-if="getUserDetails.userId === getAuthorData.user.userId" @click="uploadImage('profile-image')"><i class="material-icons">camera_alt</i></button>
                                 <input type="file" hidden name="profileimage" @change="triggerProfileImageUpload($event)" accept="image/*" id="profile_uploader">
@@ -30,7 +34,7 @@
                                     <Spinner></Spinner>
                                 </div>
                             </div>
-                            <div class="profile-user-name">{{ getAuthorData.name }}</div>
+                            <div class="profile-user-name" itemprop="name">{{ getAuthorData.name }}</div>
                             <div class="profile-read-by">__("author_readby_count")</div>
                             <div class="profile-summary" v-if="getAuthorData.summary || getAuthorData.hasAccessToUpdate">
                                 <div class="head-title">
@@ -177,7 +181,8 @@ export default {
         return {
             user_id: null,
             scrollPosition: null,
-            showShowMoreOfSummary: false
+            showShowMoreOfSummary: false,
+	    currentPageUrl: null,
         }
     },
     computed: {
@@ -437,6 +442,7 @@ export default {
                 }
 
             }
+	    this.currentPageUrl = window.location.href;
         },
         '$route.params.user_slug' (user_slug) {
             this.fetchAuthorDetails(user_slug);

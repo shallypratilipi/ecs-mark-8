@@ -1,9 +1,11 @@
 <template>
     <div class="pratilipi-wrap">
-        <div class="pratilipi">
+        <div class="pratilipi" itemscope itemtype="http://schema.org/Book">
+	    
             <div class="book-type" :class="pratilipiData.type">
                 {{ pratilipiData.type | getPratilipiTypeInNativeLanguage }} <span></span>
             </div>
+	    <meta itemprop="inLanguage" v-bind:content="pratilipiData.language" />
             <router-link :to="redirectToReader ? pratilipiData.readPageUrl : pratilipiData.pageUrl" @click.native="triggerReadPratilipiEvent" :title="pratilipiData.title">
                 <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             </router-link>
@@ -22,14 +24,19 @@
             </div>
             <router-link :to="redirectToReader ? pratilipiData.readPageUrl : pratilipiData.pageUrl" @click.native="triggerReadPratilipiEvent" :title="pratilipiData.title">
                 <div class="pratilipi-details">
-                    <span class="title">{{ pratilipiData.title }}</span>
-                    <span v-if="!hideAuthorName" class="author">{{ pratilipiData.author.name }}</span>
+                    <span class="title" itemprop="headline">{{ pratilipiData.title }}</span>
+                    <span v-if="!hideAuthorName" class="author" itemprop="author">{{ pratilipiData.author.name }}</span>
                     <p v-if="pratilipiData.cardSummary" class="summary">{{ pratilipiData.cardSummary }}</p>
+		    <meta itemprop="text" v-bind:content="pratilipiData.summary" />
+		    <meta itemprop="datePublished" v-bind:content="pratilipiData.listingDateMillis | convertDate" />
+		    <meta itemprop="thumbnailUrl" v-bind:content="pratilipiData.coverImageUrl" />
+                    <meta itemprop="url" v-bind:content="this.websiteUrl+pratilipiData.pageUrl" />
+                    <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/>
                 </div>
                 <div class="stats">
                     <div class="rating">
                         <i class="material-icons">star</i>
-                        <span>
+                        <span itemprop="aggregateRating">
                             {{ pratilipiData.averageRating | round(1) }}
                         </span>
                     </div>
@@ -41,7 +48,7 @@
                     </div>
                     <div class="read-time">
                         <i class="material-icons">access_time</i>
-                        <span>
+                        <span itemprop="timeRequired">
                             {{ pratilipiData.readingTime | showInMinutesOrHours }}
                         </span>
                     </div>
@@ -94,6 +101,7 @@ export default {
     ],
     data() {
         return {
+	    websiteUrl:null,
         }
     },
     computed: {
@@ -155,6 +163,9 @@ export default {
             this.setShareDetails({ data: this.pratilipiData, type: 'PRATILIPI', screen_name: this.screenName, screen_location: this.screenLocation });
             $('#share_modal').modal('show');
         }
+    },
+    created() {
+	this.websiteUrl = window.location.origin;
     },
     components: {
         PratilipiImage
