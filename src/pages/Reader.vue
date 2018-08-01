@@ -823,8 +823,9 @@ export default {
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30;
-            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+            // this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && this.getPratilipiData.readingTime >= 120;
+             // && (parseInt( this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);

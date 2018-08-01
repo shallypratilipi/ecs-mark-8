@@ -116,6 +116,22 @@
                             :data="getPratilipiData"
                             :type="'PRATILIPI'"></BookShareStrip>
                         </div>
+                        <div class="card webpush-strip-container" v-if="isWebPushStripEnabled">
+                            <div class="head-title">
+                                __("web_push_section_title")
+                                <button class="close" @click="closeWebPushStrip()">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </div>
+                            <WebPushStrip
+                                screenName="PRATILIPI"
+                                message="__('web_push_message_3')"
+                                :includeIcon=true
+                                :includeDisableButton=false
+                                :includeCloseButton=false
+                                v-on:WebPushEnabled="isWebPushStripEnabled=false">
+                            </WebPushStrip>
+                        </div>
                         <!-- add next Pratilipi here-->
                         <div @click="hideStripAndRedirect"
                         class="next-strip-container"
@@ -187,22 +203,6 @@
 
                             <AboutAuthor :authorId="getPratilipiData.author.authorId" :pratilipiData="getPratilipiData"></AboutAuthor>
 
-                        </div>
-                        <div class="card webpush-strip-container" v-if="isWebPushStripEnabled">
-                            <div class="head-title">
-                                __("web_push_section_title")
-                                <button class="close" @click="closeWebPushStrip()">
-                                    <i class="material-icons">close</i>
-                                </button>
-                            </div>
-                            <WebPushStrip
-                                screenName="PRATILIPI"
-                                message="__('web_push_message_3')"
-                                :includeIcon=true
-                                :includeDisableButton=false
-                                :includeCloseButton=false
-                                v-on:WebPushEnabled="isWebPushStripEnabled=false">
-                            </WebPushStrip>
                         </div>
                         <div class="card">
                             <div class="head-title">__("review_heading")</div>
@@ -698,10 +698,10 @@ export default {
             this.webPushModalTriggered = false;
 
             // setting isWebPushStripEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 60 && (parseInt(this.getCookie('bucketId')) || 0) < 80;
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 50;
 
             // setting isWebPushModalEnabled
-            this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 80 && (parseInt(this.getCookie('bucketId')) || 0) < 100;
+            this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 50 && (parseInt(this.getCookie('bucketId')) || 0) < 100;
 	    this.currentPageUrl = window.location.href;
         },
         'getPratilipiLoadingState'(status) {
