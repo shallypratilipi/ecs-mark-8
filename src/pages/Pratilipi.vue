@@ -693,7 +693,7 @@ export default {
             this.suggestedTags = this.getPratilipiData.suggestedTags;
             document.title = this.getPratilipiData.titleEn === ""  || this.getPratilipiData.titleEn === null || this.getPratilipiData.titleEn === "undefined" || this.getPratilipiData.titleEn === "null" || this.getPratilipiData.titleEn === undefined ? this.getPratilipiData.title : this.getPratilipiData.title+" | "+ this.getPratilipiData.titleEn;
             document.head.querySelector('meta[name="description"]').content = this.getPratilipiData.summary;
-	    this.setPratilipiPageOgTags(this.getPratilipiData);
+	        this.setPratilipiPageOgTags(this.getPratilipiData);
 
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;

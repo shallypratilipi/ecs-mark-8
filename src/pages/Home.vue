@@ -83,7 +83,7 @@ import { mapGetters, mapActions } from 'vuex'
         data() {
             return {
                 sectionList: [],
-                isWebPushStripEnabled: true,
+                isWebPushStripEnabled: WebPushUtil.canShowCustomPrompt(),
                 isWebPushModalEnabled: false,
                 webPushModalTriggered: false,
                 scrollPosition: null,
