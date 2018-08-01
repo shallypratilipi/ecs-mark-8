@@ -133,7 +133,7 @@
                                 :type="'PRATILIPI'">
                             </ShareStrip>
 
-                            <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
+                            <div class="book-recomendations book-recomendations-experiment p-r-10" v-if="selectedChapter == getIndexData.length">
                                 <Recommendation
                                     :contextId="getPratilipiData.pratilipiId"
                                     :context="'readPage'"
@@ -1545,7 +1545,7 @@ export default {
         }
     }
 
-    .book-recomendations{
+    .book-recomendations-experiment {
         .pratilipi-list {
             display: flex;
             flex-wrap: nowrap;
