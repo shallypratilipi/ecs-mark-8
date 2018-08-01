@@ -170,7 +170,7 @@
                                 </Recommendation>
                             </div>
                             <div class="go-to-home-screen">
-                                <button class="btn btn-sm btn-danger" v-if="isMobile()" @click="navigateToHome">
+                                <button class="btn btn-sm btn-danger" v-if="isMobile() && this.selectedChapter == this.getIndexData.length" @click="navigateToHome">
                                     __("reader_goto_home_page")
                                 </button>
                             </div>
@@ -189,15 +189,15 @@
             <div class="footer-section">
                 <div class="container">
                     <div class="row">
-                        <div class="review-count col-3" @click="openReviewModal">
+                        <div class="review-count" @click="openReviewModal">
                             <i class="material-icons">comment</i>
                             <span>{{ getPratilipiData.reviewCount }}</span>
                         </div>
-                        <div class="rating-count col-3" @click="openRatingModal">
+                        <div class="rating-count" @click="openRatingModal">
                             <i class="material-icons">star_rate</i>
                             <span>{{ getPratilipiData.ratingCount }}</span>
                         </div>
-                        <div class="add-to-lib col-3">
+                        <div class="add-to-lib">
                             <span v-if="getUserPratilipiData.addedToLib" @click="triggerAnanlyticsEventAndRemoveFromLibrary">
                                 <i class="material-icons">bookmark</i>
                                 <i class="material-icons stacked">check</i>
@@ -207,7 +207,12 @@
                                 <i class="material-icons stacked grey">add</i>
                             </span>
                         </div>
-                        <div class="share-btn col-3" @click="openShareModal">
+                        <div class="whatsapp-share-btn">
+                            <a :href="getWhatsAppUri" @click="triggerWaEndShareEvent" class="whatsapp" target="_blank" rel="noopener" aria-label="google">
+                                <span class="social-icon"><icon name="whatsapp"></icon></span>
+                            </a>
+                        </div>
+                        <div class="share-btn" @click="openShareModal">
                             <i class="material-icons">share</i>
                         </div>
                     </div>
@@ -699,6 +704,17 @@ export default {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId});
             this.$router.push({ path: '/read', query: { id: String(this.getPratilipiData.nextPratilipi.pratilipiId)} });
+        },
+        triggerWaEndShareEvent() {
+            let pratilipiAnalyticsData = {};
+            if (this.getPratilipiData) {
+                pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
+            }
+            this.triggerAnanlyticsEvent(`SHAREBOOKWA_BOOKEND_READER`, 'CONTROL', {
+                ...pratilipiAnalyticsData,
+                'USER_ID': this.getUserDetails.userId,
+                'ENTITY_VALUE': 'WHATSAPP'
+            });
         }
     },
     computed: {
@@ -720,7 +736,8 @@ export default {
             'getAuthorDataLoadingState'
         ]),
         ...mapGetters([
-            'getUserDetails'
+            'getUserDetails',
+            'getWhatsAppUri'
         ])
     },
     created() {
@@ -806,8 +823,9 @@ export default {
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30;
-            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+            // this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && this.getPratilipiData.readingTime >= 120;
+             // && (parseInt( this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -1010,7 +1028,7 @@ export default {
         margin: 49px 0;
         font-size: 16px;
         padding: 0;
-        text-align: justify;
+        text-align: left;
         -moz-user-select: -moz-none;
         -moz-user-select: none;
         -o-user-select: none;
@@ -1020,6 +1038,8 @@ export default {
         user-select: none;
         .content-section {
             min-height: 400px;
+            margin: 0 auto;
+            max-width: 750px;
         }
         .p-lr-15 {
             padding: 0 15px;
@@ -1072,17 +1092,6 @@ export default {
             font-size: 14px;
             vertical-align: middle;
         }
-        .col-3 {
-            cursor: pointer;
-            padding: 0 5px;
-            -moz-user-select: -moz-none;
-            -moz-user-select: none;
-            -o-user-select: none;
-            -khtml-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
         .add-to-lib {
             i {
                 font-size: 25px;
@@ -1104,6 +1113,46 @@ export default {
                     font-weight: bold;
                     &.grey {
                         color: #212121;
+                    }
+                }
+            }
+        }
+        .container {
+            .row {
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                padding: 0 5px;
+                -moz-user-select: -moz-none;
+                -moz-user-select: none;
+                -o-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+
+                .whatsapp-share-btn {
+
+                    a {
+                        vertical-align: middle;
+                        color: #2c3e50;
+                        display: inline-block;
+                        text-align: left;
+                        margin: 0 0 5px;
+                        font-size: 14px;
+                        .social-icon {
+                            display: inline-block;
+                            color: #2c3e50;
+                            text-align: center;
+                        }
+                        .fa-icon {
+                            width: 24px;
+                            height: 24px;
+                        }
+                        &:hover {
+                            text-decoration: none;
+                        }
                     }
                 }
             }

@@ -1,14 +1,34 @@
 <template>
 	<div class="section">
 		<div class="container-fluid">
-	        <h2 class="section-title">
-                <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerListLink">{{title}}</router-link>
-                <span v-else>{{title}}</span>
-            </h2>
+            <div class="row">
+                <div class="col-8">
+                    <h2 class="section-title">
+                        <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerListLink">
+                           <span> {{title}} </span>
+                        </router-link>
+                        <span v-else>{{title}}</span>
+                    </h2>
+                </div>
+                <div v-if="!isAndroid()" class="col-4">
+                    <h2 class="section-title-see-more">
+                        <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerMoreListLink">
+                            <span>__("view_more")</span>
+                        </router-link>
+                    </h2>
+                </div>
+                <div v-else class="col-4">
+                    <h2 class="section-title-see-more">
+                        <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerMoreListLink">
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </router-link>
+                    </h2>
+                </div>
+            </div>
 	        <div class="pratilipi-list" v-if="pratilipiList.length > 0">
 	            <slick ref="slick" :options="slickOptions" @beforeChange="handleBeforeChange" class="slick-pratilipis">
-	                <PratilipiComponent 
-	                v-for="(eachPratilipi, index) in pratilipiList" 
+	                <PratilipiComponent
+	                v-for="(eachPratilipi, index) in pratilipiList"
 	                v-bind:key="eachPratilipi.pratilipiId + index"
 	                :pratilipiData="eachPratilipi"
                     :addToLibrary="addToLibrary"
@@ -52,7 +72,7 @@ export default {
         },
         addToLibrary: {
             type: Function
-        }, 
+        },
         removeFromLibrary: {
             type: Function
         },
@@ -120,6 +140,12 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'PARENT_ID': this.listPageUrl
             });
+        },
+        triggerMoreListLink() {
+            this.triggerAnanlyticsEvent(`CLICKMORECOLLECTION_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
+                'USER_ID': this.getUserDetails.userId,
+                'PARENT_ID': this.listPageUrl
+            });
         }
     },
     mounted() {
@@ -152,7 +178,6 @@ export default {
 		border-top: 6px solid #e9e9e9;
 		margin-left: -10px;
 		.section-title {
-            margin: 0;
             padding: 0;
 			font-size: 22px;
             font-weight: bold;
@@ -172,6 +197,27 @@ export default {
 			@media screen and (max-width: 576px ) {
                 font-size: 18px;
 				margin-bottom: 0;
+            }
+        }
+
+        .section-title-see-more {
+            margin: 0;
+            padding: 0;
+            font-size: 22px;
+            text-align: right;
+            line-height: 24px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            a {
+                color: #212121;
+                padding: 10px 30px 5px 10px;
+                display: block;
+            }
+            @media screen and (max-width: 576px ) {
+                font-size: 18px;
+                margin-bottom: 0;
             }
         }
     }
@@ -219,7 +265,7 @@ export default {
 				}
 				span {
 					height: 41px;
-					line-height: 37px; 
+					line-height: 37px;
 					display: block;
 				}
 			}

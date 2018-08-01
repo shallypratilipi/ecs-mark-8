@@ -23,7 +23,7 @@
                         :screenLocation="'COLLECTIONS'"
                         v-bind="{ addToLibrary, removeFromLibrary }"
                 ></PratilipiListComponent>
-                <div class="card webpush-strip-container" v-if="isWebPushStripEnabled && index === 3">
+                <div class="card webpush-strip-container" v-if="isWebPushStripEnabled && index === 6">
                     <div class="container-fluid">
                         <div class="webpush-title">
                             __("web_push_section_title")
@@ -77,7 +77,7 @@ import { mapGetters, mapActions } from 'vuex'
         data() {
             return {
                 sectionList: [],
-                isWebPushStripEnabled: false,
+                isWebPushStripEnabled: true,
                 isWebPushModalEnabled: false,
                 webPushModalTriggered: false,
                 scrollPosition: null,

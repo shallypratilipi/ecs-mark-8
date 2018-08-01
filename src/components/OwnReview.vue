@@ -20,8 +20,8 @@
                         <span>{{ userPratilipiData.reviewDateMillis | convertDate }}</span>
                     </div>
                     <div class="rating">
-                        <i class="material-icons" v-for="index in Number(this.rating)" :key="index + Math.random()">star</i>
-                        <i class="material-icons" v-for="index in 5 - Number(this.rating)" :key="index + Math.random()">star_border</i>
+                        <i class="material-icons" v-for="index in Number(parseInt(userPratilipiData.rating))" :key="index + Math.random()">star</i>
+                        <i class="material-icons" v-for="index in 5 - Number(parseInt(userPratilipiData.rating))" :key="index + Math.random()">star_border</i>
                     </div>
                     <div class="comment-content">
                         {{ userPratilipiData.review }}
@@ -33,7 +33,7 @@
                                <!--  <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
                                 <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue"  placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
-                            <button type="button" class="btn btn-primary" :disabled="newReview === '' || !newReview" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: rating})">__("save")</button>
+                            <button type="button" class="btn btn-primary" :disabled="newReview === '' || !newReview" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: userPratilipiData.rating})">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
                         </form>
                     </div>
@@ -41,13 +41,13 @@
                 <div class="rate-now" v-if="!userPratilipiData.reviewDateMillis || editRatingMode">
                     <span class="text">__("rating_your_rating")</span>
                     <fieldset class="rating" @click="openReview">
-                        <input  type="radio" id="star5" name="rating" value="5" :checked="this.rating == 5" @change="changeRating"/><label class = "full star" for="star5"></label>
-                        <input  type="radio" id="star4" name="rating" value="4" :checked="this.rating == 4" @change="changeRating"/><label class = "full star" for="star4"></label>
-                        <input  type="radio" id="star3" name="rating" value="3" :checked="this.rating == 3" @change="changeRating"/><label class = "full star" for="star3"></label>
-                        <input  type="radio" id="star2" name="rating" value="2" :checked="this.rating == 2" @change="changeRating"/><label class = "full star" for="star2"></label>
-                        <input  type="radio" id="star1" name="rating" value="1" :checked="this.rating == 1" @change="changeRating"/><label class = "full star" for="star1"></label>
+                        <input  type="radio" id="star5" name="rating" value="5" :checked="userPratilipiData.rating == 5" @change="changeRating"/><label class = "full star" for="star5"></label>
+                        <input  type="radio" id="star4" name="rating" value="4" :checked="userPratilipiData.rating == 4" @change="changeRating"/><label class = "full star" for="star4"></label>
+                        <input  type="radio" id="star3" name="rating" value="3" :checked="userPratilipiData.rating == 3" @change="changeRating"/><label class = "full star" for="star3"></label>
+                        <input  type="radio" id="star2" name="rating" value="2" :checked="userPratilipiData.rating == 2" @change="changeRating"/><label class = "full star" for="star2"></label>
+                        <input  type="radio" id="star1" name="rating" value="1" :checked="userPratilipiData.rating == 1" @change="changeRating"/><label class = "full star" for="star1"></label>
                     </fieldset>
-                    <p class="rating-helper"> {{ ratingHelper }} </p>
+                    <p class="rating-helper"></p>
                     <button class="btn btn-primary write-review-btn" v-if="!userPratilipiData.review || userPratilipiData.review === ''" @click="openReview">__("review_write_a_review")</button>
                     <button class="btn btn-primary write-review-btn" @click="openReview" v-else>__("review_edit_review")</button>
                     <div class="review-box">
@@ -56,7 +56,7 @@
                                 <!-- <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
                                 <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue"  placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
-                            <button type="button" :disabled="!isSaveActive &&  (newReview === '' || !newReview)" class="btn btn-primary" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: rating })">__("save")</button>
+                            <button type="button" :disabled="!isSaveActive &&  (newReview === '' || !newReview)" class="btn btn-primary" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: userPratilipiData.rating })">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
                         </form>
                     </div>
@@ -108,8 +108,7 @@ export default {
             newReview: '',
             editRatingMode: false,
             isSaveActive: false,
-            rating: this.userPratilipiData.rating,
-            ratingHelper: null
+            ratingHelper: null,
         }
     },
     computed: {
@@ -124,7 +123,8 @@ export default {
         ...mapActions('reviews', [
             'setPratilipiRating',
             'saveOrUpdateReview',
-            'deleteReview'
+            'deleteReview',
+            'updateRatingInStore'
         ]),
         ...mapActions([
             'setAfterLoginAction'
@@ -135,22 +135,24 @@ export default {
                 'USER_ID': this.getUserDetails.userId,
                 'ENTITY_VALUE': e.target.value
             });
+
+            // update rating here
+            this.updateRatingInStore( { review : this.newReview, pratilipiId : this.userPratilipiData.pratilipiId, pageName : this.$route.meta.store, rating : parseInt(e.target.value)});
+
             if (this.getUserDetails.isGuest) {
-                const newRating = e.target.value;
                 $('#star1').prop('checked', false);
                 $('#star2').prop('checked', false);
                 $('#star3').prop('checked', false);
                 $('#star4').prop('checked', false);
                 $('#star5').prop('checked', false);
-                this.setAfterLoginAction({ action: `reviews/setPratilipiRating`, data: {
-                    rating: newRating,
-                    pratilipiId: this.userPratilipiData.pratilipiId,
-                    pageName: this.$route.meta.store
-                } });
+                // this.setAfterLoginAction({ action: `reviews/setPratilipiRating`, data: {
+                //     rating: newRating,
+                //     pratilipiId: this.userPratilipiData.pratilipiId,
+                //     pageName: this.$route.meta.store
+                // } });
                 this.openLoginModal(this.$route.meta.store, 'RATE', this.screenLocation);
             } else {
                 this.isSaveActive = true;
-                this.rating = e.target.value;
             }
         },
         checkAndUpdateReview(data) {
@@ -167,7 +169,7 @@ export default {
             this.editRatingMode = false;
             if (this.getUserDetails.isGuest) {
                 data.pageName = this.$route.meta.store;
-                this.saveOrUpdateReview(data);
+                // this.saveOrUpdateReview(data);
                 this.openLoginModal(this.$route.meta.store, 'REVIEW', this.screenLocation);
                 this.cancelReview();
             } else {
@@ -200,34 +202,33 @@ export default {
         this.newReview = this.userPratilipiData.review;
     },
     mounted() {
-        let that = this;
         $( ".star" ).hover(function () {
             let className = $(this).prop('for');
 
             switch (className) {
                 case "star1" :
-                    that.ratingHelper = '__("rating_hated_it")';
+                     $('.rating-helper').text('__("rating_hated_it")');
                     break;
                 case "star2" :
-                    that.ratingHelper = '__("rating_didnt_like_it")';
+                    $('.rating-helper').text('__("rating_didnt_like_it")');
                     break;
                 case "star3" :
-                    that.ratingHelper = '__("rating_just_ok")';
+                    $('.rating-helper').text('__("rating_just_ok")');
                     break;
                 case "star4" :
-                    that.ratingHelper = '__("rating_liked_it")';
+                    $('.rating-helper').text('__("rating_liked_it")');
                     break;
                 case "star5" :
-                    that.ratingHelper = '__("rating_loved_it")';
+                    $('.rating-helper').text('__("rating_loved_it")');
                     break;
                 default:
-                    that.ratingHelper = null;
+                    $('.rating-helper').text('');
                     break;
             }
         });
 
         $( ".star" ).mouseout(function() {
-            that.ratingHelper = null;
+            $('.rating-helper').text('');
         });
 
     },
@@ -246,7 +247,7 @@ export default {
                 }
 
             }
-        }
+        },
     },
      components: {
         TranslatingInputTextArea
