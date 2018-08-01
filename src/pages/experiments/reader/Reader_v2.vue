@@ -126,11 +126,25 @@
                                 ></NextPratilipiStrip>
                             </div>
 
-                           <ShareStrip
+
+                            <ShareStrip
                                 v-if="selectedChapter == getIndexData.length"
                                 :data="getPratilipiData"
                                 :type="'PRATILIPI'">
                             </ShareStrip>
+
+                            <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
+                                <Recommendation
+                                    :contextId="getPratilipiData.pratilipiId"
+                                    :context="'readPage'"
+                                    :themeColor="readingMode"
+                                    :experimentId="'READER_RECOMMEND_001'"
+                                    screenName="READER"
+                                    screenLocation="RECOMMENDBOOK"
+                                    v-if="getPratilipiData && getPratilipiData.pratilipiId"
+                                >
+                                </Recommendation>
+                            </div>
 
                             <div class="book-bottom-ratings p-lr-15">
                                 <Reviews
@@ -158,17 +172,6 @@
                                 </div>
                             </div>
 
-                            <div class="book-recomendations p-r-10" v-if="selectedChapter == getIndexData.length">
-                                <Recommendation
-                                    :contextId="getPratilipiData.pratilipiId"
-                                    :context="'readPage'"
-                                    :themeColor="readingMode"
-                                    screenName="READER"
-                                    screenLocation="RECOMMENDBOOK"
-                                    v-if="getPratilipiData && getPratilipiData.pratilipiId"
-                                >
-                                </Recommendation>
-                            </div>
                             <div class="go-to-home-screen">
                                 <button class="btn btn-sm btn-danger" v-if="isMobile() && this.selectedChapter == this.getIndexData.length" @click="navigateToHome">
                                     __("reader_goto_home_page")
@@ -308,7 +311,7 @@ import 'vue-awesome/icons/link'
 import Reviews from '@/components/Reviews.vue';
 import WebPushStrip from '@/components/WebPushStrip.vue';
 import WebPushModal from '@/components/WebPushModal.vue';
-import Recommendation from '@/components/Recommendation.vue';
+import Recommendation from '@/components/experiments/Recommendation/Recommendation_v1.vue';
 import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
 import NextPratilipiStrip from '@/components/NextPratilipiStrip.vue'
@@ -604,8 +607,10 @@ export default {
             $(".book-bottom-webpush-subscribe").removeClass("bg-black");
             $(".book-bottom-webpush-subscribe").addClass("bg-grey");
 
+
             $(".whatsapp-share-btn .social-icon").removeClass("white");
             $(".whatsapp-share-btn .social-icon").addClass("black");
+
         },
         themeBlack() {
             this.readingMode = 'black';
@@ -622,6 +627,7 @@ export default {
             $(".book-bottom-webpush-subscribe").removeClass("bg-grey");
             $(".book-bottom-webpush-subscribe").addClass("bg-black");
 
+
             $(".whatsapp-share-btn .social-icon").removeClass("black");
             $(".whatsapp-share-btn .social-icon").addClass("white");
         },
@@ -637,6 +643,7 @@ export default {
             $(".comment-box").css({"background-color": "#f8f8f8",});
             $(".book-bottom-webpush-subscribe").removeClass("bg-black");
 -           $(".book-bottom-webpush-subscribe").addClass("bg-grey");
+
 
             $(".whatsapp-share-btn .social-icon").removeClass("white");
             $(".whatsapp-share-btn .social-icon").addClass("black");
@@ -832,9 +839,8 @@ export default {
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false;
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
-            // this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30;
-            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && this.getPratilipiData.readingTime >= 120;
-             // && (parseInt( this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30;
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60;
         },
         'getUserDetails.userId'() {
             this.fetchPratilipiDetails(this.$route.query.id);
@@ -1152,7 +1158,6 @@ export default {
                         font-size: 14px;
                         .social-icon {
                             display: inline-block;
-                            color: #2c3e50;
                             text-align: center;
                         }
                         .fa-icon {
@@ -1539,6 +1544,15 @@ export default {
             display: block !important;
         }
     }
+
+    .book-recomendations{
+        .pratilipi-list {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+    }
+
     .book-bottom-webpush-subscribe {
         position: relative;
         margin: 10px 0;
