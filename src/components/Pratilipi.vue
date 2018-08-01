@@ -24,21 +24,24 @@
             </div>
             <router-link :to="redirectToReader ? pratilipiData.readPageUrl : pratilipiData.pageUrl" @click.native="triggerReadPratilipiEvent" :title="pratilipiData.title">
                 <div class="pratilipi-details">
-                    <span class="title" itemprop="headline">{{ pratilipiData.title }}</span>
-                    <span v-if="!hideAuthorName" class="author" itemprop="author">{{ pratilipiData.author.name }}</span>
+                    <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
+                    <span v-if="!hideAuthorName" class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.name }}</span></span>
                     <p v-if="pratilipiData.cardSummary" class="summary">{{ pratilipiData.cardSummary }}</p>
 		    <meta itemprop="text" v-bind:content="pratilipiData.summary" />
-		    <meta itemprop="datePublished" v-bind:content="pratilipiData.listingDateMillis | convertDate" />
-		    <meta itemprop="thumbnailUrl" v-bind:content="pratilipiData.coverImageUrl" />
+		    <meta itemprop="datePublished" v-bind:datetime="pratilipiData.listingDateMillis | listingDateSchemaOrgFormat" />
+		    <meta itemprop="image" v-bind:content="pratilipiData.coverImageUrl" />
                     <meta itemprop="url" v-bind:content="this.websiteUrl+pratilipiData.pageUrl" />
                     <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/>
                 </div>
                 <div class="stats">
                     <div class="rating">
                         <i class="material-icons">star</i>
-                        <span itemprop="aggregateRating">
+                        <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+			    <span itemprop="ratingValue">
                             {{ pratilipiData.averageRating | round(1) }}
+			    </span>
                         </span>
+                        <meta itemprop="ratingCount" v-bind:content="pratilipiData.ratingCount" />
                     </div>
                     <div class="read-count">
                         <i class="material-icons">remove_red_eye</i>
@@ -48,8 +51,9 @@
                     </div>
                     <div class="read-time">
                         <i class="material-icons">access_time</i>
-                        <span itemprop="timeRequired">
+                        <span><time itemprop="duration" v-bind:datetime="pratilipiData.readingTime | readingTimeSchemaOrgFormat">
                             {{ pratilipiData.readingTime | showInMinutesOrHours }}
+			    </time>
                         </span>
                     </div>
                 </div>
