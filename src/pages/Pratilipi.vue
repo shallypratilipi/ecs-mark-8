@@ -8,6 +8,7 @@
                             <div class="book-image-container">
                                 <div class="book-image"
                                      v-bind:style="{ backgroundImage: 'url(' + getPratilipiData.coverImageUrl  + ')' }">
+                                    <meta itemprop="image" v-bind:content="getPratilipiData.coverImageUrl" />
                                     <div class="progress-bar-read">
                                         <div
                                             class="reader-progress"
@@ -30,16 +31,17 @@
                                 </div>
                             </div>
 
-                            <div class="book-title"><h1 itemprop="headline">{{ getPratilipiData.title }}</h1> <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
+                            <div class="book-title"><h1 itemprop="name">{{ getPratilipiData.title }}</h1> <button class="edit" @click="editPratilipiTitle" v-if="getPratilipiData.hasAccessToUpdate"><i class="material-icons">mode_edit</i></button></div>
 			    <meta itemprop="inLanguage" v-bind:content="getPratilipiData.language" />
 			    <meta itemprop="url" v-bind:content="currentPageUrl" />
-			    <meta itemprop="thumbnailUrl" v-bind:content="getPratilipiData.coverImageUrl" />	    
 			    <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/>
                             <router-link
                               :to="getPratilipiData.author.pageUrl"
                               @click.native="triggerClickAuthorNameEvent"
                               class="author-name">
-                              <span itemprop="author">{{ getPratilipiData.author.name }}</span>
+			      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+                              	<span itemprop="name">{{ getPratilipiData.author.name }}</span>
+                              </span>
                             </router-link>
                             <MessageButton
                                  v-if="getAuthorDetails.user && getAuthorDetails.user.userId && getUserDetails.userId !== getAuthorDetails.user.userId"
@@ -55,16 +57,16 @@
                                 :screenName="'BOOK'"
                                 :locationName="'BOOKM'"
                                 ></MessageButton>
-                            <div class="book-stats">
-                                <span class="avg-rating stars-green" ><span class="rating-text" itemprop="aggregateRating">{{ getPratilipiData.averageRating | round(1) }}</span> <i class="material-icons">star_rate</i></span>
-                                <span class="review-count">{{ getPratilipiData.ratingCount }} __("rating_ratings")</span>
+                            <div class="book-stats" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                                <span class="avg-rating stars-green" ><span class="rating-text" itemprop="ratingValue">{{ getPratilipiData.averageRating | round(1) }}</span> <i class="material-icons">star_rate</i></span>
+                                <span class="review-count" itemprop="ratingCount">{{ getPratilipiData.ratingCount }} __("rating_ratings")</span>
                             </div>
                             <div class="book-stats">
-                                <span class="read-time" >__("pratilipi_reading_time"): <span itemprop="timeRequired">{{ getPratilipiData.readingTime | showInMinutesOrHours }}</span></span>
+                                <span class="read-time" >__("pratilipi_reading_time"): <time itemprop="duration" v-bind:datetime="getPratilipiData.readingTime | readingTimeSchemaOrgFormat">{{ getPratilipiData.readingTime | showInMinutesOrHours }}</time></span>
                             </div>
                             <div class="book-stats">
                                 <span class="read-count">__("pratilipi_count_reads"): {{ getPratilipiData.readCount }}</span>
-                                <span class="date">__("pratilipi_listing_date"): <span itemprop="datePublished">{{ getPratilipiData.listingDateMillis | convertDate }}</span></span>
+                                <span class="date">__("pratilipi_listing_date"): <time itemprop="datePublished" v-bind:datetime="getPratilipiData.listingDateMillis | listingDateSchemaOrgFormat">{{ getPratilipiData.listingDateMillis | convertDate }}</time></span>
                             </div>
                             <div class="main-actions"  v-if="getUserPratilipiLoadingState === 'LOADING_SUCCESS'">
                                 <div class="book-edit-actions" v-if="getPratilipiData.hasAccessToUpdate">
@@ -72,8 +74,7 @@
                                         <button @click="askConfirmationAndUnpublishOrPublishBook({ bookState: 'DRAFTED' })">__("pratilipi_move_to_drafts")</button>
                                     </span>
                                     <span>
-                                        <button v-if="isMobile()" @click="showAlertToGoToDesktop"><i class="material-icons">mode_edit</i> __("pratilipi_edit_content")</button>
-                                        <a v-else @click="triggerEditBookEvent" :href="getPratilipiData.writePageUrl"><button><i class="material-icons">mode_edit</i> __("pratilipi_edit_content")</button></a>
+
                                     </span>
                                     <span v-if="getPratilipiData.state === 'DRAFTED'">
                                         <button @click="triggerEventAndUnpublishOrPublishBook({ bookState: 'PUBLISHED' })">__("pratilipi_publish_it")</button>
@@ -703,6 +704,31 @@ export default {
             // setting isWebPushModalEnabled
             this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 50 && (parseInt(this.getCookie('bucketId')) || 0) < 100;
 	    this.currentPageUrl = window.location.href;
+	/*
+	    // Calculating the read time in schema markup format
+	    var tempReadTime = this.getPratilipiData.readingTime;
+	    if (!tempReadTime) {
+		tempReadTime = 0;
+            }
+
+            let tempReadTimeMinutes = Math.round(tempReadTime / 60);
+            let tempReadTimeHours = Math.round(tempReadTimeMinutes / 60);
+
+	    if (tempReadTimeMinutes == 0) tempReadTimeMinutes = 1;
+
+	    this.readingTimeInSchemaFormat = "PT"
+            if (tempReadTimeHours >= 1) {
+ 		this.readingTimeInSchemaFormat += tempReadTimeHours+"H"               
+	    } else {
+		this.readingTimeInSchemaFormat += "0H"
+            } 
+
+            if (tempReadTimeMinutes > 1) {
+		this.readingTimeInSchemaFormat += tempReadTimeMinutes+"M"
+	    } else {
+		this.readingTimeInSchemaFormat += "0M"
+            }
+	*/
         },
         'getPratilipiLoadingState'(status) {
             if (status === 'LOADING_SUCCESS' && !this.hasLandedBeenTriggered) {

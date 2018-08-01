@@ -26,15 +26,14 @@
                             </div>
 
                             <div class="profile-image">
-				<meta itemprop="image" v-bind:content="getAuthorData.imageUrl" />
-                                <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" alt="profile">
+                                <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" alt="profile" itemprop="image">
                                 <button class="update-img" v-if="getUserDetails.userId === getAuthorData.user.userId" @click="uploadImage('profile-image')"><i class="material-icons">camera_alt</i></button>
                                 <input type="file" hidden name="profileimage" @change="triggerProfileImageUpload($event)" accept="image/*" id="profile_uploader">
                                 <div class="uploading" v-if="getProfileImageLoadingState === 'LOADING'">
                                     <Spinner></Spinner>
                                 </div>
                             </div>
-                            <div class="profile-user-name" itemprop="name">{{ getAuthorData.name }}</div>
+                            <div class="profile-user-name" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ getAuthorData.name }}</span></div>
                             <div class="profile-read-by">__("author_readby_count")</div>
                             <div class="profile-summary" v-if="getAuthorData.summary || getAuthorData.hasAccessToUpdate">
                                 <div class="head-title">

@@ -106,3 +106,41 @@ Vue.filter('convertDate', function(value) {
     }
     return [day(d.getDate()), month(d.getMonth()), d.getFullYear()].join(' ');
 });
+
+Vue.filter('readingTimeSchemaOrgFormat', function(value) {
+	let readingTimeInSchemaFormat = 'PT';
+	
+	// Calculating the read time in schema markup format
+        if (!value) {
+		value = 0; 
+        }    
+
+        let readTimeMinutes = Math.round(value / 60); 
+        let readTimeHours = Math.round(readTimeMinutes / 60); 
+
+        if (readTimeMinutes == 0) readTimeMinutes = 1; 
+
+        if (readTimeHours >= 1) { 
+            readingTimeInSchemaFormat += readTimeHours+"H"     
+        } else {
+            readingTimeInSchemaFormat += "0H" 
+        }    
+
+        if (readTimeMinutes > 1) { 
+            readingTimeInSchemaFormat += readTimeMinutes+"M"
+        } else {
+            readingTimeInSchemaFormat += "0M" 
+        } 
+	return readingTimeInSchemaFormat;	
+});
+
+
+Vue.filter('listingDateSchemaOrgFormat', function(value) {
+	let datePublishedInSchemaFormat = '';
+	const d = new Date(value);
+	function day(d) { return (d < 10) ? '0' + d : d; }
+	function month(m) { return (m < 10) ? '0' + m : m; }
+
+	return [d.getFullYear(),month(d.getMonth()+1),day(d.getDate())].join('-');
+
+});
