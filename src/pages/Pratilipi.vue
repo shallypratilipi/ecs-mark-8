@@ -117,6 +117,14 @@
                             :data="getPratilipiData"
                             :type="'PRATILIPI'"></BookShareStrip>
                         </div>
+                        <!-- add next Pratilipi here-->
+                        <div @click="hideStripAndRedirect"
+                        class="next-strip-container"
+                        v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0">
+                            <NextPratilipiStrip
+                                :pratilipi='getPratilipiData.nextPratilipi'
+                            ></NextPratilipiStrip>
+                        </div>
                         <div class="card webpush-strip-container" v-if="isWebPushStripEnabled">
                             <div class="head-title">
                                 __("web_push_section_title")
@@ -132,14 +140,6 @@
                                 :includeCloseButton=false
                                 v-on:WebPushEnabled="isWebPushStripEnabled=false">
                             </WebPushStrip>
-                        </div>
-                        <!-- add next Pratilipi here-->
-                        <div @click="hideStripAndRedirect"
-                        class="next-strip-container"
-                        v-if="isNextPratilipiEnabled && getPratilipiData.nextPratilipi.pratilipiId>0">
-                            <NextPratilipiStrip
-                                :pratilipi='getPratilipiData.nextPratilipi'
-                            ></NextPratilipiStrip>
                         </div>
 
                         <BookTags
