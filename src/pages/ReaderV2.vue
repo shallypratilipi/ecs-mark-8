@@ -91,27 +91,27 @@
                                 <i class="material-icons">close</i>
                             </button>
                             <div class="options">
-                                <div class="option">
+                                <div class="option" v-if="getPratilipiData.contentType === 'PRATILIPI'">
                                     <span>__("reader_font_size"):</span>
                                     <div class="buttons">
-                                        <button type="button" name="button" @click="increaseFont"><i class="material-icons">add</i></button>
-                                        <button type="button" name="button" @click="decreaseFont"><i class="material-icons">remove</i></button>
+                                        <button type="button" name="button" @click="increaseFont" :disabled="fontSize >= maxFontSize"><i class="material-icons">add</i></button>
+                                        <button type="button" name="button" @click="decreaseFont" :disabled="fontSize <= minFontSize"><i class="material-icons">remove</i></button>
                                     </div>
                                 </div>
                                 <div class="option">
                                     <span>__("reader_background"):</span>
                                     <div class="buttons">
-                                        <button type="button" id="whiteThemeButton" name="button" @click="themeWhite"><icon name="file-text-o" scale="1.5"></icon></button>
-                                        <button type="button" id="blackThemeButton" name="button" @click="themeNight"><icon name="file-text" scale="1.5"></icon></button>
-                                        <button type="button" id="yellowThemeButton" name="button" @click="themeSepia"  class="yellow"><icon name="file-text-o" scale="1.5"></icon></button>
+                                        <button type="button" id="whiteThemeButton" name="button" @click="themeWhite" :disabled="readingMode === 'WHITE'"><icon name="file-text-o" scale="1.5"></icon></button>
+                                        <button type="button" id="blackThemeButton" name="button" @click="themeNight" :disabled="readingMode === 'NIGHT'"><icon name="file-text" scale="1.5"></icon></button>
+                                        <button type="button" id="yellowThemeButton" name="button" @click="themeSepia" :disabled="readingMode === 'SEPIA'" class="yellow"><icon name="file-text-o" scale="1.5"></icon></button>
                                     </div>
                                 </div>
-                                <div class="option">
+                                <div class="option" v-if="getPratilipiData.contentType === 'PRATILIPI'">
                                     <span>__("reader_line_spacing"):</span>
                                     <div class="buttons">
-                                        <button type="button" name="button" @click="lineHeightSm"><span class="lh-icon lh-sm-icon"></span></button>
-                                        <button type="button" name="button" @click="lineHeightMd"><span class="lh-icon lh-md-icon"></span></button>
-                                        <button type="button" name="button" @click="lineHeightLg"><span class="lh-icon lh-lg-icon"></span></button>
+                                        <button type="button" name="button" @click="lineHeightSm" :disabled="lineHeight === 'SMALL'"><span class="lh-icon lh-sm-icon"></span></button>
+                                        <button type="button" name="button" @click="lineHeightMd" :disabled="lineHeight === 'MEDIUM'"><span class="lh-icon lh-md-icon"></span></button>
+                                        <button type="button" name="button" @click="lineHeightLg" :disabled="lineHeight === 'LARGE'"><span class="lh-icon lh-lg-icon"></span></button>
                                     </div>
                                 </div>
                             </div>
@@ -359,6 +359,8 @@ export default {
         return {
             /* reader */
             fontSize: Number(this.getCookie(READER_FONT_SIZE_COOKIE_NAME) || 16),
+            minFontSize: 12,
+            maxFontSize: 32,
             lineHeight: this.getCookie(READER_LINE_HEIGHT_COOKIE_NAME) || ReaderLineHeight.MEDIUM,
             readingMode: null,
             language: constants.LANGUAGES.filter((eachLanguage) => eachLanguage.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase(),
@@ -433,14 +435,14 @@ export default {
 
         /* reader */
         increaseFont() {
-            if (this.fontSize !== 32) {
+            if (this.fontSize + 2 <= this.maxFontSize) {
                 this.fontSize += 2
                 this.setCookie(READER_FONT_SIZE_COOKIE_NAME, this.fontSize, 7, '/read')
             }
             this._triggerReaderAnalyticsEvent('READERFONT_SETTINGS_READER', this.fontSize)
         },
         decreaseFont() {
-            if (this.fontSize !== 12) {
+            if (this.fontSize -2 >= this.minFontSize) {
                 this.fontSize -= 2
                 this.setCookie(READER_FONT_SIZE_COOKIE_NAME, this.fontSize, 7, '/read')
             }

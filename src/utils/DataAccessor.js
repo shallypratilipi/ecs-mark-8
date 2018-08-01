@@ -314,6 +314,12 @@ export default {
                     delete response.chapterData.pratilipiId
                 }
             }
+            // Local Testing for IMAGE contents
+            if (status === 200) {
+                if ((window.location.origin.indexOf('.pratilipi.com') === -1 && window.location.origin.indexOf('.ptlp.co')) === -1) {
+                    response.chapterData.content = response.chapterData.content.replace(/\/api\/pratilipi\/content/g, 'https://hindi.pratilipi.com/api/pratilipi/content')
+                }
+            }
             processGetResponse(response, status, aCallBack)
         })
     },
@@ -326,6 +332,12 @@ export default {
                     response.slugId = response.pageUrl.split('/').pop().split('-').pop()
                     delete response.pageUrl
                     delete response.pratilipiId
+                }
+            }
+            // Local Testing for IMAGE contents
+            if (status === 200) {
+                if ((window.location.origin.indexOf('.pratilipi.com') === -1 && window.location.origin.indexOf('.ptlp.co')) === -1) {
+                    response.content = response.content.replace(/\/api\/pratilipi\/content/g, 'https://hindi.pratilipi.com/api/pratilipi/content')
                 }
             }
             processGetResponse(response, status, aCallBack)
