@@ -47,7 +47,7 @@
                         <input  type="radio" id="star2" name="rating" value="2" :checked="userPratilipiData.rating == 2" @change="changeRating"/><label class = "full star" for="star2"></label>
                         <input  type="radio" id="star1" name="rating" value="1" :checked="userPratilipiData.rating == 1" @change="changeRating"/><label class = "full star" for="star1"></label>
                     </fieldset>
-                    <p class="rating-helper"> {{ ratingHelper }} </p>
+                    <p class="rating-helper"></p>
                     <button class="btn btn-primary write-review-btn" v-if="!userPratilipiData.review || userPratilipiData.review === ''" @click="openReview">__("review_write_a_review")</button>
                     <button class="btn btn-primary write-review-btn" @click="openReview" v-else>__("review_edit_review")</button>
                     <div class="review-box">
@@ -109,7 +109,6 @@ export default {
             editRatingMode: false,
             isSaveActive: false,
             ratingHelper: null,
-            hasRatedNow: false
         }
     },
     computed: {
@@ -138,7 +137,7 @@ export default {
             });
 
             // update rating here
-            this.updateRatingInStore( { review : this.newReview, pratilipiId : this.userPratilipiData.pratilipiId, pageName : this.$route.meta.store, rating : e.target.value});
+            this.updateRatingInStore( { review : this.newReview, pratilipiId : this.userPratilipiData.pratilipiId, pageName : this.$route.meta.store, rating : parseInt(e.target.value)});
 
             if (this.getUserDetails.isGuest) {
                 $('#star1').prop('checked', false);
@@ -203,34 +202,33 @@ export default {
         this.newReview = this.userPratilipiData.review;
     },
     mounted() {
-        let that = this;
         $( ".star" ).hover(function () {
             let className = $(this).prop('for');
 
             switch (className) {
                 case "star1" :
-                    that.ratingHelper = '__("rating_hated_it")';
+                     $('.rating-helper').text('__("rating_hated_it")');
                     break;
                 case "star2" :
-                    that.ratingHelper = '__("rating_didnt_like_it")';
+                    $('.rating-helper').text('__("rating_didnt_like_it")');
                     break;
                 case "star3" :
-                    that.ratingHelper = '__("rating_just_ok")';
+                    $('.rating-helper').text('__("rating_just_ok")');
                     break;
                 case "star4" :
-                    that.ratingHelper = '__("rating_liked_it")';
+                    $('.rating-helper').text('__("rating_liked_it")');
                     break;
                 case "star5" :
-                    that.ratingHelper = '__("rating_loved_it")';
+                    $('.rating-helper').text('__("rating_loved_it")');
                     break;
                 default:
-                    that.ratingHelper = null;
+                    $('.rating-helper').text('');
                     break;
             }
         });
 
         $( ".star" ).mouseout(function() {
-            that.ratingHelper = null;
+            $('.rating-helper').text('');
         });
 
     },
