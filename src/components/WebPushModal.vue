@@ -77,6 +77,8 @@ export default {
             } else if (this.action === "DISABLED") {
                 this.triggerAnanlyticsEvent(`DISABLED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
             } else {
+                this.action = "DISABLED"
+                WebPushUtil.disabledOnCustomPrompt(this.$route.meta.store)
                 this.triggerAnanlyticsEvent(`CLOSED_WEBPUSHPOPUP_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId, 'ACTION_COUNT': WebPushUtil.getNthActionCount()})
             }
         })
