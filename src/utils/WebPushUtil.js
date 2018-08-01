@@ -31,7 +31,7 @@ import constants from '@/constants'
 // WEB_PUSH_COOKIE_DAYS => TTL for the WEB_PUSH_COOKIE_NAME in days
 // WEB_PUSH_SHOW_LIMIT => Number of times user can be shown custom prompts
 const WEB_PUSH_COOKIE_NAME = 'web_push_closed'
-const WEB_PUSH_COOKIE_DAYS = 7
+const WEB_PUSH_COOKIE_DAYS = 30
 const WEB_PUSH_SHOW_LIMIT = 3
 
 // WEB_PUSH_SESSION_COOKIE_NAME => Temporary cookie set to identify that the user had disabled push in the current session
