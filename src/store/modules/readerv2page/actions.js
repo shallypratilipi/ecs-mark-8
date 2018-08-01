@@ -1,4 +1,3 @@
-import PratilipiContentType from '@/enum/PratilipiContentType'
 import DataAccessor from '@/utils/DataAccessor'
 
 export default {
@@ -17,27 +16,18 @@ export default {
     },
 
     fetchContentData ({commit, state, dispatch}, chapterSlugId) {
-        switch (state.pratilipi.data.contentType) {
-            case PratilipiContentType.PRATILIPI: {
-                if (state.content.data[chapterSlugId]) {
+        if (state.content.data[chapterSlugId]) {
+            dispatch('precacheContent', chapterSlugId)
+        } else {
+            commit('setContentLoadingTrue')
+            DataAccessor.getReaderChapter(chapterSlugId, (response) => {
+                if (response.status === 200) {
+                    commit('setContentLoadingSuccess', response['response'])
                     dispatch('precacheContent', chapterSlugId)
                 } else {
-                    commit('setContentLoadingTrue')
-                    DataAccessor.getReaderChapter(chapterSlugId, (response) => {
-                        if (response.status === 200) {
-                            commit('setContentLoadingSuccess', response['response'])
-                            dispatch('precacheContent', chapterSlugId)
-                        } else {
-                            commit('setContentLoadingError')
-                        }
-                    })
+                    commit('setContentLoadingError')
                 }
-                break
-            }
-            case PratilipiContentType.IMAGE: {
-                dispatch('precacheContent', chapterSlugId)
-                break
-            }
+            })
         }
     },
 
@@ -52,9 +42,38 @@ export default {
         })
     },
 
-    // TODO: Implementation
-    precacheContent ({state, dispatch}, chapterSlugId) {
-        console.log(`precacheContent :: chapterSlugId :: ${chapterSlugId}`)
+    precacheContent ({state, commit, dispatch}, chapterSlugId) {
+        const slugIdArray = state.index.data.map(indexData => indexData.slugId)
+        const prevChapterSlugId = slugIdArray.indexOf(chapterSlugId) !== 0 ? slugIdArray[slugIdArray.indexOf(chapterSlugId) - 1] : null
+        const nextChapterSlugId = slugIdArray.indexOf(chapterSlugId) !== slugIdArray.length - 1 ? slugIdArray[slugIdArray.indexOf(chapterSlugId) + 1] : null
+        if (prevChapterSlugId && !state.content.data[prevChapterSlugId]) {
+            DataAccessor.getReaderChapter(prevChapterSlugId, (response) => {
+                if (response.status === 200) {
+                    commit('setPrecacheContentLoadingSuccess', response['response'])
+                    dispatch('precacheImages', prevChapterSlugId)
+                }
+            })
+        }
+        if (nextChapterSlugId && !state.content.data[nextChapterSlugId]) {
+            DataAccessor.getReaderChapter(nextChapterSlugId, (response) => {
+                if (response.status === 200) {
+                    commit('setPrecacheContentLoadingSuccess', response['response'])
+                    dispatch('precacheImages', nextChapterSlugId)
+                }
+            })
+        }
+    },
+
+    precacheImages ({state}, chapterSlugId) {
+        let m
+        let imageUrls = []
+        let regex = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g
+        while ((m = regex.exec(state.content.data[chapterSlugId].content))) {
+            imageUrls.push(m[1])
+        }
+        for (let i = 0; i < imageUrls.length; i++) {
+            $(`<img src=${imageUrls[i]} />`).trigger('load')
+        }
     },
 
     addToLibrary ({commit, state}) {

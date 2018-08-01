@@ -65,6 +65,12 @@ export default {
         state.content.data = {...state.content.data, [chapterData.slugId]: chapterData}
     },
 
+    setPrecacheContentLoadingSuccess (state, chapterData) {
+        // Refer: https://vuex.vuejs.org/guide/mutations.html
+        // Refer: https://vuejs.org/v2/guide/reactivity.html
+        state.content.data = {...state.content.data, [chapterData.slugId]: chapterData}
+    },
+
     setContentLoadingError (state) {
         state.content.loading_state = LoadingState.LOADING_ERROR
     },
@@ -81,21 +87,6 @@ export default {
 
     setUserPratilipiLoadingError (state) {
         state.userPratilipi.loading_state = LoadingState.LOADING_ERROR
-    },
-
-    // TODO: Implementation
-    setImageContentLoadingSuccess (state, data) {
-        const { chapters } = data.content
-        chapters.forEach((eachChapter, index) => {
-            const chapterNo = index + 1
-            const eachContentObject = {
-                chapterNo,
-                chapterTitle: null,
-                content: `<img alt='story' src='https://hindi.pratilipi.com/api/pratilipi/content/image?pratilipiId=${data.pratilipiId}&name=${chapterNo}'/>`
-            }
-            state.content.data.push(eachContentObject)
-        })
-        state.content.loading_state = 'LOADING_SUCCESS'
     },
 
     addPratilipiToLibrarySuccess (state) {
