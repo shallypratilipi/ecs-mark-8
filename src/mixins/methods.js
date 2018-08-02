@@ -394,8 +394,10 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
             eventCategory: eventProps.LOCATION,
             eventAction: eventProps.ACTION,
             eventLabel: eventProps.SCREEN_NAME,
-            eventValue: eventProps.EXPERIMENT_ID
+            'dimension7':  eventProps.EXPERIMENT_ID
         });
+
+        eventProperty['EXPERIMENT_ID'] = eventProps.EXPERIMENT_ID;
 
         if (!window.fbApiInit) {
             setTimeout(() => {
