@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="profile-image">
-                                <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" alt="profile" itemprop="image">
+                                <img :src="getMediumResolutionImage(getAuthorData.imageUrl)" v-bind:alt="getAuthorData.name" itemprop="image">
                                 <button class="update-img" v-if="getUserDetails.userId === getAuthorData.user.userId" @click="uploadImage('profile-image')"><i class="material-icons">camera_alt</i></button>
                                 <input type="file" hidden name="profileimage" @change="triggerProfileImageUpload($event)" accept="image/*" id="profile_uploader">
                                 <div class="uploading" v-if="getProfileImageLoadingState === 'LOADING'">
@@ -91,7 +91,7 @@
                                 <a href="#" v-on:click="tabchange" data-tab="following"><span>{{ getAuthorData.user.followCount }} </span>__("author_following")</a> 
                             </div>
                             <div class="bottom-contents">
-                                <div class="list published-contents" id="published">
+                                <div class="list published-contents" id="published" itemscope itemtype="http://schema.org/Collection">
                                     <PratilipiComponent
                                     :pratilipiData="pratilipiData"
                                     :key="pratilipiData.pratilipiId"

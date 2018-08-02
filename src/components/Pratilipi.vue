@@ -51,7 +51,7 @@
                     </div>
                     <div class="read-time">
                         <i class="material-icons">access_time</i>
-                        <span><time itemprop="duration" v-bind:datetime="pratilipiData.readingTime | readingTimeSchemaOrgFormat">
+                        <span><time itemprop="timeRequired" v-bind:datetime="pratilipiData.readingTime | readingTimeSchemaOrgFormat">
                             {{ pratilipiData.readingTime | showInMinutesOrHours }}
 			    </time>
                         </span>
