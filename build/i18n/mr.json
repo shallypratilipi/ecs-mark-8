@@ -608,6 +608,12 @@
     "reader_gamify_keep_reading": "वाचत राहा!",
     "reader_gamify_login_to_save_your_progress": "आपला स्तरांचा उत्कर्ष जतन करण्यासाठी लॉग इन करा ",
 
+    "rating_hated_it": "फारच खराब.",
+    "rating_didnt_like_it": "आवडले नाही",
+    "rating_just_ok": "ठीक आहे",
+    "rating_liked_it": "आवडले",
+    "rating_loved_it": "फारच आवडले",
+
     "zodiac_capricorn" : "मकर",
     "zodiac_aquarius" : "कुंभ",
     "zodiac_pisces" : "मीन",

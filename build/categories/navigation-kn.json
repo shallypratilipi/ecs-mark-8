@@ -70,6 +70,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/experience",
+                    "title": "ಅನುಭವಗಳು",
+                    "analyticsCategoryName": "experiences",
+                    "imageFileName": "experiences.jpg",
+                    "pratilipiListData": {
+                        "language": "KANNADA",
+                        "state": "PUBLISHED",
+                        "listName": "experience"
+                    }
+                },
+                {
                     "categoryUrl": "/nonfiction",
                     "title": "ಲೇಖನಗಳು",
                     "analyticsCategoryName": "articles",

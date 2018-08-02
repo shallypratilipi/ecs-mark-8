@@ -59,6 +59,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/novels",
+                    "title": "నవలలు",
+                    "analyticsCategoryName": "books",
+                    "imageFileName": "novels.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "novels"
+                    }
+                },
+                {
                     "categoryUrl": "/women",
                     "title": "మహిళ",
                     "analyticsCategoryName": "women",
