@@ -57,6 +57,10 @@ export default {
         if (pageName === 'readerpage') {
             dispatch('readerpage/updateRatingInStore', { review, pratilipiId, rating }, { root: true });
         }
+
+        if (pageName === 'readerv2page') {
+            dispatch('readerv2page/updateRatingInStore', { review, pratilipiId, rating }, { root: true });
+        }
     },
 
     setPratilipiRating({ commit, state, dispatch }, { rating, pratilipiId, pageName }) {
@@ -66,6 +70,9 @@ export default {
 
         if (pageName === 'readerpage') {
             dispatch('readerpage/setPratilipiRating', { rating, pratilipiId }, { root: true });
+        }
+        if (pageName === 'readerv2page') {
+            dispatch('readerv2page/setPratilipiRating', { rating, pratilipiId }, { root: true });
         }
         commit('alert/triggerAlertView', '__("success_generic_message")', { root: true });
         setTimeout(() => {
@@ -80,6 +87,10 @@ export default {
 
         if (pageName === 'readerpage') {
             dispatch('readerpage/saveOrUpdateReview', { review, pratilipiId, rating }, { root: true });
+        }
+
+        if (pageName === 'readerv2page') {
+            dispatch('readerv2page/saveOrUpdateReview', { review, pratilipiId, rating }, { root: true });
         }
     },
 
@@ -98,6 +109,10 @@ export default {
 
         if (pageName === 'readerpage') {
             dispatch('readerpage/deleteReview', pratilipiId, { root: true });
+        }
+
+        if (pageName === 'readerv2page') {
+            dispatch('readerv2page/deleteReview', pratilipiId, { root: true });
         }
     },
 

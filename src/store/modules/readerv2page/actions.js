@@ -100,6 +100,10 @@ export default {
         DataAccessor.followOrUnfollowAuthor(state.author.data.authorId, false, () => commit('UnfollowAuthorSuccess'))
     },
 
+    updateRatingInStore ({commit}, {review, rating}) {
+        commit('setPratilipiReviewRating', {review, rating})
+    },
+
     setPratilipiRating ({commit}, {rating, pratilipiId}) {
         DataAccessor.createOrUpdateReview(pratilipiId, rating, null, () => commit('setPratilipiRatingUpdateSuccess', rating))
     },

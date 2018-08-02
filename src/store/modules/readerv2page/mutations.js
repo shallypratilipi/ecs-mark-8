@@ -107,14 +107,19 @@ export default {
         state.author.data.followCount--
     },
 
-    setPratilipiRatingUpdateSuccess (state, value) {
-        state.userPratilipi.data.rating = value
+    setPratilipiRatingUpdateSuccess (state, rating) {
+        state.userPratilipi.data.rating = rating
         state.userPratilipi.data.reviewDateMillis = Date.now()
     },
 
-    setPratilipiReviewUpdateSuccess (state, value) {
-        state.userPratilipi.data.review = value
+    setPratilipiReviewUpdateSuccess (state, review) {
+        state.userPratilipi.data.review = review
         state.userPratilipi.data.reviewDateMillis = Date.now()
+    },
+
+    setPratilipiReviewRating (state, {review, rating}) {
+        state.userPratilipi.data.review = review
+        state.userPratilipi.data.rating = rating
     }
 
 }
