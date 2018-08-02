@@ -11,36 +11,46 @@
                             <button v-if="canParticipate" type="button" class="participate_btn" name="button" @click="goToEventParticipate">__('event_participate')</button>
                         </div>
                     </div>
-                    <div class="col-md-12" v-if="getUserEventDraftData.length > 0 && canParticipate ">
+                    <div class="col-md-12" v-if="getDraftData.length > 0">
+                        <!-- v-if="getUserEventDraftData.length > 0 && canParticipate " -->
                         <div class="page-content event-list card" id="yourDrafts">
                             <div class="head-title">__('event_participate_your_drafts')</div>
-                            <router-link v-for="pratilipiData in getUserEventDraftData" :key="pratilipiData._id" :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData._id + "?step=2"'>
+                            <router-link v-for="pratilipiData in getDraftData" :key="pratilipiData.eventEntryId"
+                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
-                                    title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImage || 'https://0.ptlp.co/pratilipi/cover',
+                                    title: pratilipiData.name,
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
-                                    createdAt: pratilipiData.createdAt
+                                    submissionDate: pratilipiData.submissionDate,
+                                    submissionType: 'SUBMITTED',
+                                    eventEntryId: pratilipiData.eventEntryId,
+                                    eventId: getEventData.eventId
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
                         </div>
                     </div>
                     <div class="col-md-12 loader-overflow">
-                    <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader>
+                        <!-- <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader> -->
                     </div>
-                    <div class="col-md-12" v-if="getUserEventData.length > 0 && canParticipate ">
+                    <div class="col-md-12" v-if="getSubmissionData.length > 0">
+                        <!-- v-if="getUserEventData.length > 0 && canParticipate " -->
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
-                            <router-link v-for="pratilipiData in getUserEventData" :key="pratilipiData._id" :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData._id + "?step=2"'>
+                            <router-link v-for="pratilipiData in getSubmissionData" :key="pratilipiData.eventEntryId"
+                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
                                     title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImage || 'https://0.ptlp.co/pratilipi/cover',
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
-                                    createdAt: pratilipiData.createdAt
+                                    submissionDate: pratilipiData.submissionDate,
+                                    submissionType: 'DRAFT',
+                                    eventEntryId: pratilipiData.eventEntryId,
+                                    eventId: getEventData.eventId
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -61,9 +71,12 @@
                             <Spinner v-if="getEventPratilipisLoadingState === 'LOADING'"></Spinner>
                         </div>
                     </div>
-
                     <Spinner v-if="getEventDataLoadingState === 'LOADING'"></Spinner>
                 </div>
+                <router-link
+                    :to="{path: `/event/${this.$route.params.event_slug}/participate/` , params: {eventId :this.$route.params.event_data.eventId }}">
+                    <button class="btn btn-danger">__('event_participate')</button>
+                </router-link>
             </div>
         </div>
     </MainLayout>
@@ -106,7 +119,9 @@ export default {
             'getEventPratilipisCursor',
             'getUserEventData',
             'getUserEventDraftData',
-            'getUserEventDataLoadingState'
+            'getUserEventDataLoadingState',
+            'getDraftData',
+            'getSubmissionData'
 
         ]),
         ...mapGetters([
@@ -128,7 +143,7 @@ export default {
         },
         goToEventParticipate() {
             this.$router.push(`/event/${this.$route.params.event_slug}/participate/`);
-        }
+        },
     },
     watch: {
         'getEventData.eventId' (eventId) {
@@ -149,7 +164,6 @@ export default {
         'scrollPosition'(newScrollPosition){
             const nintyPercentOfList = ( 80 / 100 ) * $('.event-page').innerHeight();
             const { eventId } = this.getEventData;
-
             if (newScrollPosition > nintyPercentOfList &&
                 this.getEventPratilipisLoadingState !== 'LOADING' &&
                 this.getEventPratilipisCursor !== null) {
@@ -173,15 +187,21 @@ export default {
     },
     created() {
         const { event_data, event_slug } = this.$route.params;
-        if (event_data) {
-            this.cacheEventData(event_data);
-        } else {
-            this.fetchEventDetails(event_slug);
-        }
+        console.log(" event_slug " + event_slug + " " + event_data.eventId);
+        // if (event_data) {
+        //     this.cacheEventData(event_data);
+        //     console.log("Here");
+        // } else {
+        this.fetchEventDetails(event_data.eventId);
+        console.log("HEre 2");
+        // }
 
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
+        this.$route.params.eventId = this.getEventData.eventId;
+
+        console.log("this.$route.params.eventId ", this.$route.params.event_data.eventId);
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);

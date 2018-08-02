@@ -4,11 +4,13 @@ export default {
 
     fetchEventPratilipiData({ commit, state }, eventPratilipiId) {
         commit('setEventPratilipiDataLoadingTrue');
+        console.log("Getting called multiple timrs");
         DataAccessor.getEventPratilipiById(eventPratilipiId, (eventPratilipiData) => {
             if (eventPratilipiData.status === 200) {
-                commit('setEventPratilipiDataLoadingSuccess', eventPratilipiData.response);
+                console.log("Getting called multiple times inside");
+                // commit('setEventPratilipiDataLoadingSuccess', eventPratilipiData.response);
             } else {
-                commit('setEventPratilipiDataLoadingError');
+                // commit('setEventPratilipiDataLoadingError');
             }
         });
     },
@@ -25,6 +27,7 @@ export default {
     },
 
     createEventPratilipiData({ commit, state }, { eventId, title, titleEn, type, language }) {
+        console.log("DANGH " + eventId + " " + title + " " + titleEn + " " + type + " " + language);
         commit('setEventPratilipiCreateOrUpdateStateTrue');
         DataAccessor.createEventPratilipi({
             eventId, title, titleEn, type, language
@@ -117,4 +120,104 @@ export default {
             commit('setPratilipiImageUploadingError');
         });
     },
+
+    createPratilipiAndEvent({commit, state}, {title, titleEn, language, type}) {
+        console.log(titleEn)
+        DataAccessor.createOrUpdatePratilipi({
+            title,
+            titleEn,
+            language,
+            type,
+            state: 'DRAFTED'
+        }, (data) => {
+            console.log("MY DATA IS: ", data);
+            commit('setPratilipiCreatedSuccess', data);
+        }, (error) => {
+            console.log("DANGGGGGGGG:::", error);
+        })
+    },
+
+    createNewEvent({commit, state}, {eventId, userId, authorId, pratilipiId}) {
+        console.log("FROM ACTION: " + eventId + " " + authorId + " " + " " + userId + " " + pratilipiId);
+
+        DataAccessor.addNewEventEntry({
+            title,
+            titleEn,
+            language,
+            type,
+            state: 'DRAFTED'
+        }, (data) => {
+            console.log("MY DATA IS: ", data);
+            commit('setPratilipiCreatedSuccess', data);
+
+        }, (error) => {
+            console.log("DANGGGGGGGG:::", error);
+        })
+    },
+
+    createFirstChapter({commit, state}, {pratilipiId, chapterNo}) {
+        console.log("pratilipiId: " + pratilipiId + " chapterNo " + chapterNo + " Creating Chapter ");
+        DataAccessor.addNewChapterToPratilipi({
+            pratilipiId,
+            chapterNo
+        }, (data) => {
+            console.log("NEW CHAPTER ADDED");
+        })
+    },
+
+
+    fetchContentForEventEntry({commit, state}, {pratilipiId, chapterNo}) {
+        DataAccessor.getContentOfEventEntry(pratilipiId, chapterNo, (data) => {
+            console.log("FETCHED DATA");
+        })
+    },
+
+    // createNewEvent ({ commit, state },  {eventId, userId, authorId, pratilipiId}) {
+    //     DataAccessor.addNewEventEntry({
+    //         eventId,
+    //         userId,
+    //         authorId,
+    //         pratilipiId
+    //     }, (data) => {
+    //         console.log("MY ENTRY IS: " ,data);,
+
+    //     }, (error) => {
+    //         console.log("DANGGGGGGGG::: 2" , error);
+    //     })
+    // },
+
+    saveEventContentByChapter({commit, state}, {chapterNo, chapterTitle, content, pratilipiId}) {
+        console.log("SAVING CHAPTER CONTENT" + chapterNo + " " + content);
+        DataAccessor.saveContentOfEventEntry({
+            "chapterNo": chapterNo,
+            "chapterTitle": chapterTitle,
+            "content": content,
+            "pratilipiId": pratilipiId
+        })
+
+    },
+
+    resetNewEntryState({commit, state}) {
+        console.log("EBTERIN");
+        commit('resetEntryState');
+    },
+    createNewEventFromPratilipi({commit, state}, {eventId, userId, authorId, pratilipiId}) {
+        console.log("FROM ACTION: " + eventId + " " + authorId + " " + userId + " " + pratilipiId);
+        DataAccessor.addNewEventEntryFromPratilipi({
+            eventId,
+            userId,
+            authorId,
+            pratilipiId
+        })
+        // DataAccessor.updateEventPratilipi(eventPratilipiId, {
+        //     title, titleEn, type
+        // }, (eventPratilipiData) => {
+        //     if (eventPratilipiData) {
+        //         commit('setEventPratilipiCreateOrUpdateStateSuccess', eventPratilipiData);
+        //     } else {
+        //         commit('setEventPratilipiCreateOrUpdateStateError');
+        //     }
+        // });
+    },
+
 }

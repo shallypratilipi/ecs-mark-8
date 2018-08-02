@@ -6,6 +6,7 @@ export default {
         commit('setListPageInitialDataLoadingTrue');
         DataAccessor.getPratilipiListByListName(listName, null, null, resultCount, language, function(data) {
             if (data.status === 200) {
+                console.log("Response: " , data.response);
                 commit('setListPageInitialDataLoadingSuccess', data.response);
             } else {
                 commit('setListPageInitialDataLoadingError');

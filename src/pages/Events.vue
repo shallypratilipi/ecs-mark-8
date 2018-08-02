@@ -7,11 +7,25 @@
                         <h2>__("event_events")</h2>
                         <div class="page-content event-list">
                             <ul>
-                                <li v-for="each_event in getEventsData" :key="each_event.eventId">
+                                <li v-for="each_event in getEventsData" :key="each_event.eventId"
+                                    v-bind:class="{ eventFinished: (each_event.eventState != `SUBMISSION`) }"
+                                    v-on:mouseover="showTextOverlay(each_event.eventId)"
+                                    v-on:mouseout="showTextOverlay(each_event.eventId)"
+                                >
                                     <router-link @click.native="triggerEvent(each_event.eventId)" :to="{ name: 'Event_Page', params: { event_slug: each_event.pageUrl.split('/').pop(), event_data: each_event } }">
-                                        <span class="event-img" v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }"></span>
-                                        <span class="event-name">{{ each_event.name }}</span>
+                                        <span class="event-img show-status"
+                                              v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }"
+                                        ></span>
+                                        <span class="event-name">{{ each_event.name }} </span>
+                                        <span
+                                            v-if="showText && eachEventId == each_event.eventId && each_event.eventState != `SUBMISSION`"
+                                            class="show-overlay">Event Closed</span>
+                                        <span
+                                            v-if="showText && eachEventId == each_event.eventId && each_event.eventState == `SUBMISSION`"
+                                            class="show-overlay">Event Open</span>
                                     </router-link>
+                                    <br><br>
+                                    <!--  -->
                                 </li>
                             </ul>
                             <Spinner v-if="getEventsLoadingState === 'LOADING'"></Spinner>
@@ -25,10 +39,10 @@
 
 <script>
 import MainLayout from '@/layout/main-layout.vue';
-import constants from '@/constants'
+import constants from '@/constants';
 import Spinner from '@/components/Spinner.vue';
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex'
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
     components: {
@@ -47,10 +61,22 @@ export default {
             'getUserDetails'
         ])
     },
+    data() {
+        return {
+            isEventActive: false,
+            showText: false,
+            eachEventId: null
+        }
+    },
     methods: {
         ...mapActions('eventspage', [
             'fetchListOfEvents'
         ]),
+        showTextOverlay(eventId) {
+            this.showText = !this.showText;
+            this.eachEventId = eventId;
+            console.log("Changing: " + this.showText);
+        },
         triggerEvent(data) {
             this.triggerAnanlyticsEvent(`CLICKEVENT_EVENTLISTM_EVENTLIST`, 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId,
@@ -58,6 +84,7 @@ export default {
             });
         }
     },
+
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
@@ -70,11 +97,31 @@ export default {
         this.triggerAnanlyticsEvent('LANDED_EVENTLISTM_EVENTLIST', 'CONTROL', {
             'USER_ID': this.getUserDetails.userId
         });
-    }
+    },
+
 }
 </script>
 
 <style lang="scss" scoped>
+    .eventFinished {
+        opacity: 0.5;
+    }
+
+    .show-status {
+        z-index: 99999 !important;
+    }
+
+    .show-status:hover {
+        background: #008CBA !important;
+    }
+
+    .show-overlay {
+        position: relative;
+        bottom: 150px;
+        right: -100px;
+        font-size: 16px;
+        color: white;
+    }
 .static-page {
     margin-top: 85px;
     text-align: left;

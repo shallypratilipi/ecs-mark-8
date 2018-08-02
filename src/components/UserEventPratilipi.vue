@@ -7,9 +7,24 @@
             <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             <div class="pratilipi-details">
                 <span class="title">{{ pratilipiData.title }}</span>
-                <p class="date">__("pratilipi_listing_date"): {{ pratilipiData.createdAt | convertDate }}</p>
+                    <button class="btn more-options" type="button" id="moreOptions2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click.prevent="showMoreOptions()">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                     <div class="dropdown-menu" aria-labelledby="ReviewMoreOptions" @click.prevent="">
+                            
+                            <button class="btn options-btn" v-if="pratilipiData.submissionType == 'DRAFT'" @click.prevent="moveToDrafts()">__('pratilipi_move_to_drafts')</button>
+                            <button class="btn options-btn " v-if="pratilipiData.submissionType == 'SUBMITTED'" @click.prevent="publishEntry()">__('review_submit_review')</button>
+                            <button type="button" class="btn options-btn" @click.prevent="deleteEventEntry()">
+                                __('pratilipi_delete_content')                                
+                            </button>
+                        </div>
+                <p class="date">__("pratilipi_listing_date"): {{ pratilipiData.submissionDate | convertDate }}</p>
+
+    <!--             <button class="btn btn-danger btn-sm" @click.prevent="deleteEventEntry()">Delete</button>
+                <button class="btn btn-warning btn-sm" v-if="pratilipiData.submissionType == 'DRAFT'" @click.prevent="moveToDrafts()">Move to drafts</button>
+                <button class="btn btn-warning btn-sm" v-if="pratilipiData.submissionType == 'SUBMITTED'" @click.prevent="submitEvent()">Submit</button> -->
             </div>
-        </div>
+        </div> 
     </div>
 </template>
 
@@ -27,7 +42,7 @@ export default {
         },
         isEventParticipatePage: {
             type: Boolean
-        }
+        },
     },
     mixins: [
         mixins
@@ -50,6 +65,27 @@ export default {
             'setPratilipiModalData',
             'fetchPratilipiData'
         ]),
+         ...mapActions('eventpage', [
+            'deleteEntryFromEvent',
+            'moveEntryToDrafts',
+            'publishEntryForEvent'
+        ]),
+        publishEntry() {
+            console.log("Publish Entry");
+             this.publishEntryForEvent({eventId : this.pratilipiData.eventId , eventEntryId :  this.pratilipiData.eventEntryId});
+        },
+        moveToDrafts() {
+            console.log("Move to draafts");
+            this.moveEntryToDrafts({eventId : this.pratilipiData.eventId , eventEntryId :  this.pratilipiData.eventEntryId})
+
+        },
+        deleteEventEntry() {
+            console.log("DELETE ME " + this.pratilipiData.eventEntryId + " " + this.pratilipiData.eventId);
+            this.deleteEntryFromEvent({eventId : this.pratilipiData.eventId , eventEntryId :  this.pratilipiData.eventEntryId});       
+        },
+        showMoreOptions() {
+            console.log("Call Analytics");
+        }
         
     },
     components: {
@@ -59,6 +95,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.more-options {
+                float: right;
+                padding: 0;
+                background: none;
+                i {
+                    font-size: 18px;
+                }
+            }
+.dropdown-menu {
+                padding: 0;
+                .options-btn {
+                    font-size: 12px;
+                    display: block;
+                    padding: 10px;
+                    background: none;
+                    width: 100%;
+                    text-align: left;
+                }
+            }
     a:hover, a:focus {
         text-decoration: none;
         outline: none;

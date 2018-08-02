@@ -11,5 +11,9 @@ export default {
     draftedEventPratilipis: {
     	data: [],
     	loading_state: 'LOADING'
+    },
+    eventForPratilipi: {
+        data: [],
+        loading_state: 'LOADING'
     }
 }

@@ -1,7 +1,9 @@
 export default {
     event: {
     	loading_state: 'LOADING',
-    	data: {}
+        data: {},
+        drafts: {},
+        submissions: {}
     },
     pratilipiList: {
     	loading_state: 'LOADING',

@@ -31,7 +31,19 @@ export default {
 
     setEventDataLoadingSuccess(state, eventData) {
         state.event.loading_state = 'LOADING_SUCCESS';
-        state.event.data = eventData;  
+        state.event.data = eventData.event;
+        console.log("Look at this: ", eventData.Event);
+        if (eventData.entries.yourDrafted.length > 0) {
+            state.event.drafts = eventData.entries.yourDrafted;
+        }
+        if (eventData.entries.yourSubmitted.length > 0) {
+            state.event.submissions = eventData.entries.yourSubmitted;
+        }
+    },
+    resetDraftList(state) {
+        console.log("BAAM", state.event.drafts);
+        state.event.drafts.splice(index, 1);
+        console.log("BAAM2", state.event.drafts);
     },
 
     setEventDataLoadingError(state) {
@@ -43,18 +55,18 @@ export default {
         state.pratilipiList.loading_state = 'LOADING';
         state.pratilipiList.data = [];
     },
-    
+
     setInitialEventPratilipiLoadingSuccess(state, data) {
         state.pratilipiList.loading_state = 'LOADING_SUCCESS';
         state.pratilipiList.data = data.pratilipiList;
         state.pratilipiList.cursor = data.cursor;
     },
-    
+
     setInitialEventPratilipiLoadingError(state) {
         state.pratilipiList.loading_state = 'LOADING_ERROR';
         state.pratilipiList.data = [];
     },
-    
+
     setDynamicEventPratilipiLoadingTrue(state) {
         state.pratilipiList.loading_state = 'LOADING';
     },
@@ -74,7 +86,7 @@ export default {
     setDynamicEventPratilipiLoadingError(state) {
         state.loading_state = 'LOADING_ERROR';
     },
-    
+
     addPratilipiToLibrarySuccess(state, data) {
         const pratilipiAddedToLib = state.pratilipiList.data.find(eachPratilipi => eachPratilipi.pratilipiId === data.referenceId);
         if (pratilipiAddedToLib) {

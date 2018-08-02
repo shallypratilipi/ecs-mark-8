@@ -5,19 +5,20 @@ export default {
     cacheEventData({ commit, state }, eventData) {
         commit('setEventDataFromCache', eventData);
     },
-    
-    fetchEventDetails({ commit, state }, eventSlug) {
-        console.log(eventSlug);
+
+    fetchEventDetails({commit, state}, eventId) {
+        console.log(eventId);
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventBySlug(eventSlug, (eventData) => {
+        DataAccessor.getEventDetailById(eventId, (eventData) => {
             if (eventData) {
-                commit('setEventDataLoadingSuccess', eventData);
+                console.log("DANG", eventData.response);
+                commit('setEventDataLoadingSuccess', eventData.response);
             } else {
                 commit('setEventDataLoadingError');
             }
         });
     },
-    
+
     fetchInitialEventPratilipis({ commit, state }, { eventId, resultCount }) {
         commit('setInitialEventPratilipiLoadingTrue');
         DataAccessor.getPratilipiListByEventId(eventId, null, null, resultCount, (data) => {
@@ -29,6 +30,7 @@ export default {
         });
     },
 
+
     fetchMorePratilipisForEvent({ commit, state }, {  eventId, resultCount }) {
         commit('setDynamicEventPratilipiLoadingTrue');
         DataAccessor.getPratilipiListByEventId(eventId, state.pratilipiList.cursor, null, resultCount, (data) => {
@@ -37,7 +39,7 @@ export default {
             } else {
                 commit('setDynamicEventPratilipiLoadingError');
             }
-        });  
+        });
     },
 
     addToLibrary({ commit, state }, pratilipiId) {
@@ -74,4 +76,40 @@ export default {
             }
         });
     },
+
+    deleteEntryFromEvent({commit, state}, {eventId, eventEntryId}) {
+        console.log("Delete:" + eventId + "  " + eventEntryId);
+        DataAccessor.deleteEntryOfEvent(eventId, eventEntryId, (data) => {
+            console.log("About to commit" + data.status);
+
+            if (data.status === 200) {
+                console.log("About to commit");
+                commit('resetDraftList');
+                // commit('setInitialEventPratilipiLoadingSuccess', data.response);
+            } else {
+                // commit('setInitialEventPratilipiLoadingError');
+            }
+        });
+
+
+    },
+
+    moveEntryToDrafts({commit, state}, {eventId, eventEntryId}) {
+        console.log("Move to drafts: " + eventId + "  " + eventEntryId);
+    },
+
+    publishEntryForEvent({commit, state}, {eventId, eventEntryId}) {
+
+        console.log("Publish : " + eventId + "  " + eventEntryId);
+
+        DataAccessor.publishEntryOfEvent(eventId, eventEntryId, (data) => {
+            if (data.status === 200) {
+                // commit('setInitialEventPratilipiLoadingSuccess', data.response);
+            } else {
+                // commit('setInitialEventPratilipiLoadingError');
+            }
+        });
+    },
+
+
 }
