@@ -191,6 +191,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/experience",
+                    "title": "સંસ્મરણ",
+                    "analyticsCategoryName": "experiences",
+                    "imageFileName": "experiences.jpg",
+                    "pratilipiListData": {
+                        "language": "BENGALI",
+                        "state": "PUBLISHED",
+                        "listName": "experience"
+                    }
+                },
+                {
                     "categoryUrl": "/spiritual",
                     "title": "પૌરાણિક",
                     "analyticsCategoryName": "spiritual",

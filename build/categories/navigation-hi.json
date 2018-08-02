@@ -169,6 +169,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/experience",
+                    "title": "संस्मरण",
+                    "analyticsCategoryName": "experiences",
+                    "imageFileName": "experiences.jpg",
+                    "pratilipiListData": {
+                        "language": "HINDI",
+                        "state": "PUBLISHED",
+                        "listName": "experience"
+                    }
+                },
+                {
                     "categoryUrl": "/jivani-evam-atmakatha",
                     "title": "जीवनी एवं चरित्र",
                     "analyticsCategoryName": "biographies",
