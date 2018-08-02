@@ -10,10 +10,13 @@
         </div>
 
         <!-- Reader Data Loaded success -->
-        <div class="read-page" v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
+        <div 
+            class="read-page" 
+            :class="getReaderReadingModeStyle"
+            v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
 
             <!-- Reader Header -->
-            <div class="header-section">
+            <div class="header-section" :class="getReaderReadingModeStyle">
                 <div class="container">
                     <div class="row">
                         <div class="exit-reader tool-icon-1">
@@ -54,8 +57,8 @@
                 <div class="book-info">
                     <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" alt=""></div>
                     <div class="book-name">{{ getPratilipiData.title }}</div>
-                    <router-link :to="getPratilipiData.author.pageUrl" class="author-link">
-                        <span class="auth-name">{{ getPratilipiData.author.displayName }}</span>
+                    <router-link :to="getAuthorData.pageUrl" class="author-link">
+                        <span class="auth-name">{{ getAuthorData.displayName }}</span>
                     </router-link>
                     <div class="follow-btn-w-count" v-if="!getAuthorData.following">
                         <button @click="followPratilipiAuthor" >
@@ -231,7 +234,7 @@
             </div>
 
             <!-- Footer -->
-            <div class="footer-section">
+            <div class="footer-section" :class="getReaderReadingModeStyle">
                 <div class="container">
                     <div class="row">
                         <div class="review-count col-3" @click="openReviewModal">
@@ -362,11 +365,14 @@ export default {
             minFontSize: 12,
             maxFontSize: 32,
             lineHeight: this.getCookie(READER_LINE_HEIGHT_COOKIE_NAME) || ReaderLineHeight.MEDIUM,
-            readingMode: null,
+            readingMode: this.getCookie(READER_READING_MODE_COOKIE_NAME) || ReaderReadingMode.WHITE,
             language: constants.LANGUAGES.filter((eachLanguage) => eachLanguage.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase(),
 
             /* content */
             currentChapterSlugId: null,
+
+            /* user */
+            currentUserId: null,
 
             /* report content text */
             reportName: '',
@@ -422,7 +428,7 @@ export default {
             pratilipiData['author'] = this.getAuthorData
             let options = {
                 ...this.getPratilipiAnalyticsData(pratilipiData),
-                'USER_ID': this.getUserDetails.userId
+                'USER_ID': this.currentUserId
             }
             if (entityValue) {
                 options['ENTITY_VALUE'] = entityValue
@@ -627,13 +633,11 @@ export default {
 
         /* settings */
         triggerSettingsEvent() {
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData)
             this._triggerReaderAnalyticsEvent('LANDED_SETTINGS_READER')
         },
 
         /* share */
         openShareModal() {
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData)
             this._triggerReaderAnalyticsEvent('CLICKSHRBOOK_READERM_READER')
             this.setShareDetails({ data: this.getPratilipiData, type: 'PRATILIPI', screen_name: 'READER', screen_location: 'READERM' })
             $('#share_modal').modal('show')
@@ -677,10 +681,17 @@ export default {
                 [ReaderLineHeight.LARGE]: 'lh-lg'
             }
             return `font-${this.fontSize} ${classMap[this.lineHeight]}`
+        },
+        getReaderReadingModeStyle() {
+            const classMap = {
+                [ReaderReadingMode.WHITE]: 'theme-white',
+                [ReaderReadingMode.NIGHT]: 'theme-black',
+                [ReaderReadingMode.SEPIA]: 'theme-yellow'
+            }
+            return classMap[this.readingMode]
         }
     },
     created() {
-        this.readingMode = this.getCookie(READER_READING_MODE_COOKIE_NAME) || ReaderReadingMode.WHITE
         this.currentChapterSlugId = window.location.pathname.split('/').pop().split('-').pop()
     },
     mounted() {
@@ -709,9 +720,14 @@ export default {
         'getUserDetails.userId' (userId) {
             this.reportName = this.getUserDetails.displayName || ''
             this.reportEmail = this.getUserDetails.email || ''
-            // User had logged in from reader
-            if (userId !== 0) {
-                this.fetchChapterAndPratilipiDetails(this.currentChapterSlugId)
+            // First initialisation
+            if (this.currentUserId == null) {
+                this.currentUserId = userId
+            }
+            // user state change in reader
+            if (this.currentUserId != userId) {
+                this.currentUserId = userId
+                this.fetchReaderData(this.currentChapterSlugId)
             }
         },
         'scrollPosition'(newScrollPosition, prevScrollPosition) {
@@ -773,20 +789,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .next-strip-container {
-        margin: 0 auto;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        cursor: pointer;
-        overflow: hidden;
-    }
+
+$theme-white-background-color: #ffffff;
+$theme-white-color: #2c3e50;
+
+$theme-black-background-color: #000000;
+$theme-black-color: #ffffff;
+
+$theme-yellow-background-color: #F4ECD8;
+$theme-yellow-color: #2c3e50;
+
 .read-page {
     margin: 0;
     padding: 0;
     position: relative;
     min-height: 100vh;
+    .loading-wrap {
+        background: transparent;
+    }
     .header-section {
         box-shadow: 0 1px 1px rgba(0,0,0,0.2);
         padding: 10px 0;
@@ -1296,36 +1316,80 @@ export default {
         z-index: 11;
         min-height: 150px;
     }
+    .next-strip-container {
+        margin: 0 auto;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        cursor: pointer;
+        overflow: hidden;
+    }
 }
 .theme-white {
-    background: #fff !important;
-    color: #2c3e50 !important;
+    background: $theme-white-background-color !important;
+    color: $theme-white-color !important;
 }
 .theme-black {
-    background: #000 !important;
-    color: #fff !important;
+    background: $theme-black-background-color !important;
+    color: $theme-black-color !important;
     i {
-        color: #fff !important;
+        color: $theme-black-color !important;
     }
     .modal {
-        color: #2c3e50 !important;
+        color: $theme-white-color !important;
         i {
-            color: #2c3e50 !important;
+            color: $theme-white-color !important;
         }
     }
     .reader-progress {
-        background: #000;
+        background: $theme-black-background-color;
     }
 }
 .theme-yellow {
-    background: #F4ECD8 !important;
-    color: #2c3e50 !important;
+    background: $theme-yellow-background-color !important;
+    color: $theme-yellow-color !important;
     .reader-progress {
-        background: #F4ECD8;
+        background: $theme-yellow-background-color;
     }
 }
 </style>
+
 <style lang="scss">
+
+$theme-white-background-color: #ffffff;
+$theme-white-color: #2c3e50;
+
+$theme-black-background-color: #000000;
+$theme-black-color: #ffffff;
+
+$theme-yellow-background-color: #F4ECD8;
+$theme-yellow-color: #2c3e50;
+
+.read-page.theme-white {
+    .book-recomendations .container-fluid, 
+    .comment-box,
+    .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
+        background: $theme-white-background-color !important;
+        color: $theme-white-color !important;
+    }
+}
+.read-page.theme-black {
+    .book-recomendations .container-fluid, 
+    .comment-box,
+    .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
+        background: $theme-black-background-color !important;
+        color: $theme-black-color !important;
+    }
+}
+.read-page.theme-yellow {
+    .book-recomendations .container-fluid, 
+    .comment-box,
+    .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
+        background: $theme-yellow-background-color !important;
+        color: $theme-yellow-color !important;
+    }
+}
 .rating-popout {
     .all-reviews, .show-more, .write-review-btn {
         display: none !important;
@@ -1372,16 +1436,6 @@ export default {
                 margin: 0 5px;
                 background: #f8f8f8;
             }
-        }
-    }
-    .book-bottom-webpush-subscribe.bg-grey {
-        .webpush-container .webpush-inner-container {
-            background: #f8f8f8;
-        }
-    }
-   .book-bottom-webpush-subscribe.bg-black {
-       .webpush-container .webpush-inner-container {
-           background: black;
         }
     }
 }
