@@ -126,11 +126,17 @@
                             ></NextPratilipiStrip>
                         </div>
                         <div class="card webpush-strip-container" v-if="isWebPushStripEnabled">
-                            <div class="head-title">
-                                __("web_push_section_title")
-                                <button class="close" @click="closeWebPushStrip()">
-                                    <i class="material-icons">close</i>
-                                </button>
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="head-title">
+                                        __("web_push_section_title")
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <button class="close" @click="closeWebPushStrip()">
+                                        <i class="material-icons">close</i>
+                                    </button>
+                                </div>
                             </div>
                             <WebPushStrip
                                 screenName="PRATILIPI"
@@ -1144,8 +1150,8 @@ export default {
         }
         .webpush-strip-container {
             button.close {
-                position: absolute;
-                right: 8px;
+                margin-top: 10px;
+                margin-right: 10px;
                 i {
                     font-size: 20px;
                 }
