@@ -124,10 +124,8 @@ export default {
         })
     },
 
-    postReadingPercentage ({state}, {pratilipiId, chapterCount, maxRead, indexData}) {
-        if (state.userPratilipi.data) {
-            DataAccessor.postReadingPercent(pratilipiId, chapterCount, maxRead, indexData)
-        }
+    postReadingPercentage ({state}, {chapterNo, maxRead}) {
+        DataAccessor.postReadingPercent(state.pratilipi.data.pratilipiId, chapterNo, maxRead, state.index.data)
     },
 
     submitPrailipiReport ({state}, {name, email, message, pratilipiId, language, dataType}) {

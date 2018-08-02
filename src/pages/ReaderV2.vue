@@ -169,8 +169,14 @@
                                 v-if="eachIndex.slugId == currentChapterSlugId && getIndexData.length === 1 && !eachIndex.title">
                                     {{ getPratilipiData.displayTitle }}
                             </h2>
+                            <!--
+                                TODO: Better Implementation
+                                Hack to update renderedChapterIdSlug = currentChapterSlugId when rendered
+                                v-if="renderedChapterIdSlug = currentChapterSlugId"
+                            -->
                             <div class="content-section p-lr-15"
                                 :class="getContentSectionStyle"
+                                v-if="renderedChapterIdSlug = currentChapterSlugId" 
                                 v-html="getPratilipiContent[currentChapterSlugId].content">
                             </div>
                             <div class="book-navigation p-lr-15" v-if="getPratilipiContentLoadingState === 'LOADING_SUCCESS'">
@@ -222,6 +228,11 @@
                                     v-if="getPratilipiLoadingState === 'LOADING_SUCCESS'">
                                 </Recommendation>
                             </div>
+                            <div class="go-to-home-screen">
+                                <button class="btn btn-sm btn-danger" v-if="isMobile() && getIndexData[getIndexData.length -1].slugId === currentChapterSlugId" @click="navigateToHome">
+                                    __("reader_goto_home_page")
+                                </button>
+                            </div>
                             <WebPushModal
                                 title="__('web_push_title')"
                                 message="__('web_push_message_2')"
@@ -237,15 +248,15 @@
             <div class="footer-section" :class="getReaderReadingModeStyle">
                 <div class="container">
                     <div class="row">
-                        <div class="review-count col-3" @click="openReviewModal">
+                        <div class="review-count" @click="openReviewModal">
                             <i class="material-icons">comment</i>
                             <span>{{ getPratilipiData.reviewCount }}</span>
                         </div>
-                        <div class="rating-count col-3" @click="openRatingModal">
+                        <div class="rating-count" @click="openRatingModal">
                             <i class="material-icons">star_rate</i>
                             <span>{{ getPratilipiData.ratingCount }}</span>
                         </div>
-                        <div class="add-to-lib col-3">
+                        <div class="add-to-lib">
                             <span v-if="getUserPratilipiData.addedToLib" @click="removePratilipiFromLibrary">
                                 <i class="material-icons">bookmark</i>
                                 <i class="material-icons stacked">check</i>
@@ -255,7 +266,12 @@
                                 <i class="material-icons stacked grey">add</i>
                             </span>
                         </div>
-                        <div class="share-btn col-3" @click="openShareModal">
+                        <div class="whatsapp-share-btn" v-if="isMobile()">
+                            <a :href="getWhatsAppUri" @click="triggerWaEndShareEvent" class="whatsapp" target="_blank" rel="noopener" aria-label="google">
+                                <span class="social-icon"><icon name="whatsapp"></icon></span>
+                            </a>
+                        </div>
+                        <div class="share-btn" @click="openShareModal">
                             <i class="material-icons">share</i>
                         </div>
                     </div>
@@ -294,7 +310,7 @@
                 </div>
             </div>
 
-            <OpenInApp v-if="isAndroid() && percentScrolled < 102 && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
+            <OpenInApp v-if="isAndroid() && readerPercentScrolled < 102 && getPratilipiLoadingState === 'LOADING_SUCCESS'" :isVisible="shouldShowOpenInAppStrip" :pratilipiData="getPratilipiData"></OpenInApp>
             <div class="overlay" @click="closeSidebar"></div>
             <div class="overlay-1" @click="closeReviewModal"></div>
             <div class="overlay-2" @click="closeRatingModal"></div>
@@ -370,9 +386,7 @@ export default {
 
             /* content */
             currentChapterSlugId: null,
-
-            /* user */
-            currentUserId: null,
+            renderedChapterIdSlug: null,
 
             /* report content text */
             reportName: '',
@@ -390,12 +404,14 @@ export default {
 
             /* user pratilipi calc */
             maxReadPercentage: 0,
+            maxReadPercentageLastUpdated: Date.now(),
 
             /* scroll */
-            scrollPosition: null,
+            scrollPosition: 0,
+            readerPercentScrolled: 0,
+
             scrollCounter: 0,
-            scrollDirection: null,
-            percentScrolled: null,
+            scrollDirection: null,            
 
             /* open in app strip */
             shouldShowOpenInAppStrip: false,
@@ -428,7 +444,7 @@ export default {
             pratilipiData['author'] = this.getAuthorData
             let options = {
                 ...this.getPratilipiAnalyticsData(pratilipiData),
-                'USER_ID': this.currentUserId
+                'USER_ID': this.getUserDetails.userId
             }
             if (entityValue) {
                 options['ENTITY_VALUE'] = entityValue
@@ -503,6 +519,10 @@ export default {
                 this.$router.push({path})
             }
             this._triggerReaderAnalyticsEvent('CHANGECHAPTER_READERM_READER', null, currentChapterIndex)
+        },
+        navigateToHome() {
+            this._triggerReaderAnalyticsEvent('GOTOHOME_RECOMMENDBOOK_READER')
+            this.$router.push('/')
         },
 
         /* library */
@@ -650,11 +670,22 @@ export default {
             this.$router.push({path: this.getPratilipiData.nextPratilipi.pageUrl})
         },
 
+        /* whatsapp share */
+        triggerWaEndShareEvent() {
+            this._triggerReaderAnalyticsEvent('SHAREBOOKWA_BOOKEND_READER', 'WHATSAPP')
+        },
+
         /* scroll */
         updateScroll() {
             this.scrollPosition = window.scrollY
-            let wintop = $(window).scrollTop(), docheight = $('.content-section').height(), winheight = $(window).height()
-            this.percentScrolled = (wintop / (docheight - winheight)) * 100
+            const wintop = $(window).scrollTop()
+            const docheight = $('.book-content').height() + Number($('.book-content').css('marginTop').replace('px', '')) + Number($('.book-content').css('marginBottom').replace('px', ''))
+            const winheight = $(window).height()
+            const readerPercentScrolled = (wintop / (docheight - winheight)) * 100
+            if (!isNaN(readerPercentScrolled)) {
+                this.readerPercentScrolled = Math.max(readerPercentScrolled, 0)
+                $('.reader-progress .progress-bar').css('width', `${this.readerPercentScrolled}%`)
+            }
         }
 
     },
@@ -672,7 +703,8 @@ export default {
             'getAuthorDataLoadingState'
         ]),
         ...mapGetters([
-            'getUserDetails'
+            'getUserDetails',
+            'getWhatsAppUri'
         ]),
         getContentSectionStyle() {
             const classMap = {
@@ -709,6 +741,18 @@ export default {
                 this.fetchReaderData(this.currentChapterSlugId)                
             }
         },
+        'renderedChapterIdSlug' () {
+            const self = this
+            setTimeout(() => {
+                const windowHeight = $(window).height()
+                const documentHeight = $('.content-section').height()
+                let maxReadPercentage = windowHeight/documentHeight * 100
+                if (maxReadPercentage > 100) {
+                    maxReadPercentage = 100
+                }
+                self.maxReadPercentage = maxReadPercentage
+            })
+        },
         'getPratilipiData.pratilipiId' (pratilipiId) {
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false
@@ -717,16 +761,14 @@ export default {
             this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.this.getCookie('bucketId')) || 0) < 30
             this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.this.getCookie('bucketId')) || 0) < 60
         },
-        'getUserDetails.userId' (userId) {
+        'getUserDetails.userId' (newUserId, oldUserId) {
             this.reportName = this.getUserDetails.displayName || ''
             this.reportEmail = this.getUserDetails.email || ''
             // First initialisation
-            if (this.currentUserId == null) {
-                this.currentUserId = userId
-            }
-            // user state change in reader
-            if (this.currentUserId != userId) {
-                this.currentUserId = userId
+            if (oldUserId === undefined) {
+                // Do Nothing
+            } else {
+                // user state change in reader
                 this.fetchReaderData(this.currentChapterSlugId)
             }
         },
@@ -750,7 +792,7 @@ export default {
                 this.scrollCounter = 0
             }
 
-
+            /*
             if (this.scrollDirection === 'UP' && !this.shouldShowOpenInAppStrip){
                 this.shouldShowOpenInAppStrip = true
             }
@@ -758,26 +800,40 @@ export default {
             if (this.scrollDirection === 'DOWN') {
                 this.shouldShowOpenInAppStrip = false
             }
+            */
 
         },
-        'percentScrolled'(newPercentScrolled, prevPercentScrolled) {
-
-            $(".reader-progress .progress-bar").css("width",newPercentScrolled+"%")
-            if (this.getIndexData[this.getIndexData.length -1].slugId === this.currentChapterSlugId && newPercentScrolled > 100 && !this.webPushModalTriggered) {
+        'readerPercentScrolled'() {
+            // webpush modal trigger
+            if (this.getIndexData[this.getIndexData.length -1].slugId === this.currentChapterSlugId && this.readerPercentScrolled > 80 && !this.webPushModalTriggered) {
                 this.webPushModalTriggered = true
                 this.openWebPushModal()
             }
-
+            // next pratilipi trigger
             if (this.getIndexData[this.getIndexData.length -1].slugId == this.currentChapterSlugId && !this.isNextPratilipiEnabled) {
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId
                 if (this.isNextPratilipiEnabled) {
                     this._triggerReaderAnalyticsEvent('VIEWNEXTPRATILIPI_READERM_READER');
                 }
             }
-
+            // maxReadPercentage trigger
+            if (this.readerPercentScrolled > this.maxReadPercentage) {
+                this.maxReadPercentage = this.readerPercentScrolled
+            }
+        },
+        'maxReadPercentage' () {
+            if (this.getUserDetails.userId !== 0) {
+                if (Date.now() > (this.maxReadPercentageLastUpdated + 500)) {
+                    this.postReadingPercentage({
+                        chapterNo: this.getIndexData.filter(indexData => indexData.slugId === this.currentChapterSlugId)[0].chapterNo,
+                        maxRead: this.maxReadPercentage
+                    })
+                    this.maxReadPercentageLastUpdated = Date.now()
+                }
+            }
         },
         'getPratilipiLoadingState'(status) {
-            if (status === 'LOADING_SUCCESS') {
+            if (status === LoadingState.LOADING_SUCCESS) {
                 this._triggerReaderAnalyticsEvent('LANDED_READERM_READER')
             }
         }
@@ -980,17 +1036,6 @@ $theme-yellow-color: #2c3e50;
             font-size: 14px;
             vertical-align: middle;
         }
-        .col-3 {
-            cursor: pointer;
-            padding: 0 5px;
-            -moz-user-select: -moz-none;
-            -moz-user-select: none;
-            -o-user-select: none;
-            -khtml-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
         .add-to-lib {
             i {
                 font-size: 25px;
@@ -1012,6 +1057,36 @@ $theme-yellow-color: #2c3e50;
                     font-weight: bold;
                     &.grey {
                         color: #212121;
+                    }
+                }
+            }
+        }
+        .container {
+            .row {
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                padding: 0 5px;
+                -moz-user-select: -moz-none;
+                -moz-user-select: none;
+                -o-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                .whatsapp-share-btn {
+                    a.whatsapp {
+                        font-size: 14px;
+                        .social-icon {
+                            text-align: center;
+                        }
+                        .fa-icon {
+                            width: 24px;
+                            height: 24px;
+                        }
+                        &:hover {
+                            text-decoration: none;
+                        }
                     }
                 }
             }
@@ -1325,15 +1400,29 @@ $theme-yellow-color: #2c3e50;
         cursor: pointer;
         overflow: hidden;
     }
+    .go-to-home-screen {
+        text-align: center;
+        margin-bottom: 10px;
+        button {
+            width: 50%;
+            height: 30px;
+        }
+    }
 }
 .theme-white {
     background: $theme-white-background-color !important;
     color: $theme-white-color !important;
+    .social-icon svg {
+        color: $theme-white-color !important;
+    }
 }
 .theme-black {
     background: $theme-black-background-color !important;
     color: $theme-black-color !important;
     i {
+        color: $theme-black-color !important;
+    }
+    .social-icon svg {
         color: $theme-black-color !important;
     }
     .modal {
@@ -1351,6 +1440,9 @@ $theme-yellow-color: #2c3e50;
     color: $theme-yellow-color !important;
     .reader-progress {
         background: $theme-yellow-background-color;
+    }
+    .social-icon svg {
+        color: $theme-yellow-color !important;
     }
 }
 </style>
