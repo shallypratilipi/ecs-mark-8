@@ -1,6 +1,6 @@
 <template>
     <ReadLayout>
-        <div class="read-page">
+        <div class="read-page" itemscope itemtype="http://schema.org/Book">
             <div class="header-section" v-if="shouldLoadHeaderAndSetPageTheme()">
                 <div class="container">
                     <div class="row">
@@ -93,27 +93,30 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 p-0" v-if="getPratilipiContent.length > 0 && getPratilipiData.pratilipiId == $route.query.id">
-                            <h2
+                            <h1
                                 class="chapter-title p-lr-15"
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.chapterId"
 
-                                v-if="eachIndex.chapterNo == selectedChapter && (getPratilipiContent.length > 1 || eachIndex.title)">
+                                v-if="eachIndex.chapterNo == selectedChapter && (getPratilipiContent.length > 1 || eachIndex.title)" itemprop="name">
                                   {{ eachIndex.title || chapter + eachIndex.chapterNo }}
-                            </h2>
-                            <h2
+                            </h1>
+                            <h1
                                 v-for="eachIndex in getIndexData"
                                 v-if="eachIndex.chapterNo == selectedChapter && getPratilipiContent.length == 1 && !eachIndex.title"
-                                class="chapter-title p-lr-15">
+                                class="chapter-title p-lr-15" itemprop="name">
                                 {{getPratilipiData.displayTitle}}
-                            </h2>
+                            </h1>
                             <div class="content-section lh-md p-lr-15"
                                  :class="fontStyleObject"
                                  v-for="eachChapter in getPratilipiContent"
                                  v-if="eachChapter.chapterNo == selectedChapter"
                                  :key="eachChapter.chapterNo"
-                                 v-html="eachChapter.content">
+                                 v-html="eachChapter.content" itemprop="text">
                             </div>
+			    <meta itemprop="inLanguage" v-bind:content="getPratilipiData.language" />
+                            <meta itemprop="image" v-bind:content="getPratilipiData.coverImageUrl" />
+			    <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/> 
                             <Spinner v-if="getPratilipiContentLoadingState !== 'LOADING_SUCCESS'"></Spinner>
                             <div class="book-navigation p-lr-15" v-if="getPratilipiContentLoadingState === 'LOADING_SUCCESS'">
                                 <div class="prev" v-if="selectedChapter != 1" @click="goToPreviousChapter">__("reader_prev_chapter")</div>
@@ -195,7 +198,10 @@
                         </div>
                         <div class="rating-count" @click="openRatingModal">
                             <i class="material-icons">star_rate</i>
-                            <span>{{ getPratilipiData.ratingCount }}</span>
+			    <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                            	<span itemprop="ratingCount">{{ getPratilipiData.ratingCount }}</span>
+				<meta itemprop="ratingValue" v-bind:content="getPratilipiData.averageRating | round(1)" />	
+			    </span>
                         </div>
                         <div class="add-to-lib">
                             <span v-if="getUserPratilipiData.addedToLib" @click="triggerAnanlyticsEventAndRemoveFromLibrary">
@@ -224,10 +230,10 @@
                     <i class="material-icons">close</i>
                 </div>
                 <div class="book-info">
-                    <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" alt=""></div>
+                    <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" v-bind:alt="getPratilipiData.title"></div>
                     <div class="book-name">{{ getPratilipiData.title }}</div>
                     <router-link :to="getPratilipiData.author.pageUrl" class="author-link">
-                        <span class="auth-name">{{ getPratilipiData.author.displayName }}</span>
+                        <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="auth-name" itemprop="name">{{ getPratilipiData.author.displayName }}</span></span>
                     </router-link>
                     <div class="follow-btn-w-count" v-if="!getAuthorData.following"><!-- Follow Button -->
                         <button @click="checkLoginStatusAndFollowOrUnfollowAuthor" >
@@ -1056,7 +1062,7 @@ export default {
         .p-r-10 {
             padding: 0 10px 0 0;
         }
-        h2.chapter-title {
+        h1.chapter-title {
             font-size: 24px;
             text-align: center;
             padding-top: 10px;
