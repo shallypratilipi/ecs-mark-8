@@ -136,14 +136,14 @@
                     }
                 },
                 {
-                    "categoryUrl": "/memories",
+                    "categoryUrl": "/smritikatha",
                     "title": "স্মৃতিকথা",
                     "analyticsCategoryName": "memories",
                     "imageFileName": "experiences.jpg",
                     "pratilipiListData": {
                         "language": "BENGALI",
                         "state": "PUBLISHED",
-                        "listName": "memories"
+                        "listName": "smritikatha"
                     }
                 },
                 {

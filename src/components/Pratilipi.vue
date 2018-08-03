@@ -31,7 +31,6 @@
 		    <meta itemprop="datePublished" v-bind:datetime="pratilipiData.listingDateMillis | listingDateSchemaOrgFormat" />
 		    <meta itemprop="image" v-bind:content="pratilipiData.coverImageUrl" />
                     <meta itemprop="url" v-bind:content="this.websiteUrl+pratilipiData.pageUrl" />
-                    <meta v-for="tag in selectedTags" itemprop="genre" v-bind:content="tag.nameEn"/>
                 </div>
                 <div class="stats">
                     <div class="rating">

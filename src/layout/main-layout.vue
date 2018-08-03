@@ -77,6 +77,7 @@ export default {
         this.currentLocale = 'language-' + process.env.LANGUAGE;
     },
     mounted() {
+	$("body").removeClass("modal-open");
         $(document).on('show.bs.modal', '.modal', function (event) {
             var zIndex = 1040 + (10 * $('.modal:visible').length);
             $(this).css('z-index', zIndex);

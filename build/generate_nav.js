@@ -84,7 +84,7 @@ async.eachSeries([
     }).on('close', () => {
         navigationJSON.sections.push(currentSection);
         console.log(JSON.stringify(navigationJSON, null, 4));
-        fs.writeFile('./build/categories/navigation-' + eachLanguage + '.json', JSON.stringify(navigationJSON, null, 4), function(errorInWritingFile) {
+        fs.writeFile('./categories/navigation-' + eachLanguage + '.json', JSON.stringify(navigationJSON, null, 4), function(errorInWritingFile) {
             if (errorInWritingFile) {
                 console.log(errorInWritingFile);
             } else {

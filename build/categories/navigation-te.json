@@ -103,6 +103,17 @@
                     }
                 },
                 {
+                    "categoryUrl": "/experience",
+                    "title": "అనుభవాలు",
+                    "analyticsCategoryName": "experiences",
+                    "imageFileName": "experiences.jpg",
+                    "pratilipiListData": {
+                        "language": "TELUGU",
+                        "state": "PUBLISHED",
+                        "listName": "experience"
+                    }
+                },
+                {
                     "categoryUrl": "/family",
                     "title": "అనుబంధాలు",
                     "analyticsCategoryName": "family",

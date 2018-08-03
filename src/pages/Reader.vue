@@ -912,7 +912,7 @@ export default {
         }
     },
     destroyed() {
-        window.removeEventListener('scroll', this.updateScroll);
+	 window.removeEventListener('scroll', this.updateScroll);
     }
 }
 </script>
