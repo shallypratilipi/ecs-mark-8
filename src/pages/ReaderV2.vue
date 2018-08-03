@@ -5,7 +5,7 @@
         <Spinner v-if="getPratilipiLoadingState === 'LOADING'"></Spinner>
 
         <!-- Reader Data Loaded error -->
-        <ServerError :action="'readerv2page/fetchReaderData'" :data="currentChapterSlugId" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
+        <ServerError class="read-page-server-error" :action="'readerv2page/fetchReaderData'" :data="currentChapterSlugId" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
 
         <!-- Reader Data Loaded success -->
         <div 
@@ -1571,10 +1571,10 @@ $theme-yellow-color: #2c3e50;
         }
     }
 }
-.server_error {
+.read-page-server-error.server_error {
     margin: 0 !important;
+    width: 100% !important;
     height: 100vh !important;
-    top: 30% !important;
     position: fixed !important;
     padding: 0 10px !important;
 }
