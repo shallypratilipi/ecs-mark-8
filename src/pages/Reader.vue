@@ -1066,6 +1066,7 @@ export default {
             font-size: 24px;
             text-align: center;
             padding-top: 10px;
+	    display:block;
             @media screen and (max-width: 768px ) {
                 font-size: 18px;
             }
