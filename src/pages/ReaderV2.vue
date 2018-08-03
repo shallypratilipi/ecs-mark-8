@@ -5,9 +5,7 @@
         <Spinner v-if="getPratilipiLoadingState === 'LOADING'"></Spinner>
 
         <!-- Reader Data Loaded error -->
-        <div class="read-page" v-if="getPratilipiLoadingState === 'LOADING_ERROR'">
-            <!-- TODO: Implementation -->
-        </div>
+        <ServerError :action="'readerv2page/fetchReaderData'" :data="language" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
 
         <!-- Reader Data Loaded success -->
         <div 
@@ -55,7 +53,7 @@
                     <i class="material-icons">close</i>
                 </div>
                 <div class="book-info">
-                    <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" alt=""></div>
+                    <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" alt="getPratilipiData.displayTitle"></div>
                     <div class="book-name">{{ getPratilipiData.title }}</div>
                     <router-link :to="getAuthorData.pageUrl" class="author-link">
                         <span class="auth-name">{{ getAuthorData.displayName }}</span>
@@ -155,20 +153,20 @@
                     <div class="row">
                         <Spinner v-if="!getPratilipiContent[currentChapterSlugId]"></Spinner>
                         <div class="col-12 p-0" v-else>
-                            <h2
+                            <h1
                                 class="chapter-title p-lr-15"
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.slugId"
                                 v-if="eachIndex.slugId == currentChapterSlugId && (getIndexData.length > 1 || eachIndex.title)">
                                     {{ eachIndex.title || '__("writer_chapter") ' + eachIndex.chapterNo }}
-                            </h2>
-                            <h2
+                            </h1>
+                            <h1
                                 class="chapter-title p-lr-15"
                                 v-for="eachIndex in getIndexData"
                                 :key="eachIndex.slugId"
                                 v-if="eachIndex.slugId == currentChapterSlugId && getIndexData.length === 1 && !eachIndex.title">
                                     {{ getPratilipiData.displayTitle }}
-                            </h2>
+                            </h1>
                             <!--
                                 TODO: Better Implementation
                                 Hack to update renderedChapterIdSlug = currentChapterSlugId when rendered
@@ -338,6 +336,7 @@ import Recommendation from '@/components/Recommendation.vue';
 import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
 import NextPratilipiStrip from '@/components/NextPratilipiStrip.vue'
+import ServerError from '@/components/ServerError.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex';
 import constants from '@/constants';
@@ -369,7 +368,8 @@ export default {
         Recommendation,
         ShareStrip,
         OpenInApp,
-        NextPratilipiStrip
+        NextPratilipiStrip,
+        ServerError
     },
     mixins: [
         mixins
@@ -417,7 +417,10 @@ export default {
             shouldShowOpenInAppStrip: false,
 
             /* content serialisation */
-            isNextPratilipiEnabled: false
+            isNextPratilipiEnabled: false,
+
+            /* metaDescription */
+            metaDescription: ''
         }
     },
     methods: {
@@ -620,7 +623,7 @@ export default {
                 message = this.reportContentText.trim(),
                 pratilipiId = this.getPratilipiData.pratilipiId,
                 language = this.language,
-                dataType = 'PRATILIPI';
+                dataType = 'PRATILIPI'
 
             if (name === '') {
                 this.triggerAlert({message: '__("user_name_empty")', timer: 1000})
@@ -752,8 +755,38 @@ export default {
                 }
                 self.maxReadPercentage = maxReadPercentage
             })
+
+            // setting the title of the page
+            let documentTitle = ''
+            let chapterMeta = this.getIndexData.filter(indexData => indexData.slugId === this.renderedChapterIdSlug)[0]
+            if (chapterMeta.title) {
+                documentTitle += chapterMeta.title + ' | '
+            }
+            documentTitle += (this.getPratilipiData.title && this.getPratilipiData.titleEn) ? 
+                `${this.getPratilipiData.title} | ${this.getPratilipiData.titleEn}` : this.getPratilipiData.displayTitle
+            document.title = documentTitle
         },
         'getPratilipiData.pratilipiId' (pratilipiId) {
+            // pratilipi title seo
+            const pratilipiTitle = (this.getPratilipiData.title && this.getPratilipiData.titleEn) ? 
+                `${this.getPratilipiData.title} | ${this.getPratilipiData.titleEn}` : this.getPratilipiData.displayTitle
+
+            // removing meta description from head section
+            if ($('meta[name="description"]')) {
+                this.metaDescription = $('meta[name="description"]').attr('content')
+                $('meta[name="description"]').remove()
+            }
+
+            // setting og tags
+            $('meta[property="og:title"]').remove()
+            $('meta[property="og:description"]').remove()
+            $('meta[property="og:image"]').remove()
+            $('meta[property="og:url"]').remove()
+            $('head').append(`<meta property='og:title' content='${pratilipiTitle}'>`)
+            $('head').append(`<meta property='og:description' content='${this.getPratilipiData.summary ? (this.getPratilipiData.summary + ' « ' + this.getAuthorData.fullName) : this.getPratilipiData.summary}'>`)
+            $('head').append(`<meta property='og:image' content='${this.getPratilipiData.coverImageUrl}'>`)
+            $('head').append(`<meta property='og:url' content='${this.getPratilipiData.pageUrl}'>`)
+
             // default value for webPushModalTriggered is false
             this.webPushModalTriggered = false
 
@@ -792,7 +825,6 @@ export default {
                 this.scrollCounter = 0
             }
 
-            /*
             if (this.scrollDirection === 'UP' && !this.shouldShowOpenInAppStrip){
                 this.shouldShowOpenInAppStrip = true
             }
@@ -800,7 +832,6 @@ export default {
             if (this.scrollDirection === 'DOWN') {
                 this.shouldShowOpenInAppStrip = false
             }
-            */
 
         },
         'readerPercentScrolled'() {
@@ -813,7 +844,7 @@ export default {
             if (this.getIndexData[this.getIndexData.length -1].slugId == this.currentChapterSlugId && !this.isNextPratilipiEnabled) {
                 this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId
                 if (this.isNextPratilipiEnabled) {
-                    this._triggerReaderAnalyticsEvent('VIEWNEXTPRATILIPI_READERM_READER');
+                    this._triggerReaderAnalyticsEvent('VIEWNEXTPRATILIPI_READERM_READER')
                 }
             }
             // maxReadPercentage trigger
@@ -839,6 +870,15 @@ export default {
         }
     },
     destroyed() {
+        // Removing og tags
+        $('meta[property="og:title"]').remove()
+        $('meta[property="og:description"]').remove()
+        $('meta[property="og:image"]').remove()
+        $('meta[property="og:url"]').remove()
+
+        // adding meta description of the page
+        $('head').append(`<meta name="description" content="${this.metaDescription}">`)
+
         window.removeEventListener('scroll', this.updateScroll)
     }
 }
@@ -1530,5 +1570,12 @@ $theme-yellow-color: #2c3e50;
             }
         }
     }
+}
+.server_error {
+    margin: 0 !important;
+    height: 100vh !important;
+    top: 30% !important;
+    position: fixed !important;
+    padding: 0 10px !important;
 }
 </style>
