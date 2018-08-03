@@ -157,6 +157,7 @@ export default {
         border-left: 3px solid #d0021b;
         padding-left: 10px;
         margin: 10px 0;
+	display:block;
     }
 }
 </style>
