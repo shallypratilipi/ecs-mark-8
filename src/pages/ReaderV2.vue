@@ -5,7 +5,7 @@
         <Spinner v-if="getPratilipiLoadingState === 'LOADING'"></Spinner>
 
         <!-- Reader Data Loaded error -->
-        <ServerError :action="'readerv2page/fetchReaderData'" :data="language" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
+        <ServerError :action="'readerv2page/fetchReaderData'" :data="currentChapterSlugId" v-if="getPratilipiLoadingState === 'LOADING_ERROR'"></ServerError>
 
         <!-- Reader Data Loaded success -->
         <div 
