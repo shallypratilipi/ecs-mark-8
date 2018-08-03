@@ -74,7 +74,8 @@
                                         <button @click="askConfirmationAndUnpublishOrPublishBook({ bookState: 'DRAFTED' })">__("pratilipi_move_to_drafts")</button>
                                     </span>
                                     <span>
-
+					<button v-if="isMobile()" @click="showAlertToGoToDesktop"><i class="material-icons">mode_edit</i> __("pratilipi_edit_content")</button>
+                                         <a v-else @click="triggerEditBookEvent" :href="getPratilipiData.writePageUrl"><button><i class="material-icons">mode_edit</i> __("pratilipi_edit_content")</button></a>
                                     </span>
                                     <span v-if="getPratilipiData.state === 'DRAFTED'">
                                         <button @click="triggerEventAndUnpublishOrPublishBook({ bookState: 'PUBLISHED' })">__("pratilipi_publish_it")</button>
