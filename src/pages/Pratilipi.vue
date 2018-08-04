@@ -269,6 +269,7 @@
                     v-if="isWebPushModalEnabled"></WebPushModal>
             </div>
             <ChatBanner></ChatBanner>
+            <PratilipiPublishShareModal screenName="PRATILIPI" :pratilipi="getPratilipiData"></PratilipiPublishShareModal>
         </div>
     </MainLayout>
 </template>
@@ -294,6 +295,7 @@ import { mapGetters, mapActions } from 'vuex'
 import VapasiQuote from '@/components/VapasiQuote.vue';
 import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
 import VapasiJoke from '@/components/VapasiJoke.vue';
+import PratilipiPublishShareModal from '@/components/PratilipiPublishShareModal.vue';
 
 export default {
     name: 'Pratilipi',
@@ -317,7 +319,7 @@ export default {
             percentScrolled: null,
             percentageRead: null,
             isNextPratilipiEnabled: false,
-	    currentPageUrl: null,
+            currentPageUrl: null
         }
     },
     mixins: [
@@ -680,7 +682,8 @@ export default {
         VapasiQuote,
         VapasiHoroscope,
         VapasiJoke,
-        NextPratilipiStrip
+        NextPratilipiStrip,
+        PratilipiPublishShareModal,
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
@@ -689,9 +692,20 @@ export default {
         '$route.params.slug_id' (slug_id) {
             this.fetchPratilipiDetailsAndUserPratilipiData(slug_id);
         },
-        'getPratilipiData.state'(state) {
-            if (state === 'DELETED') {
+        'getPratilipiData.state'(currentState, prevState) {
+            if (currentState === 'DELETED') {
                 this.$router.push(this.getUserDetails.profilePageUrl);
+            }
+            if (currentState === 'PUBLISHED' && this.isTestEnvironment) {
+                // case 1: When landing from writer panel
+                if (sessionStorage.getItem('publishType') === 'self') {
+                    delete sessionStorage['publishType']
+                    this.openPratilipiPublishShareModal()
+                }
+                // case 2: When state changes from the page
+                if (prevState === 'DRAFTED') {
+                    this.openPratilipiPublishShareModal()
+                }
             }
         },
         'getPratilipiData.pratilipiId'(newId){

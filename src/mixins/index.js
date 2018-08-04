@@ -6,6 +6,8 @@ import {
     openConfirmationModal,
     openForgotPasswordModal,
     openWritePratilipiModal,
+    openWebPushModal,
+    openPratilipiPublishShareModal,
     getCurrentLanguage,
     getLowResolutionImage,
     getMediumResolutionImage,
@@ -28,8 +30,7 @@ import {
     setCookie,
     isCurrentEvent,
     validateFirstAndSecondPassword,
-    isTestEnvironment,
-    openWebPushModal,
+    isTestEnvironment
 } from '@/mixins/methods'
 import { defaultAuthorImage } from '@/mixins/data'
 export default {
@@ -47,6 +48,7 @@ export default {
         openForgotPasswordModal,
         openWritePratilipiModal,
         openWebPushModal,
+        openPratilipiPublishShareModal,
         getCurrentLanguage,
         getLowResolutionImage,
         getMediumResolutionImage,
