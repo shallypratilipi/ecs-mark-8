@@ -313,6 +313,9 @@ export default {
                     delete response.chapterData.pageUrl
                     delete response.chapterData.pratilipiId
                 }
+                if (!response.chapterData.slugId) {
+                    response.chapterData.slugId = chapterSlug
+                }
             }
             // Local Testing for IMAGE contents
             if (status === 200) {
@@ -332,6 +335,9 @@ export default {
                     response.slugId = response.pageUrl.split('/').pop().split('-').pop()
                     delete response.pageUrl
                     delete response.pratilipiId
+                }
+                if (!response.slugId) {
+                    response.slugId = chapterSlug
                 }
             }
             // Local Testing for IMAGE contents

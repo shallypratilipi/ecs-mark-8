@@ -28,7 +28,7 @@ import registerEvents from 'serviceworker-webpack-plugin/lib/browser/registerEve
 
 if ('serviceWorker' in navigator) {
     const registration = runtime.register()
-    registerEvents(registration)
+    registerEvents(registration, {})
 } else {
     console.log('serviceWorker not available')
 }

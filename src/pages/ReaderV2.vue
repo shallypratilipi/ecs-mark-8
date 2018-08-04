@@ -138,7 +138,7 @@
                                     <label for="readerReportModalEmail">__("email")</label>
                                     <input id="readerReportModalEmail" class="form-control" :value="reportEmail" @input="reportEmail = $event.target.value" placeholder="__('email')" />
                                     <label for="readerReportModalContentText">__("report_issue")</label>
-                                    <textarea id="readerReportModalContentText" class="form-control" :value="reportContentText" @input="reportContentText = $event.target.value" rows="3" placeholder="__('report_issue')"></textarea>
+                                    <TranslatingInputTextArea id="readerReportModalContentText" :value="reportContentText" :oninput="updateReportContentText"  placeholder="__('report_issue')" class="modal-textarea"></TranslatingInputTextArea>
                                 </div>
                                 <button type="button" class="btn btn-primary btn-submit" @click="submitReport">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close" @click="resetReportValues">__("cancel")</button>
@@ -320,7 +320,6 @@
 
 <script>
 import ReadLayout from '@/layout/Reader-layout.vue';
-import Spinner from '@/components/Spinner.vue';
 import mixins from '@/mixins';
 import 'vue-awesome/icons/file-text'
 import 'vue-awesome/icons/file-text-o'
@@ -337,6 +336,8 @@ import OpenInApp from '@/components/OpenInApp.vue';
 import ShareStrip from '@/components/ShareStrip.vue';
 import NextPratilipiStrip from '@/components/NextPratilipiStrip.vue'
 import ServerError from '@/components/ServerError.vue';
+import Spinner from '@/components/Spinner.vue';
+import TranslatingInputTextArea from '@/components/TranslatingInputTextArea.vue';
 import WebPushUtil from '@/utils/WebPushUtil';
 import { mapGetters, mapActions } from 'vuex';
 import constants from '@/constants';
@@ -369,7 +370,8 @@ export default {
         ShareStrip,
         OpenInApp,
         NextPratilipiStrip,
-        ServerError
+        ServerError,
+        TranslatingInputTextArea
     },
     mixins: [
         mixins
@@ -610,6 +612,9 @@ export default {
         },
 
         /* report */
+        updateReportContentText(value) {
+            this.reportContentText = value
+        },
         resetReportValues() {
             this.reportName = this.getUserDetails.displayName || ''
             this.reportEmail = this.getUserDetails.email || ''
@@ -1031,7 +1036,7 @@ $theme-yellow-color: #2c3e50;
         .p-r-10 {
             padding: 0 10px 0 0;
         }
-        h2.chapter-title {
+        h1.chapter-title {
             font-size: 24px;
             text-align: center;
             padding-top: 10px;
