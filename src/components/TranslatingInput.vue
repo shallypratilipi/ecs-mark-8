@@ -9,7 +9,7 @@
             :placeholder="placeholder"
             name=""
             :class="classObj">
-        <ul class="translations">
+        <ul class="translations" v-if="suggestions.length > 0">
             <li v-for="(eachSuggestion, index) in suggestions" :class="{ 'active': index === selectedSuggestion }" :key="index" @click="selectTranslatedWord(eachSuggestion)">{{ eachSuggestion }}</li>
         </ul>
     </span>
@@ -110,27 +110,26 @@ export default {
 .translate-input-wrapper {
     position: relative;
     display: block;
-
     .form-control.error {
         border-color: #d00b12;
     }
-}
-.translations {
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    background: #fff;
-    z-index: 100;
-    width: 100%;
-    border: 1px solid #ced4da;
-    border-top: 0;
-    li {
-        list-style: none;
-        padding: 3px 10px;
-        border-left: 1px solid #e9e9e9;
-        border-right: 1px solid #e9e9e9;
-        &.active {
-            background: #e9e9e9;
+    .translations {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        background: #fff;
+        z-index: 100;
+        width: 100%;
+        border-top: 0;
+        text-align: left;
+        li {
+            list-style: none;
+            padding: 3px 10px;
+            border-left: 1px solid #e9e9e9;
+            border-right: 1px solid #e9e9e9;
+            &.active {
+                background: #e9e9e9;
+            }
         }
     }
 }

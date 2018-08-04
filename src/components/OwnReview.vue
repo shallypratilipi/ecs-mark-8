@@ -283,7 +283,6 @@ li {
     .comment-box {
         margin-top: -50px;
         padding: 40px 5px 10px;
-        overflow: hidden;
         .write-review-btn {
             background: #d0021b;
             border: 0;

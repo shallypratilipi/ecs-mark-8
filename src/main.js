@@ -28,13 +28,7 @@ import registerEvents from 'serviceworker-webpack-plugin/lib/browser/registerEve
 
 if ('serviceWorker' in navigator) {
     const registration = runtime.register()
-    registerEvents(registration, {
-        onInstalled: () => console.log('sw onInstalled'),
-        onUpdateReady: () => console.log('sw onUpdateReady'),
-        onUpdating: () => console.log('sw onUpdating'),
-        onUpdateFailed: () => console.log('sw onUpdateFailed'),
-        onUpdated: () => console.log('sw onUpdated')
-    })
+    registerEvents(registration)
 } else {
     console.log('serviceWorker not available')
 }

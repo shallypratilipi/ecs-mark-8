@@ -8,7 +8,7 @@
             @keyup.enter="selectSuggestion"
             :placeholder="placeholder"
             name="" ></textarea>
-        <ul class="translations">
+        <ul class="translations" v-if="suggestions.length > 0">
             <li v-for="(eachSuggestion, index) in suggestions" :class="{ 'active': index === selectedSuggestion }" :key="index" @click="selectTranslatedWord(eachSuggestion)">{{ eachSuggestion }}</li>
         </ul>
     </span>
@@ -106,7 +106,6 @@ export default {
 .translate-input-wrapper {
     position: relative;
     display: block;
-}
     .translations {
         padding: 0;
         margin: 0;
@@ -116,6 +115,7 @@ export default {
         width: 100%;
         border: 1px solid #ced4da;
         border-top: 0;
+        text-align: left;
         li {
             list-style: none;
             padding: 3px 10px;
@@ -128,4 +128,5 @@ export default {
             }
         }
     }
+}
 </style>
