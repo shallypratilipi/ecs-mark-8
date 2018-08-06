@@ -11,11 +11,18 @@
         <ul class="translations" v-if="suggestions.length > 0">
             <li v-for="(eachSuggestion, index) in suggestions" :class="{ 'active': index === selectedSuggestion }" :key="index" @click="selectTranslatedWord(eachSuggestion)">{{ eachSuggestion }}</li>
         </ul>
+        <button class="voice-input-button"
+            v-bind:class="{ 'is-active': voiceRecognitionActive }"
+            @click="voiceInput"
+            v-if="isSpeechToTextEnabled">
+            <i class="material-icons">keyboard_voice</i>
+        </button>
     </span>
 </template>
 
 <script>
 import mixins from '@/mixins'
+import SpeechToTextUtil from '@/utils/SpeechToTextUtil'
 
 export default {
     name: 'tranliteration',
@@ -32,18 +39,26 @@ export default {
         },
         placeholder: {
             type: String
+        },
+        enableSpeechToText: {
+            type: Boolean,
+            default: false
         }
-    },
-    computed: {
-
     },
     data() {
         return {
+            /* transliteration */
             suggestions: [],
-            selectedSuggestion: 0
+            selectedSuggestion: 0,
+
+            /* speech to text */
+            recognition: null,
+            isSpeechToTextEnabled: false,
+            voiceRecognitionActive: false
         }
     },
-    watch:{
+    mounted() {
+        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported() && this.enableSpeechToText && this.isTestEnvironment();
     },
     methods: {
         getTranslation(e) {
@@ -97,6 +112,35 @@ export default {
         },
         selectSuggestion() {
             this.selectTranslatedWord(this.suggestions[this.selectedSuggestion]);
+        },
+        voiceInput(e) {
+            // clicking on the button reloads the page for some reason. Hence e.preventDefault()
+            e.preventDefault()
+
+            if (SpeechToTextUtil.isSupported()) {
+                if (!this.recognition) {
+                    const self = this
+                    const onStart = () => {
+                        self.voiceRecognitionActive = true
+                    }
+                    const onResult = (event, res) => {
+                        self.voiceRecognitionActive = false
+                        self.oninput(res)
+                    }
+                    const onError = (error) => {
+                        self.voiceRecognitionActive = false
+                    }
+                    const onEnd = (error) => {
+                        self.voiceRecognitionActive = false
+                    }
+                    this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
+                }
+                if (!this.voiceRecognitionActive) {
+                    this.recognition.start()
+                } else {
+                    this.recognition.stop()
+                }
+            }
         }
     }
 }
@@ -128,5 +172,37 @@ export default {
             }
         }
     }
+    .voice-input-button {
+        position: absolute;
+        right: 0;
+        bottom: 2px;
+        background: transparent;
+        border: none;
+        color: #444;
+        outline: none;
+        z-index: 999;
+    }
+    .voice-input-button.is-active {
+        color: #d0021b;
+        -webkit-animation: half-fade-show 1s infinite ease-in-out;
+        animation: half-fade-show 1s infinite ease-in-out;
+    }
+}
+@-webkit-keyframes half-fade-show {
+    0% { opacity: 0.5; }
+    20% { opacity: 0.6; }
+    40% { opacity: 0.8; }
+    60% { opacity: 1; }
+    80% { opacity: 0.8; }
+    100% { opacity: 0.5; }
+}
+
+@keyframes half-fade-show {
+    0% { opacity: 0.5; }
+    20% { opacity: 0.6; }
+    40% { opacity: 0.8; }
+    60% { opacity: 1; }
+    80% { opacity: 0.8; }
+    100% { opacity: 0.5; }
 }
 </style>
