@@ -796,8 +796,8 @@ export default {
             this.webPushModalTriggered = false
 
             // setting up values for isWebPushStripEnabled and isWebPushModalEnabled
-            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.this.getCookie('bucketId')) || 0) < 30
-            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt( this.this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.this.getCookie('bucketId')) || 0) < 60
+            this.isWebPushStripEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 20 && (parseInt(this.getCookie('bucketId')) || 0) < 30
+            this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60
         },
         'getUserDetails.userId' (newUserId, oldUserId) {
             this.reportName = this.getUserDetails.displayName || ''
