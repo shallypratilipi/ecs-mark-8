@@ -696,7 +696,7 @@ export default {
             if (currentState === 'DELETED') {
                 this.$router.push(this.getUserDetails.profilePageUrl);
             }
-            if (currentState === 'PUBLISHED' && this.isTestEnvironment) {
+            if (currentState === 'PUBLISHED' && this.isTestEnvironment()) {
                 // case 1: When landing from writer panel
                 if (sessionStorage.getItem('publishType') === 'self') {
                     delete sessionStorage['publishType']
