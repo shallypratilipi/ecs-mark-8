@@ -1,7 +1,9 @@
 export default {
     event: {
     	loading_state: 'LOADING',
-    	data: {}
+        data: {},
+        drafts: {},
+        submissions: {}
     },
     pratilipiList: {
     	loading_state: 'LOADING',
@@ -11,5 +13,8 @@ export default {
     userEventPratilipis: {
     	loading_state: 'LOADING',
     	data: []
-    }
+    },
+
+    cancelEventPratilipiParticipationSate : 'LOADING',
+    eventPratilipiSubmissionState : 'LOADING'
 }

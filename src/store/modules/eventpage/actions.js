@@ -5,19 +5,18 @@ export default {
     cacheEventData({ commit, state }, eventData) {
         commit('setEventDataFromCache', eventData);
     },
-    
+
     fetchEventDetails({ commit, state }, eventSlug) {
-        console.log(eventSlug);
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventBySlug(eventSlug, (eventData) => {
-            if (eventData) {
-                commit('setEventDataLoadingSuccess', eventData);
+        DataAccessor.getEventBySlug(eventSlug, (data) => {
+            if (data.status === 200) {
+                commit('setEventDataLoadingSuccess', data.response);
             } else {
                 commit('setEventDataLoadingError');
             }
         });
     },
-    
+
     fetchInitialEventPratilipis({ commit, state }, { eventId, resultCount }) {
         commit('setInitialEventPratilipiLoadingTrue');
         DataAccessor.getPratilipiListByEventId(eventId, null, null, resultCount, (data) => {
@@ -37,7 +36,7 @@ export default {
             } else {
                 commit('setDynamicEventPratilipiLoadingError');
             }
-        });  
+        });
     },
 
     addToLibrary({ commit, state }, pratilipiId) {
@@ -74,4 +73,54 @@ export default {
             }
         });
     },
+
+    moveEntryToDrafts({commit, state}, {eventId, eventEntryId}) {
+        commit('setCancelEventPratilipiParticipationLoadingTrue');
+        // /event/entry/donotparticipate?eventId=1&eventEntryId=1
+
+        DataAccessor.cancelParticipationToEvent(eventId, eventEntryId, (data) => {
+            if (data.status === 200) {
+                data = {};
+                data.eventId = eventId;
+                data.eventEntryId = eventEntryId;
+                commit('setCancelEventPratilipiParticipationLoadingSuccess', data);
+            } else {
+                commit('setCancelEventPratilipiParticipationLoadingError');
+            }
+        });
+    },
+
+    publishEntryForEvent({commit, state}, {eventId, eventEntryId}) {
+        commit('setEventPratilipiSubmissionLoadingTrue');
+        // /event/entry/donotparticipate?eventId=1&eventEntryId=1
+
+        DataAccessor.submitEntryToEvent(eventId, eventEntryId, (data) => {
+            if (data.status === 200) {
+                data = {};
+                data.eventId = eventId;
+                data.eventEntryId = eventEntryId;
+                commit('setEventPratilipiSubmissionLoadingSuccess', data);
+            } else {
+                commit('setEventPratilipiSubmissionLoadingError');
+            }
+        });
+    },
+
+    deleteEntryFromEvent({commit, state}, {eventId, eventEntryId}) {
+        commit('setEventPratilipiDeletionLoadingTrue');
+        // /event/entry/donotparticipate?eventId=1&eventEntryId=1
+
+        DataAccessor.deleteEntryToEvent(eventId, eventEntryId, (data) => {
+            if (data.status === 200) {
+                data = {};
+                data.eventId = eventId;
+                data.eventEntryId = eventEntryId;
+                commit('setEventPratilipiDeletionLoadingSuccess', data);
+            } else {
+                commit('setEventPratilipiDeletionLoadingError');
+            }
+        });
+    },
+
+
 }

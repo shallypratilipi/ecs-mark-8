@@ -5,15 +5,24 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>__("event_events")</h2>
-                        <div class="page-content event-list">
-                            <ul>
-                                <li v-for="each_event in getEventsData" :key="each_event.eventId">
-                                    <router-link @click.native="triggerEvent(each_event.eventId)" :to="{ name: 'Event_Page', params: { event_slug: each_event.pageUrl.split('/').pop(), event_data: each_event } }">
-                                        <span class="event-img" v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }"></span>
-                                        <span class="event-name">{{ each_event.name }}</span>
-                                    </router-link>
-                                </li>
-                            </ul>
+                        <div class="page-content event-list row">
+                            <div class="col-md-4 col-sm-12" v-for="each_event in getEventsData" :key="each_event.eventId">
+                                <!--<router-link @click.native="triggerEvent(each_event.eventId)" :to="{ name: 'Event_Page', params: { event_slug: each_event.pageUrl.split('/').pop(), event_data: each_event } }">-->
+                                    <!--<div class="event-display-box">-->
+                                        <!--<div class="book-type" :class="each_event.eventState">-->
+                                            <!--{{ each_event.eventState | getPratilipiTypeInNativeLanguage }}-->
+                                        <!--</div>-->
+                                        <!--<div class="event-img show-status"-->
+                                          <!--v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }">-->
+
+                                        <!--</div>-->
+                                        <!--<p class="event-name">{{ each_event.name }} </p>-->
+                                    <!--</div>-->
+                                <!--</router-link>-->
+                                <EventCard :eventData="each_event">
+
+                                </EventCard>
+                            </div>
                             <Spinner v-if="getEventsLoadingState === 'LOADING'"></Spinner>
                         </div>
                     </div>
@@ -25,15 +34,17 @@
 
 <script>
 import MainLayout from '@/layout/main-layout.vue';
-import constants from '@/constants'
+import constants from '@/constants';
 import Spinner from '@/components/Spinner.vue';
+import EventCard from '@/components/EventCard.vue'
 import mixins from '@/mixins';
-import { mapGetters, mapActions } from 'vuex'
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
     components: {
         MainLayout,
-        Spinner
+        Spinner,
+        EventCard
     },
     mixins: [
         mixins
@@ -47,17 +58,25 @@ export default {
             'getUserDetails'
         ])
     },
+    data() {
+        return {
+            isEventActive: false,
+            showText: false,
+            eachEventId: null
+        }
+    },
     methods: {
         ...mapActions('eventspage', [
             'fetchListOfEvents'
         ]),
-        triggerEvent(data) {
-            this.triggerAnanlyticsEvent(`CLICKEVENT_EVENTLISTM_EVENTLIST`, 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId,
-                'PARENT_ID': data
-            });
-        }
+        showTextOverlay(eventId) {
+            this.showText = !this.showText;
+            this.eachEventId = eventId;
+            console.log("Changing: " + this.showText);
+        },
+
     },
+
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
@@ -70,7 +89,8 @@ export default {
         this.triggerAnanlyticsEvent('LANDED_EVENTLISTM_EVENTLIST', 'CONTROL', {
             'USER_ID': this.getUserDetails.userId
         });
-    }
+    },
+
 }
 </script>
 
@@ -144,6 +164,40 @@ export default {
                     height: 50px;
                     line-height: 50px;
                 }
+            }
+        }
+
+        .book-type {
+            width: 100%;
+            height: 50px;
+
+            &.SUBMISSION {
+                background: #42bab0;
+            }
+            &.SUBMISSION:before {
+                border-top: 21px solid #42bab0;
+            }
+            &.SUBMISSION:after {
+                border-right: 10px solid #42bab0;
+            }
+            &.ONGOING {
+                background: #FF9800;
+            }
+            &.ONGOING:before {
+                border-top: 21px solid #FF9800;
+            }
+            &.ONGOING:after {
+                border-right: 10px solid #FF9800;
+            }
+
+            &.FINISHED {
+                background: #FF9800;
+            }
+            &.FINISHED:before {
+                border-top: 21px solid #FF9800;
+            }
+            &.FINISHED:after {
+                border-right: 10px solid #FF9800;
             }
         }
     }

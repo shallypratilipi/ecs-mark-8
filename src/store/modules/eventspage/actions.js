@@ -8,6 +8,7 @@ export default {
         DataAccessor.getEventList(language, function(data) {
             if (data.status === 200) {
                 commit('setEventsDataLoadingSuccess', data.response);
+                console.log("Fetching" , data);
             } else {
                 commit('setEventsDataLoadingError');
             }

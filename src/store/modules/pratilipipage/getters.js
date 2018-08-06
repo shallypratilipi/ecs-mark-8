@@ -17,7 +17,7 @@ export default {
     //         return total + product.price * product.quantity
     //     }, 0)
     // }
-    
+
     getPratilipiData: state => state.pratilipi.data,
     getPratilipiLoadingState: state => state.pratilipi.loading_state,
     getUserPratilipiData: state => state.userPratilipi.data,
@@ -28,5 +28,8 @@ export default {
     getUserAuthorDetails: state => state.userAuthor.data,
     getSystemTags: state => state.system_tags.data,
     getSystemTagsLoadingState: state => state.system_tags.loading_state,
-    getRouteToMessageUserState: state => state.route_to_message_user
+    getRouteToMessageUserState: state => state.route_to_message_user,
+
+    getEventDataLoadingState: state => state.event.loading_state,
+    getEventData: state => state.event.data,
 }

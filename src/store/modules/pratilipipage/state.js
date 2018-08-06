@@ -20,5 +20,9 @@ export default {
         loading_state: 'LOADING',
         data: {}
     },
+    event : {
+        loading_state: 'LOADING',
+        data: {}
+    },
     route_to_message_user: false
 }
