@@ -242,7 +242,8 @@ export default {
             fd.append( 'file', blob );
             fd.append( 'pratilipiId', this.pratilipiId);
             fd.append( 'pageNo', this.selectedChapter + 1 );
-            let imageUrl = 'https://hindi-devo.ptlp.co/api/pratilipi/content/image?pratilipiId=' + this.pratilipiId + '&pageNo=' + ( this.selectedChapter + 1 );
+            const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://hindi-devo.ptlp.co/api";
+            let imageUrl = API_PREFIX + '/pratilipi/content/image?pratilipiId=' + this.pratilipiId + '&pageNo=' + ( this.selectedChapter + 1 );
             $.ajax({
                 type:'POST',
                 url: imageUrl,
@@ -258,7 +259,7 @@ export default {
                     $('#image_input').val("");
                     $( field_name ).val( data.url );
                     // https://hindi.pratilipi.com/api/pratilipi/content/image?pratilipiId=6755373518925316&name=cf14122b-24e3-45b1-b216-4ba80a7d33f5
-                    ed.insertContent('<img src="https://hindi-devo.ptlp.co/api/pratilipi/content/image?pratilipiId='+that.pratilipiId +'&name='+data.name+'"/>');
+                    ed.insertContent('<img src="'+ API_PREFIX +'/pratilipi/content/image?pratilipiId='+that.pratilipiId +'&name='+data.name+'"/>');
                 },
                 error: function( data ) {
                     alert( 'HTTP Error: ' + data.status );

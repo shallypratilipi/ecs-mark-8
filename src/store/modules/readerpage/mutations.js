@@ -99,14 +99,14 @@ export default {
 
     setImageContentLoadingSuccess(state, data) {
         const { chapters } = data.content;
-
+        const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://hindi-devo.ptlp.co/api";
         const contents = [];
         chapters.forEach((eachChapter, index) => {
             const chapterNo = index + 1;
             const eachContentObject = {
                 chapterNo,
                 chapterTitle: null,
-                content: `<img alt='story' src='https://hindi.pratilipi.com/api/pratilipi/content/image?pratilipiId=${data.pratilipiId}&name=${chapterNo}'/>`
+                content: `<img alt='story' src='${API_PREFIX}/pratilipi/content/image?pratilipiId=${data.pratilipiId}&name=${chapterNo}'/>`
             }
             state.content.data.push(eachContentObject);
         });
