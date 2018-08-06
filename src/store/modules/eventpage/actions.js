@@ -6,13 +6,11 @@ export default {
         commit('setEventDataFromCache', eventData);
     },
 
-    fetchEventDetails({commit, state}, eventId) {
-        console.log(eventId);
+    fetchEventDetails({ commit, state }, eventSlug) {
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventDetailById(eventId, (eventData) => {
-            if (eventData) {
-                console.log("DANG", eventData.response);
-                commit('setEventDataLoadingSuccess', eventData.response);
+        DataAccessor.getEventBySlug(eventSlug, (data) => {
+            if (data.status === 200) {
+                commit('setEventDataLoadingSuccess', data.response);
             } else {
                 commit('setEventDataLoadingError');
             }
@@ -29,7 +27,6 @@ export default {
             }
         });
     },
-
 
     fetchMorePratilipisForEvent({ commit, state }, {  eventId, resultCount }) {
         commit('setDynamicEventPratilipiLoadingTrue');
@@ -77,36 +74,50 @@ export default {
         });
     },
 
-    deleteEntryFromEvent({commit, state}, {eventId, eventEntryId}) {
-        console.log("Delete:" + eventId + "  " + eventEntryId);
-        DataAccessor.deleteEntryOfEvent(eventId, eventEntryId, (data) => {
-            console.log("About to commit" + data.status);
+    moveEntryToDrafts({commit, state}, {eventId, eventEntryId}) {
+        commit('setCancelEventPratilipiParticipationLoadingTrue');
+        // /event/entry/donotparticipate?eventId=1&eventEntryId=1
 
+        DataAccessor.cancelParticipationToEvent(eventId, eventEntryId, (data) => {
             if (data.status === 200) {
-                console.log("About to commit");
-                commit('resetDraftList');
-                // commit('setInitialEventPratilipiLoadingSuccess', data.response);
+                data = {};
+                data.eventId = eventId;
+                data.eventEntryId = eventEntryId;
+                commit('setCancelEventPratilipiParticipationLoadingSuccess', data);
             } else {
-                // commit('setInitialEventPratilipiLoadingError');
+                commit('setCancelEventPratilipiParticipationLoadingError');
             }
         });
-
-
-    },
-
-    moveEntryToDrafts({commit, state}, {eventId, eventEntryId}) {
-        console.log("Move to drafts: " + eventId + "  " + eventEntryId);
     },
 
     publishEntryForEvent({commit, state}, {eventId, eventEntryId}) {
+        commit('setEventPratilipiSubmissionLoadingTrue');
+        // /event/entry/donotparticipate?eventId=1&eventEntryId=1
 
-        console.log("Publish : " + eventId + "  " + eventEntryId);
-
-        DataAccessor.publishEntryOfEvent(eventId, eventEntryId, (data) => {
+        DataAccessor.submitEntryToEvent(eventId, eventEntryId, (data) => {
             if (data.status === 200) {
-                // commit('setInitialEventPratilipiLoadingSuccess', data.response);
+                data = {};
+                data.eventId = eventId;
+                data.eventEntryId = eventEntryId;
+                commit('setEventPratilipiSubmissionLoadingSuccess', data);
             } else {
-                // commit('setInitialEventPratilipiLoadingError');
+                commit('setEventPratilipiSubmissionLoadingError');
+            }
+        });
+    },
+
+    deleteEntryFromEvent({commit, state}, {eventId, eventEntryId}) {
+        commit('setEventPratilipiDeletionLoadingTrue');
+        // /event/entry/donotparticipate?eventId=1&eventEntryId=1
+
+        DataAccessor.deleteEntryToEvent(eventId, eventEntryId, (data) => {
+            if (data.status === 200) {
+                data = {};
+                data.eventId = eventId;
+                data.eventEntryId = eventEntryId;
+                commit('setEventPratilipiDeletionLoadingSuccess', data);
+            } else {
+                commit('setEventPratilipiDeletionLoadingError');
             }
         });
     },

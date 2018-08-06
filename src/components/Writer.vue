@@ -4,12 +4,12 @@
             <div class="container">
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
-                    <a class="chapters" :class="{ 'selected-chapter': selectedChapter === index }" v-for="(eachChapter, index) in chapters" :key="index">
+                    <a class="chapters" :class="{ 'selected-chapter': selectedChapter === index }" v-for="(eachChapter, index) in getContents.index" :key="index">
                         <span class="chapter-title" @click="selectChapter(index)">
-                            <span v-if="chapters[index].title">{{chapters[index].title}}</span>
+                            <span v-if="getContents.index[index].title">{{ decodeURIComponent(getContents.index[index].title)}}</span>
                             <span v-else>__('writer_chapter') &nbsp; &nbsp; {{ index + 1 }}</span>
                         </span>
-                        <i class="material-icons chapter-delete" @click="deleteChapter(index)">delete</i>
+                        <i class="material-icons chapter-delete" @click="deleteContentChapter(getContents.index[index].chapterNo)">delete</i>
                     </a>
 
                     <a class="chapter-add" @click="addChapter">
@@ -17,8 +17,8 @@
                     </a>
                 </div>
                 <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-                <div id="main" v-show="getEventLoadingState === 'LOADING_SUCCESS'">
-                    <div v-if="currentStep == 2">
+                <div id="main">
+                    <div>
                         <div class="row">
                             <div class="col-12 chapter">
                                 <div class="follow-btn-w-count" @click="openNav"><!-- Follow Button -->
@@ -26,7 +26,7 @@
                                         <i class="material-icons">list</i>
                                     </button><span><b>__('writer_chapter')</b></span>
                                 </div>
-                                <TranslatingInput :value="chapters[selectedChapter].title" placeholder="__('writer_add_chapter_title')" :oninput="updateTitle"></TranslatingInput>
+                                <TranslatingInput :value="contentTitle" placeholder="__('writer_add_chapter_title')" :oninput="updateTitle"></TranslatingInput>
                             </div>
                         </div>
                         <div class="row">
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                                <button class="btn btn-info" style="float: right;" @click="autoSaveContents">__("save_changes")</button>
+                        <button class="btn btn-info" style="float: right;" @click="autoSaveContents">__("save_changes")</button>
 
                     </div>
                 </div>
@@ -90,16 +90,24 @@ export default {
             'getDraftedEventPratilipi',
             'getEventPratilipiCoverImage',
             'getEventPratilipiImageUploadLoadingState',
-
-            'getPratilipiOfEvent'
+            'getPratilipiOfEvent',
+            'getContentIndexLoadingState',
+            'getEventChapterCreatingState',
+            'getEventChapterDeletingState',
+            'getContentUpdatingState'
         ])
     },
     mixins: [
         mixins
     ],
+    props: {
+        pratilipiId: {
+            type: String,
+            required: true
+        }
+    },
     data() {
         return {
-            currentStep: 1,
             constants,
             description: '',
             showAcceptedMessage: false,
@@ -117,7 +125,10 @@ export default {
             inputInFocus: false,
             scrollPosition: null,
             selectedSuggestion: 0,
-            titleIsMissing: false
+            titleIsMissing: false,
+            content: '',
+            contentTitle: '',
+            deletingChapterIndex: -1
         }
     },
     methods: {
@@ -125,6 +136,8 @@ export default {
         ...mapActions('eventparticipate', [
             'fetchEventPratilipiData',
             'createEventPratilipiData',
+            'createChapter',
+            'deleteChapter',
             'updateEventPratilipiData',
             'updatePratilipiContent',
             'fetchPratilipiContent',
@@ -132,7 +145,7 @@ export default {
             'fetchEventDetails',
             'uploadEventPratilipiImage',
             'fetchDraftedUserEventPratilipis',
-
+            'fetchPratilipiIndex',
             'saveEventContentByChapter',
             'fetchContentForEventEntry'
         ]),
@@ -144,186 +157,68 @@ export default {
             'setAfterLoginAction',
             'setConfirmModalAction'
         ]),
-        deleteChapter(index) {
+        deleteContentChapter(index) {
             console.log("DELETING" + index);
-            if (this.chapters.length === 1) {
+            let indexLength = this.getContents.index.length;
+            if (indexLength === 1) {
                 alert('You need to have atleast one chapter');
                 return;
             }
 
-            // if (index === this.chapters.length) {}
-            if (index === this.chapters.length - 1) {
-                this.selectedChapter = index - 1;
-            }
-
-            if (this.selectedChapter >= this.chapters.length - 1) {
-                this.selectedChapter = this.selectedChapter - 1;
-            }
-            console.log(this.chapters);
-            this.chapters.splice(index, 1);
-            console.log(this.chapters);
-
+            this.deletingChapterIndex = index;
+            this.deleteChapter({
+                "pratilipiId" : this.pratilipiId,
+                "chapterNo" : index,
+            });
         },
 
         updateCurrentTitle(value) {
             this.title = value;
         },
 
-        createEventPratilipi() {
-            // this.currentStep = 2;
-
-            if (!this.title || this.title.trim() === '') {
-                this.titleIsMissing = true;
-                return;
-            }
-
-            this.titleIsMissing = false;
-            if (this.getUserDetails.isGuest) {
-                const { eventId } = this.getEventData;
-                this.setAfterLoginAction({ action: `eventparticipate/createEventPratilipiData`, data: {
-                    eventId,
-                    title: this.title.trim(),
-                    titleEn: this.titleEn,
-                    type: this.type,
-                    language: this.getCurrentLanguage().fullName.toUpperCase()
-                }});
-                this.openLoginModal(this.$route.meta.store, 'EVENTPARTICIPATECREATE', 'EVENTPARTICIPATE');
-                return;
-            }
-
-
-            if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
-                this.updateEventPratilipiData({
-                    eventPratilipiId: this.$route.params.eventPratilipiId,
-                    title: this.title,
-                    titleEn: this.titleEn,
-                    type: this.type,
-                    language: this.getCurrentLanguage().fullName.toUpperCase()
-                });
-            } else {
-                const { eventId } = this.getEventData;
-                this.createEventPratilipiData({
-                    eventId,
-                    title: this.title,
-                    titleEn: this.titleEn,
-                    type: this.type,
-                    language: this.getCurrentLanguage().fullName.toUpperCase()
-                });
-            }
-        },
-
         saveContentAndGoToThirdStep() {
-            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
+            this.autoSaveContents;
+            let url = '/event/' + this.$route.params.eventSlug + '/participate/' + this.pratilipiId + '/submit';
             this.$router.push({
-                query: { step : 3 }
-            });
+                path: url
+            })
         },
 
         autoSaveContents() {
-            // this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
-            console.log("1998: " + this.selectedChapter + this.chapters[this.selectedChapter].title  );
-            console.log("1998: ",  this.chapters[this.selectedChapter].content + "PPEI" + this.getPratilipiOfEvent.pratilipiId);
+            console.log("1998: ", this.selectedChapter, this.contentTitle);
+            console.log("1998: ", this.content, this.pratilipiId);
 
             this.saveEventContentByChapter({
-                chapterNo: this.selectedChapter,
-                chapterTitle: this.chapters[this.selectedChapter].title, 
-                content:  this.chapters[this.selectedChapter].content,
-                pratilipiId: this.getPratilipiOfEvent.pratilipiId
-            })
+                chapterNo: this.selectedChapter + 1,
+                chapterTitle: encodeURIComponent(this.contentTitle),
+                content:  encodeURIComponent(this.content),
+                pratilipiId: this.pratilipiId
+            });
+
             this.triggerAlert({message: '__("writer_changes_saved")', timer: 3000});
         },
 
-        saveMetaInformationAndFinalSubmit() {
-            // this.updateDescriptionAndTags({ eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description, state: 'SUBMITTED' });
-
-            this.setConfirmModalAction({
-                action: `eventparticipate/updateDescriptionAndTags`,
-                heading: 'event_participate_confirm_submission',
-                message: 'event_participate_cannot_change_drafts',
-                data: { eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description || '', state: 'SUBMITTED' }
-            });
-            this.openPrimaryConfirmationModal();
-        },
-
-        // goToFirstStep() {
-        //     $('.circle-loader').removeClass('load-complete');
-        //     $('.checkmark').hide();
-        //     this.currentStep = 1;
-        // },
-
-        // goToFirstStepForEdit() {
-        //     this.$router.push({
-        //         path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}?step=1`,
-        //         params: {
-        //             eventId: this.getEventData.eventId
-        //         }
-        //     });
-        // },
-
-        goToSecondStepForEdit() {
-            this.$router.push({
-                query: { step : 2 }
-            });
-        },
-
-        goToSecondStep() {
-            $('.circle-loader').removeClass('load-complete');
-            $('.checkmark').hide();
-            this.currentStep = 2;
-        },
-
-        goToThirdStep() {
-            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
-            $('.circle-loader').removeClass('load-complete');
-            $('.checkmark').hide();
-            this.currentStep = 3;
-        },
-
-        goToFourthStep() {
-            const that = this;
-            this.currentStep = 4;
-            setTimeout(() => {
-                $('.circle-loader').addClass('load-complete');
-                $('.checkmark').show();
-                that.showAcceptedMessage = true;
-            }, 1000);
-        },
-
-        goToSecondStepToEdit(eventId, pratilipiEventId) {
-            console.log(`/event/${this.$route.params.eventSlug}/participate/${pratilipiEventId}?step=2`)
-            this.$router.push({
-                path: `/event/${this.$route.params.eventSlug}/participate/${pratilipiEventId}?step=2`
-            });
-        },
-
         addChapter() {
-            this.chapters.push({
-                title: '',
-                content: ''
+            this.createChapter({
+                "pratilipiId" : this.pratilipiId,
+                "chapterNo" : this.getContents.index.length + 1,
             });
-            this.selectedChapter = this.chapters.length - 1;
-            tinymce.activeEditor.setContent(this.chapters[this.selectedChapter].content);
-        },
-
-        uploadCoverImage() {
-            $('#pratilipiimage-uploader').click();
-        },
-
-        triggerPratilipiImageUpload(event) {
-            const formData = new FormData();
-            formData.append('file', event.target.files[0], event.target.files[0].name);
-            formData.append('eventPratilipiId', this.getEventPratilipiData._id);
-            this.uploadEventPratilipiImage(formData);
         },
 
         selectChapter(index) {
+            console.log("trying to select chapter", index);
+            const that = this;
             this.selectedChapter = index;
-            tinymce.activeEditor.setContent(this.chapters[index].content);
+            this.contentTitle = this.getContents.index[index].title;
+            this.fetchPratilipiContent({
+                "eventPratilipiId": that.pratilipiId,
+                "chapterNo" : index + 1,
+            });
             this.closeNav();
         },
 
         updateTitle(value) {
-            this.chapters[this.selectedChapter].title = value;
+            this.contentTitle = value;
         },
 
 
@@ -338,18 +233,19 @@ export default {
             document.getElementById("main").style.marginLeft = "0";
             $(".backdrop").hide();
         },
-        uploadOnServer() {
+        uploadOnServer(ed) {
+            const that =  this;
+            console.log("trying to upload on server");
             var field_name = "#" + $( '#field_name' ).val();
-            var fd = new FormData();;
+            var fd = new FormData();
             var blob = $('#image_input').get(0).files[0];
             fd.append( 'file', blob );
-            fd.append( 'eventPratilipiId', this.getEventPratilipiData._id );
-            // fd.append( 'pratilipiId', pratilipiId );
-            // fd.append( 'pageNo', cur_page );
-
+            fd.append( 'pratilipiId', this.pratilipiId);
+            fd.append( 'pageNo', this.selectedChapter + 1 );
+            let imageUrl = 'https://hindi-devo.ptlp.co/api/pratilipi/content/image?pratilipiId=' + this.pratilipiId + '&pageNo=' + ( this.selectedChapter + 1 );
             $.ajax({
                 type:'POST',
-                url: `https://gamma.pratilipi.com/event-participate/images?type=CONTENT`,
+                url: imageUrl,
                 data: fd,
                 cache: true,
                 contentType: false,
@@ -358,8 +254,11 @@ export default {
                     'accesstoken': this.getCookie('access_token')
                 },
                 success: function( data ) {
+                    console.log("data recieved is ", JSON.stringify(data));
                     $('#image_input').val("");
                     $( field_name ).val( data.url );
+                    // https://hindi.pratilipi.com/api/pratilipi/content/image?pratilipiId=6755373518925316&name=cf14122b-24e3-45b1-b216-4ba80a7d33f5
+                    ed.insertContent('<img src="https://hindi-devo.ptlp.co/api/pratilipi/content/image?pratilipiId='+that.pratilipiId +'&name='+data.name+'"/>');
                 },
                 error: function( data ) {
                     alert( 'HTTP Error: ' + data.status );
@@ -391,7 +290,6 @@ export default {
         },
 
         selectSuggestion(suggestion, fromSpace) {
-            console.log(" I am getting fired");
             const editorRange = tinymce.activeEditor.selection.getRng();
             var node = editorRange.commonAncestorContainer; // relative node to the selection
             const range = document.createRange(); // create a new range object for the deletion
@@ -463,8 +361,6 @@ export default {
                 menubar: false,
                 statusbar: false,
                 toolbar: 'bold italic underline | CustomLeftAlign CustomCenterAlign CustomRightAlign | CustomBlockquote link imageCustom | Ulist Olist',
-                // height: '50vh',
-                // min_height: '600',
                 language: process.env.LANGUAGE,
                 link_context_toolbar: false,
                 anchor_bottom: false,
@@ -483,6 +379,7 @@ export default {
                 browser_spellcheck: false,
                 allow_conditional_comments: false,
                 allow_html_in_named_anchor: false,
+                entity_encoding: 'raw',
 
                 forced_root_block: 'p',
                 force_br_newlines: false,
@@ -543,15 +440,18 @@ export default {
                 images_upload_handler: function( blobInfo, success, failure ) {
                     var fd = new FormData();
                     fd.append( 'file', blobInfo.blob() );
-                    fd.append( 'eventPratilipiId', that.getEventPratilipiData._id );
+                    fd.append( 'pratilipiId', that.pratilipiId);
+                    fd.append( 'pageNo', that.selectedChapter + 1 );
+                    let imageUrl = 'https://hindi-devo.ptlp.co/api/pratilipi/content/image?pratilipiId=' + that.pratilipiId + '&pageNo=' + ( that.selectedChapter + 1 );
                     $.ajax({
                         type:'POST',
-                        url: `https://gamma.pratilipi.com/event-participate/images?type=CONTENT`,
+                        url: imageUrl,
                         data: fd,
                         cache: true,
                         contentType: false,
                         processData: false,
                         success: function( data ) {
+                            console.log("data recieved is ", JSON.stringify(data));
                             var parsed_data = JSON.parse( data );
                             _this.parent_object.setNewImageFlag( true );
                             success( parsed_data.url );
@@ -563,6 +463,7 @@ export default {
                     });
                 },
                 file_browser_callback: function( field_name, url, type, win ) {
+                    console.log("calling image callback");
                     if( type=='image' ) {
                         $( '#field_name' ).val( field_name );
                         $( "#image_input" ).click();
@@ -600,6 +501,10 @@ export default {
                             that.writerInFocus = false;
                         });
                     }
+
+                    $('#image_input').on( "change", function() {
+                        that.uploadOnServer(ed);
+                    });
 
                     ed.on('keydown', (event) => {
 
@@ -642,7 +547,7 @@ export default {
 
                     ed.on("keyup", function(event){
                         that.setAndLocateSuggestionDropdown();
-                        that.chapters[that.selectedChapter].content = tinymce.activeEditor.getContent({format : 'raw'});
+                        that.content = tinymce.activeEditor.getContent({format : 'raw'});
 
                         if (event.code === 'Space' || event.code === 'Enter' || (event.code === 'ArrowDown' && that.suggestions.length > 0) || (event.code === 'ArrowUp' && that.suggestions.length > 0)) {
                             return;
@@ -651,12 +556,6 @@ export default {
                         const words = event.target.innerText.split(/\n| |\u00A0/).map(function(item) {
                             return item.trim();
                         });
-
-
-                        // console.log('---------------------------------');
-                        // console.log('OLD LIST:', [...that.wordList]);
-                        // console.log('NEW LIST:', words);
-                        // console.log('DIFF: ', that.arr_diff(words, that.wordList));
 
                         const changedWords = that.arr_diff(words, that.wordList);
                         if (changedWords.length === 0) {
@@ -678,35 +577,18 @@ export default {
 
                         that.wordList = [ ...words ];
 
-
-                        // console.log(caretPosition);
-                        // console.log(event.code);
-                        // console.log($(tinymce.activeEditor.selection.getNode()).text());
-                        // console.log(tinymce.activeEditor.selection.getEnd());
-                        // console.log(tinymce.activeEditor.selection.getRng());
-                        // // console.log($(ed.getContainer()).position());
-                        // const range = tinymce.activeEditor.selection.getRng()
-                        // console.log($(tinymce.activeEditor.selection.getNode()).position());
-                        // console.log($(tinymce.activeEditor.selection.getNode()).width());
-                        // console.log(range);
-                        // range.insertNode($('.suggestion').get(0));
-
                     });
 
                     ed.on('init', (event) => {
-                        console.log(that.chapters[that.selectedChapter]);
-                        console.log('CHAPTERS: ', that.chapters);
-                        tinymce.activeEditor.setContent(that.chapters[that.selectedChapter].content);
+                        tinymce.activeEditor.setContent(that.getContents.content);
                     });
 
                     ed.on('dirty', (event) => {
                         console.log('dirty');
                         setTimeout(() => {
-                            console.log('setting dirty');
-                            // ed.setDirty(true);
-                            this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
+                            that.autoSaveContents
                             tinymce.triggerSave();
-                        }, 20000);
+                        }, 2000);
                     });
 
                     ed.addButton('CustomLeftAlign', {
@@ -785,9 +667,6 @@ export default {
         },
         loadTinyMCE(callback) {
             const script = document.createElement('script');
-            // script.setAttribute('async', '');
-            // script.setAttribute('defer', '');
-            // script.id = 'tinymcescript';
             script.setAttribute('src', 'https://0.ptlp.co/third-party/tinymce-4.5.1/tinymce.min.js');
             console.log(script);
             script.onload = function() {
@@ -800,25 +679,6 @@ export default {
         }
     },
     watch: {
-        'currentStep'(stepNumber){
-            if (stepNumber === 2) {
-                setTimeout(( ) => {
-                    this.initializeTinyMCE()
-                }, 10);
-            } else {
-                tinymce.remove();
-            }
-        },
-        'getEventPratilipiCreateOrUpdateStateSuccess'(state) {
-            if (state === 'LOADING_SUCCESS') {
-                this.$router.push({
-                    path: `/event/${this.$route.params.eventSlug}/participate/${this.getEventPratilipiData._id}`,
-                    query: {
-                        step: 2
-                    }
-                });
-            }
-        },
         'getEventPratilipiLoadingState'(state) {
             if (state === 'LOADING_SUCCESS') {
                 this.title = this.getEventPratilipiData.title;
@@ -834,77 +694,25 @@ export default {
             }
         },
 
-        'getEventPratilipDescUpdateState'(state) {
-            if (state === 'LOADING_SUCCESS') {
-                this.$router.push({
-                    query: { step : 4 }
-                });
-            }
-        },
-
         'getContentLoadingState'(state) {
-            const that = this;
-            function compare(a,b) {
-                if (a.chapterNo < b.chapterNo)
-                    return -1;
-                if (a.chapterNo > b.chapterNo)
-                    return 1;
-                return 0;
-            }
             if (state === 'LOADING_SUCCESS') {
-
-
-                const tempChapters = [ ...this.os ];
-                tempChapters.sort(compare);
-
-                that.chapters = [];
-                tempChapters.forEach((eachChapter) => {
-                    that.chapters.push({
-                        title: eachChapter.chapterTitle,
-                        content: eachChapter.content
-                    });
-                });
-
-                if (that.chapters.length === 0) {
-                    this.chapters.push({
-                        title: '',
-                        content: ''
-                    });
+                this.content = this.getContents.content;
+                let editor = tinymce.activeEditor;
+                console.log("content loaded", this.content);
+                if(editor){
+                    editor.setContent(this.content);
                 }
-                const activeEditor = tinymce.activeEditor;
-                if(activeEditor) activeEditor.setContent(this.chapters[this.selectedChapter].content);
             }
         },
-        '$route.query.step'(step) {
-            console.log("New step: " + step);
-            if (!step) {
-                this.goToFirstStep();
-            }
 
-
-            if (step == 2) {
-                this.fetchPratilipiContent(this.$route.params.eventPratilipiId);
-                this.goToSecondStep();
-                setTimeout(() => {
-                    this.checkWordSuggester();
-                }, 500);
-            }
-            this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-
-            if (step == 1) {
-                console.log(this.$route.params);
-                if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined) {
-                    this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                    this.goToFirstStep();
+        'getContentIndexLoadingState'(state) {
+            if (state === 'LOADING_SUCCESS') {
+                console.log("index is ", this.getContents.index);
+                if ( this.getContents.index.length == 0 ) {
+                    this.createChapter({pratilipiId: this.pratilipiId , chapterNo: 1});
+                } else {
+                    this.contentTitle = this.getContents.index[0].title
                 }
-            }
-
-            if (step == 3) {
-                this.goToThirdStep();
-            }
-
-            if (step == 4) {
-                this.goToFourthStep();
             }
         },
 
@@ -912,10 +720,6 @@ export default {
             if (state === 'LOADING_ERROR') {
                 alert('Invalid event id');
                 this.$router.push('/event');
-            }
-
-            if (state === 'LOADING_SUCCESS') {
-                this.fetchDraftedUserEventPratilipis(this.getEventData.eventId);
             }
         },
 
@@ -935,82 +739,71 @@ export default {
         },
         'scrollPosition'(newScrollPosition) {
             this.checkWordSuggester();
+        },
+
+        'getEventChapterCreatingState'(state){
+            if(state === 'LOADING_SUCCESS'){
+                this.selectedChapter = this.getContents.index.length - 1;
+                this.contentTitle = "";
+                let editor = tinymce.activeEditor;
+                if (editor) {
+                    editor.setContent("");
+                }
+            }
+        },
+        'getEventChapterDeletingState'(state){
+            if (state === 'LOADING_SUCCESS') {
+                if (this.selectedChapter == this.deletingChapterIndex) {
+                    this.selectedChapter = this.selectedChapter - 1;
+                }
+            }
+        },
+        'getContentUpdatingState'(state){
+
         }
     },
     created() {
-        this.chapters.push({
-            title: '',
-            content: ''
-        });
-
-
+        const that = this;
         this.loadTinyMCE(() => {
-            console.log("LOOK HERE: " + this.$route.params.eventSlug);
-            this.fetchEventDetails(this.$route.params.eventSlug);
-            console.log('FROM PARTICIPATE PAGE: ', this.$route.params);
-            if (!this.$route.params.eventPratilipiId) {
-                this.currentStep = 1;
-            }
+
+            that.initializeTinyMCE();
+
+            that.fetchPratilipiIndex(that.pratilipiId);
+            that.fetchEventPratilipiData(that.pratilipiId);
+            that.fetchPratilipiContent({
+                "eventPratilipiId": that.pratilipiId,
+                "chapterNo" :1
+            });
 
 
-            if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.query.step == 2) {
-                this.fetchPratilipiContent(this.$route.params.eventPratilipiId);
-                this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                this.goToSecondStep();
-            }
-            if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 1) {
-                this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                this.goToFirstStepForEdit();
+            that.checkWordSuggester();
+
+            $('.backdrop').click(() => {
+                that.closeNav();
+            });
+
+            // Hide Footer when keyboard comes
+            if (that.isMobile()) {
+                $(document).on('focus', 'input', function() {
+                    that.inputInFocus = true;
+                });
+                $(document).on('blur', 'input', function() {
+                    that.inputInFocus = false;
+                });
             }
 
-            if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 3) {
-                this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                this.goToThirdStep();
-            }
+            window.addEventListener('scroll', that.updateScroll);
+            setTimeout(() => {
+                that.checkWordSuggester();
+            }, 500);
 
-            if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 4) {
-                this.goToFourthStep();
-            }
         });
     },
     mounted() {
-        setTimeout(( ) => {
-            this.initializeTinyMCE()
-        }, 10);
 
-        this.fetchContentForEventEntry({
-            pratilipiId: this.$route.pratilipiId,
-            chapterNo: this.selectedChapter
-        })
-
-        this.checkWordSuggester();
-        const that = this;
-
-        $('.backdrop').click(() => {
-            this.closeNav();
-        });
-
-        $('#image_input').on( "change", function() {
-            that.uploadOnServer();
-        });
-
-        // Hide Footer when keyboard comes
-        if (this.isMobile()) {
-            $(document).on('focus', 'input', function() {
-                that.inputInFocus = true;
-            });
-            $(document).on('blur', 'input', function() {
-                that.inputInFocus = false;
-            });
-        }
-
-        window.addEventListener('scroll', this.updateScroll);
-        setTimeout(() => {
-            this.checkWordSuggester();
-        }, 500);
     },
     destroyed() {
-        this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
+        this.autoSaveContents;
         window.removeEventListener('scroll', this.updateScroll);
     }
 }

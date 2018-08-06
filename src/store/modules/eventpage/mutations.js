@@ -32,18 +32,21 @@ export default {
     setEventDataLoadingSuccess(state, eventData) {
         state.event.loading_state = 'LOADING_SUCCESS';
         state.event.data = eventData.event;
-        console.log("Look at this: ", eventData.Event);
-        if (eventData.entries.yourDrafted.length > 0) {
+        if (eventData.entries.yourDrafted && eventData.entries.yourDrafted.length > 0) {
             state.event.drafts = eventData.entries.yourDrafted;
         }
-        if (eventData.entries.yourSubmitted.length > 0) {
+
+        if (eventData.entries.yourDrafted && eventData.entries.yourSubmitted.length > 0) {
             state.event.submissions = eventData.entries.yourSubmitted;
         }
+
+        if (eventData.entries.allSubmitted && eventData.entries.allSubmitted.length > 0){
+            state.event.participations = eventData.entries.allSubmitted;
+        }
+
     },
     resetDraftList(state) {
-        console.log("BAAM", state.event.drafts);
         state.event.drafts.splice(index, 1);
-        console.log("BAAM2", state.event.drafts);
     },
 
     setEventDataLoadingError(state) {
@@ -118,5 +121,71 @@ export default {
     },
     setUserEventPratilipiDataLoadingError(state) {
         state.userEventPratilipis.loading_state = 'LOADING_ERROR';
+    },
+
+    setCancelEventPratilipiParticipationLoadingTrue(state) {
+        state.cancelEventPratilipiParticipationSate = 'LOADING'
+    },
+
+    setCancelEventPratilipiParticipationLoadingSuccess(state, data) {
+        state.cancelEventPratilipiParticipationSate = 'LOADING_SUCCESS';
+        state.event.submissions.forEach((pratilipi, index) => {
+           if(data.eventEntryId == pratilipi.eventEntryId){
+               console.log(JSON.stringify(pratilipi), index);
+               state.event.submissions.splice(index, 1);
+               state.event.drafts.push(pratilipi);
+           }
+        });
+    },
+
+
+    setCancelEventPratilipiParticipationLoadingError(state) {
+        state.cancelEventPratilipiParticipationSate = 'LOADING_ERROR'
+    },
+
+    setEventPratilipiSubmissionLoadingTrue(state) {
+        state.eventPratilipiSubmissionSate = 'LOADING'
+    },
+
+    setEventPratilipiSubmissionLoadingSuccess(state, data) {
+        state.eventPratilipiSubmissionSate = 'LOADING_SUCCESS';
+        state.event.drafts.forEach((pratilipi, index) => {
+            if(data.eventEntryId == pratilipi.eventEntryId){
+                console.log(JSON.stringify(pratilipi), index);
+                state.event.drafts.splice(index, 1);
+                state.event.submissions.push(pratilipi);
+            }
+        });
+    },
+
+
+    setEventPratilipiSubmissionLoadingError(state) {
+        state.eventPratilipiSubmissionSate = 'LOADING_ERROR'
+    },
+
+    setEventPratilipiDeletionLoadingTrue(state) {
+        state.eventPratilipiDeletionSate = 'LOADING'
+    },
+
+    setEventPratilipiDeletionLoadingSuccess(state, data) {
+        state.eventPratilipiDeletionSate = 'LOADING_SUCCESS';
+        state.event.drafts.forEach((pratilipi, index) => {
+            if(data.eventEntryId == pratilipi.eventEntryId){
+                console.log(JSON.stringify(pratilipi), index);
+                state.event.drafts.splice(index, 1);
+            }
+        });
+
+        state.event.submissions.forEach((pratilipi, index) => {
+            if(data.eventEntryId == pratilipi.eventEntryId){
+                console.log(JSON.stringify(pratilipi), index);
+                state.event.submissions.splice(index, 1);
+            }
+        });
+    },
+
+
+    setEventPratilipiDeletionLoadingError(state) {
+        state.eventPratilipiDeletionSate = 'LOADING_ERROR'
     }
 }

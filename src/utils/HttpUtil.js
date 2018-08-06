@@ -101,25 +101,25 @@ const httpUtil = {
             if (anHttpRequest.readyState == 4 && aCallback != null)
                 aCallback(processResponseText(anHttpRequest.responseText), anHttpRequest.status);
         };
-        anHttpRequest.open("PATCH", aUrl, true);
+        anHttpRequest.open("PATCH", aUrl + (aUrl.indexOf("?") > -1 ? "&" : "?") + formatParams(params), true);
         anHttpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        
 
-        /*
-        Need to look for an alternative
-        */
+        /**
+         Need to look for an alternative
+         **/
+
         if ((window.location.origin.indexOf(".pratilipi.com") === -1 && window.location.origin.indexOf(".ptlp.co")) === -1) {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
+            // headers["AccessToken"] = "672222fb-d1bd-41e6-890b-01167bb9d94f";
         }
-        
 
         if (headers != null) {
             for (var key in headers)
                 if (headers.hasOwnProperty(key))
                     anHttpRequest.setRequestHeader(key, headers[key]);
         }
-        anHttpRequest.send(formatParams(params));
+        anHttpRequest.send(null);
     },
 
     delete: (aUrl, headers, params, aCallback) => {
@@ -144,7 +144,7 @@ const httpUtil = {
             headers = headers || {};
             headers["AccessToken"] = headers["AccessToken"] || getCookie("access_token");
         }
-        
+
 
         if (headers != null) {
             for (var key in headers)

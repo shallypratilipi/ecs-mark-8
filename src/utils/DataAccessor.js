@@ -1,9 +1,9 @@
 import { httpUtil, formatParams } from './HttpUtil';
 
 
-const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://hindi-devo.ptlp.co/api";
 
-// const API_PREFIX  = "https://hindi-devo.ptlp.co";
+
 /* Search */
 const SEARCH_PREFIX = "/search/v2.0";
 const SEARCH_TRENDING_API = "/trending_search";
@@ -49,7 +49,11 @@ const INIT_BANNER_LIST_API = "/init/banner/list";
 const USER_AUTHOR_FOLLOWERS_LIST_API = "/follows/v2.0/authors";
 const USER_AUTHOR_FOLLOWING_LIST_API = "/follows/v2.0/users";
 const EVENT_API = "/event";
-const EVENTS_API = "/events/v2.0";
+const EVENT_ENTRY_API = "/event/entry";
+const CONTENT_API = "/pratilipi/content";
+const INDEX_API = "/index";
+const CHAPTER_ADD = "/chapter/add";
+const CHAPTER_DELETE = "/chapter/delete";
 const EVENT_LIST_API = "/event/list";
 const BLOG_POST_API = "/blogpost";
 const BLOG_POST_LIST_API = "/blogpost/list";
@@ -85,6 +89,8 @@ const READER_CHAPTER_API = "/web/v1.0/reader/readerChapter";
 
 const INIT_API_VAPSI = "/init/v2.0/vapsi";
 
+const EVENT_ENTRY_SUBMIT = "/submit";
+const EVENT_ENTRY_CANCEL_PARTICIPATION = "/donotparticipate";
 const EVENT_AUTOMATION_LIST = "https://hindi-devo.ptlp.co/api/event/list";
 
 const request = function(name, api, params) {
@@ -362,22 +368,8 @@ export default {
     },
 
     getEventBySlug: (slug, aCallBack) => {
-        httpUtil.get('http://www.mocky.io/v2/5b5848573000002117fe4e45',
-            null,null,
-            function(response, status) { processGetResponse(response, status, aCallBack)
-             });
-
-
-        // var requests = [];
-        // requests.push(new request("req1", EVENTS_API, { "slug": slug }));
-
-        // httpUtil.get(API_PREFIX, null, { "requests": processRequests(requests) },
-        //     function(response, status) {
-        //         if (aCallBack != null) {
-        //             var event = response.req1.status == 200 ? response.req1.response : null;
-        //             aCallBack(event);
-        //         }
-        //     });
+        httpUtil.get(API_PREFIX + EVENT_API, null, { "slug": slug },
+            function(response, status) {processGetResponse(response, status, aCallBack)});
     },
 
     getEventById: (eventId, aCallBack) => {
@@ -388,11 +380,9 @@ export default {
     },
 
     getEventList: (language, aCallBack) => {
-        httpUtil.get("https://hindi-devo.ptlp.co/api/event/list?language=HINDI",
-            null,
-            null,
-            function(response, status) { processGetResponse(response, status, aCallBack)
-             });
+        httpUtil.get(API_PREFIX + EVENT_LIST_API,
+            null, { "language": language },
+            function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 
     getVideoseriesList : ( language, aCallBack ) => {
@@ -566,7 +556,7 @@ export default {
         httpUtil.get(API_PREFIX + PRATILIPI_LIST_API,
             null,
             params,
-            function(response, status) { processGetResponse(response, status, aCallBack)});
+            function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 
     getPratilipiListBySearchQuery: (searchQuery, cursor, offset, resultCount, language, aCallBack) => {
@@ -919,9 +909,6 @@ export default {
         if (formData == null) return;
         if (pratilipiId == null) return;
 
-
-
-
         httpUtil.postMultipart(API_PREFIX + '/pratilipi/cover?pratilipiId=' + pratilipiId,
             null,
             formData,
@@ -965,10 +952,10 @@ export default {
 
 
     getEventPratilipiById: (eventPratilipiId, aCallBack) => {
-        httpUtil.get( API_PREFIX + EVENT_PARTICIPATE_PREFIX + EVENT_PARTICIPATE_GET,
+        httpUtil.get( API_PREFIX + PRATILIPI_API,
             null,
             {
-                eventPratilipiId
+                "pratilipiId" : eventPratilipiId
             },
             function( response, status ) { processGetResponse( response, status, aCallBack ) });
     },
@@ -1029,15 +1016,26 @@ export default {
             { contents: encodeURIComponent(contents), eventPratilipiId },
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack ) } );
     },
-    getEventPratilipiContent: (eventPratilipiId, aCallBack) => {
-        httpUtil.get( API_PREFIX + EVENT_PARTICIPATE_PREFIX + EVENT_PARTICIPATE_CONTENT,
+    getPratilipiContent: (eventPratilipiId, chapterNo ,aCallBack) => {
+        httpUtil.get( API_PREFIX + CONTENT_API,
             null,
             {
-                eventPratilipiId
+                "pratilipiId" : eventPratilipiId,
+                "chapterNo" : chapterNo,
+                "_apiVer" : 3
+
             },
             function( response, status ) { processGetResponse( response, status, aCallBack ) });
     },
 
+    getPratilipiIndex: (eventPratilipiId, aCallBack) => {
+        httpUtil.get( API_PREFIX + CONTENT_API + INDEX_API,
+            null,
+            {
+                "pratilipiId" : eventPratilipiId,
+            },
+            function( response, status ) { processGetResponse( response, status, aCallBack ) });
+    },
     getAdminEventPratilipis: (query, aCallBack) => {
         httpUtil.get( API_PREFIX + EVENT_PARTICIPATE_PREFIX_ADMIN + EVENT_PARTICIPATE_LIST,
             null,
@@ -1141,6 +1139,90 @@ export default {
             },
             function (response, status) {
                 processGetResponse(response, status, aCallBack);
+            });
+    },
+
+    addNewEventEntryFromPratilipi: (eventId, userId, authorId, pratilipiId, successCallBack, errorCallBack) => {
+        let params = {
+            "eventId": eventId,
+            "userId": userId,
+            "authorId": authorId,
+            "pratilipiId": pratilipiId
+        };
+
+
+        httpUtil.post(API_PREFIX + EVENT_ENTRY_API,
+        null,
+        params,
+        function (response, status) {
+            processPostResponse(response, status, successCallBack, errorCallBack)
+        });
+    },
+
+    addNewChapterToPratilipi: (pratilipiId, chapterNo ,successCallBack, errorCallBack) => {
+        let params = {
+            "pratilipiId": pratilipiId,
+            "chapterNo": chapterNo
+        };
+
+        httpUtil.post(API_PREFIX + CONTENT_API + CHAPTER_ADD,
+            null,
+            params,
+            function (response, status) {
+                processPostResponse(response, status, successCallBack, errorCallBack);
+            });
+    },
+
+    deleteChapterToPratilipi: (pratilipiId, chapterNo ,successCallBack, errorCallBack) => {
+        let params = {
+            "pratilipiId": pratilipiId,
+            "chapterNo": chapterNo
+        };
+
+        httpUtil.post(API_PREFIX + CONTENT_API + CHAPTER_DELETE,
+            null,
+            params,
+            function (response, status) {
+                processPostResponse(response, status, successCallBack, errorCallBack);
+            });
+    },
+
+    saveContentOfEventEntry: (params, successCallBack, errorCallBack) => {
+        params._apiVer = 3;
+
+        httpUtil.post(API_PREFIX + CONTENT_API,
+            null,
+            params,
+            function (response, status) {
+                processPostResponse(response, status, successCallBack, errorCallBack);
+            });
+    },
+
+    submitEntryToEvent: (eventId, eventEntryId, aCallBack) => {
+        httpUtil.patch(API_PREFIX + EVENT_ENTRY_API + EVENT_ENTRY_SUBMIT,
+            null,
+            { "eventId": eventId, "eventEntryId" : eventEntryId },
+            function(response, status) {
+                processGetResponse(response, status, aCallBack)
+            });
+    },
+
+    deleteEntryToEvent: (eventId, eventEntryId, aCallBack) => {
+        let paramString = "?eventId=" + eventId + "&eventEntryId=" + eventEntryId;
+        httpUtil.delete(API_PREFIX + EVENT_ENTRY_API + paramString,
+            null,
+            null,
+            function(response, status) {
+                processGetResponse(response, status, aCallBack)
+            });
+    },
+
+    cancelParticipationToEvent: (eventId, eventEntryId, aCallBack) => {
+        httpUtil.patch(API_PREFIX + EVENT_ENTRY_API + EVENT_ENTRY_CANCEL_PARTICIPATION,
+            null,
+            { "eventId": eventId, "eventEntryId" : eventEntryId },
+            function(response, status) {
+                processGetResponse(response, status, aCallBack)
             });
     }
 };

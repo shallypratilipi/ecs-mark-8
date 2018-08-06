@@ -16,11 +16,12 @@
                         <div class="page-content event-list card" id="yourDrafts">
                             <div class="head-title">__('event_participate_your_drafts')</div>
                             <router-link v-for="pratilipiData in getDraftData" :key="pratilipiData.eventEntryId"
-                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
+                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.pratilipiId'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
-                                    title: pratilipiData.name,
-                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
+                                    author: pratilipiData.author,
+                                    title: pratilipiData.displayTitle,
+                                    coverImageUrl: 'https://0.ptlp.co' + pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
                                     submissionDate: pratilipiData.submissionDate,
@@ -40,11 +41,12 @@
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
                             <router-link v-for="pratilipiData in getSubmissionData" :key="pratilipiData.eventEntryId"
-                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.eventEntryId + "?step=2"'>
+                                         :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.pratilipiId'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
-                                    title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
+                                    author: pratilipiData.author,
+                                    title: pratilipiData.displayTitle,
+                                    coverImageUrl: 'https://0.ptlp.co' + pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
                                     submissionDate: pratilipiData.submissionDate,
@@ -73,8 +75,8 @@
                     </div>
                     <Spinner v-if="getEventDataLoadingState === 'LOADING'"></Spinner>
                 </div>
-                <router-link
-                    :to="{path: `/event/${this.$route.params.event_slug}/participate/` , params: {eventId :this.$route.params.event_data.eventId }}">
+                <router-link v-if="getEventData.eventState == 'SUBMISSION'"
+                    :to="{path: `${getEventData.slug}/participate/`}">
                     <button class="btn btn-danger">__('event_participate')</button>
                 </router-link>
             </div>
@@ -147,15 +149,13 @@ export default {
     },
     watch: {
         'getEventData.eventId' (eventId) {
+            this.$route.params.eventId = this.getEventData.eventId;
             if (eventId) {
-                this.fetchInitialEventPratilipis({ eventId, resultCount: 20 });
-                this.fetchEventPratilipis(eventId);
                 this.triggerAnanlyticsEvent('LANDED_EVENTM_EVENT', 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId,
                     'PARENT_ID': this.getEventData.eventId
                 });
 
-                console.log('IS CURRENT EVENT: ', this.isCurrentEvent(eventId));
                 if (this.isCurrentEvent(eventId)) {
                     this.canParticipate = true;
                 }
@@ -164,6 +164,7 @@ export default {
         'scrollPosition'(newScrollPosition){
             const nintyPercentOfList = ( 80 / 100 ) * $('.event-page').innerHeight();
             const { eventId } = this.getEventData;
+
             if (newScrollPosition > nintyPercentOfList &&
                 this.getEventPratilipisLoadingState !== 'LOADING' &&
                 this.getEventPratilipisCursor !== null) {
@@ -187,21 +188,10 @@ export default {
     },
     created() {
         const { event_data, event_slug } = this.$route.params;
-        console.log(" event_slug " + event_slug + " " + event_data.eventId);
-        // if (event_data) {
-        //     this.cacheEventData(event_data);
-        //     console.log("Here");
-        // } else {
-        this.fetchEventDetails(event_data.eventId);
-        console.log("HEre 2");
-        // }
-
+        this.fetchEventDetails(event_slug.split("-").pop());
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
-        this.$route.params.eventId = this.getEventData.eventId;
-
-        console.log("this.$route.params.eventId ", this.$route.params.event_data.eventId);
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);

@@ -1,30 +1,31 @@
 <template>
     <div class="pratilipi-wrap" :class="{ 'event-participate-page': isEventParticipatePage }">
         <div class="pratilipi">
-            <div class="book-type" :class="pratilipiData.type">
-                {{ pratilipiData.type | getPratilipiTypeInNativeLanguage }} <span></span>
-            </div>
+            <!--<div class="book-type" :class="pratilipiData.type">-->
+                <!--{{ pratilipiData.type }} <span></span>-->
+            <!--</div>-->
             <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             <div class="pratilipi-details">
-                <span class="title">{{ pratilipiData.title }}</span>
                     <button class="btn more-options" type="button" id="moreOptions2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click.prevent="showMoreOptions()">
                         <i class="material-icons">more_vert</i>
                     </button>
-                     <div class="dropdown-menu" aria-labelledby="ReviewMoreOptions" @click.prevent="">
-                            
+                     <div class="dropdown-menu" aria-labelledby="EventMoreOptions" @click.prevent="">
+
                             <button class="btn options-btn" v-if="pratilipiData.submissionType == 'DRAFT'" @click.prevent="moveToDrafts()">__('pratilipi_move_to_drafts')</button>
                             <button class="btn options-btn " v-if="pratilipiData.submissionType == 'SUBMITTED'" @click.prevent="publishEntry()">__('review_submit_review')</button>
                             <button type="button" class="btn options-btn" @click.prevent="deleteEventEntry()">
-                                __('pratilipi_delete_content')                                
+                                __('pratilipi_delete_content')
                             </button>
-                        </div>
-                <p class="date">__("pratilipi_listing_date"): {{ pratilipiData.submissionDate | convertDate }}</p>
+                    </div>
+                    <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
+                    <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.displayName }}</span></span>
+                    <p class="date">__("pratilipi_listing_date"): {{ pratilipiData.submissionDate | convertDate }}</p>
 
     <!--             <button class="btn btn-danger btn-sm" @click.prevent="deleteEventEntry()">Delete</button>
                 <button class="btn btn-warning btn-sm" v-if="pratilipiData.submissionType == 'DRAFT'" @click.prevent="moveToDrafts()">Move to drafts</button>
                 <button class="btn btn-warning btn-sm" v-if="pratilipiData.submissionType == 'SUBMITTED'" @click.prevent="submitEvent()">Submit</button> -->
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -71,22 +72,19 @@ export default {
             'publishEntryForEvent'
         ]),
         publishEntry() {
-            console.log("Publish Entry");
-             this.publishEntryForEvent({eventId : this.pratilipiData.eventId , eventEntryId :  this.pratilipiData.eventEntryId});
+             this.publishEntryForEvent({eventId : this.pratilipiData.eventId, eventEntryId :  this.pratilipiData.eventEntryId});
         },
         moveToDrafts() {
-            console.log("Move to draafts");
-            this.moveEntryToDrafts({eventId : this.pratilipiData.eventId , eventEntryId :  this.pratilipiData.eventEntryId})
+            this.moveEntryToDrafts({eventId : this.pratilipiData.eventId, eventEntryId :  this.pratilipiData.eventEntryId})
 
         },
         deleteEventEntry() {
-            console.log("DELETE ME " + this.pratilipiData.eventEntryId + " " + this.pratilipiData.eventId);
-            this.deleteEntryFromEvent({eventId : this.pratilipiData.eventId , eventEntryId :  this.pratilipiData.eventEntryId});       
+            this.deleteEntryFromEvent({eventId : this.pratilipiData.eventId, eventEntryId :  this.pratilipiData.eventEntryId});
         },
         showMoreOptions() {
             console.log("Call Analytics");
         }
-        
+
     },
     components: {
         PratilipiImage

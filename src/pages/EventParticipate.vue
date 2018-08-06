@@ -7,79 +7,36 @@
                         <div class="head-title">{{ getEventData.name }}</div>
                     </div>
                 </div>
-<!--                 <div class="row" v-if="getDraftedEventPratilipi.length > 0 && getEventLoadingState === 'LOADING_SUCCESS' && currentStep === 1 && !$route.params.eventPratilipiId">
-                    <div  class="col-md-12">
-                        <p class="drafted-msg">__('event_participate_drafted_item_edit')</p>
-                        <div class="drafted-items">
-                            <UserEventPratilipiComponent
-                                :pratilipiData="{
-                                    title: pratilipiData.title,
-                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
-                                    type: pratilipiData.type,
-                                    description: pratilipiData.description,
-                                    createdAt: pratilipiData.createdAt
-                                }"
-                                @click.native="goToSecondStepToEdit(pratilipiData.eventId, pratilipiData._id)"
-                                :key="pratilipiData._id"
-                                v-for="pratilipiData in getDraftedEventPratilipi"
-                                :isEventParticipatePage="true"
-                                ></UserEventPratilipiComponent>
-                        </div>
-                    </div>
-                </div> -->
-               <!--  <div id="mySidenav" class="sidenav">
-                    <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
-                    <a class="chapters" :class="{ 'selected-chapter': selectedChapter === index }" v-for="(eachChapter, index) in chapters" :key="index">
-                        <span class="chapter-title" @click="selectChapter(index)">
-                            <span v-if="chapters[index].title">{{chapters[index].title}}</span>
-                            <span v-else>__('writer_chapter') &nbsp; &nbsp; {{ index + 1 }}</span>
-                        </span>
-                        <i class="material-icons chapter-delete" @click="deleteChapter(index)">delete</i>
-                    </a>
-
-                    <a class="chapter-add" @click="addChapter">
-                        <i class="material-icons">add</i>
-                    </a>
-                </div> -->
                 <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
                 <div id="main" v-show="getEventLoadingState === 'LOADING_SUCCESS'">
                     <div class="step-container">
                         <div class="row steps">
-                        <div class="step step-1" :class="{ active: currentStep === 1 }">
-                            <div class="step-number">
-                                <span>1</span>
-                                <i class="material-icons">check</i>
+                            <div class="step step-1" :class="{ active: currentStep === 1 }">
+                                <div class="step-number">
+                                    <span>1</span>
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <p>__("writer_add_content_title")</p>
                             </div>
-                            <p>__("writer_add_content_title")</p>
+                            <div class="step step-2" :class="{ active: currentStep === 2 }">
+                                <div class="step-number">
+                                    <span>2</span>
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <p>__("writer_table_of_contents")</p>
+                            </div>
+                            <div class="step step-3" :class="{ active: currentStep === 3 }">
+                                <div class="step-number">
+                                    <span>3</span>
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <p>__("writer_editor_image")</p>
+                            </div>
                         </div>
-                        <div class="step step-2" :class="{ active: currentStep === 2 }">
-                            <div class="step-number">
-                                <span>2</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_table_of_contents")</p>
-                        </div>
-                        <div class="step step-3" :class="{ active: currentStep === 3 }">
-                            <div class="step-number">
-                                <span>3</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_editor_image")</p>
-                        </div>
-            <!--             <div class="step step-4" :class="{ active: currentStep === 4 }">
-                            <div class="step-number">
-                                <span>4</span>
-                                <i class="material-icons">check</i>
-                            </div>
-                            <p>__("writer_finish")</p>
-                        </div> -->
-                    </div>
                     </div>
 
 
                     <div v-if="currentStep == 1">
-                    <WriteModule style="display: none"></WriteModule>
-
                         <div class="row">
                             <div class="col-md-5 mb-10">
                                 <div class="event-image" :style="{ backgroundImage: 'url(' + getEventData.bannerImageUrl + ')' }"></div>
@@ -123,7 +80,7 @@
 
 
                     <div v-if="currentStep == 2">
-                    <WriteModule    ></WriteModule>
+                        <WriteModule v-if="this.$route.params.eventPratilipiId" :pratilipiId="this.$route.params.eventPratilipiId"></WriteModule>
                         <div class="row writer-navigation">
                             <div class="col-6">
                                 <button class="prev" @click="goToFirstStepForEdit">__("back")</button>
@@ -138,7 +95,7 @@
                     <div v-if="currentStep == 3">
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="book-image" v-bind:style="{ backgroundImage: 'url(' + getEventPratilipiCoverImage + ')' }">
+                                <div class="book-image" v-bind:style="{ backgroundImage: 'url(https://2.ptlp.co' + getEventPratilipiData.coverImageUrl + ')' }">
                                     <button class="update-img" @click="uploadCoverImage"><i class="material-icons">camera_alt</i></button>
                                     <input type="file" hidden name="pratilipiimage" accept="image/*" @change="triggerPratilipiImageUpload" id="pratilipiimage-uploader">
                                     <div class="uploading" v-if="getEventPratilipiImageUploadLoadingState === 'LOADING'">
@@ -150,46 +107,21 @@
                                 <div class="head-title">__("pratilipi_summary")</div>
                                 <br>
                                 <TranslatingInput :value="description" :oninput="(value) => { description = value}" :placeholder="'__("edit_pratilipi_summary")'"></TranslatingInput>
-
-                                <!-- <div class="tag-sections">
-                                    <div class="head-title">__("tags_categories")</div>
-                                    <div class="tag-section-body">
-                                        <span class="all-tags active" v-for="each_tag in pratilipiData.tags" :key="each_tag.id">{{ each_tag.name}}</span>
-                                        <span class="all-tags"
-                                            v-for="each_tag in [ {id: 1, name: 'test1'}, {id: 2, name: 'test2'}, {id: 3, name: 'test3'}, {id: 4, name: 'test4'} ]"
-                                            :key="each_tag.id">{{ each_tag.name }}</span>
-                                    </div>
-                                </div> -->
                             </div>
-
                         </div>
                         <div class="row writer-navigation">
                             <div class="col-6">
                                 <button class="prev" @click="goToSecondStepForEdit">__("back")</button>
                             </div>
                             <div class="col-6 text-right">
-                                <button class="save" @click="autoSaveContents">__("save_changes")</button>
+                                <!--<button class="save" @click="autoSaveContents">__("save_changes")</button>-->
                                 <button class="next" @click="saveMetaInformationAndFinalSubmit">__('event_participate_finish')</button>
                             </div>
                         </div>
                     </div>
 
-                    <div v-if="currentStep == 4">
-                        <div class="row">
-                            <div class="circle-loader">
-                                <div class="checkmark draw"></div>
-                            </div>
-                        </div>
-                        <div class="row accepted-msg" v-if="showAcceptedMessage">
-                            <div class="col-12">
-                                <p>__('event_participate_accepted_message')</p>
-                                <p><router-link :to="getEventData.pageUrl + '#yourEntries'">__('event_participate_check_your_entry_here')</router-link></p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-                <Spinner v-if="getEventLoadingState === 'LOADING'"></Spinner>
+                <!--<Spinner v-if="getEventLoadingState === 'LOADING'"></Spinner>-->
             </div>
             <div class="backdrop"></div>
         </div>
@@ -227,19 +159,17 @@ export default {
             'getContentLoadingState',
             'getEventPratilipDescUpdateState',
             'getContents',
-            'getEventData',
             'getEventLoadingState',
             'getDraftedEventPratilipiLoadingState',
             'getDraftedEventPratilipi',
             'getEventPratilipiCoverImage',
             'getEventPratilipiImageUploadLoadingState',
-
+            'getEventDetails',
+            'getEventData',
             'getPratilipiOfEvent',
-            'getPratilipiOfEventLoadingState'
+            'getPratilipiOfEventLoadingState',
+            'getEventEntrySubmitState'
         ]),
-    ...mapGetters('eventpage', [
-        'getEventData'
-        ])
     },
     mixins: [
         mixins
@@ -264,7 +194,8 @@ export default {
             inputInFocus: false,
             scrollPosition: null,
             selectedSuggestion: 0,
-            titleIsMissing: false
+            titleIsMissing: false,
+            pratilipiId: '',
         }
     },
     methods: {
@@ -280,10 +211,10 @@ export default {
             'uploadEventPratilipiImage',
             'fetchDraftedUserEventPratilipis',
             'createPratilipiAndEvent',
-
             "resetNewEntryState",
             'createNewEventFromPratilipi',
-            'createFirstChapter'
+            'createChapter',
+            'submitEventEntry'
         ]),
         ...mapActions('alert', [
             'triggerAlert'
@@ -300,57 +231,68 @@ export default {
 
         createPratilipiAndEventFromStep1() {
 
-            console.log("I am here");
              if (!this.title || this.title.trim() === '') {
                 this.titleIsMissing = true;
                 return;
             }
-            let language  = this.getCurrentLanguage().fullName.toUpperCase(); 
+
+            let language  = this.getCurrentLanguage().fullName.toUpperCase();
             this.titleIsMissing = false;
-            if (this.getUserDetails.isGuest) {
-                const { eventId } = this.getEventData;
-                this.setAfterLoginAction({ action: `eventparticipate/createPratilipiAndEvent`, data: {
-                    title: this.title.trim(),
-                    titleEn: this.titleEn,
-                    language: "HINDI",
-                    type: this.type,
-                }});
-                this.openLoginModal(this.$route.meta.store, 'EVENTPARTICIPATECREATE', 'EVENTPARTICIPATE');
-                return;
-            }
+            // todo: sachin check login
 
             if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
-                this.createPratilipiAndEvent({
 
-                // this.updateEventPratilipiData({
-                    // eventPratilipiId: this.$route.params.eventPratilipiId,
+                if (this.getUserDetails.isGuest) {
+                    const { eventId } = this.getEventData;
+                    this.setAfterLoginAction({ action: `eventparticipate/updateEventPratilipiData`, data: {
+                            pratilipiId : this.pratilipiId,
+                            title: this.title.trim(),
+                            titleEn: this.titleEn.trim(),
+                            type: this.type,
+                            language: this.getCurrentLanguage().fullName.toUpperCase(),
+                            eventId: this.getEventData.eventId,
+                        }});
+                    this.openLoginModal(this.$route.meta.store, 'EVENTPARTICIPATECREATE', 'EVENTPARTICIPATE');
+                    return;
+                }
+
+                this.updateEventPratilipiData({
+                    pratilipiId : this.pratilipiId,
                     title: this.title.trim(),
-                    titleEn: this.titleEn,
-                    language: this.getCurrentLanguage().fullName.toUpperCase(),
+                    titleEn: this.titleEn.trim(),
                     type: this.type,
+                    language: this.getCurrentLanguage().fullName.toUpperCase(),
+                    eventId: this.getEventData.eventId,
                 });
             } else {
-                console.log("HOLA");
-                const { eventId } = this.getEventData;
+
+                if (this.getUserDetails.isGuest) {
+                    const { eventId } = this.getEventData;
+                    this.setAfterLoginAction({ action: `eventparticipate/createPratilipiAndEvent`, data: {
+                            title: this.title.trim(),
+                            titleEn: this.titleEn,
+                            language: this.getCurrentLanguage().fullName.toUpperCase(),
+                            type: this.type,
+                            eventId: this.getEventData.eventId,
+                        }});
+                    this.openLoginModal(this.$route.meta.store, 'EVENTPARTICIPATECREATE', 'EVENTPARTICIPATE');
+                    return;
+                }
+
                 this.createPratilipiAndEvent({
                     title: this.title.trim(),
                     titleEn: this.titleEn,
                     language: this.getCurrentLanguage().fullName.toUpperCase(),
                     type: this.type,
+                    eventId: this.getEventData.eventId,
                 });
             }
-         
 
         },
         routeToNextStep() {
             console.log("this.getPratilipiOfEvent.pratilipiId " + this.getPratilipiOfEvent.pratilipiId);
-            this.$router.push({
-                query: { 
-                    pratilipiId: this.getPratilipiOfEvent.pratilipiId,
-                    step : 2,
-                 }
-            });
-            console.log("BAAAAM" , this.$router);
+            let url = '/event/' + this.$route.params.eventSlug + '/participate/' + this.getPratilipiOfEvent.pratilipiId;
+            this.$router.push(url);
         },
         createEventPratilipi() {
             // this.currentStep = 2;
@@ -375,20 +317,16 @@ export default {
             }
 
             if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
+                console.log("updating event");
                 this.updateEventPratilipiData({
-                    // eventPratilipiId: this.$route.params.eventPratilipiId,
-                    eventPratilipiId: 1,
-
                     title: this.title,
                     titleEn: this.titleEn,
                     type: this.type,
                     language: this.getCurrentLanguage().fullName.toUpperCase()
                 });
             } else {
-                console.log("HOLA");
                 const { eventId } = this.getEventData;
                 this.createEventPratilipiData({
-                    eventId : 1,
                     title: this.title,
                     titleEn: this.titleEn,
                     type: this.type,
@@ -398,86 +336,52 @@ export default {
         },
 
         saveContentAndGoToThirdStep() {
+            this.autoSaveContents;
+            this.goToThirdStep;
             this.$router.push({
-                query: { step : 3 }
+                path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}/submit`,
             });
         },
 
-        autoSaveContents() {
-            // this.updatePratilipiContent({ eventPratilipiId: this.$route.params.eventPratilipiId, contents: this.chapters });
-            // this.triggerAlert({message: '__("writer_changes_saved")', timer: 3000});
-        },
-
         saveMetaInformationAndFinalSubmit() {
-            // this.updateDescriptionAndTags({ eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description, state: 'SUBMITTED' });
 
             this.setConfirmModalAction({
                 action: `eventparticipate/updateDescriptionAndTags`,
                 heading: 'event_participate_confirm_submission',
                 message: 'event_participate_cannot_change_drafts',
-                data: { eventPratilipiId: this.$route.params.eventPratilipiId, description: this.description || '', state: 'SUBMITTED' }
+                data: { eventPratilipiId: this.pratilipiId, description: this.description || '', state: 'PUBLISHED' }
             });
             this.openPrimaryConfirmationModal();
         },
 
         goToFirstStep() {
-            console.log("I am getting called");
             $('.circle-loader').removeClass('load-complete');
             $('.checkmark').hide();
-            this.$router.push({
-                query: { step : 1 }
-            });
-            this.currentStep = 1;
-
         },
 
         goToFirstStepForEdit() {
+            this.goToFirstStep;
             this.$router.push({
-                path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}?step=1`,
-                params: {
-                    eventId: this.getEventData.eventId
-                }
+                path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}/edit`,
             });
         },
 
         goToSecondStepForEdit() {
+            this.goToSecondStep;
             this.$router.push({
-                query: { step : 2 ,
-                    eventPratilipiId: this.getEventPratilipiData._id
-                }
+                path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}`,
             });
         },
 
         goToSecondStep() {
             $('.circle-loader').removeClass('load-complete');
             $('.checkmark').hide();
-            this.currentStep = 2;
         },
 
         goToThirdStep() {
             $('.circle-loader').removeClass('load-complete');
             $('.checkmark').hide();
-            this.currentStep = 3;
         },
-
-        goToFourthStep() {
-            const that = this;
-            this.currentStep = 4;
-            setTimeout(() => {
-                $('.circle-loader').addClass('load-complete');
-                $('.checkmark').show();
-                that.showAcceptedMessage = true;
-            }, 1000);
-        },
-
-        goToSecondStepToEdit(eventId, pratilipiEventId) {
-            console.log(`/event/${this.$route.params.eventSlug}/participate/${pratilipiEventId}?step=2`)
-            this.$router.push({
-                path: `/event/${this.$route.params.eventSlug}/participate/${pratilipiEventId}?step=2`
-            });
-        },
-
-
 
         uploadCoverImage() {
             $('#pratilipiimage-uploader').click();
@@ -486,91 +390,8 @@ export default {
         triggerPratilipiImageUpload(event) {
             const formData = new FormData();
             formData.append('file', event.target.files[0], event.target.files[0].name);
-            formData.append('eventPratilipiId', this.getEventPratilipiData._id);
-            this.uploadEventPratilipiImage(formData);
-        },
-
-        selectChapter(index) {
-            this.selectedChapter = index;
-            this.closeNav();
-        },
-
-        updateTitle(value) {
-            this.chapters[this.selectedChapter].title = value;
-        },
-        uploadOnServer() {
-            var field_name = "#" + $( '#field_name' ).val();
-            var fd = new FormData();;
-            var blob = $('#image_input').get(0).files[0];
-            fd.append( 'file', blob );
-            fd.append( 'eventPratilipiId', this.getEventPratilipiData._id );
-            // fd.append( 'pratilipiId', pratilipiId );
-            // fd.append( 'pageNo', cur_page );
-
-            $.ajax({
-                type:'POST',
-                url: `https://gamma.pratilipi.com/event-participate/images?type=CONTENT`,
-                data: fd,
-                cache: true,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'accesstoken': this.getCookie('access_token')
-                },
-                success: function( data ) {
-                    $('#image_input').val("");
-                    $( field_name ).val( data.url );
-                },
-                error: function( data ) {
-                    alert( 'HTTP Error: ' + data.status );
-                    return;
-                }
-            });
-        },
-        arr_diff(a1, a2) {
-
-            var a = [], diff = [];
-
-            for (var i = 0; i < a1.length; i++) {
-                a[a1[i]] = true;
-            }
-
-            for (var i = 0; i < a2.length; i++) {
-                if (a[a2[i]]) {
-                    delete a[a2[i]];
-                } else {
-                    a[a2[i]] = true;
-                }
-            }
-
-            for (var k in a) {
-                diff.push(k);
-            }
-
-            return diff;
-        },
-
-        selectSuggestion(suggestion, fromSpace) {
-            var node = editorRange.commonAncestorContainer; // relative node to the selection
-            const range = document.createRange(); // create a new range object for the deletion
-            range.selectNodeContents(node);
-
-            if (fromSpace) {
-                range.setStart(node, editorRange.endOffset - this.wordToTranslate.length); // current caret pos - 3
-            } else {
-                range.setStart(node, editorRange.endOffset - this.wordToTranslate.length); // current caret pos - 3
-            }
-
-            range.setEnd(node, editorRange.endOffset); // current caret pos
-            range.deleteContents();
-
-            // tinymce.activeEditor.focus();
-            const suggestionNode = document.createTextNode(suggestion);
-            const spaceNode = document.createTextNode('\u00A0');
-            editorRange.insertNode(spaceNode);
-            editorRange.insertNode(suggestionNode);
-            this.lastTranslatedWord = suggestion;
-            this.suggestions = [];
+            formData.append('eventPratilipiId', this.pratilipiId);
+            this.uploadEventPratilipiImage({ "formData" : formData, "pratilipiId" : this.pratilipiId});
         },
         updateScroll() {
             this.scrollPosition = window.scrollY
@@ -589,17 +410,20 @@ export default {
     },
     watch: {
         'getEventPratilipiCreateOrUpdateStateSuccess'(state) {
-            if (state === 'LOADING_SUCCESS') {
+            console.log("starting", 1);
+            if(state == 'LOADING_SUCCESS') {
+                console.log("FIRING API");
+                let eventId = this.getEventData.eventId;
+                let authorId =  this.getUserDetails.authorId;
+                let userId  = this.getUserDetails.userId;
+                let pratilipiId = this.getEventPratilipiData.pratilipiId;
                 this.$router.push({
-                    path: `/event/${this.$route.params.eventSlug}/participate/${this.getEventPratilipiData._id}`,
-                    query: {
-                        step: 2
-                    }
+                    path: `/event/${this.$route.params.eventSlug}/participate/${this.getEventPratilipiData.pratilipiId}`,
                 });
             }
         },
         'getPratilipiOfEventLoadingState'(state) {
-            console.log("AM I?");
+            console.log("starting", 2);
             if(state == 'LOADING_SUCCESS') {
                 console.log("FIRING API");
                 let eventId = this.getEventData.eventId;
@@ -607,18 +431,12 @@ export default {
                 let userId  = this.getUserDetails.userId;
                 let pratilipiId = this.getPratilipiOfEvent.pratilipiId;
                 console.log("SEE IT OKAY! " + eventId + " " + authorId + " " + " " + userId + " " + pratilipiId );
-                this.createNewEventFromPratilipi({
-                     eventId ,
-                     authorId ,
-                     userId  ,
-                     pratilipiId ,
-                });
-                this.createFirstChapter({pratilipiId , chapterNo: 1});
-                this.resetNewEntryState();
+                this.createChapter({pratilipiId: pratilipiId , chapterNo: 1});
                 this.routeToNextStep();
             }
         },
         'getEventPratilipiLoadingState'(state) {
+            console.log("starting", 3);
             if (state === 'LOADING_SUCCESS') {
                 this.title = this.getEventPratilipiData.title;
                 this.titleEn = this.getEventPratilipiData.titleEn;
@@ -633,92 +451,37 @@ export default {
             }
         },
 
-        'getEventPratilipDescUpdateState'(state) {
-            if (state === 'LOADING_SUCCESS') {
-                this.$router.push({
-                    query: { step : 4 }
-                });
-            }
-        },
+        '$route'(route) {
+            console.log("starting", 6);
+            if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/edit')){
+                this.currentStep = 1;
+                this.pratilipiId = this.$route.params.eventPratilipiId;
+                this.fetchEventPratilipiData(this.pratilipiId);
+            } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/submit')) {
+                this.currentStep = 3;
+                this.pratilipiId = this.$route.params.eventPratilipiId;
+                this.fetchEventPratilipiData(this.pratilipiId);
+            } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
+                this.pratilipiId = this.$route.params.eventPratilipiId;
+                this.currentStep = 2;
+            } else if (this.$route.params.eventSlug) {
 
-        'getContentLoadingState'(state) {
-            const that = this;
-            function compare(a,b) {
-                if (a.chapterNo < b.chapterNo)
-                    return -1;
-                if (a.chapterNo > b.chapterNo)
-                    return 1;
-                return 0;
-            }
-            if (state === 'LOADING_SUCCESS') {
-
-
-                const tempChapters = [ ...this.getContents ];
-                tempChapters.sort(compare);
-
-                that.chapters = [];
-                tempChapters.forEach((eachChapter) => {
-                    that.chapters.push({
-                        title: eachChapter.chapterTitle,
-                        content: eachChapter.content
-                    });
-                });
-
-                if (that.chapters.length === 0) {
-                    this.chapters.push({
-                        title: '',
-                        content: ''
-                    });
-                }
-                const activeEditor = tinymce.activeEditor;
-                if(activeEditor) activeEditor.setContent(this.chapters[this.selectedChapter].content);
-            }
-        },
-        '$route.query.step'(step) {
-
-            if (!step) {
-                this.goToFirstStep();
             }
 
-
-            if (step == 2) {
-                this.fetchPratilipiContent(this.$route.params.eventPratilipiId);
-                this.goToSecondStep();
-                setTimeout(() => {
-                    this.checkWordSuggester();
-                }, 500);
-            }
-            this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-
-            if (step == 1) {
-                console.log(this.$route.params);
-                if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined) {
-                    this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                    this.goToFirstStep();
-                }
-            }
-
-            if (step == 3) {
-                this.goToThirdStep();
-            }
-
-            if (step == 4) {
-                this.goToFourthStep();
-            }
         },
 
         'getEventLoadingState'(state) {
             if (state === 'LOADING_ERROR') {
-                alert('Invalid event id');
                 this.$router.push('/event');
             }
 
             if (state === 'LOADING_SUCCESS') {
-                this.fetchDraftedUserEventPratilipis(this.getEventData.eventId);
+                console.log(JSON.stringify(this.getEventData))
             }
         },
 
         'writerInFocus'(inFocus) {
+            console.log("starting", 8);
             if (inFocus || this.inputInFocus) {
                 $(".footer-menu").css("height", "0")
             } else {
@@ -726,6 +489,7 @@ export default {
             }
         },
         'inputInFocus'(inFocus) {
+            console.log("starting", 9);
             if (inFocus || this.writerInFocus) {
                 $(".footer-menu").css("height", "0")
             } else {
@@ -733,58 +497,44 @@ export default {
             }
         },
         'scrollPosition'(newScrollPosition) {
+            console.log("starting", 10);
             this.checkWordSuggester();
+        },
+        'getEventPratilipDescUpdateState'(state){
+            if (state === 'LOADING_SUCCESS')
+                this.submitEventEntry({ "eventId" : this.getEventData.eventId, "eventEntryId" : 79});
+        },
+        'getEventEntrySubmitState'(state) {
+            console.log("entry submission state ius ", state);
+            if (state === 'LOADING_SUCCESS'){
+                this.$router.push({
+                    path: `/event/${this.$route.params.eventSlug}/`
+                });
+            }
         }
     },
     created() {
+        console.log("entered created");
+        this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
 
-        console.log("this.$route.params.eventId " , this.$route.params);
+        if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/edit')){
+            this.currentStep = 1;
+            this.pratilipiId = this.$route.params.eventPratilipiId;
+            this.fetchEventPratilipiData(this.pratilipiId);
+        } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/submit')) {
+            this.currentStep = 3;
+            this.pratilipiId = this.$route.params.eventPratilipiId;
+            this.fetchEventPratilipiData(this.pratilipiId);
+        } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
+            this.currentStep = 2;
+            this.pratilipiId = this.$route.params.eventPratilipiId;
+        } else if (this.$route.params.eventSlug) {
 
-            console.log("HOLA:::::" , this.$route);
-            if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.query.step == 2) {
-                console.log("I am");
-                this.fetchPratilipiContent(this.$route.params.eventPratilipiId);
-                this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                this.goToSecondStep();
-            }
-            if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 1) {
-                console.log("I am");
-                this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                this.goToFirstStepForEdit();
-            }
-
-            if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 3) {
-                console.log("I am");
-                this.fetchEventPratilipiData(this.$route.params.eventPratilipiId);
-                this.goToThirdStep();
-            }
-
-            if (this.$route.params.eventSlug != undefined && this.$route.params.eventPratilipiId != undefined && this.$route.query.step == 4) {
-                console.log("I am");
-                this.goToFourthStep();
-            }
+        }
 
     },
     mounted() {
-        const that = this;
-        console.log("this.$route.query.step == 1 " ,  this.$route.query);
-        $('.backdrop').click(() => {
-            this.closeNav();
-        });
 
-        $('#image_input').on( "change", function() {
-            that.uploadOnServer();
-        });
-
-        // Hide Footer when keyboard comes
-        if (this.isMobile()) {
-            $(document).on('focus', 'input', function() {
-                that.inputInFocus = true;
-            });
-            $(document).on('blur', 'input', function() {
-                that.inputInFocus = false;
-            });
-        }
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);

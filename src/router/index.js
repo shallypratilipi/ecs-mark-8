@@ -523,6 +523,22 @@ var router = new Router({
             },
             component: EventParticipatePageComponent
         }, {
+            path: '/event/:eventSlug/participate/:eventPratilipiId/submit',
+            meta: {
+                'title': '__("seo_home_page")',
+                'id_prop': 'eventSlug',
+                'store': 'eventparticipate'
+            },
+            component: EventParticipatePageComponent
+        }, {
+            path: '/event/:eventSlug/participate/:eventPratilipiId/edit',
+            meta: {
+                'title': '__("seo_home_page")',
+                'id_prop': 'eventSlug',
+                'store': 'eventparticipate'
+            },
+            component: EventParticipatePageComponent
+        }, {
             path: '/event/:eventSlug/participate/:eventPratilipiId',
             meta: {
                 'title': '__("seo_home_page")',

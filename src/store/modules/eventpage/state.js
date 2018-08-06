@@ -13,5 +13,8 @@ export default {
     userEventPratilipis: {
     	loading_state: 'LOADING',
     	data: []
-    }
+    },
+
+    cancelEventPratilipiParticipationSate : 'LOADING',
+    eventPratilipiSubmissionState : 'LOADING'
 }

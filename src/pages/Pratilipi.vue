@@ -74,7 +74,8 @@
                                         <button @click="askConfirmationAndUnpublishOrPublishBook({ bookState: 'DRAFTED' })">__("pratilipi_move_to_drafts")</button>
                                     </span>
                                     <span>
-
+                                        <button v-if="isMobile()" @click="showAlertToGoToDesktop"><i class="material-icons">mode_edit</i> __("pratilipi_edit_content")</button>
+                                        <a v-else @click="triggerEditBookEventAndRedirect"><button><i class="material-icons">mode_edit</i> __("pratilipi_edit_content")</button></a>
                                     </span>
                                     <span v-if="getPratilipiData.state === 'DRAFTED'">
                                         <button @click="triggerEventAndUnpublishOrPublishBook({ bookState: 'PUBLISHED' })">__("pratilipi_publish_it")</button>
@@ -332,7 +333,9 @@ export default {
             'getSystemTags',
             'getSystemTagsLoadingState',
             'getAuthorDetails',
-            'getRouteToMessageUserState'
+            'getRouteToMessageUserState',
+            'getEventData',
+            'getEventDataLoadingState'
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -350,7 +353,8 @@ export default {
             'removeTagsFromPratilipi',
             'addTagsToPratilipi',
             'saveTypeAndCategories',
-            'triggerRouteToMessageUser'
+            'triggerRouteToMessageUser',
+            'fetchEventDetails'
         ]),
         ...mapActions([
             'setShareDetails',
@@ -382,13 +386,27 @@ export default {
             });
             this.triggerAlert({ message: '__("write_on_desktop_only")', timer: 3000 });
         },
-        triggerEditBookEvent() {
+        triggerEditBookEventAndRedirect() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent(`EDITBOOK_BOOKM_BOOK`, 'CONTROL', {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId
             });
+
+            // this.checkEventStatus();
+
+            if (this.getPratilipiData.eventId) {
+                this.checkEventStatus();
+            } else {
+                this.$router.push(this.getPratilipiData.writePageUrl);
+            }
         },
+
+        checkEventStatus(){
+            console.log("checking event deatils" , this.getEventData.eventId);
+            this.fetchEventDetails(this.getPratilipiData.eventId);
+        },
+
         triggerEventAndUnpublishOrPublishBook() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.getPratilipiData);
             this.triggerAnanlyticsEvent(`PUBLISHBOOK_BOOKM_BOOK`, 'CONTROL', {
@@ -724,10 +742,10 @@ export default {
 
 	    this.readingTimeInSchemaFormat = "PT"
             if (tempReadTimeHours >= 1) {
- 		this.readingTimeInSchemaFormat += tempReadTimeHours+"H"               
+ 		this.readingTimeInSchemaFormat += tempReadTimeHours+"H"
 	    } else {
 		this.readingTimeInSchemaFormat += "0H"
-            } 
+            }
 
             if (tempReadTimeMinutes > 1) {
 		this.readingTimeInSchemaFormat += tempReadTimeMinutes+"M"
@@ -776,6 +794,21 @@ export default {
                 this.openWebPushModal()
             }
         },
+
+        'getEventDataLoadingState'(state) {
+            if (state === 'LOADING_SUCCESS'){
+                if (this.getEventData.eventState == 'SUBMISSION'){
+                    this.$router.push(this.getEventData.slug + "/participate/" + this.getPratilipiData.pratilipiId);
+                } else {
+                    this.$router.push(this.getPratilipiData.writePageUrl);
+                }
+            }
+
+            if ( state === 'LOADING_ERROR'){
+                this.$router.push(this.getPratilipiData.writePageUrl);
+            }
+        },
+
         selectedPratilipiType(newType) {
             if (newType === this.getPratilipiData.type) {
                 this.selectedTags = this.getPratilipiData.tags ? [ ...this.getPratilipiData.tags ] : [];

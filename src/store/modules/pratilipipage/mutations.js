@@ -229,5 +229,33 @@ export default {
 
     setRouteToMessageUser(state, routeState) {
         state.route_to_message_user = routeState;
-    }
+    },
+
+    setEventDataFromCache(state, eventData) {
+        state.event.loading_state = 'LOADING_SUCCESS';
+        state.event.data = eventData;
+    },
+
+    setEventDataLoadingTrue(state) {
+        state.event.loading_state = 'LOADING';
+        state.event.data = {};
+    },
+
+    setEventDataLoadingSuccess(state, eventData) {
+        console.log("fetchin details success");
+        state.event.loading_state = 'LOADING_SUCCESS';
+        state.event.data = eventData.event;
+        if (eventData.entries.yourDrafted && eventData.entries.yourDrafted.length > 0) {
+            state.event.drafts = eventData.entries.yourDrafted;
+        }
+
+        if (eventData.entries.yourDrafted && eventData.entries.yourSubmitted.length > 0) {
+            state.event.submissions = eventData.entries.yourSubmitted;
+        }
+
+        if (eventData.entries.allSubmitted && eventData.entries.allSubmitted.length > 0){
+            state.event.participations = eventData.entries.allSubmitted;
+        }
+
+    },
 }

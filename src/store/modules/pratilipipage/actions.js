@@ -217,5 +217,17 @@ export default {
 
     triggerRouteToMessageUser({ commit, state }, routeState) {
         commit('setRouteToMessageUser', routeState);
+    },
+
+    fetchEventDetails({commit, state}, eventId){
+        console.log("fetching detailsw", eventId);
+        commit('setEventDataLoadingTrue');
+        DataAccessor.getEventById(eventId, (data) => {
+            if (data.status === 200) {
+                commit('setEventDataLoadingSuccess', data.response);
+            } else {
+                commit('setEventDataLoadingError');
+            }
+        });
     }
 }

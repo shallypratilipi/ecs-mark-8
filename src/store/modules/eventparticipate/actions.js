@@ -4,13 +4,11 @@ export default {
 
     fetchEventPratilipiData({ commit, state }, eventPratilipiId) {
         commit('setEventPratilipiDataLoadingTrue');
-        console.log("Getting called multiple timrs");
         DataAccessor.getEventPratilipiById(eventPratilipiId, (eventPratilipiData) => {
             if (eventPratilipiData.status === 200) {
-                console.log("Getting called multiple times inside");
-                // commit('setEventPratilipiDataLoadingSuccess', eventPratilipiData.response);
+                commit('setEventPratilipiDataLoadingSuccess', eventPratilipiData.response);
             } else {
-                // commit('setEventPratilipiDataLoadingError');
+                commit('setEventPratilipiDataLoadingError');
             }
         });
     },
@@ -27,7 +25,6 @@ export default {
     },
 
     createEventPratilipiData({ commit, state }, { eventId, title, titleEn, type, language }) {
-        console.log("DANGH " + eventId + " " + title + " " + titleEn + " " + type + " " + language);
         commit('setEventPratilipiCreateOrUpdateStateTrue');
         DataAccessor.createEventPratilipi({
             eventId, title, titleEn, type, language
@@ -40,11 +37,9 @@ export default {
         });
     },
 
-    updateEventPratilipiData({ commit, state }, { eventPratilipiId, title, titleEn, type }) {
+    updateEventPratilipiData({ commit, state }, { pratilipiId, title, eventId ,titleEn, type }) {
         commit('setEventPratilipiCreateOrUpdateStateTrue');
-        DataAccessor.updateEventPratilipi(eventPratilipiId, {
-            title, titleEn, type
-        }, (eventPratilipiData) => {
+        DataAccessor.createOrUpdatePratilipi({"pratilipiId" : pratilipiId, "title" : title, "titleEn" : titleEn, "type" : type, "eventId" : eventId}, (eventPratilipiData) => {
             if (eventPratilipiData) {
                 commit('setEventPratilipiCreateOrUpdateStateSuccess', eventPratilipiData);
             } else {
@@ -55,14 +50,21 @@ export default {
 
     updateDescriptionAndTags({ commit }, { eventPratilipiId, description, state }) {
         commit('setEventPratilipiDescUpdateStateTrue');
-        DataAccessor.updateEventPratilipiDesc(eventPratilipiId, {
-            description, state
-        }, (eventPratilipiData) => {
+        DataAccessor.createOrUpdatePratilipi({"pratilipiId" : eventPratilipiId, "summary" : description, "state" : state}, (eventPratilipiData) => {
             if (eventPratilipiData) {
                 commit('setEventPratilipiDescUpdateStateSuccess', eventPratilipiData);
             } else {
                 commit('setEventPratilipiDescUpdateStateError');
             }
+        });
+    },
+
+    createPratilipiAndEvent({commit, state}, {title, titleEn, eventId ,language, type}) {
+        commit('setEventPratilipiCreateOrUpdateStateTrue');
+        DataAccessor.createOrUpdatePratilipi({title, titleEn, language, eventId, type, state: 'DRAFTED'}, (data) => {
+            commit('setEventPratilipiCreateOrUpdateStateSuccess', data);
+        }, (error) => {
+            commit('setEventPratilipiCreateOrUpdateStateError', data);
         });
     },
 
@@ -85,56 +87,46 @@ export default {
         });
     },
 
-    fetchPratilipiContent({ commit, state }, eventPratilipiId) {
+    fetchPratilipiContent({ commit, state },{ eventPratilipiId, chapterNo}) {
         commit('setContentLoadingTrue');
-        DataAccessor.getEventPratilipiContent(eventPratilipiId, (contentData) => {
+
+        DataAccessor.getPratilipiContent(eventPratilipiId, chapterNo, (contentData) => {
             if (contentData.status === 200) {
-                commit('setContentLoadingSuccess', contentData.response.contents);
+                commit('setContentLoadingSuccess', contentData.response);
             } else {
-                console.log('ERROR: ');
-                console.log(contentData)
-                // commit('setContentLoadingError');
+                commit('setContentLoadingError');
+            }
+        });
+    },
+    fetchPratilipiIndex({ commit, state }, eventPratilipiId) {
+        commit('setContentIndexLoadingTrue');
+        DataAccessor.getPratilipiIndex(eventPratilipiId, (contentData) => {
+            if (contentData.status === 200) {
+                commit('setContentIndexLoadingSuccess', contentData.response);
+            } else {
+                commit('setContentIndexLoadingError');
             }
         });
     },
 
     fetchEventDetails({ commit, state }, eventId) {
-        console.log(eventId);
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventBySlug(eventId, (eventData) => {
-            if (eventData) {
-                commit('setEventDataLoadingSuccess', eventData);
+        DataAccessor.getEventBySlug(eventId, (data) => {
+            if (data.status === 200) {
+                commit('setEventDataLoadingSuccess', data.response);
             } else {
                 commit('setEventDataLoadingError');
             }
         });
     },
 
-    uploadEventPratilipiImage({ commit, state }, formData ) {
+    uploadEventPratilipiImage({ commit, state }, {formData, pratilipiId} ) {
         commit('setPratilipiImageUploadingTrue');
-        DataAccessor.uploadEventPratilipiImage(formData, (successData) => {
-            console.log('Now I can die in peace');
+        DataAccessor.uploadPratilipiImage(formData, pratilipiId,(successData) => {
             commit('setPratilipiImageUploadingSuccess', successData);
         }, (errorData) => {
-            console.log('My life is wasted');
             commit('setPratilipiImageUploadingError');
         });
-    },
-
-    createPratilipiAndEvent({commit, state}, {title, titleEn, language, type}) {
-        console.log(titleEn)
-        DataAccessor.createOrUpdatePratilipi({
-            title,
-            titleEn,
-            language,
-            type,
-            state: 'DRAFTED'
-        }, (data) => {
-            console.log("MY DATA IS: ", data);
-            commit('setPratilipiCreatedSuccess', data);
-        }, (error) => {
-            console.log("DANGGGGGGGG:::", error);
-        })
     },
 
     createNewEvent({commit, state}, {eventId, userId, authorId, pratilipiId}) {
@@ -155,69 +147,56 @@ export default {
         })
     },
 
-    createFirstChapter({commit, state}, {pratilipiId, chapterNo}) {
-        console.log("pratilipiId: " + pratilipiId + " chapterNo " + chapterNo + " Creating Chapter ");
-        DataAccessor.addNewChapterToPratilipi({
-            pratilipiId,
-            chapterNo
-        }, (data) => {
-            console.log("NEW CHAPTER ADDED");
-        })
-    },
-
-
-    fetchContentForEventEntry({commit, state}, {pratilipiId, chapterNo}) {
-        DataAccessor.getContentOfEventEntry(pratilipiId, chapterNo, (data) => {
-            console.log("FETCHED DATA");
-        })
-    },
-
-    // createNewEvent ({ commit, state },  {eventId, userId, authorId, pratilipiId}) {
-    //     DataAccessor.addNewEventEntry({
-    //         eventId,
-    //         userId,
-    //         authorId,
-    //         pratilipiId
-    //     }, (data) => {
-    //         console.log("MY ENTRY IS: " ,data);,
-
-    //     }, (error) => {
-    //         console.log("DANGGGGGGGG::: 2" , error);
-    //     })
-    // },
-
     saveEventContentByChapter({commit, state}, {chapterNo, chapterTitle, content, pratilipiId}) {
-        console.log("SAVING CHAPTER CONTENT" + chapterNo + " " + content);
+        commit('setContentUpdatingTrue');
         DataAccessor.saveContentOfEventEntry({
             "chapterNo": chapterNo,
             "chapterTitle": chapterTitle,
             "content": content,
             "pratilipiId": pratilipiId
-        })
-
+        },( data ) => {
+            commit('setContentUpdatingSuccess', {chapterTitle, chapterNo});
+        },( error ) => {
+            commit('setContentUpdatingError');
+        });
     },
 
     resetNewEntryState({commit, state}) {
-        console.log("EBTERIN");
         commit('resetEntryState');
     },
     createNewEventFromPratilipi({commit, state}, {eventId, userId, authorId, pratilipiId}) {
-        console.log("FROM ACTION: " + eventId + " " + authorId + " " + userId + " " + pratilipiId);
-        DataAccessor.addNewEventEntryFromPratilipi({
-            eventId,
-            userId,
-            authorId,
-            pratilipiId
-        })
-        // DataAccessor.updateEventPratilipi(eventPratilipiId, {
-        //     title, titleEn, type
-        // }, (eventPratilipiData) => {
-        //     if (eventPratilipiData) {
-        //         commit('setEventPratilipiCreateOrUpdateStateSuccess', eventPratilipiData);
-        //     } else {
-        //         commit('setEventPratilipiCreateOrUpdateStateError');
-        //     }
-        // });
+        commit('setEventEntryCreatingTrue');
+        DataAccessor.addNewEventEntryFromPratilipi( eventId, userId, authorId, pratilipiId, (data) => {
+            console.log("createNewEventFromPratilipi", data);
+           commit('setEventEntryCreatingSuccess', data);
+        }, (data) => {
+            commit('setEventEntryCreatingError');
+        });
     },
 
+    createChapter({commit, state}, {pratilipiId, chapterNo}) {
+        commit('setChapterCreatingTrue');
+        DataAccessor.addNewChapterToPratilipi(pratilipiId, chapterNo, (data) => {
+            commit('setChapterCreatingSuccess', data);
+        }, (data) => {
+            commit('setChapterCreatingError');
+        });
+    },
+
+    deleteChapter({commit, state}, {pratilipiId, chapterNo}) {
+        commit('setChapterDeletingTrue');
+        DataAccessor.deleteChapterToPratilipi(pratilipiId, chapterNo, (data) => {
+            commit('setChapterDeletingSuccess', data);
+        }, (data) => {
+            commit('setChapterDeletingError');
+        });
+    },
+    submitEventEntry({commit, state}, {eventId, eventEntryId}){
+        commit('setEntrySubmissionTrue');
+        DataAccessor.submitEntryToEvent(eventId, eventEntryId, (data) => {
+            commit('setEntrySubmissionSuccess', data);
+        }, (data) => {
+            commit('setEntrySubmissionError');
+        });
+    }
 }
