@@ -155,16 +155,17 @@
                         <div class="col-12 p-0" v-else>
                             <h1
                                 class="chapter-title p-lr-15"
-                                v-for="eachIndex in getIndexData"
-                                :key="eachIndex.slugId"
-                                v-if="eachIndex.slugId == currentChapterSlugId && (getIndexData.length > 1 || eachIndex.title)">
-                                    {{ eachIndex.title || '__("writer_chapter") ' + eachIndex.chapterNo }}
+                                v-if="getPratilipiContent[currentChapterSlugId].title">
+                                    {{ getPratilipiContent[currentChapterSlugId].title }}
                             </h1>
                             <h1
                                 class="chapter-title p-lr-15"
-                                v-for="eachIndex in getIndexData"
-                                :key="eachIndex.slugId"
-                                v-if="eachIndex.slugId == currentChapterSlugId && getIndexData.length === 1 && !eachIndex.title">
+                                v-else-if="getIndexData.length > 1">
+                                    {{ '__("writer_chapter") ' + getIndexData.filter(index => index.slugId === currentChapterSlugId)[0].chapterNo }}
+                            </h1>
+                            <h1
+                                class="chapter-title p-lr-15"
+                                v-else>
                                     {{ getPratilipiData.displayTitle }}
                             </h1>
                             <!--
@@ -1029,6 +1030,8 @@ $theme-yellow-color: #2c3e50;
         user-select: none;
         .content-section {
             min-height: 400px;
+            margin: 0 auto;
+            max-width: 750px;
         }
         .p-lr-15 {
             padding: 0 15px;
@@ -1067,7 +1070,7 @@ $theme-yellow-color: #2c3e50;
     }
     .footer-section {
         box-shadow: 0 -1px 1px rgba(0,0,0,0.2);
-        padding: 10px 0;
+        padding: 10px;
         position: fixed;
         bottom: 0;
         z-index: 12;
