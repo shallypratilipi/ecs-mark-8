@@ -22,7 +22,17 @@
                             <div class="form-group has-feedback" id="search-box-big">
                                 <label for="big-search">Search</label>
                                 <input id="big-search" type="text" class="form-control" :value="searchText" @input="changeSearchText" @keyup.enter="goToSearchPage" @click="opendesktopsearch" v-bind:placeholder="'__("search_bar_help")'"/>
-                                <i class="material-icons">search</i>
+                                <button class="voice-input-button"
+                                    v-bind:class="{ 'is-active': voiceRecognitionActive }"
+                                    @click="voiceInput"
+                                    v-if="isSpeechToTextEnabled">
+                                    <i class="material-icons">keyboard_voice</i>
+                                </button>
+                                <button class="search-button"
+                                    @click="goToSearchPage"
+                                    v-else>
+                                    <i class="material-icons">search</i>
+                                </button>
                                 <SearchBox :searchText="searchText"></SearchBox>
                             </div>
                             <div
@@ -37,7 +47,17 @@
                             <div class="form-group has-feedback" id="search-box-small">
                                 <label for="small-search">Search</label>
                                 <input type="text" id="small-search" class="form-control" :value="searchText" @input="changeSearchText" @keyup.enter="goToSearchPage" @click="openmobilesearch" v-bind:placeholder="'__("search")'"/>
-                                <i class="material-icons">search</i>
+                                <button class="voice-input-button"
+                                    v-bind:class="{ 'is-active': voiceRecognitionActive }"
+                                    @click="voiceInput"
+                                    v-if="isSpeechToTextEnabled">
+                                    <i class="material-icons">keyboard_voice</i>
+                                </button>
+                                <button class="search-button"
+                                    @click="goToSearchPage"
+                                    v-else>
+                                    <i class="material-icons">search</i>
+                                </button>
                                 <SearchBox :searchText="searchText"></SearchBox>
                             </div>
                             <div
@@ -70,6 +90,7 @@ import constants from '@/constants'
 import mixins from '@/mixins'
 import SearchBox from '@/components/SearchBox.vue'
 import MainMenu from '@/components/MainMenu.vue'
+import SpeechToTextUtil from '@/utils/SpeechToTextUtil'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -87,74 +108,6 @@ export default {
         isHidden: {
             type: Boolean
         },
-        methods: {
-            changeSearchText(event) {
-                this.searchText = event.target.value;
-            },
-            triggerHomeEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('GOHOME_HEADER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    SCREEN_NAME
-                });
-                this.$router.push('/');
-            },
-            triggerLanguageEvent() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('GOLANGUAGE_HEADER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    SCREEN_NAME
-                });
-            },
-            goToSearchPage() {
-                this.triggerAnanlyticsEvent(`SEARCH_SEARCHM_SEARCH`, 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    'ENTITY_VALUE': this.searchText
-                });
-                this.$router.push({ name: 'Search_Page', query: { q: this.searchText } });
-                $("#search-box-small .search-dropdown").hide();
-                $("#search-box-big .search-dropdown").hide();
-            },
-            opendesktopsearch() {
-                $("#search-box-big .search-dropdown").show();
-                this.triggerAnanlyticsEvent('LANDED_SEARCHM_SEARCH', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId
-                });
-                $(document).mouseup(function(e) {
-                    var container = $(".search-dropdown");
-                    if (!container.is(e.target) && container.has(e.target).length === 0) {
-                        container.hide();
-                    }
-                });
-            },
-            openmobilesearch() {
-                $("#search-box-small .search-dropdown").show();
-                this.triggerAnanlyticsEvent('LANDED_SEARCHM_SEARCH', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId
-                });
-                $(document).mouseup(function(e) {
-                    var container = $(".search-dropdown");
-                    if (!container.is(e.target) && container.has(e.target).length === 0) {
-                        container.hide();
-                    }
-                });
-            },
-            triggerEventAndResetNotificationCount() {
-                const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
-                this.triggerAnanlyticsEvent('GONOTIFPAGE_HEADER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    SCREEN_NAME
-                });
-                this.resetNotificationCount();
-                this.$router.push('/notifications');
-            },
-            ...mapActions([
-                'resetNotificationCount'
-            ]),
-            updateScroll() {
-                this.scrollPosition = window.scrollY
-            }
-        },
         hideFooter: {
             type: Boolean
         }
@@ -165,20 +118,17 @@ export default {
     data(){
         return {
             languages: constants.LANGUAGES,
-            isCurrentLanguage: (language) => {
-                if (language === process.env.LANGUAGE) {
-                    return true;
-                } else {
-                    return false;
-                }
-
-            },
             searchText: '',
             scrollPosition: null,
             scrollDirection: null,
             counter: 0,
             initialUnreadConversations: 0,
-            showUnreadCapsule: false
+            showUnreadCapsule: false,
+
+            /* speech to text */
+            recognition: null,
+            isSpeechToTextEnabled: false,
+            voiceRecognitionActive: false
         }
     },
     computed: {
@@ -241,6 +191,34 @@ export default {
                     container.hide();
                 }
             });
+        },
+        /* Speech to text */
+        voiceInput() {
+            if (SpeechToTextUtil.isSupported()) {
+                if (!this.recognition) {
+                    const self = this
+                    const onStart = () => {
+                        self.voiceRecognitionActive = true
+                    }
+                    const onResult = (event, res) => {
+                        self.voiceRecognitionActive = false
+                        self.searchText = res
+                        this.goToSearchPage()
+                    }
+                    const onError = (error) => {
+                        self.voiceRecognitionActive = false
+                    }
+                    const onEnd = (error) => {
+                        self.voiceRecognitionActive = false
+                    }
+                    this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
+                }
+                if (!this.voiceRecognitionActive) {
+                    this.recognition.start()
+                } else {
+                    this.recognition.stop()
+                }
+            }
         },
         triggerEventAndResetNotificationCount() {
             const SCREEN_NAME = this.getAnalyticsPageSource(this.$route.meta.store);
@@ -321,6 +299,8 @@ export default {
         if(this.$route.query.q) {
             this.searchText = this.$route.query.q;
         }
+
+        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported() && this.isTestEnvironment();
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);
@@ -410,11 +390,21 @@ export default {
                         box-shadow: none;
                     }
                 }
-                i {
-                    position: absolute;
-                    top: 7px;
-                    right: 6px;
-                }
+            }
+            .voice-input-button, .search-button {
+                position: absolute;
+                right: 0;
+                top: 2px;
+                background: transparent;
+                border: none;
+                color: #444;
+                outline: none;
+                z-index: 999;
+            }
+            .voice-input-button.is-active {
+                color: #d0021b;
+                -webkit-animation: half-fade-show 1s infinite ease-in-out;
+                animation: half-fade-show 1s infinite ease-in-out;
             }
         }
         .search-box-2 {
@@ -556,6 +546,23 @@ export default {
                 bottom: 60px;
             }
         }
+    }
+    @-webkit-keyframes half-fade-show {
+        0% { opacity: 0.5; }
+        20% { opacity: 0.6; }
+        40% { opacity: 0.8; }
+        60% { opacity: 1; }
+        80% { opacity: 0.8; }
+        100% { opacity: 0.5; }
+    }
+
+    @keyframes half-fade-show {
+        0% { opacity: 0.5; }
+        20% { opacity: 0.6; }
+        40% { opacity: 0.8; }
+        60% { opacity: 1; }
+        80% { opacity: 0.8; }
+        100% { opacity: 0.5; }
     }
 </style>
 <style lang="scss">
