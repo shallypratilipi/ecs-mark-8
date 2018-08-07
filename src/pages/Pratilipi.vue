@@ -102,13 +102,13 @@
 
                                 <router-link
                                   v-if="getPratilipiData.hasAccessToUpdate && getPratilipiData.state === 'DRAFTED'"
-                                  :to="getPratilipiData.readPageUrl"
+                                  :to="readPageUrl"
                                   class="read-btn">
                                   <span>__("writer_preview")</span>
                                 </router-link>
                                 <router-link
                                   v-else
-                                  :to="getPratilipiData.readPageUrl"
+                                  :to="readPageUrl"
                                   @click.native="logReadEvent"
                                   class="read-btn">
                                   <span>__("read")</span>
@@ -319,7 +319,8 @@ export default {
             percentScrolled: null,
             percentageRead: null,
             isNextPratilipiEnabled: false,
-            currentPageUrl: null
+            currentPageUrl: null,
+            readPageUrl: null
         }
     },
     mixins: [
@@ -741,7 +742,12 @@ export default {
 
             // setting isWebPushModalEnabled
             this.isWebPushModalEnabled = this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 50 && (parseInt(this.getCookie('bucketId')) || 0) < 100;
-	    this.currentPageUrl = window.location.href;
+
+            this.currentPageUrl = window.location.href;
+
+            // setting readPageUrl
+            this.readPageUrl = this.getPratilipiData.newReadPageUrl && this.isTestEnvironment() ? this.getPratilipiData.newReadPageUrl : this.getPratilipiData.readPageUrl
+
 	/*
 	    // Calculating the read time in schema markup format
 	    var tempReadTime = this.getPratilipiData.readingTime;

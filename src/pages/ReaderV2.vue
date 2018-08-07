@@ -1043,6 +1043,7 @@ $theme-yellow-color: #2c3e50;
             font-size: 24px;
             text-align: center;
             padding-top: 10px;
+            width: 100%;
             @media screen and (max-width: 768px ) {
                 font-size: 18px;
             }
