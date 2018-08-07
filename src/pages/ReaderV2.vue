@@ -1562,7 +1562,7 @@ $theme-yellow-color: #2c3e50;
         .comments-list {
             padding-left: 0;
         }
-        .comments-list li.ownReview  {
+        .comments-list li.ownReview, .translate-input-wrapper .translations li  {
             display: block !important;
         }
     }

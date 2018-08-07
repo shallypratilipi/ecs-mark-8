@@ -745,9 +745,6 @@ export default {
 
             this.currentPageUrl = window.location.href;
 
-            // setting readPageUrl
-            this.readPageUrl = this.getPratilipiData.newReadPageUrl && this.isTestEnvironment() ? this.getPratilipiData.newReadPageUrl : this.getPratilipiData.readPageUrl
-
 	/*
 	    // Calculating the read time in schema markup format
 	    var tempReadTime = this.getPratilipiData.readingTime;
@@ -786,6 +783,10 @@ export default {
                 setTimeout(() => {
                     that.detectOverflow();
                 }, 0);
+            }
+
+            if (status === 'LOADING_SUCCESS') {
+                this.readPageUrl = this.getPratilipiData.newReadPageUrl && this.isTestEnvironment() ? this.getPratilipiData.newReadPageUrl : this.getPratilipiData.readPageUrl
             }
 
             this.isNextPratilipiEnabled = this.getPratilipiData.state === "PUBLISHED" && this.getPratilipiData.nextPratilipi && this.getPratilipiData.nextPratilipi.pratilipiId > 0;
