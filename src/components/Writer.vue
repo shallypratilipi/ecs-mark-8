@@ -26,7 +26,7 @@
                                         <i class="material-icons">list</i>
                                     </button><span><b>__('writer_chapter')</b></span>
                                 </div>
-                                <TranslatingInput :value="contentTitle" placeholder="__('writer_add_chapter_title')" :oninput="updateTitle"></TranslatingInput>
+                                <TranslatingInput :value="decodeURIComponent(contentTitle)" placeholder="__('writer_add_chapter_title')" :oninput="updateTitle"></TranslatingInput>
                             </div>
                         </div>
                         <div class="row">
@@ -48,7 +48,7 @@
 
                     </div>
                 </div>
-                <Spinner v-if="getEventLoadingState === 'LOADING'"></Spinner>
+                <Spinner v-if="getContentLoadingState === 'LOADING'"></Spinner>
             </div>
             <div class="backdrop"></div>
         </div>
@@ -176,14 +176,6 @@ export default {
             this.title = value;
         },
 
-        saveContentAndGoToThirdStep() {
-            this.autoSaveContents;
-            let url = '/event/' + this.$route.params.eventSlug + '/participate/' + this.pratilipiId + '/submit';
-            this.$router.push({
-                path: url
-            })
-        },
-
         autoSaveContents() {
             console.log("1998: ", this.selectedChapter, this.contentTitle);
             console.log("1998: ", this.content, this.pratilipiId);
@@ -207,9 +199,10 @@ export default {
 
         selectChapter(index) {
             console.log("trying to select chapter", index);
+            this.autoSaveContents();
             const that = this;
             this.selectedChapter = index;
-            this.contentTitle = this.getContents.index[index].title;
+            this.contentTitle = this.getContents.index[index].title ? this.getContents.index[index].title : "";
             this.fetchPratilipiContent({
                 "eventPratilipiId": that.pratilipiId,
                 "chapterNo" : index + 1,
@@ -260,6 +253,7 @@ export default {
                     $( field_name ).val( data.url );
                     // https://hindi.pratilipi.com/api/pratilipi/content/image?pratilipiId=6755373518925316&name=cf14122b-24e3-45b1-b216-4ba80a7d33f5
                     ed.insertContent('<img src="'+ API_PREFIX +'/pratilipi/content/image?pratilipiId='+that.pratilipiId +'&name='+data.name+'"/>');
+                    // ed.insertContent('<img src="http://www.licensingcorner.com/wp-content/uploads/2017/10/J-M-Brands.jpg"/>');
                 },
                 error: function( data ) {
                     alert( 'HTTP Error: ' + data.status );
@@ -357,6 +351,7 @@ export default {
             tinymce.init({
                 selector: '.writer-area',  // change this value according to your HTML,
                 // inline: true,
+                height: 200,
                 block_formats: 'Paragraph=p;',
                 plugins: ['autoresize autolink lists link image', 'paste'],
                 menubar: false,
@@ -514,7 +509,7 @@ export default {
                             that.selectedSuggestion = 0;
                         }
 
-                        if (event.code === 'Space' || event.code === 'Enter') {
+                        if (event.code === 'Enter') {
                             if (that.suggestions.length > 0) {
                                 that.selectSuggestion(that.suggestions[that.selectedSuggestion], true);
                                 event.preventDefault();
@@ -686,9 +681,16 @@ export default {
                 this.titleEn = this.getEventPratilipiData.titleEn;
                 this.type = this.getEventPratilipiData.type;
                 this.description = this.getEventPratilipiData.description;
+
+                if (!this.getEventPratilipiData.hasAccessToUpdate){
+                    this.$router.push({
+                        path: `/event/${this.$route.params.eventSlug}/participate/`
+                    })
+                }
             }
 
             if (state === 'LOADING_ERROR') {
+                console.log("pushing back");
                 this.$router.push({
                     path: `/event/${this.$route.params.eventSlug}/participate/`
                 })
@@ -704,6 +706,12 @@ export default {
                     editor.setContent(this.content);
                 }
             }
+
+            if (state === 'LOADING_ERROR') {
+                this.$router.push({
+                    path: `/event/${this.$route.params.eventSlug}/participate/`
+                })
+            }
         },
 
         'getContentIndexLoadingState'(state) {
@@ -712,8 +720,18 @@ export default {
                 if ( this.getContents.index.length == 0 ) {
                     this.createChapter({pratilipiId: this.pratilipiId , chapterNo: 1});
                 } else {
-                    this.contentTitle = this.getContents.index[0].title
+                    this.contentTitle = this.getContents.index[0].title ? this.getContents.index[0].title : "";
+                    this.fetchPratilipiContent({
+                        "eventPratilipiId": this.pratilipiId,
+                        "chapterNo" :1
+                    });
                 }
+            }
+
+            if (state === 'LOADING_ERROR') {
+                this.$router.push({
+                    path: `/event/${this.$route.params.eventSlug}/participate/`
+                })
             }
         },
 
@@ -721,6 +739,12 @@ export default {
             if (state === 'LOADING_ERROR') {
                 alert('Invalid event id');
                 this.$router.push('/event');
+            }
+
+            if (state === 'LOADING_ERROR') {
+                this.$router.push({
+                    path: `/event/${this.$route.params.eventSlug}/participate/`
+                })
             }
         },
 
@@ -750,6 +774,13 @@ export default {
                 if (editor) {
                     editor.setContent("");
                 }
+
+                if (this.getContents.index.length == 1){
+                    this.fetchPratilipiContent({
+                        "eventPratilipiId": this.pratilipiId,
+                        "chapterNo" :1
+                    });
+                }
             }
         },
         'getEventChapterDeletingState'(state){
@@ -771,10 +802,6 @@ export default {
 
             that.fetchPratilipiIndex(that.pratilipiId);
             that.fetchEventPratilipiData(that.pratilipiId);
-            that.fetchPratilipiContent({
-                "eventPratilipiId": that.pratilipiId,
-                "chapterNo" :1
-            });
 
 
             that.checkWordSuggester();
@@ -804,7 +831,7 @@ export default {
 
     },
     destroyed() {
-        this.autoSaveContents;
+        this.autoSaveContents();
         window.removeEventListener('scroll', this.updateScroll);
     }
 }

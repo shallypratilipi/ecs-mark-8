@@ -1,29 +1,22 @@
 <template>
     <div class="pratilipi-wrap" :class="{ 'event-participate-page': isEventParticipatePage }">
         <div class="pratilipi">
-            <!--<div class="book-type" :class="pratilipiData.type">-->
-                <!--{{ pratilipiData.type }} <span></span>-->
-            <!--</div>-->
             <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             <div class="pratilipi-details">
-                    <button class="btn more-options" type="button" id="moreOptions2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click.prevent="showMoreOptions()">
-                        <i class="material-icons">more_vert</i>
-                    </button>
-                     <div class="dropdown-menu" aria-labelledby="EventMoreOptions" @click.prevent="">
+                <button class="btn more-options" type="button" id="moreOptions2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click.prevent="showMoreOptions()">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                 <div class="dropdown-menu" aria-labelledby="EventMoreOptions" @click.prevent="">
 
-                            <button class="btn options-btn" v-if="pratilipiData.submissionType == 'DRAFT'" @click.prevent="moveToDrafts()">__('pratilipi_move_to_drafts')</button>
-                            <button class="btn options-btn " v-if="pratilipiData.submissionType == 'SUBMITTED'" @click.prevent="publishEntry()">__('review_submit_review')</button>
-                            <button type="button" class="btn options-btn" @click.prevent="deleteEventEntry()">
-                                __('pratilipi_delete_content')
-                            </button>
-                    </div>
-                    <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
-                    <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.displayName }}</span></span>
-                    <p class="date">__("pratilipi_listing_date"): {{ pratilipiData.submissionDate | convertDate }}</p>
-
-    <!--             <button class="btn btn-danger btn-sm" @click.prevent="deleteEventEntry()">Delete</button>
-                <button class="btn btn-warning btn-sm" v-if="pratilipiData.submissionType == 'DRAFT'" @click.prevent="moveToDrafts()">Move to drafts</button>
-                <button class="btn btn-warning btn-sm" v-if="pratilipiData.submissionType == 'SUBMITTED'" @click.prevent="submitEvent()">Submit</button> -->
+                        <button class="btn options-btn" v-if="pratilipiData.submissionState == 'SUBMITTED'" @click.prevent="moveToDrafts()">__('pratilipi_move_to_drafts')</button>
+                        <button class="btn options-btn " v-if="pratilipiData.submissionState == 'DRAFT'" @click.prevent="publishEntry()">__('review_submit_review')</button>
+                        <button type="button" class="btn options-btn" @click.prevent="deleteEventEntry()">
+                            __('pratilipi_delete_content')
+                        </button>
+                </div>
+                <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
+                <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.displayName }}</span></span>
+                <p class="date" v-if="pratilipiData.submissionState == 'SUBMITTED'" >__("pratilipi_listing_date"): {{ pratilipiData.submissionDate | convertDate }}</p>
             </div>
         </div>
     </div>
@@ -54,7 +47,11 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'getUserDetails'
+            'getUserDetails',
+        ]),
+        ...mapGetters('eventPratilipi', [
+            'getPratilipiPublishingState',
+            'getPratilipiPublishedId'
         ])
     },
     methods: {
@@ -64,27 +61,41 @@ export default {
         ]),
         ...mapActions('pratilipimodal', [
             'setPratilipiModalData',
-            'fetchPratilipiData'
         ]),
          ...mapActions('eventpage', [
             'deleteEntryFromEvent',
             'moveEntryToDrafts',
-            'publishEntryForEvent'
+            'publishEntryForEvent',
+        ]),
+        ...mapActions('eventPratilipi', [
+            'publishPratilipi',
         ]),
         publishEntry() {
-             this.publishEntryForEvent({eventId : this.pratilipiData.eventId, eventEntryId :  this.pratilipiData.eventEntryId});
+             this.publishPratilipi({pratilipiId : this.pratilipiData.pratilipiId, eventId : this.pratilipiData.eventId});
         },
         moveToDrafts() {
-            this.moveEntryToDrafts({eventId : this.pratilipiData.eventId, eventEntryId :  this.pratilipiData.eventEntryId})
-
+            this.moveEntryToDrafts({eventId : this.pratilipiData.eventId, eventEntryId : this.pratilipiData.eventEntryId})
         },
         deleteEventEntry() {
-            this.deleteEntryFromEvent({eventId : this.pratilipiData.eventId, eventEntryId :  this.pratilipiData.eventEntryId});
+            this.deleteEntryFromEvent({eventId : this.pratilipiData.eventId, eventEntryId : this.pratilipiData.eventEntryId});
         },
         showMoreOptions() {
             console.log("Call Analytics");
         }
 
+    },
+    watch : {
+      'getPratilipiPublishingState'(state){
+          if(state == 'LOADING_SUCCESS' && this.getPratilipiPublishedId == this.pratilipiData.pratilipiId){
+              this.publishEntryForEvent({eventId : this.pratilipiData.eventId, eventEntryId : this.pratilipiData.eventEntryId});
+          }
+
+          if(state == 'LOADING_ERROR'){
+
+          }
+      }
+    },
+    created(){
     },
     components: {
         PratilipiImage

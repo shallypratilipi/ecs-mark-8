@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-                <div id="main" v-show="getEventLoadingState === 'LOADING_SUCCESS'">
+                <div id="main" v-show="getEventLoadingState === 'LOADING_SUCCESS' || currentStep != 1">
                     <div class="step-container">
                         <div class="row steps">
                             <div class="step step-1" :class="{ active: currentStep === 1 }">
@@ -113,7 +113,7 @@
                             <div class="col-6">
                                 <button class="prev" @click="goToSecondStepForEdit">__("back")</button>
                             </div>
-                            <div class="col-6 text-right">
+                            <div v-if="(getEventData.eventId || getEventPratilipiData.eventId) && getEventPratilipiData.hasAccessToUpdate" class="col-6 text-right">
                                 <!--<button class="save" @click="autoSaveContents">__("save_changes")</button>-->
                                 <button class="next" @click="saveMetaInformationAndFinalSubmit">__('event_participate_finish')</button>
                             </div>
@@ -160,15 +160,16 @@ export default {
             'getEventPratilipDescUpdateState',
             'getContents',
             'getEventLoadingState',
-            'getDraftedEventPratilipiLoadingState',
             'getDraftedEventPratilipi',
             'getEventPratilipiCoverImage',
             'getEventPratilipiImageUploadLoadingState',
             'getEventDetails',
             'getEventData',
-            'getPratilipiOfEvent',
-            'getPratilipiOfEventLoadingState',
-            'getEventEntrySubmitState'
+            'getEventEntrySubmitState',
+            'getEventChapterCreatingState',
+            'getSubmittedEventPratilipi',
+            'getEventEntryCreationState',
+            'getEventPratilipiEntryId'
         ]),
     },
     mixins: [
@@ -212,7 +213,7 @@ export default {
             'fetchDraftedUserEventPratilipis',
             'createPratilipiAndEvent',
             "resetNewEntryState",
-            'createNewEventFromPratilipi',
+            'createNewEventEntry',
             'createChapter',
             'submitEventEntry'
         ]),
@@ -236,21 +237,18 @@ export default {
                 return;
             }
 
-            let language  = this.getCurrentLanguage().fullName.toUpperCase();
             this.titleIsMissing = false;
-            // todo: sachin check login
 
             if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
 
                 if (this.getUserDetails.isGuest) {
-                    const { eventId } = this.getEventData;
                     this.setAfterLoginAction({ action: `eventparticipate/updateEventPratilipiData`, data: {
                             pratilipiId : this.pratilipiId,
                             title: this.title.trim(),
                             titleEn: this.titleEn.trim(),
                             type: this.type,
                             language: this.getCurrentLanguage().fullName.toUpperCase(),
-                            eventId: this.getEventData.eventId,
+                            eventId: this.getEventPratilipiData.eventId,
                         }});
                     this.openLoginModal(this.$route.meta.store, 'EVENTPARTICIPATECREATE', 'EVENTPARTICIPATE');
                     return;
@@ -262,15 +260,14 @@ export default {
                     titleEn: this.titleEn.trim(),
                     type: this.type,
                     language: this.getCurrentLanguage().fullName.toUpperCase(),
-                    eventId: this.getEventData.eventId,
+                    eventId: this.getEventPratilipiData.eventId,
                 });
             } else {
 
                 if (this.getUserDetails.isGuest) {
-                    const { eventId } = this.getEventData;
                     this.setAfterLoginAction({ action: `eventparticipate/createPratilipiAndEvent`, data: {
                             title: this.title.trim(),
-                            titleEn: this.titleEn,
+                            titleEn: this.titleEn.trim(),
                             language: this.getCurrentLanguage().fullName.toUpperCase(),
                             type: this.type,
                             eventId: this.getEventData.eventId,
@@ -290,53 +287,12 @@ export default {
 
         },
         routeToNextStep() {
-            console.log("this.getPratilipiOfEvent.pratilipiId " + this.getPratilipiOfEvent.pratilipiId);
-            let url = '/event/' + this.$route.params.eventSlug + '/participate/' + this.getPratilipiOfEvent.pratilipiId;
+            console.log("this.getPratilipiOfEvent.pratilipiId " + this.getEventPratilipiData.pratilipiId);
+            let url = '/event/' + this.$route.params.eventSlug + '/participate/' + this.getEventPratilipiData.pratilipiId;
             this.$router.push(url);
-        },
-        createEventPratilipi() {
-            // this.currentStep = 2;
-
-            if (!this.title || this.title.trim() === '') {
-                this.titleIsMissing = true;
-                return;
-            }
-
-            this.titleIsMissing = false;
-            if (this.getUserDetails.isGuest) {
-                const { eventId } = this.getEventData;
-                this.setAfterLoginAction({ action: `eventparticipate/createEventPratilipiData`, data: {
-                    eventId : 1,
-                    title: this.title.trim(),
-                    titleEn: this.titleEn,
-                    type: this.type,
-                    language: this.getCurrentLanguage().fullName.toUpperCase()
-                }});
-                this.openLoginModal(this.$route.meta.store, 'EVENTPARTICIPATECREATE', 'EVENTPARTICIPATE');
-                return;
-            }
-
-            if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
-                console.log("updating event");
-                this.updateEventPratilipiData({
-                    title: this.title,
-                    titleEn: this.titleEn,
-                    type: this.type,
-                    language: this.getCurrentLanguage().fullName.toUpperCase()
-                });
-            } else {
-                const { eventId } = this.getEventData;
-                this.createEventPratilipiData({
-                    title: this.title,
-                    titleEn: this.titleEn,
-                    type: this.type,
-                    language: this.getCurrentLanguage().fullName.toUpperCase()
-                });
-            }
         },
 
         saveContentAndGoToThirdStep() {
-            this.autoSaveContents;
             this.goToThirdStep;
             this.$router.push({
                 path: `/event/${this.$route.params.eventSlug}/participate/${this.$route.params.eventPratilipiId}/submit`,
@@ -407,32 +363,73 @@ export default {
                 }
             }
         },
+        getCurrentPratilipiEntryId(){
+            let eventEntryId = 0;
+
+            if(this.getEventPratilipiEntryId > 0){
+                console.log("entry id is", this.getEventPratilipiEntryId);
+                return this.getEventPratilipiEntryId;
+            }
+
+            this.getDraftedEventPratilipi.forEach((pratilipi, index) => {
+                if (pratilipi.pratilipiId == this.getEventPratilipiData.pratilipiId){
+                    eventEntryId = pratilipi.eventEntryId;
+                }
+            });
+
+            this.getSubmittedEventPratilipi.forEach((pratilipi, index) => {
+                if (pratilipi.pratilipiId == this.getEventPratilipiData.pratilipiId){
+                    eventEntryId = pratilipi.eventEntryId;
+                }
+            });
+
+            return eventEntryId;
+        }
     },
     watch: {
-        'getEventPratilipiCreateOrUpdateStateSuccess'(state) {
-            console.log("starting", 1);
-            if(state == 'LOADING_SUCCESS') {
-                console.log("FIRING API");
+        'getEventEntryCreationState'(state){
+            if (state == 'LOADING_SUCCESS'){
+                if (this.currentStep == 1){
+                    this.routeToNextStep();
+                }
+            }
+        },
+        'getEventChapterCreatingState'(state) {
+            console.log("entering state");
+            if (state == 'LOADING_SUCCESS') {
                 let eventId = this.getEventData.eventId;
-                let authorId =  this.getUserDetails.authorId;
-                let userId  = this.getUserDetails.userId;
+                let authorId = this.getUserDetails.authorId;
+                let userId = this.getUserDetails.userId;
                 let pratilipiId = this.getEventPratilipiData.pratilipiId;
-                this.$router.push({
-                    path: `/event/${this.$route.params.eventSlug}/participate/${this.getEventPratilipiData.pratilipiId}`,
+
+                this.createNewEventEntry({
+                    "eventId": eventId,
+                    "pratilipiId": pratilipiId,
+                    "authorId": authorId,
+                    "userId": userId
                 });
             }
         },
-        'getPratilipiOfEventLoadingState'(state) {
-            console.log("starting", 2);
+        'getEventPratilipiCreateOrUpdateStateSuccess'(state) {
+            console.log("starting", 1);
             if(state == 'LOADING_SUCCESS') {
-                console.log("FIRING API");
-                let eventId = this.getEventData.eventId;
-                let authorId =  this.getUserDetails.authorId;
-                let userId  = this.getUserDetails.userId;
-                let pratilipiId = this.getPratilipiOfEvent.pratilipiId;
-                console.log("SEE IT OKAY! " + eventId + " " + authorId + " " + " " + userId + " " + pratilipiId );
-                this.createChapter({pratilipiId: pratilipiId , chapterNo: 1});
-                this.routeToNextStep();
+                let pratilipiId = this.getEventPratilipiData.pratilipiId;
+                if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
+                    this.$router.push({
+                        path: `/event/${this.$route.params.eventSlug}/participate/${this.getEventPratilipiData.pratilipiId}`,
+                    });
+                } else {
+                    this.createChapter({pratilipiId: pratilipiId, chapterNo: 1});
+                }
+
+            }
+
+            if(state == 'LOADING_ERROR') {
+                if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
+                    this.$router.push({
+                        path: `/event/${this.$route.params.eventSlug}/participate/${this.getEventPratilipiData.pratilipiId}/edit`,
+                    });
+                }
             }
         },
         'getEventPratilipiLoadingState'(state) {
@@ -441,7 +438,7 @@ export default {
                 this.title = this.getEventPratilipiData.title;
                 this.titleEn = this.getEventPratilipiData.titleEn;
                 this.type = this.getEventPratilipiData.type;
-                this.description = this.getEventPratilipiData.description;
+                this.description = this.getEventPratilipiData.summary;
             }
 
             if (state === 'LOADING_ERROR') {
@@ -453,19 +450,39 @@ export default {
 
         '$route'(route) {
             console.log("starting", 6);
+            console.log("starting", this.$route.hash);
+
+            if(this.$route.hash == '#confirmation-primary'){
+                return;
+            }
+
             if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/edit')){
+                this.pratilipiId = this.$route.params.eventPratilipiId;
+                this.fetchEventPratilipiData(this.pratilipiId);
+
                 this.currentStep = 1;
-                this.pratilipiId = this.$route.params.eventPratilipiId;
-                this.fetchEventPratilipiData(this.pratilipiId);
             } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/submit')) {
-                this.currentStep = 3;
                 this.pratilipiId = this.$route.params.eventPratilipiId;
-                this.fetchEventPratilipiData(this.pratilipiId);
+                if (this.getEventPratilipiEntryId == 0) {
+                    this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
+                } else if (!this.getEventData.eventId && !this.getEventPratilipiData.eventId){
+                    this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
+                }
+
+                if (!this.getEventPratilipiData.pratilipiId)
+                    this.fetchEventPratilipiData(this.pratilipiId);
+
+                this.currentStep = 3;
             } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
                 this.pratilipiId = this.$route.params.eventPratilipiId;
                 this.currentStep = 2;
-            } else if (this.$route.params.eventSlug) {
+            } else {
 
+                if(!this.getEventData.eventId){
+                    this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
+                }
+
+                this.currentStep = 1;
             }
 
         },
@@ -501,8 +518,14 @@ export default {
             this.checkWordSuggester();
         },
         'getEventPratilipDescUpdateState'(state){
-            if (state === 'LOADING_SUCCESS')
-                this.submitEventEntry({ "eventId" : this.getEventData.eventId, "eventEntryId" : 79});
+            if (state === 'LOADING_SUCCESS') {
+                if (this.currentStep == 3) {
+                    this.submitEventEntry({
+                        "eventId": this.getEventData.eventId || this.getEventPratilipiData.eventId,
+                        "eventEntryId": this.getCurrentPratilipiEntryId()
+                    });
+                }
+            }
         },
         'getEventEntrySubmitState'(state) {
             console.log("entry submission state ius ", state);
@@ -511,25 +534,26 @@ export default {
                     path: `/event/${this.$route.params.eventSlug}/`
                 });
             }
-        }
+        },
     },
     created() {
-        console.log("entered created");
-        this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
 
         if(this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/edit')){
             this.currentStep = 1;
             this.pratilipiId = this.$route.params.eventPratilipiId;
+            this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
             this.fetchEventPratilipiData(this.pratilipiId);
         } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId && this.$route.path.includes('/submit')) {
             this.currentStep = 3;
             this.pratilipiId = this.$route.params.eventPratilipiId;
+            this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
             this.fetchEventPratilipiData(this.pratilipiId);
         } else if (this.$route.params.eventSlug && this.$route.params.eventPratilipiId) {
             this.currentStep = 2;
             this.pratilipiId = this.$route.params.eventPratilipiId;
-        } else if (this.$route.params.eventSlug) {
-
+        } else {
+            this.currentStep = 1;
+            this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
         }
 
     },

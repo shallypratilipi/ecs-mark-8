@@ -36,7 +36,7 @@ export default {
             state.event.drafts = eventData.entries.yourDrafted;
         }
 
-        if (eventData.entries.yourDrafted && eventData.entries.yourSubmitted.length > 0) {
+        if (eventData.entries.yourSubmitted && eventData.entries.yourSubmitted.length > 0) {
             state.event.submissions = eventData.entries.yourSubmitted;
         }
 
@@ -161,6 +161,19 @@ export default {
 
     setEventPratilipiSubmissionLoadingError(state) {
         state.eventPratilipiSubmissionSate = 'LOADING_ERROR'
+    },
+
+    setEventPratilipiPublishLoadingTrue(state) {
+        state.eventPratilipiPublishSate = 'LOADING'
+    },
+
+    setEventPratilipiPublishLoadingSuccess(state, data) {
+        state.eventPratilipiPublishSate = 'LOADING_SUCCESS';
+    },
+
+
+    setEventPratilipiPublishLoadingError(state) {
+        state.eventPratilipiPublishSate = 'LOADING_ERROR'
     },
 
     setEventPratilipiDeletionLoadingTrue(state) {

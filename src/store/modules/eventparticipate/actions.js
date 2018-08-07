@@ -3,6 +3,7 @@ import DataAccessor from '@/utils/DataAccessor'
 export default {
 
     fetchEventPratilipiData({ commit, state }, eventPratilipiId) {
+        console.log("call extra");
         commit('setEventPratilipiDataLoadingTrue');
         DataAccessor.getEventPratilipiById(eventPratilipiId, (eventPratilipiData) => {
             if (eventPratilipiData.status === 200) {
@@ -142,7 +143,7 @@ export default {
             commit('setContentUpdatingError');
         });
     },
-    createNewEventFromPratilipi({commit, state}, {eventId, userId, authorId, pratilipiId}) {
+    createNewEventEntry({commit, state}, {eventId, userId, authorId, pratilipiId}) {
         commit('setEventEntryCreatingTrue');
         DataAccessor.addNewEventEntryFromPratilipi( eventId, userId, authorId, pratilipiId, (data) => {
             console.log("createNewEventFromPratilipi", data);

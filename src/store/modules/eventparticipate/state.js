@@ -13,6 +13,8 @@ export default {
     eventDataLoadingState: 'LOADING',
     event: {
         data : {},
+        drafts : [],
+        submissions : [],
         entries : {}
     },
     pratilipi_image_upload_state: 'LOADING_SUCCESS',
@@ -20,14 +22,10 @@ export default {
     	data: [],
     	loading_state: 'LOADING'
     },
-    eventForPratilipi: {
-        data: [],
-        loading_state: 'LOADING'
-    },
     eventEntryCreatingState: 'LOADING',
     eventChapterCreatingState: 'LOADING',
     eventChapterDeletingState: 'LOADING',
-    eventPratilipiEntryId: '',
+    eventPratilipiEntryId: 0,
     eventContentUpdatingState: 'LOADING',
     eventEntrySubmissionState: 'LOADING'
 

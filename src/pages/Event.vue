@@ -19,13 +19,14 @@
                                          :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.pratilipiId'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
+                                    pratilipiId: pratilipiData.pratilipiId,
                                     author: pratilipiData.author,
                                     title: pratilipiData.displayTitle,
                                     coverImageUrl: 'https://0.ptlp.co' + pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
                                     submissionDate: pratilipiData.submissionDate,
-                                    submissionType: 'SUBMITTED',
+                                    submissionState: 'DRAFT',
                                     eventEntryId: pratilipiData.eventEntryId,
                                     eventId: getEventData.eventId
                                 }"
@@ -33,24 +34,21 @@
                             </router-link>
                         </div>
                     </div>
-                    <div class="col-md-12 loader-overflow">
-                        <!-- <DummyLoader v-if="getEventPratilipisLoadingState === 'LOADING'"></DummyLoader> -->
-                    </div>
                     <div class="col-md-12" v-if="getSubmissionData.length > 0">
-                        <!-- v-if="getUserEventData.length > 0 && canParticipate " -->
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
                             <router-link v-for="pratilipiData in getSubmissionData" :key="pratilipiData.eventEntryId"
                                          :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.pratilipiId'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
+                                    pratilipiId: pratilipiData.pratilipiId,
                                     author: pratilipiData.author,
                                     title: pratilipiData.displayTitle,
                                     coverImageUrl: 'https://0.ptlp.co' + pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
                                     submissionDate: pratilipiData.submissionDate,
-                                    submissionType: 'DRAFT',
+                                    submissionState: 'SUBMITTED',
                                     eventEntryId: pratilipiData.eventEntryId,
                                     eventId: getEventData.eventId
                                 }"

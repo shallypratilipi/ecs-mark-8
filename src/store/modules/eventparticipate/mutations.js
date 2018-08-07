@@ -78,7 +78,7 @@ export default {
             state.event.drafts = eventData.entries.yourDrafted;
         }
 
-        if (eventData.entries.yourDrafted && eventData.entries.yourSubmitted.length > 0) {
+        if (eventData.entries.yourSubmitted && eventData.entries.yourSubmitted.length > 0) {
             state.event.submissions = eventData.entries.yourSubmitted;
         }
 
@@ -115,16 +115,6 @@ export default {
     setUserEventPratilipiDraftedDataLoadingError(state) {
         state.draftedEventPratilipis.loading_state = 'LOADING_ERROR';
     },
-    setPratilipiCreatedSuccess(state, data) {
-        state.eventForPratilipi.loading_state = 'LOADING_SUCCESS';
-        state.eventForPratilipi.data = data;
-
-        console.log("FROM MUTATION : ", state.eventForPratilipi.data);
-    },
-    resetEntryState(state) {
-        state.eventForPratilipi.loading_state = 'LOADING';
-    },
-
     setEventEntryCreatingTrue(state) {
         state.eventEntryCreatingState = 'LOADING';
     },

@@ -11,4 +11,5 @@ export default {
     getEventPratilipisLoadingState: state => state.pratilipiList.loading_state,
 
     getUserEventDataLoadingState: state => state.userEventPratilipis.loading_state,
+    getPratilipiPublishingState: state => state.eventPratilipiPublishSate,
 }
