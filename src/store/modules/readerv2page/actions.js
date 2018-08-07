@@ -77,27 +77,39 @@ export default {
     },
 
     addToLibrary ({commit, state}) {
-        commit('alert/triggerAlertView', '__("added_to_library")', {root: true})
-        setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
-        DataAccessor.addOrRemoveFromLibrary(state.pratilipi.data.pratilipiId, true, () => commit('addPratilipiToLibrarySuccess'))
+        commit('addPratilipiToLibrarySuccess')
+        DataAccessor.addOrRemoveFromLibrary(state.pratilipi.data.pratilipiId, true, null, () => {
+            commit('addPratilipiToLibraryError')
+            commit('alert/triggerAlertView', '__("server_error_message")', {root: true})
+            setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
+        })
     },
 
     removeFromLibrary ({commit, state}) {
-        commit('alert/triggerAlertView', '__("removed_from_library")', {root: true})
-        setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
-        DataAccessor.addOrRemoveFromLibrary(state.pratilipi.data.pratilipiId, false, () => commit('removePratilipiFromLibrarySuccess'))
+        commit('removePratilipiFromLibrarySuccess')
+        DataAccessor.addOrRemoveFromLibrary(state.pratilipi.data.pratilipiId, false, null, () => {
+            commit('removePratilipiFromLibraryError')
+            commit('alert/triggerAlertView', '__("server_error_message")', {root: true})
+            setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
+        })
     },
 
     followAuthor ({commit, state}) {
-        commit('alert/triggerAlertView', '__("author_follow_success")', {root: true})
-        setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
-        DataAccessor.followOrUnfollowAuthor(state.author.data.authorId, true, () => commit('followAuthorSuccess'))
+        commit('followAuthorSuccess')
+        DataAccessor.followOrUnfollowAuthor(state.author.data.authorId, true, null, () => {
+            commit('followAuthorError')
+            commit('alert/triggerAlertView', '__("server_error_message")', {root: true})
+            setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
+        })
     },
 
     unFollowAuthor ({commit, state}) {
-        commit('alert/triggerAlertView', '__("author_unfollow_success")', {root: true})
-        setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
-        DataAccessor.followOrUnfollowAuthor(state.author.data.authorId, false, () => commit('UnfollowAuthorSuccess'))
+        commit('UnfollowAuthorSuccess')
+        DataAccessor.followOrUnfollowAuthor(state.author.data.authorId, false, null, () => {
+            commit('UnfollowAuthorError')
+            commit('alert/triggerAlertView', '__("server_error_message")', {root: true})
+            setTimeout(() => commit('alert/triggerAlertHide', null, {root: true}), 3000)
+        })
     },
 
     updateRatingInStore ({commit}, {review, rating}) {

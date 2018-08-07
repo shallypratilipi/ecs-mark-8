@@ -408,6 +408,7 @@ export default {
             /* user pratilipi calc */
             maxReadPercentage: 0,
             maxReadPercentageLastUpdated: Date.now(),
+            maxReadPercentageCompleted: false,
 
             /* scroll */
             scrollPosition: 0,
@@ -432,7 +433,8 @@ export default {
             'fetchContentData',
             'addToLibrary',
             'removeFromLibrary',
-            'followOrUnfollowAuthor',
+            'followAuthor',
+            'unFollowAuthor',
             'postReadingPercentage',
             'submitPrailipiReport'
         ]),
@@ -673,10 +675,10 @@ export default {
         },
 
         /* content serialisation */
-        hideStripAndRedirect(){
+        hideStripAndRedirect() {
             this.isNextPratilipiEnabled = false
             this._triggerReaderAnalyticsEvent('CLICK_NEXTPRATILIPI_READER')
-            this.$router.push({path: this.getPratilipiData.nextPratilipi.pageUrl})
+            this.$router.push({path: this.getPratilipiData.nextPratilipi.newReadPageUrl || this.getPratilipiData.nextPratilipi.readPageUrl})
         },
 
         /* whatsapp share */
@@ -760,6 +762,7 @@ export default {
                     maxReadPercentage = 100
                 }
                 self.maxReadPercentage = maxReadPercentage
+                self.maxReadPercentageCompleted = maxReadPercentage === 100
             })
 
             // setting the title of the page
@@ -859,11 +862,25 @@ export default {
             }
         },
         'maxReadPercentage' () {
-            if (this.getUserDetails.userId !== 0) {
+            if (this.getUserDetails.userId !== 0 && !this.maxReadPercentageCompleted) {
                 if (Date.now() > (this.maxReadPercentageLastUpdated + 500)) {
+                    // maxRead => local variable
+                    let maxRead = this.maxReadPercentage
+                    // calculating slack in terms of % -> lot of divs on last chapter
+                    // record maxReadPercentage as 100% if user had gone through the whole content, not whole reader
+                    const netBookContentHeight = $('.book-content').height()
+                    const netContentSectionHeight = $('.content-section').height()
+                    if (netBookContentHeight && netContentSectionHeight) {
+                        maxRead += Math.max(0, 100 - (netContentSectionHeight/netBookContentHeight * 100))
+                    }
+                    // bad maxRead
+                    if (maxRead > 100) {
+                        maxRead = 100
+                        this.maxReadPercentageCompleted = true
+                    }
                     this.postReadingPercentage({
                         chapterNo: this.getIndexData.filter(indexData => indexData.slugId === this.currentChapterSlugId)[0].chapterNo,
-                        maxRead: this.maxReadPercentage
+                        maxRead
                     })
                     this.maxReadPercentageLastUpdated = Date.now()
                 }
