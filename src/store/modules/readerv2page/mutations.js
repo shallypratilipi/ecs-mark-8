@@ -97,6 +97,14 @@ export default {
         state.userPratilipi.data.addedToLib = false
     },
 
+    addPratilipiToLibraryError (state) {
+        state.userPratilipi.data.addedToLib = false
+    },
+
+    removePratilipiFromLibraryError (state) {
+        state.userPratilipi.data.addedToLib = true
+    },
+
     followAuthorSuccess (state) {
         state.author.data.following = true
         state.author.data.followCount++
@@ -105,6 +113,16 @@ export default {
     UnfollowAuthorSuccess (state) {
         state.author.data.following = false
         state.author.data.followCount--
+    },
+
+    followAuthorError (state) {
+        state.author.data.following = false
+        state.author.data.followCount--
+    },
+
+    UnfollowAuthorError (state) {
+        state.author.data.following = true
+        state.author.data.followCount++
     },
 
     setPratilipiRatingUpdateSuccess (state, rating) {

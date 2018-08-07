@@ -114,6 +114,9 @@ export default {
             this.selectTranslatedWord(this.suggestions[this.selectedSuggestion]);
         },
         voiceInput(e) {
+            // closing suggestions if its open
+            this.suggestions = []
+ 
             // clicking on the button reloads the page for some reason. Hence e.preventDefault()
             e.preventDefault()
 
