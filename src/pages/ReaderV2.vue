@@ -1485,7 +1485,7 @@ $theme-yellow-color: #2c3e50;
 .theme-black {
     background: $theme-black-background-color !important;
     color: $theme-black-color !important;
-    i {
+    .header-section i, .footer-section i {
         color: $theme-black-color !important;
     }
     .social-icon svg {
@@ -1493,7 +1493,7 @@ $theme-yellow-color: #2c3e50;
     }
     .modal {
         color: $theme-white-color !important;
-        i {
+        .header-section i, .footer-section i {
             color: $theme-white-color !important;
         }
     }
@@ -1525,27 +1525,33 @@ $theme-yellow-background-color: #F4ECD8;
 $theme-yellow-color: #2c3e50;
 
 .read-page.theme-white {
-    .book-recomendations .container-fluid, 
-    .comment-box,
-    .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
-        background: $theme-white-background-color !important;
-        color: $theme-white-color !important;
+    .book-content {
+        .book-recomendations .container-fluid, 
+        .comment-box,
+        .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
+            background: $theme-white-background-color !important;
+            color: $theme-white-color !important;
+        }
     }
 }
 .read-page.theme-black {
-    .book-recomendations .container-fluid, 
-    .comment-box,
-    .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
-        background: $theme-black-background-color !important;
-        color: $theme-black-color !important;
+    .book-content {
+        .book-recomendations .container-fluid, 
+        .comment-box,
+        .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
+            background: $theme-black-background-color !important;
+            color: $theme-black-color !important;
+        }
     }
 }
 .read-page.theme-yellow {
-    .book-recomendations .container-fluid, 
-    .comment-box,
-    .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
-        background: $theme-yellow-background-color !important;
-        color: $theme-yellow-color !important;
+    .book-content {
+        .book-recomendations .container-fluid, 
+        .comment-box,
+        .book-bottom-webpush-subscribe .webpush-container .webpush-inner-container {
+            background: $theme-yellow-background-color !important;
+            color: $theme-yellow-color !important;
+        }
     }
 }
 .rating-popout {
