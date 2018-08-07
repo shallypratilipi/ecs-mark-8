@@ -90,7 +90,7 @@ export default {
     fetchPratilipiContent({ commit, state },{ eventPratilipiId, chapterNo}) {
         commit('setContentLoadingTrue');
 
-        DataAccessor.getPratilipiContent(eventPratilipiId, chapterNo, (contentData) => {
+        DataAccessor.getEventPratilipiContent(eventPratilipiId, chapterNo, (contentData) => {
             if (contentData.status === 200) {
                 commit('setContentLoadingSuccess', contentData.response);
             } else {
@@ -129,24 +129,6 @@ export default {
         });
     },
 
-    createNewEvent({commit, state}, {eventId, userId, authorId, pratilipiId}) {
-        console.log("FROM ACTION: " + eventId + " " + authorId + " " + " " + userId + " " + pratilipiId);
-
-        DataAccessor.addNewEventEntry({
-            title,
-            titleEn,
-            language,
-            type,
-            state: 'DRAFTED'
-        }, (data) => {
-            console.log("MY DATA IS: ", data);
-            commit('setPratilipiCreatedSuccess', data);
-
-        }, (error) => {
-            console.log("DANGGGGGGGG:::", error);
-        })
-    },
-
     saveEventContentByChapter({commit, state}, {chapterNo, chapterTitle, content, pratilipiId}) {
         commit('setContentUpdatingTrue');
         DataAccessor.saveContentOfEventEntry({
@@ -159,10 +141,6 @@ export default {
         },( error ) => {
             commit('setContentUpdatingError');
         });
-    },
-
-    resetNewEntryState({commit, state}) {
-        commit('resetEntryState');
     },
     createNewEventFromPratilipi({commit, state}, {eventId, userId, authorId, pratilipiId}) {
         commit('setEventEntryCreatingTrue');
