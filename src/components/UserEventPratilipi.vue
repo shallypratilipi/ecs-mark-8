@@ -1,22 +1,68 @@
 <template>
     <div class="pratilipi-wrap" :class="{ 'event-participate-page': isEventParticipatePage }">
         <div class="pratilipi">
-            <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
-            <div class="pratilipi-details">
-                <button class="btn more-options" type="button" id="moreOptions2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click.prevent="showMoreOptions()">
-                    <i class="material-icons">more_vert</i>
-                </button>
-                 <div class="dropdown-menu" aria-labelledby="EventMoreOptions" @click.prevent="">
-
-                        <button class="btn options-btn" v-if="pratilipiData.submissionState == 'SUBMITTED'" @click.prevent="moveToDrafts()">__('pratilipi_move_to_drafts')</button>
-                        <button class="btn options-btn " v-if="pratilipiData.submissionState == 'DRAFT'" @click.prevent="publishEntry()">__('review_submit_review')</button>
-                        <button type="button" class="btn options-btn" @click.prevent="deleteEventEntry()">
-                            __('pratilipi_delete_content')
+            <router-link :to="pratilipiData.readUrl" v-if="pratilipiData.eventState != 'SUBMISSION'">
+                <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
+            </router-link>
+            <router-link :to="pratilipiData.readUrl" v-else>
+                <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
+            </router-link>
+            <div class="pratilipi-details container">
+                <div class="row">
+                    <div class="col-8">
+                        <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
+                    </div>
+                    <div class="col-4" v-if="pratilipiData.hasAccessToUpdate">
+                        <button class="btn more-options" type="button" id="moreOptions2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click.prevent="showMoreOptions()">
+                            <i class="material-icons">more_vert</i>
                         </button>
+                        <div class="dropdown-menu" aria-labelledby="EventMoreOptions" @click.prevent="">
+
+                            <button class="btn options-btn" v-if="pratilipiData.submissionState == 'SUBMITTED'" @click.prevent="moveToDrafts()">__('pratilipi_move_to_drafts')</button>
+                            <button class="btn options-btn " v-if="pratilipiData.submissionState == 'DRAFT'" @click.prevent="publishEntry()">__('review_submit_review')</button>
+                            <button type="button" class="btn options-btn" @click.prevent="deleteEventEntry()">
+                                __('pratilipi_delete_content')
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
-                <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.displayName }}</span></span>
-                <p class="date" v-if="pratilipiData.submissionState == 'SUBMITTED'" >__("pratilipi_listing_date"): {{ pratilipiData.submissionDate | convertDate }}</p>
+                <div class="row">
+                    <div class="col-6">
+                        <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.displayName }}</span></span>
+                    </div>
+                    <div class="col-6">
+                        <span class="date" v-if="pratilipiData.submissionState == 'SUBMITTED'" > {{ pratilipiData.submissionDate | convertDate }}</span>
+                    </div>
+                </div>
+                <div class="row" v-if="pratilipiData.eventState != 'SUBMISSION'">
+                    <div class="col-12">
+                        <div class="stats">
+                            <div class="rating">
+                                <i class="material-icons">star</i>
+                                <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                                    <span itemprop="ratingValue">
+                                                {{ pratilipiData.averageRating | round(1) }}
+                                    </span>
+                                </span>
+                                <meta itemprop="ratingCount" v-bind:content="pratilipiData.ratingCount" />
+                            </div>
+                            <div class="read-count">
+                                <i class="material-icons">remove_red_eye</i>
+                                <span>
+                                    {{ pratilipiData.readCount | round(1) }}
+                                </span>
+                            </div>
+                            <div class="read-time">
+                                <i class="material-icons">access_time</i>
+                                <span>
+                                    <time itemprop="timeRequired" v-bind:datetime="pratilipiData.readingTime | readingTimeSchemaOrgFormat">
+                                             {{ pratilipiData.readingTime | showInMinutesOrHours }}
+			                        </time>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -49,10 +95,6 @@ export default {
         ...mapGetters([
             'getUserDetails',
         ]),
-        ...mapGetters('eventPratilipi', [
-            'getPratilipiPublishingState',
-            'getPratilipiPublishedId'
-        ])
     },
     methods: {
         ...mapActions([
@@ -67,11 +109,8 @@ export default {
             'moveEntryToDrafts',
             'publishEntryForEvent',
         ]),
-        ...mapActions('eventPratilipi', [
-            'publishPratilipi',
-        ]),
         publishEntry() {
-             this.publishPratilipi({pratilipiId : this.pratilipiData.pratilipiId, eventId : this.pratilipiData.eventId});
+            this.publishEntryForEvent({eventId : this.pratilipiData.eventId, eventEntryId : this.pratilipiData.eventEntryId});
         },
         moveToDrafts() {
             this.moveEntryToDrafts({eventId : this.pratilipiData.eventId, eventEntryId : this.pratilipiData.eventEntryId})
@@ -85,15 +124,6 @@ export default {
 
     },
     watch : {
-      'getPratilipiPublishingState'(state){
-          if(state == 'LOADING_SUCCESS' && this.getPratilipiPublishedId == this.pratilipiData.pratilipiId){
-              this.publishEntryForEvent({eventId : this.pratilipiData.eventId, eventEntryId : this.pratilipiData.eventEntryId});
-          }
-
-          if(state == 'LOADING_ERROR'){
-
-          }
-      }
     },
     created(){
     },
@@ -216,9 +246,7 @@ export default {
             padding: 0 10px;
             position: relative;
             span {
-                display: block;
                 color: #212121;
-                width: 100%;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -235,6 +263,38 @@ export default {
                 font-size: 12px;
                 overflow: hidden;
                 margin: 5px 0 10px;
+            }
+            .stats {
+                border-top: 1px solid #e9e9e9;
+                margin-top: 5px;
+                overflow: hidden;
+                text-align: center;
+                display: flex;
+                flex-wrap: wrap;
+                .rating, .read-count, .read-time {
+                    flex-grow: 1;
+                    flex-basis: 33%;
+                    padding: 10px 2px;
+                    font-size: 12px;
+                    color: #212121;
+                    i {
+                        font-size: 13px;
+                        display: inline-block;
+                        vertical-align: middle;
+                        padding-right: 4px;
+                    }
+                    span {
+                        vertical-align: middle;
+                        display: inline !important;
+                    }
+                }
+                .read-count, .read-time {
+                    border-left: 1px solid #e9e9e9;
+                    padding: 10px 0;
+                }
+                .read-time {
+                    font-size: 12px;
+                }
             }
         }
     }

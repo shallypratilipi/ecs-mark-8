@@ -1,7 +1,7 @@
 <template>
     <div class="pratilipi-wrap">
         <div class="pratilipi" itemscope itemtype="http://schema.org/Book">
-	    
+
             <div class="book-type" :class="pratilipiData.type">
                 {{ pratilipiData.type | getPratilipiTypeInNativeLanguage }} <span></span>
             </div>
@@ -22,9 +22,9 @@
                 </span>
                 <button type="button" data-toggle="modal" @click="openShareModal"><i class="material-icons">share</i></button>
             </div>
-            <router-link :to="redirectToReader ? pratilipiData.readPageUrl : pratilipiData.pageUrl" @click.native="triggerReadPratilipiEvent" :title="pratilipiData.title">
+            <router-link :to="redirectToReader ? pratilipiData.readPageUrl : pratilipiData.pageUrl" @click.native="triggerReadPratilipiEvent" :title="pratilipiData.displayTitle">
                 <div class="pratilipi-details">
-                    <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
+                    <span class="title" itemprop="name">{{ pratilipiData.displayTitle }}</span>
                     <span v-if="!hideAuthorName" class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.name }}</span></span>
                     <p v-if="pratilipiData.cardSummary" class="summary">{{ pratilipiData.cardSummary }}</p>
 		    <meta itemprop="text" v-bind:content="pratilipiData.summary" />
@@ -45,7 +45,7 @@
                     <div class="read-count">
                         <i class="material-icons">remove_red_eye</i>
                         <span>
-                            {{ pratilipiData.readCount | round(1) }}    
+                            {{ pratilipiData.readCount | round(1) }}
                         </span>
                     </div>
                     <div class="read-time">
@@ -324,7 +324,7 @@ export default {
         &:hover .image-mask {
             opacity: 1;
         }
-        
+
         .pratilipi-details {
             text-align: left;
             padding: 0 10px;

@@ -305,7 +305,7 @@ export default {
                 action: `eventparticipate/updateDescriptionAndTags`,
                 heading: 'event_participate_confirm_submission',
                 message: 'event_participate_cannot_change_drafts',
-                data: { eventPratilipiId: this.pratilipiId, description: this.description || '', state: 'PUBLISHED' }
+                data: { eventPratilipiId: this.pratilipiId, description: this.description || '', state: 'DRAFTED' }
             });
             this.openPrimaryConfirmationModal();
         },
@@ -481,6 +481,9 @@ export default {
                 if(!this.getEventData.eventId){
                     this.fetchEventDetails(this.$route.params.eventSlug.split("-").pop());
                 }
+
+                this.title = "";
+                this.titleEn = "";
 
                 this.currentStep = 1;
             }

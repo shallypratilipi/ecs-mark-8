@@ -398,11 +398,11 @@ export default {
 
             // this.checkEventStatus();
 
-            if (this.getPratilipiData.eventId) {
-                this.checkEventStatus();
-            } else {
-                this.$router.push(this.getPratilipiData.writePageUrl);
-            }
+            // if (this.getPratilipiData.eventId) {
+            //     this.checkEventStatus();
+            // } else {
+            //     this.$router.push(this.getPratilipiData.writePageUrl);
+            // }
         },
 
         checkEventStatus(){

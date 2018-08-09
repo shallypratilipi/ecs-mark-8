@@ -7,8 +7,8 @@ export default {
     getSubmissionData: state => state.event.submissions,
 
     getEventPratilipis: state => state.pratilipiList.data,
-    getEventPratilipisCursor: state => state.pratilipiList.cursor,
-    getEventPratilipisLoadingState: state => state.pratilipiList.loading_state,
+    getEventPratilipisFound: state => state.pratilipiList.found,
+    getEventPratilipisOffset: state => state.pratilipiList.offset,
 
     getUserEventDataLoadingState: state => state.userEventPratilipis.loading_state,
     getPratilipiPublishingState: state => state.eventPratilipiPublishSate,

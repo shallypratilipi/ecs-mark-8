@@ -37,10 +37,6 @@
                                     <ul class="word-suggestions-dropdown" :class="{hidden: suggestions.length === 0}">
                                         <li :class="{ active: index === selectedSuggestion }" @click="selectSuggestion(eachSuggestion)" :key="index" v-for="(eachSuggestion, index ) in suggestions">{{ eachSuggestion }}</li>
                                     </ul>
-
-                                    <ul class="word-suggestions" v-if="false">
-                                        <li @click="selectSuggestion(eachSuggestion)" :key="index" v-for="(eachSuggestion, index ) in suggestions">{{ eachSuggestion }}</li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -532,6 +528,11 @@ export default {
                                 return;
                             }
                             that.selectedSuggestion--;
+                        }
+
+                        if (event.code === 'ArrowLeft' && that.suggestions.length > 0) {
+                            event.preventDefault();
+                                return;
                         }
 
                     });

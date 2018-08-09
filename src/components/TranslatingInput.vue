@@ -1,7 +1,7 @@
 <template>
     <span class="translate-input-wrapper">
-        <input type="text" class="form-control" 
-            :value="value" 
+        <input type="text" class="form-control"
+            :value="value"
             @keyup.up="goUpInSuggestions"
             @keyup.down="goDownInSuggestions"
             @input="getTranslation"
@@ -100,7 +100,7 @@ export default {
             this.selectedSuggestion++;
         },
         selectSuggestion() {
-            this.selectTranslatedWord(this.suggestions[this.selectedSuggestion]);
+            this.selectTranslatedWord(this.suggestions[this.selectedSuggestion] + " ");
         }
     }
 }

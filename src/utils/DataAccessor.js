@@ -1,7 +1,7 @@
 import { httpUtil, formatParams } from './HttpUtil';
 
 
-const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://gamma.pratilipi.com/api";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://hindi-devo.ptlp.co/api";
 
 
 /* Search */
@@ -373,8 +373,8 @@ export default {
             });
     },
 
-    getEventBySlug: (slug, aCallBack) => {
-        httpUtil.get(API_PREFIX + EVENT_API, null, { "slug": slug },
+    getEventBySlug: (slug, limit, offset, aCallBack) => {
+        httpUtil.get(API_PREFIX + EVENT_API, null, { "slug": slug, "limit" : limit, "offset" : offset },
             function(response, status) {processGetResponse(response, status, aCallBack)});
     },
 

@@ -8,7 +8,11 @@
                             <div class="head-title">{{ getEventData.name }}</div>
                             <img :src="getEventData.bannerImageUrl" alt="">
                             <div class="desc" v-html="getEventData.description"></div>
-                            <button v-if="canParticipate" type="button" class="participate_btn" name="button" @click="goToEventParticipate">__('event_participate')</button>
+                            <router-link v-if="getEventData.eventState == 'SUBMISSION'"
+                                         :to="{path: `${getEventData.slug}/participate/`}">
+                                <button type="button" class="participate_btn" name="button" @click="
+                            ">__('event_participate')</button>
+                            </router-link>
                         </div>
                     </div>
                     <div class="col-md-12" v-if="getDraftData.length > 0">
@@ -22,13 +26,15 @@
                                     pratilipiId: pratilipiData.pratilipiId,
                                     author: pratilipiData.author,
                                     title: pratilipiData.displayTitle,
-                                    coverImageUrl: 'https://0.ptlp.co' + pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
                                     submissionDate: pratilipiData.submissionDate,
                                     submissionState: 'DRAFT',
                                     eventEntryId: pratilipiData.eventEntryId,
-                                    eventId: getEventData.eventId
+                                    eventId: getEventData.eventId,
+                                    eventState: getEventData.eventState,
+                                    hasAccessToUpdate: pratilipiData.hasAccessToUpdate,
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -44,39 +50,50 @@
                                     pratilipiId: pratilipiData.pratilipiId,
                                     author: pratilipiData.author,
                                     title: pratilipiData.displayTitle,
-                                    coverImageUrl: 'https://0.ptlp.co' + pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
                                     type: pratilipiData.type,
                                     description: pratilipiData.description,
                                     submissionDate: pratilipiData.submissionDate,
                                     submissionState: 'SUBMITTED',
                                     eventEntryId: pratilipiData.eventEntryId,
-                                    eventId: getEventData.eventId
+                                    eventId: getEventData.eventId,
+                                    eventState: getEventData.eventState,
+                                    hasAccessToUpdate: pratilipiData.hasAccessToUpdate,
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
                         </div>
                     </div>
-                    <div class="col-md-12" v-if="getEventPratilipisLoadingState === 'LOADING_SUCCESS' && getEventPratilipis.length !== 0">
-                        <div class="page-content event-list card">
+                    <div class="col-md-12" v-if="getEventPratilipis.length !== 0">
+                        <div class="page-content event-list card ">
                             <div class="head-title">__("event_entries")</div>
-                            <PratilipiComponent
-                                :pratilipiData="pratilipiData"
+                            <UserEventPratilipiComponent
+                                :pratilipiData="{
+                                    pratilipiId: pratilipiData.pratilipiId,
+                                    readUrl: pratilipiData.pageUrl,
+                                    author: pratilipiData.author,
+                                    title: pratilipiData.displayTitle,
+                                    coverImageUrl: pratilipiData.coverImageUrl || 'https://0.ptlp.co/pratilipi/cover',
+                                    type: pratilipiData.type,
+                                    description: pratilipiData.description,
+                                    submissionDate: pratilipiData.submissionDate,
+                                    submissionState: 'SUBMITTED',
+                                    eventEntryId: pratilipiData.eventEntryId,
+                                    eventId: getEventData.eventId,
+                                    eventState: getEventData.eventState,
+                                    hasAccessToUpdate: pratilipiData.hasAccessToUpdate,
+                                }"
                                 :key="pratilipiData.pratilipiId"
                                 v-for="pratilipiData in getEventPratilipis"
                                 :addToLibrary="addToLibrary"
                                 :removeFromLibrary="removeFromLibrary"
                                 :screenName="'EVENT'"
                                 :screenLocation="'EVENTRIES'"
-                                ></PratilipiComponent>
-                            <Spinner v-if="getEventPratilipisLoadingState === 'LOADING'"></Spinner>
+                                ></UserEventPratilipiComponent>
                         </div>
                     </div>
                     <Spinner v-if="getEventDataLoadingState === 'LOADING'"></Spinner>
                 </div>
-                <router-link v-if="getEventData.eventState == 'SUBMISSION'"
-                    :to="{path: `${getEventData.slug}/participate/`}">
-                    <button class="btn btn-danger">__('event_participate')</button>
-                </router-link>
             </div>
         </div>
     </MainLayout>
@@ -115,14 +132,14 @@ export default {
             'getEventData',
             'getEventDataLoadingState',
             'getEventPratilipis',
-            'getEventPratilipisLoadingState',
             'getEventPratilipisCursor',
             'getUserEventData',
             'getUserEventDraftData',
             'getUserEventDataLoadingState',
             'getDraftData',
-            'getSubmissionData'
-
+            'getSubmissionData',
+            'getEventPratilipisFound',
+            'getEventPratilipisOffset',
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -136,7 +153,8 @@ export default {
             'fetchMorePratilipisForEvent',
             'addToLibrary',
             'removeFromLibrary',
-            'fetchEventPratilipis'
+            'fetchEventPratilipis',
+            'refreshEventPageState'
         ]),
         updateScroll() {
             this.scrollPosition = window.scrollY;
@@ -147,51 +165,38 @@ export default {
     },
     watch: {
         'getEventData.eventId' (eventId) {
-            this.$route.params.eventId = this.getEventData.eventId;
             if (eventId) {
                 this.triggerAnanlyticsEvent('LANDED_EVENTM_EVENT', 'CONTROL', {
                     'USER_ID': this.getUserDetails.userId,
                     'PARENT_ID': this.getEventData.eventId
                 });
-
-                if (this.isCurrentEvent(eventId)) {
-                    this.canParticipate = true;
-                }
             }
         },
         'scrollPosition'(newScrollPosition){
-            const nintyPercentOfList = ( 80 / 100 ) * $('.event-page').innerHeight();
-            const { eventId } = this.getEventData;
+            const nintyPercentOfList = ( 70 / 100 ) * $('.event-page').innerHeight();
 
             if (newScrollPosition > nintyPercentOfList &&
-                this.getEventPratilipisLoadingState !== 'LOADING' &&
-                this.getEventPratilipisCursor !== null) {
+                this.getEventDataLoadingState !== 'LOADING' &&
+                this.getEventPratilipisFound >= this.getEventPratilipisOffset && this.getEventPratilipisOffset > 0) {
 
-                this.fetchMorePratilipisForEvent({ eventId, resultCount: 20 });
+                this.fetchEventDetails({ "eventSlug" : this.$route.params.event_slug.split("-").pop(), "limit" : 20, "offset" : this.getEventPratilipisOffset });
             }
         },
         'getEventDataLoadingState'(state) {
             if (state === 'LOADING_SUCCESS') {
-                var hash = window.location.hash;
-                console.log(window.location.hash);
-                if (hash == "#yourEntries") {
-                    setTimeout(() => {
-                        $('html, body').animate({
-                            scrollTop: $("#yourEntries").offset().top
-                        }, 1000);
-                    }, 500);
-                }
+
             }
         }
     },
     created() {
         const { event_data, event_slug } = this.$route.params;
-        this.fetchEventDetails(event_slug.split("-").pop());
+        this.fetchEventDetails({ "eventSlug" : event_slug.split("-").pop(), "limit" : 20, "offset" : 0 });
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll);
     },
     destroyed() {
+        this.refreshEventPageState();
         window.removeEventListener('scroll', this.updateScroll);
     },
 }
@@ -243,6 +248,7 @@ export default {
             background: #d0021b;
             color: #fff;
             max-width: 250px;
+            width: 100px;
             margin: 10px;
             padding: 5px;
             border-radius: 3px;

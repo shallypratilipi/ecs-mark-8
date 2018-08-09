@@ -6,9 +6,13 @@ export default {
         commit('setEventDataFromCache', eventData);
     },
 
-    fetchEventDetails({ commit, state }, eventSlug) {
+    refreshEventPageState({ commit, state}){
+        commit('refreshState');
+    },
+
+    fetchEventDetails({ commit, state }, {eventSlug, limit, offset}) {
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventBySlug(eventSlug, (data) => {
+        DataAccessor.getEventBySlug(eventSlug, limit, offset,(data) => {
             if (data.status === 200) {
                 commit('setEventDataLoadingSuccess', data.response);
             } else {

@@ -110,9 +110,9 @@ export default {
         });
     },
 
-    fetchEventDetails({ commit, state }, eventId) {
+    fetchEventDetails({ commit, state }, eventslug) {
         commit('setEventDataLoadingTrue');
-        DataAccessor.getEventBySlug(eventId, (data) => {
+        DataAccessor.getEventBySlug(eventslug, 0, 0,(data) => {
             if (data.status === 200) {
                 commit('setEventDataLoadingSuccess', data.response);
             } else {

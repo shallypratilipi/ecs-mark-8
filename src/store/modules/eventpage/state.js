@@ -8,7 +8,9 @@ export default {
     pratilipiList: {
     	loading_state: 'LOADING',
     	data: [],
-    	cursor: null
+        found: 0,
+        offset: 0,
+    	cursor: null,
     },
     userEventPratilipis: {
     	loading_state: 'LOADING',

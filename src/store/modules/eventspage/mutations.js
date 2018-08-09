@@ -25,7 +25,7 @@ export default {
 
     setEventsDataLoadingSuccess(state, data) {
         state.events.loading_state = 'LOADING_SUCCESS';
-        state.events.data = data.events;
+        state.events.data = data.eventList;
     },
 
     setEventsDataLoadingError(state) {

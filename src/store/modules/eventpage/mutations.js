@@ -40,9 +40,14 @@ export default {
             state.event.submissions = eventData.entries.yourSubmitted;
         }
 
-        if (eventData.entries.allSubmitted && eventData.entries.allSubmitted.length > 0){
-            state.event.participations = eventData.entries.allSubmitted;
+        if (eventData.entries.allSubmitted){
+             if (eventData.entries.allSubmitted.entries && eventData.entries.allSubmitted.entries.length > 0){
+                 state.pratilipiList.data = state.pratilipiList.data.concat(eventData.entries.allSubmitted.entries);
+                 state.pratilipiList.found = eventData.entries.allSubmitted.found;
+                state.pratilipiList.limit = eventData.entries.allSubmitted.limit;
+             }
         }
+
 
     },
     resetDraftList(state) {
@@ -128,7 +133,6 @@ export default {
     },
 
     setCancelEventPratilipiParticipationLoadingSuccess(state, data) {
-        state.cancelEventPratilipiParticipationSate = 'LOADING_SUCCESS';
         state.event.submissions.forEach((pratilipi, index) => {
            if(data.eventEntryId == pratilipi.eventEntryId){
                console.log(JSON.stringify(pratilipi), index);
@@ -136,6 +140,7 @@ export default {
                state.event.drafts.push(pratilipi);
            }
         });
+        state.cancelEventPratilipiParticipationSate = 'LOADING_SUCCESS';
     },
 
 
@@ -200,5 +205,15 @@ export default {
 
     setEventPratilipiDeletionLoadingError(state) {
         state.eventPratilipiDeletionSate = 'LOADING_ERROR'
+    },
+
+    refreshState(state){
+        console.log("refreshing state");
+        state.event.data = {};
+        state.event.drafts = [];
+        state.event.submissions = [];
+        state.pratilipiList.data = [];
+        state.pratilipiList.found = 0;
+        state.pratilipiList.offset = 0;
     }
 }
