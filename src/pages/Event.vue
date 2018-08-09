@@ -18,7 +18,7 @@
                     <div class="col-md-12" v-if="getDraftData.length > 0">
                         <!-- v-if="getUserEventDraftData.length > 0 && canParticipate " -->
                         <div class="page-content event-list card" id="yourDrafts">
-                            <div class="head-title">__('event_participate_your_drafts')</div>
+                            <div class="head-title">__('author_drafts')</div>
                             <router-link v-for="pratilipiData in getDraftData" :key="pratilipiData.eventEntryId"
                                          :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.pratilipiId'>
                                 <UserEventPratilipiComponent
@@ -35,6 +35,10 @@
                                     eventId: getEventData.eventId,
                                     eventState: getEventData.eventState,
                                     hasAccessToUpdate: pratilipiData.hasAccessToUpdate,
+                                    averageRating : pratilipiData.averageRating,
+                                    ratingCount : pratilipiData.ratingCount,
+                                    readCount: pratilipiData.readCount,
+                                    readingTime: pratilipiData.readingTime,
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -43,7 +47,7 @@
                     <div class="col-md-12" v-if="getSubmissionData.length > 0">
                         <div class="page-content event-list card" id="yourEntries">
                             <div class="head-title">__('event_participate_your_submissions')</div>
-                            <router-link v-for="pratilipiData in getSubmissionData" :key="pratilipiData.eventEntryId"
+                            <router-link v-for="pratilipiData in getSubmissionData" :key="pratilipiData.pratilipiId"
                                          :to='"/event/" + $route.params.event_slug + "/participate/" + pratilipiData.pratilipiId'>
                                 <UserEventPratilipiComponent
                                 :pratilipiData="{
@@ -59,6 +63,10 @@
                                     eventId: getEventData.eventId,
                                     eventState: getEventData.eventState,
                                     hasAccessToUpdate: pratilipiData.hasAccessToUpdate,
+                                    averageRating : pratilipiData.averageRating,
+                                    ratingCount : pratilipiData.ratingCount,
+                                    readCount: pratilipiData.readCount,
+                                    readingTime: pratilipiData.readingTime,
                                 }"
                                 ></UserEventPratilipiComponent>
                             </router-link>
@@ -82,6 +90,10 @@
                                     eventId: getEventData.eventId,
                                     eventState: getEventData.eventState,
                                     hasAccessToUpdate: pratilipiData.hasAccessToUpdate,
+                                    averageRating : pratilipiData.averageRating,
+                                    ratingCount : pratilipiData.ratingCount,
+                                    readCount: pratilipiData.readCount,
+                                    readingTime: pratilipiData.readingTime,
                                 }"
                                 :key="pratilipiData.pratilipiId"
                                 v-for="pratilipiData in getEventPratilipis"
@@ -178,7 +190,7 @@ export default {
             if (newScrollPosition > nintyPercentOfList &&
                 this.getEventDataLoadingState !== 'LOADING' &&
                 this.getEventPratilipisFound >= this.getEventPratilipisOffset && this.getEventPratilipisOffset > 0) {
-
+                console.log("trying to fetch data");
                 this.fetchEventDetails({ "eventSlug" : this.$route.params.event_slug.split("-").pop(), "limit" : 20, "offset" : this.getEventPratilipisOffset });
             }
         },
