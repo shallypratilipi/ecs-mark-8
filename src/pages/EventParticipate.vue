@@ -95,7 +95,7 @@
                     <div v-if="currentStep == 3">
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="book-image" v-bind:style="{ backgroundImage: 'url(https://2.ptlp.co' + getEventPratilipiData.coverImageUrl + ')' }">
+                                <div class="book-image" v-bind:style="{ backgroundImage: 'url(' + getEventPratilipiData.coverImageUrl + ')' }">
                                     <button class="update-img" @click="uploadCoverImage"><i class="material-icons">camera_alt</i></button>
                                     <input type="file" hidden name="pratilipiimage" accept="image/*" @change="triggerPratilipiImageUpload" id="pratilipiimage-uploader">
                                     <div class="uploading" v-if="getEventPratilipiImageUploadLoadingState === 'LOADING'">
@@ -305,7 +305,7 @@ export default {
                 action: `eventparticipate/updateDescriptionAndTags`,
                 heading: 'event_participate_confirm_submission',
                 message: 'event_participate_cannot_change_drafts',
-                data: { eventPratilipiId: this.pratilipiId, description: this.description || '', state: 'DRAFTED' }
+                data: { eventPratilipiId: this.pratilipiId, description: this.description || '', state: 'EVENT' }
             });
             this.openPrimaryConfirmationModal();
         },
@@ -396,7 +396,7 @@ export default {
         },
         'getEventChapterCreatingState'(state) {
             console.log("entering state");
-            if (state == 'LOADING_SUCCESS') {
+            if (state == 'LOADING_SUCCESS' && this.currentStep == 1) {
                 let eventId = this.getEventData.eventId;
                 let authorId = this.getUserDetails.authorId;
                 let userId = this.getUserDetails.userId;

@@ -1,7 +1,7 @@
 import { httpUtil, formatParams } from './HttpUtil';
 
 
-const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://hindi-devo.ptlp.co/api";
+const API_PREFIX = (window.location.origin.indexOf(".pratilipi.com") > -1 || window.location.origin.indexOf(".ptlp.co")) > -1 ? "/api" : "https://hindi-gamma.pratilipi.com/api";
 
 
 /* Search */
@@ -980,7 +980,7 @@ export default {
             function( response, status ) { processGetResponse( response, status, aCallBack ) });
     },
 
-    createEventPratilipi: ({ language, title, titleEn, type, eventId }, successCallBack, errorCallBack) => {
+    createEventPratilipi: ({ language, title, titleEn, type, eventId , state}, successCallBack, errorCallBack) => {
         httpUtil.post( API_PREFIX + EVENT_PARTICIPATE_PREFIX + EVENT_PARTICIPATE_CREATE,
             null,
             {
@@ -988,7 +988,8 @@ export default {
                 title,
                 titleEn,
                 eventId,
-                type
+                type,
+                state
             },
             function( response, status ) { processPostResponse( response, status, successCallBack, errorCallBack) } );
     },

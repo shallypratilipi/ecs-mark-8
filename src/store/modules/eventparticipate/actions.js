@@ -28,7 +28,7 @@ export default {
     createEventPratilipiData({ commit, state }, { eventId, title, titleEn, type, language }) {
         commit('setEventPratilipiCreateOrUpdateStateTrue');
         DataAccessor.createEventPratilipi({
-            eventId, title, titleEn, type, language
+            eventId, title, titleEn, type, language, "state" : "EVENT"
         }, (eventPratilipiData) => {
             if (eventPratilipiData) {
                 commit('setEventPratilipiCreateOrUpdateStateSuccess', eventPratilipiData);
@@ -62,7 +62,7 @@ export default {
 
     createPratilipiAndEvent({commit, state}, {title, titleEn, eventId ,language, type}) {
         commit('setEventPratilipiCreateOrUpdateStateTrue');
-        DataAccessor.createOrUpdatePratilipi({title, titleEn, language, eventId, type, state: 'DRAFTED'}, (data) => {
+        DataAccessor.createOrUpdatePratilipi({title, titleEn, language, eventId, type, state: 'EVENT'}, (data) => {
             commit('setEventPratilipiCreateOrUpdateStateSuccess', data);
         }, (error) => {
             commit('setEventPratilipiCreateOrUpdateStateError', data);

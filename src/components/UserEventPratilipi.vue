@@ -1,10 +1,10 @@
 <template>
     <div class="pratilipi-wrap" :class="{ 'event-participate-page': isEventParticipatePage }">
         <div class="pratilipi">
-            <router-link :to="pratilipiData.readUrl" v-if="pratilipiData.eventState != 'SUBMISSION'">
+            <router-link :to="'pratilipiData.readUrl'" v-if="pratilipiData.eventState != 'SUBMISSION'">
                 <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             </router-link>
-            <router-link :to="pratilipiData.readUrl" v-else>
+            <router-link :to="'pratilipiData.readUrl'" v-else>
                 <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             </router-link>
             <div class="pratilipi-details container">
