@@ -370,7 +370,7 @@ li {
             }
             .rating {
                 border: none;
-                width: 230px;
+                width: 240px;
                 margin: 0 auto;
                 input {
                     display: none;
