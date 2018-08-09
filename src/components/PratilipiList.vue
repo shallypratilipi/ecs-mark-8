@@ -10,7 +10,7 @@
                         <span v-else>{{title}}</span>
                     </h2>
                 </div>
-                <div v-if="!isAndroid()" class="col-4">
+                <div v-if="!isMobile()" class="col-4">
                     <h2 class="section-title-see-more">
                         <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerMoreListLink">
                             <span>__("view_more")</span>
