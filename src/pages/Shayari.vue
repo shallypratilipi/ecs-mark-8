@@ -1,22 +1,23 @@
 <template>
     <div class="vapasi">
-        <!-- <div class="vapasi-banner" @click="showModalContentQuote()">
-            <div class="vapasi-text" >
-                __("quote_of_the_day")
-                <br class="vapasi-banner">
-                __("click_here_to_know_more")
+        <div v-for="shayari in shayariList">
+            <div class="horoscope-details">
+                <div>
+                    <img :src="shayari.image" width=100%> </img>
+                </div>
             </div>
-            <div class="vapasi-image">
-               <img src="../assets/quoteImage.svg" height="50" width="50">
+            <br>
+            <div class="social-icons">
+                <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
             </div>
-        </div> -->
+        </div>
         <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
             <p class="close" @click="resetModal()"><b>X</b></p>
             <div class="horoscope-details">
-                <div>
-                  <img :src="getQuoteImage" width=100%> </img>
-                </div>
-                
+              <div>
+                <img :src="shayariList[this.$route.query.postId].image" width=100%> </img>
+              </div>
             </div>
             <br>
             <div class="social-icons">
@@ -39,10 +40,6 @@ import {
 
 export default {
     props: {
-        screenName: {
-            type: String,
-            required: true
-        },
         'in-viewport-once': {
             default: true
         },
@@ -55,10 +52,6 @@ export default {
         inViewport
     ],
     computed: {
-        ...mapGetters('homepage', [
-            'getQuoteOfTheDay',
-            'getQuoteImage',
-        ]),
         ...mapGetters([
             'getUserDetails'
         ])
@@ -66,72 +59,37 @@ export default {
     data() {
         return {
             shouldShowModal: this.$route.query.postId ? true : false,
-            language: '',
-            isNotificationButtonEnabled: false
+            language: constants.LANGUAGES.filter((eachLanguage) => eachLanguage.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase(),
+            shayariList: []
         }
     },
     methods: {
-        ...mapActions('homepage', [
-            'fetchQuoteOfTheDay'
-        ]),
         resetModal() {
             this.shouldShowModal = false;
-            this.triggerAnanlyticsEvent(`CLOSE_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            this.triggerAnanlyticsEvent(`CLOSE_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
-        showModalContentQuote() {
-            this.shouldShowModal = true;
-            this.triggerAnanlyticsEvent(`CLICK_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
-        },
-        vapasiNotification(isGuest) {
-            if (WebPushUtil.isBrowserPushCompatible()) {
-                if (isGuest == null)
-                    return;
-                if (isGuest) {
-                    this.isNotificationButtonEnabled = true;
-                } else {
-                    const that = this;
-                    import('firebase').then((firebase) => {
-                        if (firebase.apps.length === 0) {
-                            const config = {
-                                apiKey: process.env.FIREBASE_API_KEY,
-                                authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-                                databaseURL: process.env.FIREBASE_DATABASE_URL,
-                                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-                            };
-                            firebase.initializeApp(config);
-                        }
-                        firebase.auth().onAuthStateChanged((fbUser) => {
-                            if (fbUser) {
-                                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child('vapsiSubscription').child(that.language);
-                                vapasiPreferencesNode.on('value', (snapshot) => {
-                                    const vapasiPreferences = snapshot.val();
-                                    that.isNotificationButtonEnabled = !(vapasiPreferences && vapasiPreferences.QUOTE);
-                                });
-                            }
-                        })
-                    });
+        fetchShayariList() {
+            const that = this;
+            import('firebase').then((firebase) => {
+                if (firebase.apps.length === 0) {
+                    const config = {
+                        apiKey: process.env.FIREBASE_API_KEY,
+                        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                        databaseURL: process.env.FIREBASE_DATABASE_URL,
+                        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                    };
+                    firebase.initializeApp(config);
                 }
-            }
-        },
-        getImage() {
-          return this.getQuoteImage;
+                const shayariPreferenceNode = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
+                shayariPreferenceNode.on('value', (snapshot) => {
+                    const shayariPreferences = snapshot.val();
+                    that.shayariList = shayariPreferences;
+                    console.log(that.shayariList)
+                });
+            });
         },
         setPageOgTags() {
-            console.log("set page og tags")
-            document.head.querySelector('meta[property="og:image"]').content = this.getQuoteImage;
-        },
-        triggerAnalyticsEventAndFireNotification() {
-            this.triggerAnanlyticsEvent(`NOTIFY_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
-            if (this.getUserDetails.isGuest) {
-                this.openLoginModal(this.$route.meta.store, 'NOTIFY', 'VAPASI');
-            } else {
-                WebPushUtil.enabledOnCustomPrompt(this.$route.meta.store);
-                const that = this;
-                const vapasiPreferencesNode = firebase.database().ref("PREFERENCE").child(that.getUserDetails.userId).child("vapsiSubscription").child(that.language);
-                vapasiPreferencesNode.update({
-                    "QUOTE": true
-                });
-            }
+            document.head.querySelector('meta[property="og:image"]').content = this.$route.query.postId ? (this.shayariList[this.$route.query.postId] ? this.shayariList[this.$route.query.postId].image : undefined) : (this.shayariList[0] ? this.shayariList[0].image : undefined);
         },
         triggerFacebookShareAnalytics() {
             FB.ui({
@@ -139,46 +97,34 @@ export default {
                 action_type: 'og.shares',
                 action_properties: JSON.stringify({
                     object: {
-                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=vapsi-quote`,
+                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=shayari`,
                         'og:title': '__("quote_of_the_day")',
                         'og:description': this.getQuoteOfTheDay,
                         'og:image': this.getQuoteImage
                     }
                 })
             });
-            this.triggerAnanlyticsEvent(`SHAREFB_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            this.triggerAnanlyticsEvent(`SHAREFB_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerWhatsappShareAnalytics() {
-            this.triggerAnanlyticsEvent(`SHAREWA_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            this.triggerAnanlyticsEvent(`SHAREWA_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
-            const textToShare = `${window.location.host}${window.location.pathname}${encodeURIComponent('?postId=1234&utm_source=whatsapp&utm_medium=social&utm_campaign=vapsi-quote')}`;
+            const textToShare = `${window.location.host}${window.location.pathname}${encodeURIComponent(`?postId=${1}&utm_source=whatsapp&utm_medium=social&utm_campaign=shayari`)}`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },
     watch: {
         'inViewport.now'(visible) {
             if (visible) {
-                this.triggerAnanlyticsEvent(`VIEW_VAPSIQUOTE_${this.screenName}`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+                this.triggerAnanlyticsEvent(`VIEW_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
             }
         },
-        'getUserDetails.isGuest'(isGuest) {
-            this.vapasiNotification(isGuest);
-        },
-        'getQuoteImage'() {
+        'shayariList'() {
           this.setPageOgTags();
         }
     },
-    created() {
-        const currentLocale = process.env.LANGUAGE;
-        constants.LANGUAGES.forEach((eachLanguage) => {
-            if (eachLanguage.shortName === currentLocale) {
-                this.language = eachLanguage.fullName.toUpperCase();
-            }
-        });
-    },
     mounted() {
-        this.fetchQuoteOfTheDay(this.language);
-        this.vapasiNotification(this.getUserDetails.isGuest);
+        this.fetchShayariList();
     }
 }
 </script>
