@@ -196,41 +196,43 @@ export default {
             $(".review-box").hide();
             $(".write-review-btn").fadeIn();
             this.editRatingMode = false;
+        },
+        ratingHelperText() {
+            $( ".star" ).hover(function () {
+                let className = $(this).prop('for');
+
+                switch (className) {
+                    case "star1" :
+                         $('.rating-helper').text('__("rating_hated_it")');
+                        break;
+                    case "star2" :
+                        $('.rating-helper').text('__("rating_didnt_like_it")');
+                        break;
+                    case "star3" :
+                        $('.rating-helper').text('__("rating_just_ok")');
+                        break;
+                    case "star4" :
+                        $('.rating-helper').text('__("rating_liked_it")');
+                        break;
+                    case "star5" :
+                        $('.rating-helper').text('__("rating_loved_it")');
+                        break;
+                    default:
+                        $('.rating-helper').text('');
+                        break;
+                }
+            });
+
+            $( ".star" ).mouseout(function() {
+                $('.rating-helper').text('');
+            });
         }
     },
     created() {
         this.newReview = this.userPratilipiData.review;
     },
     mounted() {
-        $( ".star" ).hover(function () {
-            let className = $(this).prop('for');
-
-            switch (className) {
-                case "star1" :
-                     $('.rating-helper').text('__("rating_hated_it")');
-                    break;
-                case "star2" :
-                    $('.rating-helper').text('__("rating_didnt_like_it")');
-                    break;
-                case "star3" :
-                    $('.rating-helper').text('__("rating_just_ok")');
-                    break;
-                case "star4" :
-                    $('.rating-helper').text('__("rating_liked_it")');
-                    break;
-                case "star5" :
-                    $('.rating-helper').text('__("rating_loved_it")');
-                    break;
-                default:
-                    $('.rating-helper').text('');
-                    break;
-            }
-        });
-
-        $( ".star" ).mouseout(function() {
-            $('.rating-helper').text('');
-        });
-
+        this.ratingHelperText();
     },
     watch: {
         'inViewport.now': function(visible) {
@@ -248,6 +250,13 @@ export default {
 
             }
         },
+        'editRatingMode'(editRatingMode) {
+            if(editRatingMode) {
+                setTimeout(()=> {
+                    this.ratingHelperText();
+                }, 500);
+            }
+        }
     },
      components: {
         TranslatingInputTextArea
