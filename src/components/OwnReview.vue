@@ -195,6 +195,7 @@ export default {
         cancelReview(e) {
             $(".review-box").hide();
             $(".write-review-btn").fadeIn();
+            $('.rating input').prop('checked', false);
             this.editRatingMode = false;
         },
         ratingHelperText() {
