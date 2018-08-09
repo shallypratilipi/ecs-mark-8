@@ -9,14 +9,14 @@
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
-                            <div class="login-menu">
+                            <!-- <div class="login-menu">
                                 <a href="#" class="signup active" v-on:click="tabsignup" data-tab="signup">__("user_sign_up")</a>
                                 <a href="#" class="signin" v-on:click="tabsignin" data-tab="signin">__("user_sign_in")</a>
-                            </div>
-                            
-                            <Login></Login>
+                            </div> -->
+
+                            <!-- <Login></Login> -->
                             <Register></Register>
-                            
+
                             <!-- Modal -->
                             <!--<ForgetPasswordModal></ForgetPasswordModal>-->
 
@@ -41,7 +41,7 @@
 import MainLayout from '@/layout/main-layout.vue';
 import Spinner from '@/components/Spinner.vue';
 import Login from '@/components/Login.vue';
-import Register from '@/components/Register.vue';
+import Register from '@/components/AppLogin.vue';
 // import ForgetPasswordModal from '@/components/ForgetPasswordModal.vue';
 import mixins from '@/mixins';
 import 'vue-awesome/icons/facebook-f'
@@ -138,7 +138,7 @@ export default {
             });
         },
         tabsignin(event) {
-            event.preventDefault();        
+            event.preventDefault();
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".login-menu a").removeClass("active");
             $(".signin").addClass("active");

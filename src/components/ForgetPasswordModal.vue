@@ -12,14 +12,14 @@
                     <div id="password_reset">
                         <form>
                             <div class="form-group">
-                                <input type="email" @input="forgotten_password_email = $event.target.value" class="form-control" id="forgotEmail" :placeholder="'__("user_email")'">
+                                <input type="email" @input="forgotten_password_email = $event.target.value" class="form-control" :placeholder="'__("user_email")'">
                             </div>
                             <button type="button" @click="triggerEventAndSendPasswordResetEmail(forgotten_password_email)" class="btn sign-in">__("user_reset_password")</button>
                         </form>
                     </div>
                 </div>
                 <div class="spinner-overlay" v-if="getForgotPasswordUpdateState === 'LOADING'">
-                    <Spinner></Spinner> 
+                    <Spinner></Spinner>
                 </div>
             </div>
         </div>
@@ -49,9 +49,7 @@ export default {
             'sendPasswordResetEmail'
         ]),
         triggerEventAndSendPasswordResetEmail(data) {
-            this.triggerAnanlyticsEvent('REQUESTPASSWORD_EMAIL_FORGOTP', 'CONTROL', {
-                'USER_ID': this.getUserDetails.userId
-            });
+            this.triggerAnanlyticsEvent('REQUESTPASSWORD_EMAIL_FORGOTP', 'CONTROL', {});
             this.sendPasswordResetEmail(data);
         }
     },
@@ -62,10 +60,10 @@ export default {
         ])
     },
     created() {
-        
+
     },
     mounted() {
-        
+
     }
 }
 </script>

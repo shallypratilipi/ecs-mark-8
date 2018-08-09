@@ -8,8 +8,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <div class="login-menu">
-                        <a href="#" class="signup active" v-on:click="tabsignup" data-tab="signup">__("user_sign_up")</a>
-                        <a href="#" class="signin" v-on:click="tabsignin" data-tab="signin">__("user_sign_in")</a>
+                        <!-- <a href="#" class="signup" v-on:click="tabsignup" data-tab="signup">__("user_sign_up")</a> -->
+                        <a href="#" class="signin active" v-on:click="tabsignin" data-tab="signin">__("user_sign_in")</a>
                     </div>
                     <Login :openForgotPasswordInTab="true"></Login>
                     <Register></Register>
@@ -22,7 +22,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Login from '@/components/Login';
 import mixins from '@/mixins';
-import Register from '@/components/Register';
+import Register from '@/components/AppLogin';
 
 export default {
     name: 'login-modal',
@@ -81,7 +81,7 @@ export default {
             'loginUser'
         ]),
         tabsignup(event) {
-            event.preventDefault();        
+            event.preventDefault();
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".login-menu a").removeClass("active");
             $(".signup").addClass("active");
@@ -93,7 +93,7 @@ export default {
             });
         },
         tabsignin(event) {
-            event.preventDefault();        
+            event.preventDefault();
             var tab_id = $(event.currentTarget).attr('data-tab');
             $(".login-menu a").removeClass("active");
             $(".signin").addClass("active");
