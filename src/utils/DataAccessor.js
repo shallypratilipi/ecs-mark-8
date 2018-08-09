@@ -28,6 +28,7 @@ const AUTHOR_API = "/author";
 const AUTHOR_NEW_API = "/authors";
 const USER_API = "/user?_apiVer=2";
 const USER_LOGIN_API = "/user/login";
+const USER_IS_VALID = "/users/v2.0/identifiers/is-valid";
 const USER_LOGIN_FACEBOOK_API = "/user/login/facebook";
 const USER_LOGIN_GOOGLE_API = "/user/login/google";
 const USER_REGISTER_API = "/user/register";
@@ -511,6 +512,13 @@ export default {
         if (userId == null) return;
         httpUtil.get(API_PREFIX + USER_API,
             null, { "userId": userId },
+            function(response, status) { processGetResponse(response, status, aCallBack) });
+    },
+
+    getIfUserValid: (emailId, aCallBack) => {
+        httpUtil.get(API_PREFIX + USER_IS_VALID,
+            null,
+            { type: 'EMAIL', value: emailId },
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 

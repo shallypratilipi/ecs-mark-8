@@ -7,12 +7,15 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <button type="button" v-if="currentStep !== 'LANDED_LOGIN'" class="back" @click="goToFirstStep">
+                        <span aria-hidden="true"><i class="material-icons">arrow_back</i></span>
+                    </button>
                     <div class="login-menu">
-                        <!-- <a href="#" class="signup" v-on:click="tabsignup" data-tab="signup">__("user_sign_up")</a> -->
-                        <a href="#" class="signin active" v-on:click="tabsignin" data-tab="signin">__("user_sign_in")</a>
+                        <a href="#" class="signup active" v-if="currentStep === 'REGISTRATION'" data-tab="signup">__("user_sign_up")</a>
+                        <a href="#" class="signin active" v-else data-tab="signin">__("user_sign_in")</a>
                     </div>
                     <Login :openForgotPasswordInTab="true"></Login>
-                    <Register></Register>
+                    <Register :currentStep="currentStep" :changeCurrentStep="changeCurrentStep"></Register>
                 </div>
             </div>
         </div>
@@ -29,7 +32,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            currentStep: 'LANDED_LOGIN'
         }
     },
     computed: {
@@ -80,6 +84,12 @@ export default {
         ...mapActions([
             'loginUser'
         ]),
+        changeCurrentStep(step) {
+            this.currentStep = step;
+        },
+        goToFirstStep() {
+            this.currentStep = 'LANDED_LOGIN';
+        },
         tabsignup(event) {
             event.preventDefault();
             var tab_id = $(event.currentTarget).attr('data-tab');
@@ -122,6 +132,18 @@ button.close {
     right: 10px;
     top: 5px;
 }
+button.back {
+    position: absolute;
+    left: 10px;
+    border: none;
+    background: transparent;
+    top: 5px;
+
+    i {
+        text-shadow: 0 1px 0 #fff;
+        font-size: 16px;
+    }
+}
 .modal-body.login {
     padding: 0 10px;
     max-height: initial;
@@ -129,7 +151,7 @@ button.close {
 .login-menu {
     border-bottom: 1px solid #e9e9e9;
     padding: 8px 0 10px;
-    text-align: left;
+    text-align: center;
     overflow: hidden;
     width: 100%;
     overflow-x: auto;
@@ -149,7 +171,6 @@ button.close {
         }
         &.active {
             color: #d0021b;
-            border-color: #d0021b;
             span {
                 color: #d0021b;
             }

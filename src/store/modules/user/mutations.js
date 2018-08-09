@@ -93,5 +93,16 @@ export default {
     setReadCount(state, readCount) {
         state.read_stats.read_count = localStorage.readCount;
         state.read_stats.read_books = localStorage.readPratilipis ? JSON.parse(localStorage.readPratilipis) : [];
+    },
+
+    setUserEmailIsValidLoadingTrue(state) {
+        state.email_check.loading_state = 'LOADING';
+    },
+    setUserEmailIsValidLoadingSuccess(state, isValid) {
+        state.email_check.loading_state = 'LOADING_SUCCESS';
+        state.email_check.is_valid = isValid;
+    },
+    setUserEmailIsValidLoadingError(state) {
+        state.email_check.loading_state = 'LOADING_ERROR';
     }
 }

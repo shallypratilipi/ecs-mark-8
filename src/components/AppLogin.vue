@@ -1,34 +1,33 @@
 <template>
     <div>
         <div class="forms" id="signup" v-if="currentStep === 'LANDED_LOGIN'">
-            <form>
-                <div class="pratilipi-logo">
-                    <img src="../assets/pratilipi_logo.png" />
-                    <br>
-                    <span>Welcome to Pratilipi</span>
-                </div>
-                <div class="social-login">
-                    <FacebookLogin></FacebookLogin>
-                    <GoogleLogin></GoogleLogin>
-                </div>
-                <div class="or">__("or")</div>
-                <p class="validation_error" v-if="(getLoginError && getLoginError.message)">
+            <div class="pratilipi-logo">
+                <img src="../assets/pratilipi_logo.png" />
+                <br>
+                <span>__("welcome_pratilipi")</span>
+                <p class="subtitle">__("about_pratilipi")</p>
+            </div>
+            <div class="social-login">
+                <FacebookLogin></FacebookLogin>
+                <GoogleLogin></GoogleLogin>
+            </div>
+            <div class="or">__("or")</div>
+            <p class="validation_error" v-if="(getLoginError && getLoginError.message)">
+                <i class="material-icons">error</i>
+                <span v-if="(getLoginError && getLoginError.message)">{{ getLoginError.message | getTranslatedLoginErrorMessage }}</span>
+            </p>
+            <div class="form-group">
+                <p class="validation_error" v-if="emailIsInvalid || (getLoginError && getLoginError.email)">
                     <i class="material-icons">error</i>
-                    <span v-if="(getLoginError && getLoginError.message)">{{ getLoginError.message | getTranslatedLoginErrorMessage }}</span>
+                    <span v-if="(getLoginError && getLoginError.email)">{{ getLoginError.email }}</span>
+                    <span v-else>__("email_entered_incorrectly")</span>
                 </p>
-                <div class="form-group">
-                    <p class="validation_error" v-if="emailIsInvalid || (getLoginError && getLoginError.email)">
-                        <i class="material-icons">error</i>
-                        <span v-if="(getLoginError && getLoginError.email)">{{ getLoginError.email }}</span>
-                        <span v-else>__("email_entered_incorrectly")</span>
-                    </p>
-                    <input type="email" :class="{error: emailIsInvalid || (getLoginError && getLoginError.email) }" v-model="email" class="form-control" :placeholder="'__("user_email")'">
-                    <button type="button" @click="checkEmailAndGoToSecondStep">
-                        <span>Sign In</span>
-                        <i class="material-icons">keyboard_arrow_right</i>
-                    </button>
-                </div>
-            </form>
+                <input type="email" @keyup.enter="checkEmailAndGoToSecondStep" :class="{error: emailIsInvalid || (getLoginError && getLoginError.email) }" v-model="email" class="form-control" :placeholder="'__("user_email")'">
+                <button type="button" @click="checkEmailAndGoToSecondStep">
+                    <span>__("user_sign_in")</span>
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </button>
+            </div>
         </div>
 
         <div class="forms" id="signup-form" v-if="currentStep === 'REGISTRATION'">
@@ -138,8 +137,7 @@ export default {
             name: '',
             emailIsInvalid: false,
             passwordIsInvalid: false,
-            nameIsInvalid: false,
-            currentStep: 'LOGIN'
+            nameIsInvalid: false
         }
     },
     props: {
@@ -147,24 +145,37 @@ export default {
             type: Boolean,
             required: false,
             default: false
+        },
+        currentStep: {
+            required: true,
+            type: String
+        },
+        changeCurrentStep: {
+            required: true,
+            type: Function
         }
     },
     methods: {
         ...mapActions([
-            'signupUser'
+            'signupUser',
+            'checkIfUserValid'
         ]),
         goToSignup() {
-            this.currentStep = 'LANDED_LOGIN';
+            this.changeCurrentStep('LANDED_LOGIN');
         },
         goToSignin() {
-            this.currentStep = 'LOGIN';
+            this.changeCurrentStep('LOGIN');
         },
         checkEmailAndGoToSecondStep() {
-            if (this.email === 'suryadeep10@gmail.com') {
-                this.currentStep = 'LOGIN';
-            } else {
-                this.currentStep = 'REGISTRATION';
+            console.log('this is getting fired');
+
+            this.emailIsInvalid = !this.validateEmail(this.email);
+
+            if (this.emailIsInvalid) {
+                return;
             }
+
+            this.checkIfUserValid(this.email);
         },
         verifyAndSignupUser(data) {
             const { name, email, password } = data;
@@ -204,12 +215,23 @@ export default {
             this.nameIsInvalid = false;
             this.emailIsInvalid = false;
             this.passwordIsInvalid = false;
+        },
+
+        'getEmailCheckingStatus.loading_state'(loadingState) {
+            if (loadingState === 'LOADING_SUCCESS' && this.getEmailCheckingStatus.is_valid) {
+                this.changeCurrentStep('LOGIN');
+            } else if(loadingState === 'LOADING_SUCCESS' && !this.getEmailCheckingStatus.is_valid) {
+                this.changeCurrentStep('REGISTRATION');
+            } else if(loadingState === 'LOADING_ERROR') {
+                this.emailIsInvalid = true;
+            }
         }
     },
     computed: {
         ...mapGetters([
             'getLoginError',
-            'getLoginLoadingState'
+            'getLoginLoadingState',
+            'getEmailCheckingStatus'
         ])
     },
     components: {
@@ -252,12 +274,18 @@ export default {
 
     .pratilipi-logo {
         text-align: center;
-        padding-bottom: 20px;
         img {
             display: inline-block;
             height: 25%;
             width: 25%;
             padding-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            font-size: 12px;
+            padding: 10px 0 10px 10px;
+            margin-bottom: 5px;
         }
     }
     .or {

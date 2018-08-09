@@ -15,7 +15,7 @@
                             </div> -->
 
                             <!-- <Login></Login> -->
-                            <Register></Register>
+                            <Register :currentStep="currentStep" :changeCurrentStep="changeCurrentStep"></Register>
 
                             <!-- Modal -->
                             <!--<ForgetPasswordModal></ForgetPasswordModal>-->
@@ -63,7 +63,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            currentStep: 'LANDED_LOGIN'
         }
     },
     computed: {
@@ -148,6 +149,9 @@ export default {
             this.triggerAnanlyticsEvent('LANDED_LOGINM_LOGIN', 'CONTROL', {
                 'USER_ID': this.getUserDetails.userId
             });
+        },
+        changeCurrentStep(step) {
+            this.currentStep = step;
         }
     },
     created() {
