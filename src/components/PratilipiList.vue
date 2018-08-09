@@ -2,23 +2,19 @@
 	<div class="section">
 		<div class="container-fluid">
             <div class="row">
-                <div class="col-8">
+                <div class="col-12">
                     <h2 class="section-title">
                         <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerListLink">
                            <span> {{title}} </span>
                         </router-link>
                         <span v-else>{{title}}</span>
                     </h2>
-                </div>
-                <div v-if="!isMobile()" class="col-4">
-                    <h2 class="section-title-see-more">
+                    <h2 class="section-title-see-more" v-if="!isMobile()">
                         <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerMoreListLink">
                             <span>__("view_more")</span>
                         </router-link>
                     </h2>
-                </div>
-                <div v-else class="col-4">
-                    <h2 class="section-title-see-more">
+                    <h2 class="section-title-see-more icon-only" v-else>
                         <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerMoreListLink">
                             <i class="material-icons">keyboard_arrow_right</i>
                         </router-link>
@@ -185,39 +181,45 @@ export default {
 			text-align: left;
 			border-left: 3px solid #d0021b;
 			line-height: 24px;
-            width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            max-width: 85%;;
+            float: left;
             a {
                 color: #212121;
                 padding: 5px 0 5px 10px;
                 display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 			@media screen and (max-width: 576px ) {
                 font-size: 18px;
 				margin-bottom: 0;
+                width: calc(100% - 30px;)
             }
         }
 
         .section-title-see-more {
-            margin: 0;
+            margin: 5px 0 0;
             padding: 0;
             font-size: 22px;
             text-align: right;
             line-height: 24px;
-            width: 100%;
+            width: 40%;
+            float: right;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             a {
                 color: #212121;
-                padding: 10px 30px 5px 10px;
+                padding: 10px 5px 5px 10px;
                 display: block;
             }
             @media screen and (max-width: 576px ) {
-                font-size: 18px;
+                font-size: 17px;
                 margin-bottom: 0;
+            }
+            &.icon-only {
+                width: 30px;
             }
         }
     }
