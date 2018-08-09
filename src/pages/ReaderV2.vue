@@ -53,7 +53,7 @@
                     <i class="material-icons">close</i>
                 </div>
                 <div class="book-info">
-                    <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" alt="getPratilipiData.displayTitle"></div>
+                    <div class="book-cover"><img :src="getPratilipiData.coverImageUrl" v-bind:alt="getPratilipiData.displayTitle"></div>
                     <div class="book-name">{{ getPratilipiData.title }}</div>
                     <router-link :to="getAuthorData.pageUrl" class="author-link">
                         <span class="auth-name">{{ getAuthorData.displayName }}</span>
@@ -141,7 +141,7 @@
                                     <TranslatingInputTextArea id="readerReportModalContentText" :value="reportContentText" :oninput="updateReportContentText"  placeholder="__('report_issue')" class="modal-textarea"></TranslatingInputTextArea>
                                 </div>
                                 <button type="button" class="btn btn-primary btn-submit" @click="submitReport">__("submit")</button>
-                                <button type="button" class="cancel" data-dismiss="modal" aria-label="Close" @click="resetReportValues">__("cancel")</button>
+                                <button type="button" class="cancel" data-dismiss="modal" aria-label="Close" @click="setReportDefaultValues">__("cancel")</button>
                         </div>
                     </div>
                 </div>
@@ -386,6 +386,7 @@ export default {
             lineHeight: this.getCookie(READER_LINE_HEIGHT_COOKIE_NAME) || ReaderLineHeight.MEDIUM,
             readingMode: this.getCookie(READER_READING_MODE_COOKIE_NAME) || ReaderReadingMode.WHITE,
             language: constants.LANGUAGES.filter((eachLanguage) => eachLanguage.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase(),
+            documentTitle: null,
 
             /* content */
             currentChapterSlugId: null,
@@ -467,45 +468,45 @@ export default {
         increaseFont() {
             if (this.fontSize + 2 <= this.maxFontSize) {
                 this.fontSize += 2
-                this.setCookie(READER_FONT_SIZE_COOKIE_NAME, this.fontSize, 7, '/read')
+                this.setCookie(READER_FONT_SIZE_COOKIE_NAME, this.fontSize, 7)
             }
             this._triggerReaderAnalyticsEvent('READERFONT_SETTINGS_READER', this.fontSize)
         },
         decreaseFont() {
             if (this.fontSize -2 >= this.minFontSize) {
                 this.fontSize -= 2
-                this.setCookie(READER_FONT_SIZE_COOKIE_NAME, this.fontSize, 7, '/read')
+                this.setCookie(READER_FONT_SIZE_COOKIE_NAME, this.fontSize, 7)
             }
             this._triggerReaderAnalyticsEvent('READERFONT_SETTINGS_READER', this.fontSize)
         },
         lineHeightSm() {
             this.lineHeight = ReaderLineHeight.SMALL
-            this.setCookie(READER_LINE_HEIGHT_COOKIE_NAME, this.lineHeight, 7, '/read')
+            this.setCookie(READER_LINE_HEIGHT_COOKIE_NAME, this.lineHeight, 7)
             this._triggerReaderAnalyticsEvent('READERGAP_SETTINGS_READER', 'LESS')
         },
         lineHeightMd() {
             this.lineHeight = ReaderLineHeight.MEDIUM
-            this.setCookie(READER_LINE_HEIGHT_COOKIE_NAME, this.lineHeight, 7, '/read')
+            this.setCookie(READER_LINE_HEIGHT_COOKIE_NAME, this.lineHeight, 7)
             this._triggerReaderAnalyticsEvent('READERGAP_SETTINGS_READER', 'NORMAL')
         },
         lineHeightLg() {
             this.lineHeight = ReaderLineHeight.LARGE
-            this.setCookie(READER_LINE_HEIGHT_COOKIE_NAME, this.lineHeight, 7, '/read')
+            this.setCookie(READER_LINE_HEIGHT_COOKIE_NAME, this.lineHeight, 7)
             this._triggerReaderAnalyticsEvent('READERGAP_SETTINGS_READER', 'HIGH')
         },
         themeWhite() {
             this.readingMode = ReaderReadingMode.WHITE
-            this.setCookie(READER_READING_MODE_COOKIE_NAME, this.readingMode, 7, '/read')
+            this.setCookie(READER_READING_MODE_COOKIE_NAME, this.readingMode, 7)
             this._triggerReaderAnalyticsEvent('READERBACKGROUND_SETTINGS_READER', 'WHITE')
         },
         themeNight() {
             this.readingMode = ReaderReadingMode.NIGHT
-            this.setCookie(READER_READING_MODE_COOKIE_NAME, this.readingMode, 7, '/read')
+            this.setCookie(READER_READING_MODE_COOKIE_NAME, this.readingMode, 7)
             this._triggerReaderAnalyticsEvent('READERBACKGROUND_SETTINGS_READER', 'NIGHT')
         },
         themeSepia() {
             this.readingMode = ReaderReadingMode.SEPIA
-            this.setCookie(READER_READING_MODE_COOKIE_NAME, this.readingMode, 7, '/read')
+            this.setCookie(READER_READING_MODE_COOKIE_NAME, this.readingMode, 7)
             this._triggerReaderAnalyticsEvent('READERBACKGROUND_SETTINGS_READER', 'SEPIA')
         },
 
@@ -618,12 +619,11 @@ export default {
         updateReportContentText(value) {
             this.reportContentText = value
         },
-        resetReportValues() {
+        setReportDefaultValues() {
             this.reportName = this.getUserDetails.displayName || ''
             this.reportEmail = this.getUserDetails.email || ''
             this.reportContentText = ''
         },
-
         submitReport() {
             const 
                 name = this.reportName.trim(),
@@ -659,7 +659,7 @@ export default {
             $('#readerReportModal').modal('hide')
 
             // resetting values
-            this.resetReportValues()
+            this.setReportDefaultValues()
         },
 
         /* settings */
@@ -689,16 +689,16 @@ export default {
         /* scroll */
         updateScroll() {
             this.scrollPosition = window.scrollY
-            const wintop = $(window).scrollTop()
-            const docheight = $('.book-content').height() + Number($('.book-content').css('marginTop').replace('px', '')) + Number($('.book-content').css('marginBottom').replace('px', ''))
-            const winheight = $(window).height()
-            const readerPercentScrolled = (wintop / (docheight - winheight)) * 100
-            if (!isNaN(readerPercentScrolled)) {
+            const $bookContent = $('.book-content')
+            if ($bookContent) {
+                const wintop = $(window).scrollTop()
+                const docheight = $bookContent.height() + Number($bookContent.css('marginTop').replace('px', '')) + Number($bookContent.css('marginBottom').replace('px', ''))
+                const winheight = $(window).height()
+                const readerPercentScrolled = (wintop / (docheight - winheight)) * 100
                 this.readerPercentScrolled = Math.max(readerPercentScrolled, 0)
                 $('.reader-progress .progress-bar').css('width', `${this.readerPercentScrolled}%`)
             }
         }
-
     },
     computed: {
         ...mapGetters('readerv2page', [
@@ -738,8 +738,14 @@ export default {
         this.currentChapterSlugId = window.location.pathname.split('/').pop().split('-').pop()
     },
     mounted() {
+        /* disabling right click */
         $('.read-page').bind("contextmenu", e => e.preventDefault())
+
+        /* listen to window scroll */
         window.addEventListener('scroll', this.updateScroll)
+
+        /* setting default values */
+        this.setReportDefaultValues()
     },
     watch: {
         '$route.params.slug' (chapterSlug) {
@@ -765,20 +771,29 @@ export default {
                 self.maxReadPercentageCompleted = maxReadPercentage === 100
             })
 
-            // setting the title of the page
-            let documentTitle = ''
+            // setting the document title of the page
+            let titleArray = []
             let chapterMeta = this.getIndexData.filter(indexData => indexData.slugId === this.renderedChapterIdSlug)[0]
             if (chapterMeta.title) {
-                documentTitle += chapterMeta.title + ' | '
+                titleArray.push(chapterMeta.title)
             }
-            documentTitle += (this.getPratilipiData.title && this.getPratilipiData.titleEn) ? 
-                `${this.getPratilipiData.title} | ${this.getPratilipiData.titleEn}` : this.getPratilipiData.displayTitle
-            document.title = documentTitle
+            if (this.getPratilipiData.title && this.getPratilipiData.title !== 'null' && this.getPratilipiData.title !== 'undefined') {
+                titleArray.push(this.getPratilipiData.title)
+            }
+            if (this.getPratilipiData.titleEn && this.getPratilipiData.titleEn !== 'null' && this.getPratilipiData.titleEn !== 'undefined') {
+                titleArray.push(this.getPratilipiData.titleEn)
+            }
+            this.documentTitle = titleArray.join(' | ')
         },
         'getPratilipiData.pratilipiId' (pratilipiId) {
             // pratilipi title seo
-            const pratilipiTitle = (this.getPratilipiData.title && this.getPratilipiData.titleEn) ? 
-                `${this.getPratilipiData.title} | ${this.getPratilipiData.titleEn}` : this.getPratilipiData.displayTitle
+            let titleArray = []
+            if (this.getPratilipiData.title && this.getPratilipiData.title !== 'null' && this.getPratilipiData.title !== 'undefined') {
+                titleArray.push(this.getPratilipiData.title)
+            }
+            if (this.getPratilipiData.titleEn && this.getPratilipiData.titleEn !== 'null' && this.getPratilipiData.titleEn !== 'undefined') {
+                titleArray.push(this.getPratilipiData.titleEn)
+            }
 
             // removing meta description from head section
             if ($('meta[name="description"]')) {
@@ -791,7 +806,7 @@ export default {
             $('meta[property="og:description"]').remove()
             $('meta[property="og:image"]').remove()
             $('meta[property="og:url"]').remove()
-            $('head').append(`<meta property='og:title' content='${pratilipiTitle}'>`)
+            $('head').append(`<meta property='og:title' content='${titleArray.join(' | ')}'>`)
             $('head').append(`<meta property='og:description' content='${this.getPratilipiData.summary ? (this.getPratilipiData.summary + ' « ' + this.getAuthorData.fullName) : this.getPratilipiData.summary}'>`)
             $('head').append(`<meta property='og:image' content='${this.getPratilipiData.coverImageUrl}'>`)
             $('head').append(`<meta property='og:url' content='${this.getPratilipiData.pageUrl}'>`)
@@ -804,8 +819,7 @@ export default {
             this.isWebPushModalEnabled =  this.getPratilipiData.state === "PUBLISHED" && WebPushUtil.canShowCustomPrompt() && (parseInt(this.getCookie('bucketId')) || 0) >= 30 && (parseInt(this.getCookie('bucketId')) || 0) < 60
         },
         'getUserDetails.userId' (newUserId, oldUserId) {
-            this.reportName = this.getUserDetails.displayName || ''
-            this.reportEmail = this.getUserDetails.email || ''
+            this.setReportDefaultValues()
             // First initialisation
             if (oldUserId === undefined) {
                 // Do Nothing
@@ -813,6 +827,9 @@ export default {
                 // user state change in reader
                 this.fetchReaderData(this.currentChapterSlugId)
             }
+        },
+        'documentTitle' () {
+            document.title = this.documentTitle
         },
         'scrollPosition'(newScrollPosition, prevScrollPosition) {
             if (newScrollPosition > 60 && this.scrollDirection === 'DOWN') {

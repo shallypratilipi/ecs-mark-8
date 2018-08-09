@@ -3,30 +3,29 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="pratilipiPublishModalLabel">{{pratilipi.title}}</h5>
+                    <h5 class="modal-title" id="pratilipiPublishModalLabel">__("pratilipi_publish_share_heading")</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-image">
-                        <img :src="pratilipi.coverImageUrl" alt="pratilipi.displayTitle" />
+                    <div class="book-image-container">
+                        <div class="book-image" v-bind:style="{ backgroundImage: 'url(' + pratilipi.coverImageUrl  + ')' }"></div>
                     </div>
-                    <div class="message-container">You have published "{{pratilipi.displayTitle}}". Share it with your friends</div>
-                </div>
-                <div class="modal-footer">
-                    <a :href="getWhatsAppUri" @click="triggerWaShareEvent" class="whatsapp" target="_blank" rel="noopener" aria-label="whatsapp">
-                        <span class="social-icon"><icon name="whatsapp"></icon></span>
-                    </a>
-                    <a :href="getFacebookShareUrl" @click="triggerFbShareEvent" class="fb" target="_blank" rel="noopener" aria-label="facebook">
-                        <span class="social-icon"><icon name="facebook-f"></icon></span>
-                    </a>
-                    <a :href="getTwitterUrl" @click="triggerTwShareEvent" class="twitter" target="_blank" rel="noopener" aria-label="twitter">
-                    <span class="social-icon"><icon name="twitter"></icon></span>
-                    </a>
-                    <a :href="getGooglePlusUrl" @click="triggerGpShareEvent" class="google" target="_blank" rel="noopener" aria-label="google">
-                        <span class="social-icon"><icon name="google-plus"></icon></span>
-                    </a>
+                    <div class="message-container">
+                        <div class="message">{{getShareDescription}}</div>
+                        <div class="share-icons">
+                            <a :href="getWhatsAppUri" @click="triggerWaShareEvent" class="whatsapp" target="_blank" rel="noopener" aria-label="whatsapp">
+                                <span class="social-icon"><icon name="whatsapp"></icon></span>
+                            </a>
+                            <a :href="getFacebookShareUrl" @click="triggerFbShareEvent" class="fb" target="_blank" rel="noopener" aria-label="facebook">
+                                <span class="social-icon"><icon name="facebook-f"></icon></span>
+                            </a>
+                            <a :href="getTwitterUrl" @click="triggerTwShareEvent" class="twitter" target="_blank" rel="noopener" aria-label="twitter">
+                            <span class="social-icon"><icon name="twitter"></icon></span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,10 +47,12 @@ export default {
         ...mapGetters([
             'getFacebookShareUrl',
             'getTwitterUrl',
-            'getGooglePlusUrl',
             'getWhatsAppUri',
             'getUserDetails'
         ]),
+        getShareDescription () {
+            return '__("pratilipi_publish_share_description")'.replace('$pratilipiTitle', this.pratilipi.displayTitle)
+        }
     },
     mixins: [
         mixins
@@ -80,9 +81,6 @@ export default {
         },
         triggerFbShareEvent() {
             this._triggerAnalyticsEvent('SHARE', 'FACEBOOK')
-        },
-        triggerGpShareEvent() {
-            this._triggerAnalyticsEvent('SHARE', 'GOOGLE')
         },
         triggerTwShareEvent() {
             this._triggerAnalyticsEvent('SHARE', 'TWITTER')
@@ -116,52 +114,78 @@ export default {
         .modal-body {
             display: flex;
             justify-content: space-between;
-            .message-container {
-                text-align: left;
-                padding: 10px;
-            }
-            .modal-image {
-                height: 200px;
-
-                img {
+            .book-image-container {
+                display: flex;
+                justify-content: center;
+                .book-image {
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                    position: relative;
+                    width: 200px;
                     height: 200px;
+                    @media screen and (max-width: 576px) {
+                        width: 100px;
+                        height: 100px;
+                    }
+                    .progress-bar-read {
+                        height: 8px;
+                        position: absolute;
+                        bottom: 0;
+                        width: 100%;
+                        display: block;
+                    }
+                    .reader-progress {
+                        height: 8px;
+                        background-color: red;
+                    }
                 }
             }
-        }
-        .modal-footer {
-            border: none;
-            .btn-submit {
-                background: #d0021b;
-                color: #fff;
-                border: 0;
-            }
-            a {
-                font-size: 14px;
-                .social-icon {
-                    width: 35px;
-                    height: 35px;
-                    background: #3b5998;
-                    color: #fff;
-                    border-radius: 50%;
+            .message-container {
+                padding: 0 10px;
+                width: 100%;
+                .message {
+                    text-align: left;
+                }
+                .share-icons {
+                    border: none;
                     display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    text-decoration: none;
-                    cursor: pointer;
+                    flex-direction: row;
+                    margin: 10px -4px;
+                    .btn-submit {
+                        background: #d0021b;
+                        color: #fff;
+                        border: 0;
+                    }
+                    a {
+                        font-size: 14px;
+                        margin: 0 4px;
+                        .social-icon {
+                            width: 35px;
+                            height: 35px;
+                            background: #3b5998;
+                            color: #fff;
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                    }
+                    a.twitter .social-icon  {
+                        background: #00aced;
+                    }
+                    a.google .social-icon { 
+                        background: #dd4b39;
+                    }
+                    a.whatsapp .social-icon {
+                        background: #48C631;
+                    }
+                    a.link .social-icon {
+                        background: #2c3e50;
+                    }
                 }
-            }
-            
-            a.twitter .social-icon  {
-                background: #00aced;
-            }
-            a.google .social-icon { 
-                background: #dd4b39;
-            }
-            a.whatsapp .social-icon {
-                background: #48C631;
-            }
-            a.link .social-icon {
-                background: #2c3e50;
             }
         }
     }
