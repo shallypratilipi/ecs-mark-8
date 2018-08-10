@@ -186,11 +186,9 @@ export default {
         },
         'scrollPosition'(newScrollPosition){
             const nintyPercentOfList = ( 70 / 100 ) * $('.event-page').innerHeight();
-
             if (newScrollPosition > nintyPercentOfList &&
                 this.getEventDataLoadingState !== 'LOADING' &&
                 this.getEventPratilipisFound >= this.getEventPratilipisOffset && this.getEventPratilipisOffset > 0) {
-                console.log("trying to fetch data");
                 this.fetchEventDetails({ "eventSlug" : this.$route.params.event_slug.split("-").pop(), "limit" : 20, "offset" : this.getEventPratilipisOffset });
             }
         },

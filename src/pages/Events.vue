@@ -7,18 +7,6 @@
                         <h2>__("event_events")</h2>
                         <div class="page-content event-list row">
                             <div class="col-md-4 col-sm-12" v-for="each_event in getEventsData" :key="each_event.eventId">
-                                <!--<router-link @click.native="triggerEvent(each_event.eventId)" :to="{ name: 'Event_Page', params: { event_slug: each_event.pageUrl.split('/').pop(), event_data: each_event } }">-->
-                                    <!--<div class="event-display-box">-->
-                                        <!--<div class="book-type" :class="each_event.eventState">-->
-                                            <!--{{ each_event.eventState | getPratilipiTypeInNativeLanguage }}-->
-                                        <!--</div>-->
-                                        <!--<div class="event-img show-status"-->
-                                          <!--v-bind:style="{ backgroundImage: 'url(' + each_event.bannerImageUrl  + ')' }">-->
-
-                                        <!--</div>-->
-                                        <!--<p class="event-name">{{ each_event.name }} </p>-->
-                                    <!--</div>-->
-                                <!--</router-link>-->
                                 <EventCard :eventData="each_event">
 
                                 </EventCard>
@@ -52,7 +40,9 @@ export default {
     computed: {
         ...mapGetters('eventspage', [
             'getEventsLoadingState',
-            'getEventsData'
+            'getEventsData',
+            'getEventsFound',
+            'getEventsOffset'
         ]),
         ...mapGetters([
             'getUserDetails'
@@ -62,33 +52,58 @@ export default {
         return {
             isEventActive: false,
             showText: false,
-            eachEventId: null
+            eachEventId: null,
+            scrollPosition: 0,
         }
     },
     methods: {
         ...mapActions('eventspage', [
-            'fetchListOfEvents'
+            'fetchListOfEvents',
+            'refreshState',
         ]),
         showTextOverlay(eventId) {
             this.showText = !this.showText;
             this.eachEventId = eventId;
             console.log("Changing: " + this.showText);
         },
+        updateScroll() {
+            this.scrollPosition = window.scrollY;
+        },
 
+    },
+    watch: {
+        'scrollPosition'(newScrollPosition){
+            const nintyPercentOfList = ( 70 / 100 ) * $('.event-list').innerHeight();
+            if (newScrollPosition > nintyPercentOfList &&
+                this.getEventsLoadingState !== 'LOADING' &&
+                this.getEventsFound >= this.getEventsOffset && this.getEventsOffset > 0) {
+                const currentLocale = process.env.LANGUAGE;
+                constants.LANGUAGES.forEach((eachLanguage) => {
+                    if (eachLanguage.shortName === currentLocale) {
+                        this.fetchListOfEvents({ "language" : eachLanguage.fullName.toUpperCase(), "limit" : 20, "offset" : this.getEventsOffset});
+                    }
+                });
+            }
+        },
     },
 
     created() {
         const currentLocale = process.env.LANGUAGE;
         constants.LANGUAGES.forEach((eachLanguage) => {
             if (eachLanguage.shortName === currentLocale) {
-                this.fetchListOfEvents(eachLanguage.fullName.toUpperCase())
+                this.fetchListOfEvents({ "language" : eachLanguage.fullName.toUpperCase(), "limit" : 20, "offset" : 0})
             }
         });
     },
     mounted() {
+        window.addEventListener('scroll', this.updateScroll);
         this.triggerAnanlyticsEvent('LANDED_EVENTLISTM_EVENTLIST', 'CONTROL', {
             'USER_ID': this.getUserDetails.userId
         });
+    },
+    destroyed() {
+        this.refreshState();
+        window.removeEventListener('scroll', this.updateScroll);
     },
 
 }
