@@ -1,37 +1,40 @@
 <template>
-    <div class="vapasi">
-        <div v-for="shayari in shayariList">
-            <div class="horoscope-details">
-                <div>
-                    <img :src="shayari.image" width=100%> </img>
+    <MainLayout>
+        <div class="vapasi">
+            <div v-for="shayari in shayariList">
+                <div class="horoscope-details">
+                    <div>
+                        <img :src="shayari.image" width=100%> </img>
+                    </div>
+                </div>
+                <br>
+                <div class="social-icons">
+                    <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                    <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
                 </div>
             </div>
-            <br>
-            <div class="social-icons">
-                <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
+            <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
+                <p class="close" @click="resetModal()"><b>X</b></p>
+                <div class="horoscope-details">
+                  <div>
+                    <img :src="shayariList[this.$route.query.postId].image" width=100%> </img>
+                  </div>
+                </div>
+                <br>
+                <div class="social-icons">
+                  <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
+                  <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
+                </div>
             </div>
         </div>
-        <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
-            <p class="close" @click="resetModal()"><b>X</b></p>
-            <div class="horoscope-details">
-              <div>
-                <img :src="shayariList[this.$route.query.postId].image" width=100%> </img>
-              </div>
-            </div>
-            <br>
-            <div class="social-icons">
-              <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-              <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
-            </div>
-        </div>
-    </div>
+    </MainLayout>
 </template>
 <script>
 import mixins from '@/mixins';
 import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
 import WebPushUtil from '@/utils/WebPushUtil';
+import MainLayout from '@/layout/main-layout.vue';
 import * as firebase from "firebase";
 import {
     mapGetters,
@@ -62,6 +65,9 @@ export default {
             language: constants.LANGUAGES.filter((eachLanguage) => eachLanguage.shortName === process.env.LANGUAGE)[0].fullName.toUpperCase(),
             shayariList: []
         }
+    },
+    components: {
+        MainLayout
     },
     methods: {
         resetModal() {
@@ -104,7 +110,7 @@ export default {
                     }
                 })
             });
-            this.triggerAnanlyticsEvent(`SHAREFB_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
+            this.triggerAnanlyticsEvent(`LIKE_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerWhatsappShareAnalytics() {
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});

@@ -3,7 +3,8 @@
         <router-link :to='"/shayaris"' @click.native="triggerShayariAnanlyticsEvent()">
             <div class="vapasi-banner">
                 <div class="vapasi-text" >
-                    {{shayari}}
+                    <span>{{shayari}}</span>
+                    <i class="material-icons">keyboard_arrow_right</i>
                 </div>
             </div>
         </router-link>
@@ -96,6 +97,16 @@ export default {
     @media screen and (min-width: 1400px) {
         font-size: 26px;
         text-align: center;
+    }
+    span {
+        vertical-align: middle;
+    }
+    i {
+        font-size: 26px;
+        vertical-align: middle;
+        display: block;
+        float: right;
+        margin: 5px 0 0;
     }
 }
 
