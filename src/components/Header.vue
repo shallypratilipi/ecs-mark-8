@@ -21,7 +21,7 @@
                         <div class="search-box d-none d-lg-block">
                             <div class="form-group has-feedback" id="search-box-big">
                                 <label for="big-search">Search</label>
-                                <input id="big-search" type="text" class="form-control" :value="searchText" @input="changeSearchText" @keyup.enter="goToSearchPage" @click="opendesktopsearch" v-bind:placeholder="'__("search_bar_help")'"/>
+                                <input autocomplete="off" id="big-search" type="text" class="form-control" :value="searchText" @input="changeSearchText" @keyup.enter="goToSearchPage" @click="opendesktopsearch" v-bind:placeholder="'__("search_bar_help")'"/>
                                 <button class="voice-input-button"
                                     v-bind:class="{ 'is-active': voiceRecognitionActive }"
                                     @click="voiceInput"
@@ -46,7 +46,7 @@
                         <div class="d-block d-lg-none search-box search-box-2 text-right">
                             <div class="form-group has-feedback" id="search-box-small">
                                 <label for="small-search">Search</label>
-                                <input type="text" id="small-search" class="form-control" :value="searchText" @input="changeSearchText" @keyup.enter="goToSearchPage" @click="openmobilesearch" v-bind:placeholder="'__("search")'"/>
+                                <input autocomplete="off" type="text" id="small-search" class="form-control" :value="searchText" @input="changeSearchText" @keyup.enter="goToSearchPage" @click="openmobilesearch" v-bind:placeholder="'__("search")'"/>
                                 <button class="voice-input-button"
                                     v-bind:class="{ 'is-active': voiceRecognitionActive }"
                                     @click="voiceInput"
