@@ -5,7 +5,7 @@
                 <router-link v-if="listPageUrl" :to="listPageUrl" @click.native="triggerListLink">{{title}}</router-link>
                 <span v-else>{{title}}</span>
             </h2>
-	        <div class="pratilipi-list row" v-if="pratilipiList.length > 0">
+	        <div class="pratilipi-list" v-if="pratilipiList.length > 0">
                     <div
                         class="pratilipi-recommendation col-md-4 col-sm-12"
                         v-for="(eachPratilipi, index) in pratilipiList"
