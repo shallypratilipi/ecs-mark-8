@@ -348,10 +348,8 @@ var router = new Router({
                 if (process.env.REALM === 'PROD') {
                     let bucketId = getCookie('bucket_id') ? getCookie('bucket_id') : 42;
                     console.log("bucket id ", bucketId);
-                    if (bucketId >= 20 && bucketId < 40) {
+                    if (bucketId >= 20 && bucketId < 60) {
                         return import ('@/pages/experiments/reader/Reader_v1.vue');
-                    } else if (bucketId >= 40 && bucketId < 60) {
-                        return import ('@/pages/experiments/reader/Reader_v2.vue');
                     } else if (bucketId >= 60 && bucketId < 80) {
                         return new Promise((resolve, reject) => resolve(ReaderPageComponent));
                     } else {
