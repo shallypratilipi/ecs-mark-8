@@ -172,5 +172,18 @@ export default {
     setReadCount({ commit }, readCount) {
         console.log(localStorage.readPratilipis);
         commit('setReadCount', readCount);
+    },
+
+    checkIfUserValid({ commit }, emailId) {
+        commit('setUserEmailIsValidLoadingTrue');
+        DataAccessor.getIfUserValid(emailId, (data) => {
+            if (data.status === 200) {
+                console.log(data);
+                commit('setUserEmailIsValidLoadingSuccess', data.response.isValid);
+            } else {
+                console.log('FAILED');
+                commit('setUserEmailIsValidLoadingError');
+            }
+        });
     }
 }

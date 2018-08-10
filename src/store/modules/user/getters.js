@@ -39,5 +39,6 @@ export default {
         } else {
             return 3
         }
-    }
+    },
+    getEmailCheckingStatus: state => state.email_check
 }
