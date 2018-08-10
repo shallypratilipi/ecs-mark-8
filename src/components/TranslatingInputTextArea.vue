@@ -159,11 +159,6 @@ export default {
                     }
                     const onEnd = (error) => {
                         self.voiceRecognitionActive = false
-                        const screenName = self.getAnalyticsPageSource(self.$route.meta.store)
-                        self.triggerAnanlyticsEvent(`VOICEINPUTSTOP_${self.screenLocation}_${screenName}`, 'CONTROL', {
-                            'USER_ID': self.getUserDetails.userId,
-                            'ENTITY_VALUE': ''
-                        })
                     }
                     this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
                 }
