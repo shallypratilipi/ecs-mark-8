@@ -222,11 +222,6 @@ export default {
                 }
                 const onEnd = (error) => {
                     self.voiceRecognitionActive = false
-                    self.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
-                        'USER_ID': self.getUserDetails.userId,
-                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store),
-                        'ENTITY_VALUE': ''
-                    })
                 }
                 this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
             }
