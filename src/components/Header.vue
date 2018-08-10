@@ -194,30 +194,46 @@ export default {
         },
         /* Speech to text */
         voiceInput() {
-            if (SpeechToTextUtil.isSupported()) {
-                if (!this.recognition) {
-                    const self = this
-                    const onStart = () => {
-                        self.voiceRecognitionActive = true
-                    }
-                    const onResult = (event, res) => {
-                        self.voiceRecognitionActive = false
-                        self.searchText = res
-                        this.goToSearchPage()
-                    }
-                    const onError = (error) => {
-                        self.voiceRecognitionActive = false
-                    }
-                    const onEnd = (error) => {
-                        self.voiceRecognitionActive = false
-                    }
-                    this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
+            if (!this.recognition) {
+                const self = this
+                const onStart = () => {
+                    self.voiceRecognitionActive = true
+                    self.triggerAnanlyticsEvent('VOICEINPUTSTART_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store)
+                    })
                 }
-                if (!this.voiceRecognitionActive) {
-                    this.recognition.start()
-                } else {
-                    this.recognition.stop()
+                const onResult = (event, res) => {
+                    self.voiceRecognitionActive = false
+                    self.searchText = res
+                    self.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store),
+                        'ENTITY_VALUE': res
+                    })
+                    self.goToSearchPage()
                 }
+                const onError = (error) => {
+                    self.voiceRecognitionActive = false
+                    self.triggerAnanlyticsEvent('VOICEINPUTERROR_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store)
+                    })
+                }
+                const onEnd = (error) => {
+                    self.voiceRecognitionActive = false
+                    self.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store),
+                        'ENTITY_VALUE': ''
+                    })
+                }
+                this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
+            }
+            if (!this.voiceRecognitionActive) {
+                this.recognition.start()
+            } else {
+                this.recognition.stop()
             }
         },
         triggerEventAndResetNotificationCount() {
@@ -300,7 +316,7 @@ export default {
             this.searchText = this.$route.query.q;
         }
 
-        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported() && this.isTestEnvironment();
+        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported()
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);

@@ -111,8 +111,6 @@ export default {
             }
         },
         '$route.query.q'(newValue) {
-            console.log(newValue)
-
             const currentLocale = process.env.LANGUAGE;
             constants.LANGUAGES.forEach((eachLanguage) => {
                 if (eachLanguage.shortName === currentLocale) {

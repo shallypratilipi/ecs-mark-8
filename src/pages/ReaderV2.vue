@@ -138,7 +138,7 @@
                                     <label for="readerReportModalEmail">__("email")</label>
                                     <input id="readerReportModalEmail" class="form-control" :value="reportEmail" @input="reportEmail = $event.target.value" placeholder="__('email')" />
                                     <label for="readerReportModalContentText">__("report_issue")</label>
-                                    <TranslatingInputTextArea id="readerReportModalContentText" :value="reportContentText" :oninput="updateReportContentText"  placeholder="__('report_issue')" class="modal-textarea"></TranslatingInputTextArea>
+                                    <TranslatingInputTextArea id="readerReportModalContentText" :value="reportContentText" :oninput="updateReportContentText" screenLocation="REPORT" placeholder="__('report_issue')" class="modal-textarea"></TranslatingInputTextArea>
                                 </div>
                                 <button type="button" class="btn btn-primary btn-submit" @click="submitReport">__("submit")</button>
                                 <button type="button" class="cancel" data-dismiss="modal" aria-label="Close" @click="setReportDefaultValues">__("cancel")</button>
