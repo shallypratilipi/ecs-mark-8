@@ -146,17 +146,34 @@ export default {
         outline: none;
         color: #212121;
     }
-    .list-page .pratilipi-wrap, .event-list .pratilipi-wrap, .event-list .pratilipi-wrap .pratilipi, .author-page .pratilipi-wrap, .search-page .pratilipi-wrap {
+    .pratilipi-wrap, .event-list .pratilipi-wrap, .event-list .pratilipi-wrap .pratilipi, .author-page .pratilipi-wrap, .search-page .pratilipi-wrap {
         display: inline-block;
+        width: 100%;
+        border-bottom: 1px solid #e9e9e9;
+
+        @media screen and (min-width: 768px ) and ( max-width: 992px ) {
+            width: 50%;
+            display: inline-block;
+            padding-right: 20px;
+        }
+        @media screen and (min-width: 992px ) {
+            width: 30%;
+            display: inline-block;
+            padding-right: 20px;
+        }
     }
     .pratilipi {
         background: #fff;
         margin: 10px 0px;
         padding-bottom: 10px;
-        border-bottom: 1px solid #e9e9e9;
         position: relative;
+        display: flex;
+        a {
+            display: flex;
+            width: 100%;
+        }
         .pratilipi-image {
-            width: 29%;
+            width: 40%;
             height: 200px;
             background-size: cover;
             background-position: center;
@@ -224,7 +241,7 @@ export default {
         }
 
         .pratilipi-details {
-            width: 70%;
+            width: 60%;
             display: inline-block;
             vertical-align: top;
             text-align: left;
@@ -233,6 +250,9 @@ export default {
 
             h2 {
                 font-size: 1.2rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             span {
                 display: block;
@@ -251,7 +271,7 @@ export default {
             .summary {
                 color: #212121;
                 font-size: 12px;
-                height: 110px;
+                height: 70px;
                 overflow: hidden;
                 margin: 5px 0 10px;
                 text-align: justify;
