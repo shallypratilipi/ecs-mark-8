@@ -1,15 +1,13 @@
 <template>
     <div class="pratilipi-wrap" :class="{ 'event-participate-page': isEventParticipatePage }">
         <div class="pratilipi">
-            <router-link :to="'pratilipiData.readUrl'" v-if="pratilipiData.eventState != 'SUBMISSION'">
+            <router-link :to="pratilipiData.readUrl" v-if="pratilipiData.eventState != 'SUBMISSION'">
                 <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
             </router-link>
-            <router-link :to="'pratilipiData.readUrl'" v-else>
-                <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl"></PratilipiImage>
-            </router-link>
+            <PratilipiImage :coverImageUrl="pratilipiData.coverImageUrl" v-else></PratilipiImage>
             <div class="pratilipi-details container">
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-8 pratilipi-title-container">
                         <span class="title" itemprop="name">{{ pratilipiData.title }}</span>
                     </div>
                     <div class="col-4" v-if="pratilipiData.hasAccessToUpdate">
@@ -27,7 +25,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-6 author-title-container">
                         <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ pratilipiData.author.displayName }}</span></span>
                     </div>
                     <div class="col-6">
@@ -257,6 +255,14 @@ export default {
                     font-size: 13px;
                     color: #555555;
                 }
+            }
+            .pratilipi-title-container {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .author-title-container{
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .date {
                 color: #212121;
