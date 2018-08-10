@@ -5,7 +5,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>__("join_pratilipi")</h2>
-                        <p class="subtitle">__("about_pratilipi")</p>
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
