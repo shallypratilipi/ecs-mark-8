@@ -1,0 +1,22 @@
+export default {
+    "CLICKBOOK_RECOMMENDBOOK_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "RECOMMENDBOOK",
+        "ACTION": "CLICKBOOK"
+    },
+    "VIEWED_RECOMMENDBOOK_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "RECOMMENDBOOK",
+        "ACTION": "VIEWED"
+    },
+    "CLICKBOOK_RECOMMENDBOOK_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "RECOMMENDBOOK",
+        "ACTION": "CLICKBOOK"
+    },
+    "VIEWED_RECOMMENDBOOK_READER": {
+        "SCREEN_NAME": "READER",
+        "LOCATION": "RECOMMENDBOOK",
+        "ACTION": "VIEWED"
+    }
+}

@@ -246,6 +246,7 @@
                             <Recommendation
                                 :contextId="getPratilipiData.pratilipiId"
                                 :context="'summaryPage'"
+                                :experimentId="'WREC001'"
                                 screenName="BOOK"
                                 screenLocation="RECOMMENDBOOK"
                                 v-if="getPratilipiData && getPratilipiData.pratilipiId">

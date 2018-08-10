@@ -2,6 +2,9 @@ import constants from '@/constants';
 import controlAnalyticsEvents from '@/static_scripts/analytics_events_control'
 import readerV1AnalyticsEvents from '@/static_scripts/experiment_events/reader_v1'
 import readerV2AnalyticsEvents from '@/static_scripts/experiment_events/reader_v2'
+import recommendationV1AnalyticsEvents from '@/static_scripts/experiment_events/recommendation_v1'
+
+const recommendation_v1 = ['WREC001'];
 
 let REFERRER_EVENT;
 let REFERRER_EXPERIMENTID;
@@ -326,6 +329,9 @@ export function triggerAnanlyticsEvent(eventName, experimentType, eventProperty)
     switch(true) {
         case (experimentType === 'CONTROL'):
             eventProps = { ...controlAnalyticsEvents[eventName] };
+            break;
+        case (experimentType === 'WREC001'):
+            eventProps = { ...recommendationV1AnalyticsEvents[eventName] };
             break;
         default:
             eventProps = { ...controlAnalyticsEvents[eventName] };

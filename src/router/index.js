@@ -225,7 +225,7 @@ var router = new Router({
             name: 'Pratilipi',
             component: () => {
                 if (process.env.REALM === 'PROD') {
-                    if (getCookie('bucketId') > 30 && getCookie('bucketId') < 50) {
+                    if (getCookie('bucketId') > 30 && getCookie('bucketId') <= 60) {
                         return import ('@/pages/experiments/recommendation_v1/Pratilipi.vue');
                     } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
                         return PratilipiPageComponent;
@@ -352,10 +352,8 @@ var router = new Router({
                     console.log("bucket id ", bucketId);
                     if (bucketId >= 20 && bucketId < 40) {
                         return import ('@/pages/experiments/reader/Reader_v1.vue');
-                    } else if (bucketId >= 40 && bucketId < 60) {
-                        return import ('@/pages/experiments/reader/Reader_v2.vue');
-                    } else if (bucketId >= 60 && bucketId < 80) {
-                        return new Promise((resolve, reject) => resolve(ReaderPageComponent));
+                    } else if (bucketId >= 40 && bucketId < 80) {
+                        return import ('@/pages/experiments/recommendation_v1/Reader.vue');
                     } else {
                         return new Promise((resolve, reject) => resolve(ReaderPageComponent));
                     }
