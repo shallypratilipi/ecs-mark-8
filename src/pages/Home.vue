@@ -4,16 +4,13 @@
             <Banners v-if="getHomePageBannersLoadingState === 'LOADING_SUCCESS'"
                 :banners="getHomePageBanners"
             ></Banners>
-            <VapasiQuote 
+            <VapasiQuote
                 screenName="HOME"
-                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiQuote>
-            <VapasiShayari 
-                screenName="HOME"
-                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi' && false"></VapasiShayari>
-            <VapasiJoke 
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi' && false"></VapasiQuote>
+            <VapasiJoke
                 screenName="HOME"
                 v-if="this.isMobile() && getCurrentLanguage().fullName == 'gujarati'"></VapasiJoke>
-            <VapasiHoroscope 
+            <VapasiHoroscope
                 screenName="HOME"
                 v-if="this.isMobile() && getCurrentLanguage().fullName == 'marathi'"></VapasiHoroscope>
             <DummyLoader v-if="getHomePageLoadingState === 'LOADING'"></DummyLoader>

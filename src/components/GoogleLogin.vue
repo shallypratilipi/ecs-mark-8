@@ -1,5 +1,5 @@
 <template>
-    <button @click="loginToGoogle" type="button" name="button" class="google"><icon name="google"></icon>__("user_sign_in_with_google")</button>
+    <button @click="loginToGoogle" type="button" name="button" class="google"><icon name="google"></icon>__("google")</button>
 </template>
 
 <script>
@@ -36,7 +36,7 @@ export default {
         }
     },
     components: {
-        
+
     },
     created() {
 
