@@ -9,8 +9,8 @@
                 </div>
                 <br>
                 <div class="social-icons">
-                    <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                    <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
+                    <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics()"></span>
+                    <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics()"></span>
                 </div>
             </div>
             <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
@@ -22,8 +22,8 @@
                 </div>
                 <br>
                 <div class="social-icons">
-                  <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics"></span>
-                  <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics"></span>
+                  <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics()"></span>
+                  <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics()"></span>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@ export default {
         setPageOgTags() {
             document.head.querySelector('meta[property="og:image"]').content = this.$route.query.postId ? (this.shayariList[this.$route.query.postId] ? this.shayariList[this.$route.query.postId].image : undefined) : (this.shayariList[0] ? this.shayariList[0].image : undefined);
         },
-        triggerFacebookShareAnalytics() {
+        triggerFacebookShareAnalytics(postId) {
             FB.ui({
                 method: 'share_open_graph',
                 action_type: 'og.shares',
@@ -112,7 +112,7 @@ export default {
             });
             this.triggerAnanlyticsEvent(`LIKE_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
-        triggerWhatsappShareAnalytics() {
+        triggerWhatsappShareAnalytics(postId) {
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
             const textToShare = `${window.location.host}${window.location.pathname}${encodeURIComponent(`?postId=${1}&utm_source=whatsapp&utm_medium=social&utm_campaign=shayari`)}`;
