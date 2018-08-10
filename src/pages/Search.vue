@@ -189,7 +189,7 @@ export default {
 <style lang="scss">
 	.back, .forward {
 		position: absolute;
-		top: 45%;
+		top: 40%;
 		z-index: 2;
 		background-color: #fff;
 		border-radius: 50%;
@@ -235,7 +235,7 @@ export default {
 		}
 	}
 	.back {
-		margin-left: -5px;
+		margin-left: -15px;
 	}
 	.forward {
 		right: -15px;
