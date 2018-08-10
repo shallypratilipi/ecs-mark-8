@@ -11,18 +11,8 @@
                         <div class="icons"><i class="material-icons">remove_red_eye</i></div>
                         <span>{{ pratilipiData.readCount | round(1) }}</span>
                     </div>
-                    <p v-if="pratilipiData.cardSummary" class="summary">{{ pratilipiData.cardSummary }}</p>
+                    <p v-if="pratilipiData.cardSummary" class="summary">{{ pratilipiData.clippedContent }}</p>
                 </div>
-                <!-- <div class="recommendation" v-lazy:background-image="pratilipiImageObject">
-                    <span class="title">{{ pratilipiData.title }}</span>
-                    <div class="stats-container">
-                        <div class="icons"><i class="material-icons">star</i></div>
-                        <span class="margin-right-10">{{ pratilipiData.averageRating | round(1) }}</span>
-                        <div class="icons"><i class="material-icons">remove_red_eye</i></div>
-                        <span>{{ pratilipiData.readCount | round(1) }}</span>
-                    </div>
-                    <p v-if="pratilipiData.cardSummary" class="summary">{{ pratilipiData.cardSummary }}</p>
-                </div> -->
             </router-link>
         </div>
     </div>
@@ -90,29 +80,6 @@ export default {
             'setShareDetails',
             'setAfterLoginAction'
         ]),
-        addPratilipiToLibrary(pratilipiId) {
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-            this.triggerAnanlyticsEvent(`LIBRARYADD_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId
-            });
-            if (this.getUserDetails.isGuest) {
-                // throw popup modal
-                console.log(this.$route);
-                this.setAfterLoginAction({ action: `${this.$route.meta.store}/addToLibrary`, data: pratilipiId });
-                this.openLoginModal(this.$route.meta.store, 'LIBRARYADD', this.screenLocation);
-            } else {
-                this.addToLibrary(pratilipiId);
-            }
-        },
-        triggerAnalyticsAndRemovePratilipiFromLibrary(pratilipiId) {
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-            this.triggerAnanlyticsEvent(`LIBRARYREMOVE_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId
-            });
-            this.removeFromLibrary(pratilipiId);
-        },
         triggerReadPratilipiEvent() {
             const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
             let action = this.redirectToReader && this.screenLocation === 'LIBRARY' ? 'READBOOK' : 'CLICKBOOK';
@@ -120,18 +87,6 @@ export default {
                 ...pratilipiAnalyticsData,
                 'USER_ID': this.getUserDetails.userId
             });
-        },
-        imageHasBeenRendered() {
-            console.log('has been rendered');
-        },
-        openShareModal() {
-            const pratilipiAnalyticsData = this.getPratilipiAnalyticsData(this.pratilipiData);
-            this.triggerAnanlyticsEvent(`CLICKSHRBOOK_${this.screenLocation}_${this.screenName}`, 'CONTROL', {
-                ...pratilipiAnalyticsData,
-                'USER_ID': this.getUserDetails.userId
-            });
-            this.setShareDetails({ data: this.pratilipiData, type: 'PRATILIPI', screen_name: this.screenName, screen_location: this.screenLocation });
-            $('#share_modal').modal('show');
         }
     },
     components: {
@@ -165,7 +120,6 @@ export default {
     .pratilipi {
         background: #fff;
         margin: 10px 0px;
-        padding-bottom: 10px;
         position: relative;
         display: flex;
         a {
@@ -173,8 +127,8 @@ export default {
             width: 100%;
         }
         .pratilipi-image {
-            width: 40%;
-            height: 200px;
+            width: 35%;
+            height: 150px;
             background-size: cover;
             background-position: center;
             display: inline-block;
