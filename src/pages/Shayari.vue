@@ -103,10 +103,27 @@ export default {
                 const shayariPreferenceNode = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
                 shayariPreferenceNode.on('value', (snapshot) => {
                     const shayariPreferences = snapshot.val();
-                    shayariListRandom = [];
-                    that.shayariList = shayariPreferences;
+                    that.shayariList = this.shuffle(shayariPreferences);
                 });
             });
+        },
+        shuffle(array) {
+          var currentIndex = array.length, temporaryValue, randomIndex;
+
+          // While there remain elements to shuffle...
+          while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+          }
+
+          return array;
         },
         setPageOgTags() {
             var flag = false;
@@ -139,13 +156,18 @@ export default {
                     };
                     firebase.initializeApp(config);
                 }
-
                 var node = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
                 node.once('value', (snapshot) => {
-                    node.update({
-                        "likeCount": snapshot.val().likeCount == undefined ? 1 : snapshot.val().likeCount + 1,
-                        "lastUpdated": firebase.database.ServerValue.TIMESTAMP
-                    });
+                    let shayariList = snapshot.val();
+                    for( var i = 0; i < shayariList.length; i++ ) {
+                        if(postId == shayariList[i].id) {
+                            node.update({
+                                "likeCount": shayariList[i].likeCount == undefined ? 1 : shayariList[i].likeCount + 1,
+                                "lastUpdated": firebase.database.ServerValue.TIMESTAMP
+                            });
+                            break;
+                        }
+                    }
                 });
             });
             this.triggerAnanlyticsEvent(`LIKE_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
@@ -162,13 +184,18 @@ export default {
                     };
                     firebase.initializeApp(config);
                 }
-
                 var node = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
                 node.once('value', (snapshot) => {
-                    node.update({
-                        "shareCount": snapshot.val().shareCount == undefined ? 1 : snapshot.val().shareCount + 1,
-                        "lastUpdated": firebase.database.ServerValue.TIMESTAMP
-                    });
+                    let shayariList = snapshot.val();
+                    for( var i = 0; i < shayariList.length; i++ ) {
+                        if(postId == shayariList[i].id) {
+                            node.update({
+                                "shareCount": shayariList[i].shareCount == undefined ? 1 : shayariList[i].shareCount + 1,
+                                "lastUpdated": firebase.database.ServerValue.TIMESTAMP
+                            });
+                            break;
+                        }
+                    }
                 });
             });
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
