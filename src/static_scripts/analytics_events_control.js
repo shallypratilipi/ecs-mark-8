@@ -87,6 +87,10 @@ export default {
         "LOCATION": "HEADER",
         "ACTION": "VOICEINPUTSTOP"
     },
+    "VOICEINPUTERROR_HEADER_GLOBAL": {
+        "LOCATION": "HEADER",
+        "ACTION": "VOICEINPUTERROR"
+    },
     "CLICKCATEGORY_TOPICS_GLOBAL": {
         "LOCATION": "TOPICS",
         "ACTION": "CLICKCATEGORY"
@@ -354,6 +358,11 @@ export default {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "RATEREV",
         "ACTION": "VOICEINPUTSTOP"
+    },
+    "VOICEINPUTERROR_RATEREV_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "RATEREV",
+        "ACTION": "VOICEINPUTERROR"
     },
     "CLICKBOOK_RECOMMENDBOOK_BOOK": {
         "SCREEN_NAME": "BOOK",

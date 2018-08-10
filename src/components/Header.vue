@@ -198,31 +198,40 @@ export default {
                 const self = this
                 const onStart = () => {
                     self.voiceRecognitionActive = true
+                    self.triggerAnanlyticsEvent('VOICEINPUTSTART_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store)
+                    })
                 }
                 const onResult = (event, res) => {
                     self.voiceRecognitionActive = false
                     self.searchText = res
-                    this.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
-                        'USER_ID': this.getUserDetails.userId,
-                        'SCREEN_NAME': this.getAnalyticsPageSource(this.$route.meta.store),
+                    self.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store),
                         'ENTITY_VALUE': res
                     })
-                    this.goToSearchPage()
+                    self.goToSearchPage()
                 }
                 const onError = (error) => {
                     self.voiceRecognitionActive = false
+                    self.triggerAnanlyticsEvent('VOICEINPUTERROR_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store)
+                    })
                 }
                 const onEnd = (error) => {
                     self.voiceRecognitionActive = false
+                    self.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': self.getUserDetails.userId,
+                        'SCREEN_NAME': self.getAnalyticsPageSource(self.$route.meta.store),
+                        'ENTITY_VALUE': ''
+                    })
                 }
                 this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
             }
             if (!this.voiceRecognitionActive) {
                 this.recognition.start()
-                this.triggerAnanlyticsEvent('VOICEINPUTSTART_HEADER_GLOBAL', 'CONTROL', {
-                    'USER_ID': this.getUserDetails.userId,
-                    'SCREEN_NAME': this.getAnalyticsPageSource(this.$route.meta.store)
-                })
             } else {
                 this.recognition.stop()
             }

@@ -136,30 +136,39 @@ export default {
                     const self = this
                     const onStart = () => {
                         self.voiceRecognitionActive = true
+                        const screenName = self.getAnalyticsPageSource(self.$route.meta.store)
+                        self.triggerAnanlyticsEvent(`VOICEINPUTSTART_${self.screenLocation}_${screenName}`, 'CONTROL', {
+                            'USER_ID': self.getUserDetails.userId
+                        })
                     }
                     const onResult = (event, res) => {
                         self.voiceRecognitionActive = false
                         self.oninput(self.value + res + ' ')
-                        const screenName = this.getAnalyticsPageSource(this.$route.meta.store)
-                        this.triggerAnanlyticsEvent(`VOICEINPUTSTOP_${this.screenLocation}_${screenName}`, 'CONTROL', {
-                            'USER_ID': this.getUserDetails.userId,
+                        const screenName = self.getAnalyticsPageSource(self.$route.meta.store)
+                        self.triggerAnanlyticsEvent(`VOICEINPUTSTOP_${self.screenLocation}_${screenName}`, 'CONTROL', {
+                            'USER_ID': self.getUserDetails.userId,
                             'ENTITY_VALUE': res
                         })
                     }
                     const onError = (error) => {
                         self.voiceRecognitionActive = false
+                        const screenName = self.getAnalyticsPageSource(self.$route.meta.store)
+                        self.triggerAnanlyticsEvent(`VOICEINPUTERROR_${self.screenLocation}_${screenName}`, 'CONTROL', {
+                            'USER_ID': self.getUserDetails.userId
+                        })
                     }
                     const onEnd = (error) => {
                         self.voiceRecognitionActive = false
+                        const screenName = self.getAnalyticsPageSource(self.$route.meta.store)
+                        self.triggerAnanlyticsEvent(`VOICEINPUTSTOP_${self.screenLocation}_${screenName}`, 'CONTROL', {
+                            'USER_ID': self.getUserDetails.userId,
+                            'ENTITY_VALUE': ''
+                        })
                     }
                     this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
                 }
                 if (!this.voiceRecognitionActive) {
                     this.recognition.start()
-                    const screenName = this.getAnalyticsPageSource(this.$route.meta.store)
-                    this.triggerAnanlyticsEvent(`VOICEINPUTSTART_${this.screenLocation}_${screenName}`, 'CONTROL', {
-                        'USER_ID': this.getUserDetails.userId
-                    })
                 } else {
                     this.recognition.stop()
                 }
