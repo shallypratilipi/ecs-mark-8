@@ -15,7 +15,7 @@
                         <a href="#" class="signin active" v-else data-tab="signin">__("user_sign_in")</a>
                     </div>
                     <Login :openForgotPasswordInTab="true"></Login>
-                    <Register :currentStep="currentStep" :changeCurrentStep="changeCurrentStep"></Register>
+                    <Register :currentStep="currentStep" :changeCurrentStep="changeCurrentStep" :openForgotPasswordInTab="true"></Register>
                 </div>
             </div>
         </div>

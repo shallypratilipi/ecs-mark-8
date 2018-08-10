@@ -102,7 +102,6 @@
                 <button type="button" @click="validateAndLoginUser({email, password})" class="btn sign-in">__("user_sign_in")</button>
                 <div class="or">__("or")</div>
                 <button type="button" @click="goToSignup()" class="btn sign-up">__("user_sign_up")</button>
-                <ForgetPassword></ForgetPassword>
                 <!-- <div class="terms-section">
                     <span>__("user_is_new")</span>
                     <a href="#" v-on:click="tabsignup" data-tab="signup">__("user_sign_up_for_pratilipi")</a>
@@ -110,6 +109,7 @@
             </form>
         </div>
 
+        <ForgetPassword></ForgetPassword>
         <div class="spinner-overlay" v-if="getLoginLoadingState === 'LOADING'">
             <Spinner></Spinner>
         </div>
@@ -258,6 +258,10 @@ export default {
         .btn {
             width: 100%;
         }
+        .btn.sign-up {
+            width: 100%;
+            background-color: #eee;
+        }
     }
     &#signin-form {
         display: block;
@@ -269,6 +273,7 @@ export default {
 
         .btn.sign-up {
             width: 100%;
+            background-color: #eee;
         }
     }
 
@@ -330,6 +335,8 @@ export default {
             bottom: 0;
             color: #d00b12;
             padding: 5px;
+            background: none;
+            border: none;
 
             span {
                 font-size: 14px;
