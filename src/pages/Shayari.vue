@@ -103,6 +103,7 @@ export default {
                 const shayariPreferenceNode = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
                 shayariPreferenceNode.on('value', (snapshot) => {
                     const shayariPreferences = snapshot.val();
+                    shayariListRandom = [];
                     that.shayariList = shayariPreferences;
                 });
             });
