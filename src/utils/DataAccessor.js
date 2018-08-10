@@ -385,9 +385,9 @@ export default {
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 
-    getEventList: (language, aCallBack) => {
+    getEventList: (language, limit, offset, aCallBack) => {
         httpUtil.get(API_PREFIX + EVENT_LIST_API,
-            null, { "language": language },
+            null, { "language": language , "limit" : limit, "offset": offset},
             function(response, status) { processGetResponse(response, status, aCallBack) });
     },
 

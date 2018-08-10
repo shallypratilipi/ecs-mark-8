@@ -2,16 +2,17 @@ import DataAccessor from '@/utils/DataAccessor'
 
 export default {
 
-    fetchListOfEvents({ commit, state }, language) {
+    fetchListOfEvents({ commit, state }, {language, limit, offset}) {
         commit('setEventsDataLoadingTrue');
-        console.log(language);
-        DataAccessor.getEventList(language, function(data) {
+        DataAccessor.getEventList(language, limit, offset, function(data) {
             if (data.status === 200) {
                 commit('setEventsDataLoadingSuccess', data.response);
-                console.log("Fetching" , data);
             } else {
                 commit('setEventsDataLoadingError');
             }
         });
+    },
+    refreshState({ commit, state }){
+        commit('refreshState');
     }
 }

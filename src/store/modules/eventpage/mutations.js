@@ -44,7 +44,7 @@ export default {
              if (eventData.entries.allSubmitted.entries && eventData.entries.allSubmitted.entries.length > 0){
                  state.pratilipiList.data = state.pratilipiList.data.concat(eventData.entries.allSubmitted.entries);
                  state.pratilipiList.found = eventData.entries.allSubmitted.found;
-                state.pratilipiList.limit = eventData.entries.allSubmitted.limit;
+                state.pratilipiList.offset = eventData.entries.allSubmitted.offset;
              }
         }
 
