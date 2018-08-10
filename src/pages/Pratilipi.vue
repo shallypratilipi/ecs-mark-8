@@ -65,7 +65,7 @@
                                 <span class="read-time" >__("pratilipi_reading_time"): <time itemprop="timeRequired" v-bind:datetime="getPratilipiData.readingTime | readingTimeSchemaOrgFormat">{{ getPratilipiData.readingTime | showInMinutesOrHours }}</time></span>
                             </div>
                             <div class="book-stats">
-                                <span class="read-count">__("pratilipi_count_reads"): {{ getPratilipiData.readCount }}</span>
+                                <span class="read-count">__("pratilipi_count_reads"): {{ getPratilipiData.readCount | showThousandsInCommas() }}</span>
                                 <span class="date">__("pratilipi_listing_date"): <time itemprop="datePublished" v-bind:datetime="getPratilipiData.listingDateMillis | listingDateSchemaOrgFormat">{{ getPratilipiData.listingDateMillis | convertDate }}</time></span>
                             </div>
                             <div class="main-actions"  v-if="getUserPratilipiLoadingState === 'LOADING_SUCCESS'">

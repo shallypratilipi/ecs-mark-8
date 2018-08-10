@@ -45,7 +45,7 @@
                     <div class="read-count">
                         <i class="material-icons">remove_red_eye</i>
                         <span>
-                            {{ pratilipiData.readCount | round(1) }}
+                            {{ pratilipiData.readCount | showThousandsInCommas() }}
                         </span>
                     </div>
                     <div class="read-time">
