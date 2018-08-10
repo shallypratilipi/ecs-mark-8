@@ -31,47 +31,46 @@
         </div>
 
         <div class="forms" id="signup-form" v-if="currentStep === 'REGISTRATION'">
-            <form>
-                <p class="validation_error" v-if="(getLoginError && getLoginError.message)">
+
+            <p class="validation_error" v-if="(getLoginError && getLoginError.message)">
+                <i class="material-icons">error</i>
+                <span v-if="(getLoginError && getLoginError.message)">{{ getLoginError.message | getTranslatedLoginErrorMessage }}</span>
+            </p>
+            <div class="form-group">
+                <p class="validation_error" v-if="nameIsInvalid || (getLoginError && getLoginError.name)">
                     <i class="material-icons">error</i>
-                    <span v-if="(getLoginError && getLoginError.message)">{{ getLoginError.message | getTranslatedLoginErrorMessage }}</span>
+                    <span v-if="(getLoginError && getLoginError.name)">{{ getLoginError.name }}</span>
+                    <span v-else>__("name_required")</span>
                 </p>
-                <div class="form-group">
-                    <p class="validation_error" v-if="nameIsInvalid || (getLoginError && getLoginError.name)">
-                        <i class="material-icons">error</i>
-                        <span v-if="(getLoginError && getLoginError.name)">{{ getLoginError.name }}</span>
-                        <span v-else>__("name_required")</span>
-                    </p>
-                    <input type="text" :class="{error: nameIsInvalid || (getLoginError && getLoginError.name) }" v-model="name" class="form-control" :placeholder="'__("user_full_name")'">
-                </div>
-                <div class="form-group">
-                    <p class="validation_error" v-if="emailIsInvalid || (getLoginError && getLoginError.email)">
-                        <i class="material-icons">error</i>
-                        <span v-if="(getLoginError && getLoginError.email)">{{ getLoginError.email }}</span>
-                        <span v-else>__("email_entered_incorrectly")</span>
-                    </p>
-                    <input type="email" :class="{error: emailIsInvalid || (getLoginError && getLoginError.email) }" v-model="email" class="form-control" :placeholder="'__("user_email")'">
-                </div>
-                <div class="form-group">
-                    <p class="validation_error" v-if="passwordIsInvalid || (getLoginError && getLoginError.password)">
-                        <i class="material-icons">error</i>
-                        <span v-if="(getLoginError && getLoginError.password)">{{ getLoginError.password }}</span>
-                        <span v-else>__("password_minimum")</span>
-                    </p>
-                    <input autocomplete="new-password" :class="{error: passwordIsInvalid || (getLoginError && getLoginError.password) }" v-model="password" type="password" class="form-control" :placeholder="'__("user_password")'">
-                </div>
+                <input type="text" @keyup.enter="verifyAndSignupUser({ name, email, password, language: getCurrentLanguage().fullName.toUpperCase() })" :class="{error: nameIsInvalid || (getLoginError && getLoginError.name) }" v-model="name" class="form-control" :placeholder="'__("user_full_name")'">
+            </div>
+            <div class="form-group">
+                <p class="validation_error" v-if="emailIsInvalid || (getLoginError && getLoginError.email)">
+                    <i class="material-icons">error</i>
+                    <span v-if="(getLoginError && getLoginError.email)">{{ getLoginError.email }}</span>
+                    <span v-else>__("email_entered_incorrectly")</span>
+                </p>
+                <input type="email" @keyup.enter="verifyAndSignupUser({ name, email, password, language: getCurrentLanguage().fullName.toUpperCase() })" :class="{error: emailIsInvalid || (getLoginError && getLoginError.email) }" v-model="email" class="form-control" :placeholder="'__("user_email")'">
+            </div>
+            <div class="form-group">
+                <p class="validation_error" v-if="passwordIsInvalid || (getLoginError && getLoginError.password)">
+                    <i class="material-icons">error</i>
+                    <span v-if="(getLoginError && getLoginError.password)">{{ getLoginError.password }}</span>
+                    <span v-else>__("password_minimum")</span>
+                </p>
+                <input autocomplete="new-password" @keyup.enter="verifyAndSignupUser({ name, email, password, language: getCurrentLanguage().fullName.toUpperCase() })" :class="{error: passwordIsInvalid || (getLoginError && getLoginError.password) }" v-model="password" type="password" class="form-control" :placeholder="'__("user_password")'">
+            </div>
 
 
-                <button type="button" @click="verifyAndSignupUser({ name, email, password, language: getCurrentLanguage().fullName.toUpperCase() })" class="btn sign-in">__("user_sign_up")</button>
-                <div class="or">__("or")</div>
-                <button type="button" @click="goToSignin()" class="btn sign-up">__("user_sign_in")</button>
+            <button type="button" @click="verifyAndSignupUser({ name, email, password, language: getCurrentLanguage().fullName.toUpperCase() })" class="btn sign-in">__("user_sign_up")</button>
+            <div class="or">__("or")</div>
+            <button type="button" @click="goToSignin()" class="btn sign-up">__("user_sign_in")</button>
 
-                <span class="terms-section">__("register_part_1") <a href="/privacy-policy" target="_blank">__("footer_privacy_policy")</a> __("register_part_2") <a href="/terms-of-service" target="_blank">__("footer_terms_of_service")</a> __("register_part_3")</span>
-                <!-- <div class="terms-section">
-                    <span>__("user_is_registered")</span>
-                    <a href="#" v-on:click="tabsignin" data-tab="signin">__("user_to_sign_in")</a>
-                </div> -->
-            </form>
+            <span class="terms-section">__("register_part_1") <a href="/privacy-policy" target="_blank">__("footer_privacy_policy")</a> __("register_part_2") <a href="/terms-of-service" target="_blank">__("footer_terms_of_service")</a> __("register_part_3")</span>
+            <!-- <div class="terms-section">
+                <span>__("user_is_registered")</span>
+                <a href="#" v-on:click="tabsignin" data-tab="signin">__("user_to_sign_in")</a>
+            </div> -->
         </div>
 
         <div class="forms" id="signin-form" v-if="currentStep === 'LOGIN'">
@@ -86,7 +85,7 @@
                         <span v-if="(getLoginError && getLoginError.email)">{{ getLoginError.email }}</span>
                         <span v-else>__("email_entered_incorrectly")</span>
                     </p>
-                    <input type="email" :class="{error: emailIsInvalid || (getLoginError && getLoginError.email) }" class="form-control" v-model="email" :placeholder="'__("user_email")'">
+                    <input type="email" @keyup.enter="validateAndLoginUser({email, password})" :class="{error: emailIsInvalid || (getLoginError && getLoginError.email) }" class="form-control" v-model="email" :placeholder="'__("user_email")'">
                 </div>
                 <div class="form-group">
                     <p class="validation_error" v-if="passwordIsInvalid || (getLoginError && getLoginError.password)">
@@ -94,7 +93,7 @@
                         <span v-if="(getLoginError && getLoginError.password)">{{ getLoginError.password }}</span>
                         <span v-else>__("password_minimum")</span>
                     </p>
-                    <input type="password" :class="{error: passwordIsInvalid || (getLoginError && getLoginError.password) }" class="form-control" v-model="password" :placeholder="'__("user_password")'">
+                    <input type="password"  @keyup.enter="validateAndLoginUser({email, password})" :class="{error: passwordIsInvalid || (getLoginError && getLoginError.password) }" class="form-control" v-model="password" :placeholder="'__("user_password")'">
                     <a v-if="!openForgotPasswordInTab" @click="triggerEventAndOpenForgotPasswordModal" href="#" class="forgot-pass">__("user_forgot_password")</a>
                     <router-link v-else :to="'/login#forgot-pass'" target="_blank" class="forgot-pass">__("user_forgot_password")</router-link>
                 </div>
@@ -158,6 +157,7 @@ export default {
     methods: {
         ...mapActions([
             'signupUser',
+            'loginUser',
             'checkIfUserValid'
         ]),
         goToSignup() {
