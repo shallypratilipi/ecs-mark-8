@@ -30,6 +30,11 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-12 save-button">
+                                <button class="btn btn-block btn-danger" style="float: right;" @click="autoSaveContents">__("save_changes")</button>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="writer-wrapper">
                                     <!-- Use any element to open the sidenav -->
@@ -40,7 +45,6 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-info" style="float: right;" @click="autoSaveContents">__("save_changes")</button>
 
                     </div>
                 </div>
@@ -347,7 +351,7 @@ export default {
             tinymce.init({
                 selector: '.writer-area',  // change this value according to your HTML,
                 // inline: true,
-                height: 200,
+                height: 400,
                 block_formats: 'Paragraph=p;',
                 plugins: ['autoresize autolink lists link image', 'paste'],
                 menubar: false,
@@ -1129,6 +1133,9 @@ export default {
     #main {
         transition: margin-left .5s;
         padding: 10px 0;
+        .save-button {
+           margin-bottom: 10px;
+        }
         .chapter {
             margin: 0 0 20px;
             .follow-btn-w-count {
@@ -1280,6 +1287,9 @@ export default {
     }
     .writer-wrapper {
         position: relative;
+        .mce-edit-area{
+            max-height: 400px;
+        }
     }
     .word-suggestions {
         margin: 0;

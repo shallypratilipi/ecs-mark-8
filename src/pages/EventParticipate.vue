@@ -73,7 +73,7 @@
                             <div class="col-6">
                             </div>
                             <div class="col-6 text-right">
-                                <button class="next" @click="createPratilipiAndEventFromStep1">__("writer_to_next_screen") here</button>
+                                <button class="next" @click="createPratilipiAndEventFromStep1">__("writer_to_next_screen")</button>
                             </div>
                         </div>
                     </div>
