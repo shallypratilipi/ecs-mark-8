@@ -1,50 +1,63 @@
 <template>
     <MainLayout>
         <div class="shayari">
-            <div class="shayari-item card" v-for="shayari in shayariList">
+            <div class="shayari-item card" v-for="(shayari, index) in shayariList" v-if="shayari.id == $route.query.postId && shouldShowModal && shayariList.length !== 0">
                 <div class="shayari-details">
                     <img :src="shayari.image" />
                 </div>
                 <div class="social-icons">
-                    <div class="like-button social-button" @click="triggerLikeShareAnalytics()">
-                        <i class="material-icons">thumb_up</i>
-                        <span>{{12345 | showThousandsInK(1)}}</span>
+                    <div class="like-button social-button" @click="triggerLikeShareAnalytics(shayari.id)">
+                        <icon name="thumbs-o-up" scale="1.5"></icon>
+                        <span>{{shayari.likeCount | showThousandsInK(1)}}</span>
                     </div>
-                    <div class="share-button social-button" @click="triggerWhatsappShareAnalytics()">
+                    <div class="share-button social-button" @click="triggerWhatsappShareAnalytics(shayari.id)">
                         <icon name="whatsapp" scale="1.5"></icon>
-                        <span>{{12345 | showThousandsInK(1)}}</span>
+                        <span>{{shayari.shareCount | showThousandsInK(1)}}</span>
                     </div>
                 </div>
             </div>
-            <div class="shayari-shadow shayari-modal" v-if="shouldShowModal">
-                <p class="close" @click="resetModal()"><b>X</b></p>
+            <div class="shayari-item card" v-for="(shayari, index) in shayariList" v-if="shayari.active && shayari.id != $route.query.postId && shayariList.length !== 0">
                 <div class="shayari-details">
-                  <div>
-                    <img :src="shayariList[this.$route.query.postId].image" width=100%> </img>
-                  </div>
+                    <img :src="shayari.image" />
                 </div>
-                <br>
                 <div class="social-icons">
-                    <div class="like-button social-button" @click="triggerLikeShareAnalytics()">
-                        <i class="material-icons">thumb_up</i>
-                        <span>{{12345 | showThousandsInK(1)}}</span>
+                    <div class="like-button social-button" @click="triggerLikeShareAnalytics(shayari.id)">
+                        <icon name="thumbs-o-up" scale="1.5"></icon>
+                        <span>{{shayari.likeCount | showThousandsInK(1)}}</span>
                     </div>
-                    <div class="share-button social-button" @click="triggerWhatsappShareAnalytics()">
-                        <icon name="whatsapp"></icon>
-                        <span>{{12345 | showThousandsInK(1)}}</span>
+                    <div class="share-button social-button" @click="triggerWhatsappShareAnalytics(shayari.id)">
+                        <icon name="whatsapp" scale="1.5"></icon>
+                        <span>{{shayari.shareCount | showThousandsInK(1)}}</span>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- <div class="shayari-shadow shayari-modal" v-for="(shayari, index) in shayariList" v-if="shayari.id == $route.query.postId && shouldShowModal && shayariList.length !== 0">
+            <p class="close" @click="resetModal()"><b>X</b></p>
+            <div class="shayari-details">
+                <img :src="shayari.image" width=100%> </img>
+            </div>
+            <div class="social-icons">
+                <div class="like-button social-button" @click="triggerLikeShareAnalytics(shayari.id)">
+                    <icon name="thumbs-o-up" scale="1.5"></icon>
+                    <span>{{shayariList[$route.query.postId].likeCount | showThousandsInK(1)}}</span>
+                </div>
+                <div class="share-button social-button" @click="triggerWhatsappShareAnalytics(shayari.id)">
+                    <icon name="whatsapp" scale="1.5"></icon>
+                    <span>{{shayariList[$route.query.postId].shareCount | showThousandsInK(1)}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop" v-if="shouldShowModal"></div> -->
     </MainLayout>
 </template>
 <script>
 import mixins from '@/mixins';
-import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
 import WebPushUtil from '@/utils/WebPushUtil';
 import MainLayout from '@/layout/main-layout.vue';
 import 'vue-awesome/icons/whatsapp'
+import 'vue-awesome/icons/thumbs-o-up'
 import * as firebase from "firebase";
 import {
     mapGetters,
@@ -52,17 +65,8 @@ import {
 } from 'vuex';
 
 export default {
-    props: {
-        'in-viewport-once': {
-            default: true
-        },
-        'in-viewport-offset-top': {
-            default: -350
-        }
-    },
     mixins: [
-        mixins,
-        inViewport
+        mixins
     ],
     computed: {
         ...mapGetters([
@@ -100,29 +104,79 @@ export default {
                 shayariPreferenceNode.on('value', (snapshot) => {
                     const shayariPreferences = snapshot.val();
                     that.shayariList = shayariPreferences;
-                    console.log(that.shayariList)
                 });
             });
         },
         setPageOgTags() {
-            document.head.querySelector('meta[property="og:image"]').content = this.$route.query.postId ? (this.shayariList[this.$route.query.postId] ? this.shayariList[this.$route.query.postId].image : undefined) : (this.shayariList[0] ? this.shayariList[0].image : undefined);
+            var flag = false;
+            for( var i = 0; i < this.shayariList.length; i++ ) {
+                if(this.$route.query.postId && this.$route.query.postId == this.shayariList[i].id) {
+                    document.head.querySelector('meta[property="og:image"]').content = this.shayariList[i].image;
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag == false) {
+               for( var i = 0; i < this.shayariList.length; i++ ) {
+                    if(this.shayariList[i].active) {
+                        document.head.querySelector('meta[property="og:image"]').content = this.shayariList[i].image;
+                        flag = true;
+                        break;
+                    }
+                } 
+            }
         },
         triggerLikeShareAnalytics(postId) {
+            const that = this;
+            import('firebase').then((firebase) => {
+                if (firebase.apps.length === 0) {
+                    const config = {
+                        apiKey: process.env.FIREBASE_API_KEY,
+                        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                        databaseURL: process.env.FIREBASE_DATABASE_URL,
+                        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                    };
+                    firebase.initializeApp(config);
+                }
+
+                var node = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
+                node.once('value', (snapshot) => {
+                    node.update({
+                        "likeCount": snapshot.val().likeCount == undefined ? 1 : snapshot.val().likeCount + 1,
+                        "lastUpdated": firebase.database.ServerValue.TIMESTAMP
+                    });
+                });
+            });
             this.triggerAnanlyticsEvent(`LIKE_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerWhatsappShareAnalytics(postId) {
+            const that = this;
+            import('firebase').then((firebase) => {
+                if (firebase.apps.length === 0) {
+                    const config = {
+                        apiKey: process.env.FIREBASE_API_KEY,
+                        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+                        databaseURL: process.env.FIREBASE_DATABASE_URL,
+                        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+                    };
+                    firebase.initializeApp(config);
+                }
+
+                var node = firebase.database().ref("EXPERIMENT").child("SHAYARI").child(that.language);
+                node.once('value', (snapshot) => {
+                    node.update({
+                        "shareCount": snapshot.val().shareCount == undefined ? 1 : snapshot.val().shareCount + 1,
+                        "lastUpdated": firebase.database.ServerValue.TIMESTAMP
+                    });
+                });
+            });
             this.triggerAnanlyticsEvent(`SHAREWA_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
 
-            const textToShare = `${window.location.host}${window.location.pathname}${encodeURIComponent(`?postId=${1}&utm_source=whatsapp&utm_medium=social&utm_campaign=shayari`)}`;
+            const textToShare = `${window.location.host}${window.location.pathname}${encodeURIComponent(`?postId=${postId}&utm_source=whatsapp&utm_medium=social&utm_campaign=shayari`)}`;
             window.open(`https://api.whatsapp.com/send?text=${textToShare}`);
         }
     },
     watch: {
-        'inViewport.now'(visible) {
-            if (visible) {
-                this.triggerAnanlyticsEvent(`VIEW_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
-            }
-        },
         'shayariList'() {
           this.setPageOgTags();
         }
@@ -143,43 +197,41 @@ export default {
     @media screen and (max-width: 992px ) {
         margin-top: 65px;
     }
-    .shayari-item {
-        margin: 10px;
-    }
-    .shayari-details {
-        margin: 5px 5px 0;
-        img {
-            max-width: 100%;
-        }
-    }
-    .social-icons {
-        .social-button {
-            display: inline-block;
-            width: 49%;
-            padding: 10px 0;
-            span, i, .fa-icon {
-                vertical-align: middle;
-            }
+}
 
-        }
+.shayari-item {
+    margin: 10px;
+}
+
+.shayari-details {
+    margin: 5px 5px 0;
+    img {
+        max-width: 100%;
     }
 }
 
-.shayari-banner {
-    background: #ff9966;
-    background: -webkit-linear-gradient(to right, #ff5e62, #ff9966);
-    background: linear-gradient(to right, #ff5e62, #ff9966);
-    color: #fff;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding: 3%;
-    cursor: pointer;
-    @media screen and (min-width: 1400px) {
-        padding-left: 500px;
-        padding-right: 400px;
-        height: 100px;
-        padding-top: 13px;
+.social-icons {
+    .social-button {
+        display: inline-block;
+        width: 49%;
+        padding: 10px 0;
+        span, i, .fa-icon {
+            vertical-align: middle;
+        }
+        &.share-button {
+            .fa-icon {
+                color: #48c631;
+            }
+        }
+        &.like-button {
+            .fa-icon {
+                color: #3b5998;
+            }
+        }
+        span {
+            font-size: 14px;
+            margin-left: 5px;
+        }
     }
 }
 
@@ -231,47 +283,23 @@ export default {
     background-color: #F99BA7;
 }
 
-.modal-message {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.modal-backdrop {
+    background: rgba(0,0,0,0.5);
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
-
-.shayari-footer {
-    font-weight: bold;
-    font-size: 12px;
-    text-align: right;
-    padding: 3%;
-    cursor: pointer;
-}
-
 .shayari-modal {
     position: fixed;
     z-index: 2;
     top: 20%;
     background-color: white;
     width: 90%;
-    margin-left: 5%;
-    @media screen and (min-width: 1400px) {
-        left: 20%;
-        width: 60%;
-    }
-    .shayari-details {
-        text-align: left;
-        font-size: 18px;
-        padding-left: 3%;
-        padding-right: 3%;
-        .social-icons {
-            display: inline;
-            position: absolute;
-            cursor: pointer;
-            right: 10%;
-            bottom: 10%;
-            @media screen and (min-width: 1400px) {
-               right: 20%;
-            }
-        }
-    }
+    max-width: 500px;
+    left: 50%;
+    transform: translate(-50%,0);
 }
 
 .close {
