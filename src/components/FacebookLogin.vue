@@ -1,5 +1,5 @@
 <template>
-    <button @click="loginToFacebook" type="button" name="button" class="fb"><icon name="facebook-f"></icon>__("user_sign_in_with_facebook")</button>
+    <button @click="loginToFacebook" type="button" name="button" class="fb"><icon name="facebook-f"></icon>__("facebook")</button>
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
         }
     },
     components: {
-        
+
     },
     created() {
     }
