@@ -6,10 +6,10 @@
             ></Banners>
             <VapasiQuote 
                 screenName="HOME"
-                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi' && false"></VapasiQuote>
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiQuote>
             <VapasiShayari 
                 screenName="HOME"
-                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiShayari>
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi' && false"></VapasiShayari>
             <VapasiJoke 
                 screenName="HOME"
                 v-if="this.isMobile() && getCurrentLanguage().fullName == 'gujarati'"></VapasiJoke>
