@@ -1,29 +1,38 @@
 <template>
     <MainLayout>
-        <div class="vapasi">
-            <div v-for="shayari in shayariList">
-                <div class="horoscope-details">
-                    <div>
-                        <img :src="shayari.image" width=100%> </img>
+        <div class="shayari">
+            <div class="shayari-item card" v-for="shayari in shayariList">
+                <div class="shayari-details">
+                    <img :src="shayari.image" />
+                </div>
+                <div class="social-icons">
+                    <div class="like-button social-button" @click="triggerLikeShareAnalytics()">
+                        <i class="material-icons">thumb_up</i>
+                        <span>{{12345 | showThousandsInK(1)}}</span>
+                    </div>
+                    <div class="share-button social-button" @click="triggerWhatsappShareAnalytics()">
+                        <icon name="whatsapp" scale="1.5"></icon>
+                        <span>{{12345 | showThousandsInK(1)}}</span>
                     </div>
                 </div>
-                <br>
-                <div class="social-icons">
-                    <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics()"></span>
-                    <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics()"></span>
-                </div>
             </div>
-            <div class="vapasi-shadow vapasi-modal" v-if="shouldShowModal">
+            <div class="shayari-shadow shayari-modal" v-if="shouldShowModal">
                 <p class="close" @click="resetModal()"><b>X</b></p>
-                <div class="horoscope-details">
+                <div class="shayari-details">
                   <div>
                     <img :src="shayariList[this.$route.query.postId].image" width=100%> </img>
                   </div>
                 </div>
                 <br>
                 <div class="social-icons">
-                  <span><img src="../assets/facebookImage.png" height="30" width="30" @click="triggerFacebookShareAnalytics()"></span>
-                  <span ><img src="../assets/whatsappImage.png" height="30" width="30" @click="triggerWhatsappShareAnalytics()"></span>
+                    <div class="like-button social-button" @click="triggerLikeShareAnalytics()">
+                        <i class="material-icons">thumb_up</i>
+                        <span>{{12345 | showThousandsInK(1)}}</span>
+                    </div>
+                    <div class="share-button social-button" @click="triggerWhatsappShareAnalytics()">
+                        <icon name="whatsapp"></icon>
+                        <span>{{12345 | showThousandsInK(1)}}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,6 +44,7 @@ import inViewport from 'vue-in-viewport-mixin';
 import constants from '@/constants';
 import WebPushUtil from '@/utils/WebPushUtil';
 import MainLayout from '@/layout/main-layout.vue';
+import 'vue-awesome/icons/whatsapp'
 import * as firebase from "firebase";
 import {
     mapGetters,
@@ -97,19 +107,7 @@ export default {
         setPageOgTags() {
             document.head.querySelector('meta[property="og:image"]').content = this.$route.query.postId ? (this.shayariList[this.$route.query.postId] ? this.shayariList[this.$route.query.postId].image : undefined) : (this.shayariList[0] ? this.shayariList[0].image : undefined);
         },
-        triggerFacebookShareAnalytics(postId) {
-            FB.ui({
-                method: 'share_open_graph',
-                action_type: 'og.shares',
-                action_properties: JSON.stringify({
-                    object: {
-                        'og:url': `https://${window.location.host}${window.location.pathname}?utm_source=facebook&utm_medium=social&utm_campaign=shayari`,
-                        'og:title': '__("quote_of_the_day")',
-                        'og:description': this.getQuoteOfTheDay,
-                        'og:image': this.getQuoteImage
-                    }
-                })
-            });
+        triggerLikeShareAnalytics(postId) {
             this.triggerAnanlyticsEvent(`LIKE_VAPSISHAYARI_SHAYARI`, 'CONTROL', {'USER_ID': this.getUserDetails.userId});
         },
         triggerWhatsappShareAnalytics(postId) {
@@ -136,15 +134,38 @@ export default {
 </script>
 
 <style lang="scss">
-.vapasi {
-    .vapasi-break {
-        @media screen and (min-width: 1400px) {
-            display: none;
+.shayari {
+    background: #f8f8f8;
+    margin-top: 85px;
+    min-height: 700px;
+    max-width: 600px;
+    margin: 0 auto;
+    @media screen and (max-width: 992px ) {
+        margin-top: 65px;
+    }
+    .shayari-item {
+        margin: 10px;
+    }
+    .shayari-details {
+        margin: 5px 5px 0;
+        img {
+            max-width: 100%;
+        }
+    }
+    .social-icons {
+        .social-button {
+            display: inline-block;
+            width: 49%;
+            padding: 10px 0;
+            span, i, .fa-icon {
+                vertical-align: middle;
+            }
+
         }
     }
 }
 
-.vapasi-banner {
+.shayari-banner {
     background: #ff9966;
     background: -webkit-linear-gradient(to right, #ff5e62, #ff9966);
     background: linear-gradient(to right, #ff5e62, #ff9966);
@@ -162,14 +183,14 @@ export default {
     }
 }
 
-.vapasi-image {
+.shayari-image {
     flex: 1;
     @media screen and (min-width: 1400px) {
         font-size: 26px;
     }
 }
 
-.vapasi-text {
+.shayari-text {
     flex: 2;
     @media screen and (min-width: 1400px) {
         font-size: 26px;
@@ -177,13 +198,13 @@ export default {
     }
 }
 
-.vapasi-shadow {
+.shayari-shadow {
     -webkit-box-shadow: 0px 15px 54px -5px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 15px 54px -5px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 15px 54px -5px rgba(0, 0, 0, 0.75);
 }
 
-.vapasi-heading {
+.shayari-heading {
     font-weight: bold;
     font-size: 14px;
     text-align: left;
@@ -196,7 +217,7 @@ export default {
     }
 }
 
-.horoscope-button {
+.shayari-button {
     margin: 1px;
     text-align: center;
     font-weight: 200;
@@ -206,7 +227,7 @@ export default {
     }
 }
 
-.horoscope-button:hover {
+.shayari-button:hover {
     background-color: #F99BA7;
 }
 
@@ -216,7 +237,7 @@ export default {
     justify-content: center;
 }
 
-.horoscope-footer {
+.shayari-footer {
     font-weight: bold;
     font-size: 12px;
     text-align: right;
@@ -224,7 +245,7 @@ export default {
     cursor: pointer;
 }
 
-.vapasi-modal {
+.shayari-modal {
     position: fixed;
     z-index: 2;
     top: 20%;
@@ -235,7 +256,7 @@ export default {
         left: 20%;
         width: 60%;
     }
-    .horoscope-details {
+    .shayari-details {
         text-align: left;
         font-size: 18px;
         padding-left: 3%;
