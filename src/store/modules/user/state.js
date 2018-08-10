@@ -13,5 +13,9 @@ export default {
     read_stats: {
         read_count: 0,
         read_books: []
+    },
+    email_check: {
+        is_valid: null,
+        loading_state: 'INITIAL'
     }
 }

@@ -87,6 +87,7 @@ export default {
         });
 
         $('div.modal').on('show.bs.modal', function() {
+            console.log('modal show');
             const modal = this;
             const hash = modal.id;
             window.location.hash = hash;
