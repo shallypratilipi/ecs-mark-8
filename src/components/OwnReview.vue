@@ -353,6 +353,7 @@ li {
                 clear: both;
                 margin: 4px 10px;
                 display: none;
+                overflow: hidden;
                 label {
                     font-size: 14px;
                 }
@@ -409,6 +410,7 @@ li {
                 clear: both;
                 margin: 4px 10px;
                 display: none;
+                overflow: hidden;
                 label {
                     font-size: 14px;
                 }
