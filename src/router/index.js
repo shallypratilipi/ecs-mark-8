@@ -225,10 +225,12 @@ var router = new Router({
             name: 'Pratilipi',
             component: () => {
                 if (process.env.REALM === 'PROD') {
-                    if (getCookie('bucketId') > 30 && getCookie('bucketId') <= 60) {
+                    if (getCookie('bucket_id') > 30 && getCookie('bucket_id') <= 60) {
                         return import ('@/pages/experiments/recommendation_v1/Pratilipi.vue');
-                    } else if (getCookie('bucketId') >= 4 && getCookie('bucketId') < 6) {
-                        return PratilipiPageComponent;
+                    } else {
+                        return new Promise((resolve) => {
+                            resolve(PratilipiPageComponent)
+                        });
                     }
                 } else if (process.env.REALM === 'PROD_BRIDGE') {
 
