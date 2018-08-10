@@ -23,6 +23,7 @@
 <script>
 import mixins from '@/mixins'
 import SpeechToTextUtil from '@/utils/SpeechToTextUtil'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'tranliteration',
@@ -31,10 +32,15 @@ export default {
     ],
     props: {
         value: {
-            type: String
+            type: String,
+            default: ''
         },
         oninput: {
             type: Function,
+            required: true
+        },
+        screenLocation: {
+            type: String,
             required: true
         },
         placeholder: {
@@ -57,8 +63,13 @@ export default {
             voiceRecognitionActive: false
         }
     },
+    computed: {
+        ...mapGetters([
+            'getUserDetails'
+        ])
+    },
     mounted() {
-        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported() && this.enableSpeechToText && this.isTestEnvironment();
+        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported() && this.enableSpeechToText
     },
     methods: {
         getTranslation(e) {
@@ -128,7 +139,12 @@ export default {
                     }
                     const onResult = (event, res) => {
                         self.voiceRecognitionActive = false
-                        self.oninput(res)
+                        self.oninput(self.value + res + ' ')
+                        const screenName = this.getAnalyticsPageSource(this.$route.meta.store)
+                        this.triggerAnanlyticsEvent(`VOICEINPUTSTOP_${this.screenLocation}_${screenName}`, 'CONTROL', {
+                            'USER_ID': this.getUserDetails.userId,
+                            'ENTITY_VALUE': res
+                        })
                     }
                     const onError = (error) => {
                         self.voiceRecognitionActive = false
@@ -140,6 +156,10 @@ export default {
                 }
                 if (!this.voiceRecognitionActive) {
                     this.recognition.start()
+                    const screenName = this.getAnalyticsPageSource(this.$route.meta.store)
+                    this.triggerAnanlyticsEvent(`VOICEINPUTSTART_${this.screenLocation}_${screenName}`, 'CONTROL', {
+                        'USER_ID': this.getUserDetails.userId
+                    })
                 } else {
                     this.recognition.stop()
                 }

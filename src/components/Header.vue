@@ -194,30 +194,37 @@ export default {
         },
         /* Speech to text */
         voiceInput() {
-            if (SpeechToTextUtil.isSupported()) {
-                if (!this.recognition) {
-                    const self = this
-                    const onStart = () => {
-                        self.voiceRecognitionActive = true
-                    }
-                    const onResult = (event, res) => {
-                        self.voiceRecognitionActive = false
-                        self.searchText = res
-                        this.goToSearchPage()
-                    }
-                    const onError = (error) => {
-                        self.voiceRecognitionActive = false
-                    }
-                    const onEnd = (error) => {
-                        self.voiceRecognitionActive = false
-                    }
-                    this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
+            if (!this.recognition) {
+                const self = this
+                const onStart = () => {
+                    self.voiceRecognitionActive = true
                 }
-                if (!this.voiceRecognitionActive) {
-                    this.recognition.start()
-                } else {
-                    this.recognition.stop()
+                const onResult = (event, res) => {
+                    self.voiceRecognitionActive = false
+                    self.searchText = res
+                    this.triggerAnanlyticsEvent('VOICEINPUTSTOP_HEADER_GLOBAL', 'CONTROL', {
+                        'USER_ID': this.getUserDetails.userId,
+                        'SCREEN_NAME': this.getAnalyticsPageSource(this.$route.meta.store),
+                        'ENTITY_VALUE': res
+                    })
+                    this.goToSearchPage()
                 }
+                const onError = (error) => {
+                    self.voiceRecognitionActive = false
+                }
+                const onEnd = (error) => {
+                    self.voiceRecognitionActive = false
+                }
+                this.recognition = SpeechToTextUtil.getRecognition(false, false, onStart, onEnd, onError, onResult)
+            }
+            if (!this.voiceRecognitionActive) {
+                this.recognition.start()
+                this.triggerAnanlyticsEvent('VOICEINPUTSTART_HEADER_GLOBAL', 'CONTROL', {
+                    'USER_ID': this.getUserDetails.userId,
+                    'SCREEN_NAME': this.getAnalyticsPageSource(this.$route.meta.store)
+                })
+            } else {
+                this.recognition.stop()
             }
         },
         triggerEventAndResetNotificationCount() {
@@ -300,7 +307,7 @@ export default {
             this.searchText = this.$route.query.q;
         }
 
-        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported() && this.isTestEnvironment();
+        this.isSpeechToTextEnabled = SpeechToTextUtil.isSupported()
     },
     destroyed() {
         window.removeEventListener('scroll', this.updateScroll);

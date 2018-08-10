@@ -79,6 +79,14 @@ export default {
         "LOCATION": "HEADER",
         "ACTION": "WRITENEWBOOK"
     },
+    "VOICEINPUTSTART_HEADER_GLOBAL": {
+        "LOCATION": "HEADER",
+        "ACTION": "VOICEINPUTSTART"
+    },
+    "VOICEINPUTSTOP_HEADER_GLOBAL": {
+        "LOCATION": "HEADER",
+        "ACTION": "VOICEINPUTSTOP"
+    },
     "CLICKCATEGORY_TOPICS_GLOBAL": {
         "LOCATION": "TOPICS",
         "ACTION": "CLICKCATEGORY"
@@ -336,6 +344,16 @@ export default {
         "SCREEN_NAME": "BOOK",
         "LOCATION": "RATEREV",
         "ACTION": "VIEWED"
+    },
+    "VOICEINPUTSTART_RATEREV_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "RATEREV",
+        "ACTION": "VOICEINPUTSTART"
+    },
+    "VOICEINPUTSTOP_RATEREV_BOOK": {
+        "SCREEN_NAME": "BOOK",
+        "LOCATION": "RATEREV",
+        "ACTION": "VOICEINPUTSTOP"
     },
     "CLICKBOOK_RECOMMENDBOOK_BOOK": {
         "SCREEN_NAME": "BOOK",
