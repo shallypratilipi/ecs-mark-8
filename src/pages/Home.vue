@@ -6,7 +6,10 @@
             ></Banners>
             <VapasiQuote 
                 screenName="HOME"
-                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiQuote>
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi' && false"></VapasiQuote>
+            <VapasiShayari 
+                screenName="HOME"
+                v-if="this.isMobile() && getCurrentLanguage().fullName == 'hindi'"></VapasiShayari>
             <VapasiJoke 
                 screenName="HOME"
                 v-if="this.isMobile() && getCurrentLanguage().fullName == 'gujarati'"></VapasiJoke>
@@ -66,6 +69,7 @@
     import MainLayout from '@/layout/main-layout.vue';
     import Banners from '@/components/Banners.vue';
     import VapasiQuote from '@/components/VapasiQuote.vue';
+    import VapasiShayari from '@/components/VapasiShayari.vue';
     import VapasiHoroscope from '@/components/VapasiHoroscope.vue';
     import VapasiJoke from '@/components/VapasiJoke.vue';
     import ServerError from '@/components/ServerError.vue';
@@ -132,6 +136,7 @@ import { mapGetters, mapActions } from 'vuex'
             WebPushStrip,
             WebPushModal,
             VapasiQuote,
+            VapasiShayari,
             VapasiHoroscope,
             VapasiJoke
         },

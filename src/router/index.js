@@ -30,6 +30,7 @@ import VideoPlayListPageComponent from '@/pages/VideoPlayList.vue'
 import VideoPlayPageComponent from '@/pages/Videoplay.vue'
 import AdminEventSubmissions from '@/pages/AdminEventSubmissions'
 import AdminEventSubmission from '@/pages/AdminEventSubmission'
+import ShayariPageComponent from '@/pages/Shayari.vue'
 
 import {
     getCookie
@@ -560,6 +561,14 @@ var router = new Router({
                 'store': 'admineventsubmissions'
             },
             component: AdminEventSubmission
+        }, {
+            path: '/shayaris',
+            name: 'Shayaris',
+            component: ShayariPageComponent,
+            meta: {
+                'title': '__("seo_home_page")',
+                metaTags: _getDefaultPageOGTags('pratilipipage')
+            }
         }, {
             path: '/:list_page_url',
             name: 'List_Page',

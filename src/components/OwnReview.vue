@@ -31,7 +31,7 @@
                         <form>
                             <div class="form-group">
                                <!--  <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
-                                <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue" :enableSpeechToText=true placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
+                                <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue" :enableSpeechToText=true screenLocation="RATEREV" placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
                             <button type="button" class="btn btn-primary" :disabled="newReview === '' || !newReview" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: userPratilipiData.rating})">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>
@@ -54,7 +54,7 @@
                         <form>
                             <div class="form-group">
                                 <!-- <textarea :value="newReview" @input="newReview = $event.target.value" class="form-control" rows="2" placeholder="__('review_write_a_review')"></textarea> -->
-                                <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue" :enableSpeechToText=true placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
+                                <TranslatingInputTextArea :value="newReview" :oninput="updatePrefilledValue" :enableSpeechToText=true screenLocation="RATEREV" placeholder="__('review_write_a_review')" class="modal-textarea"></TranslatingInputTextArea>
                             </div>
                             <button type="button" :disabled="!isSaveActive &&  (newReview === '' || !newReview)" class="btn btn-primary" @click="checkAndUpdateReview({ review: newReview, pratilipiId: userPratilipiData.pratilipiId, rating: userPratilipiData.rating })">__("save")</button>
                             <button type="button" @click="cancelReview" class="btn btn-light">__("cancel")</button>

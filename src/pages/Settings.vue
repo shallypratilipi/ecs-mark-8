@@ -58,7 +58,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6 col-sm-12">
                                             <label for="pratilipi-settings-summary">__('edit_author_summary')</label>
-                                             <TranslatingInputTextArea  :value="authorData.summary" :oninput="updateSummary"  ></TranslatingInputTextArea>
+                                             <TranslatingInputTextArea  :value="authorData.summary" :oninput="updateSummary" screenLocation="SETTINGSM"></TranslatingInputTextArea>
                                         </div>
                                     </div>
                                     <div class="section-title">Private Information</div>
